@@ -85,7 +85,7 @@ function scrollToTabDefined(element) {
         marginLeft: 0 - scrollVal + 'px'
     }, "fast");
 }
-//update-begin--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
 function hiddenloading(){
 	$("#panelloadingDiv").hide();
 }
@@ -93,4 +93,3 @@ function hiddenloading(){
 function showloading(){
 	$("#panelloadingDiv").show();
 }
-//update-end--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------

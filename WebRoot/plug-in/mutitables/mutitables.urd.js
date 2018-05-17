@@ -255,9 +255,9 @@ function endEdit(gname){
 		if($('#'+gname).datagrid('validateRow', i)){
 			$('#'+gname).datagrid('endEdit', i);
 		}else{
-			//update-begin--Author:LiShaoQing  Date:20170803  for: 增加友好提示
+
 			topWinTip("请输入有效的内容!");
-			//update-end--Author:LiShaoQing  Date:20170803  for: 增加友好提示
+
 			return false;
 		}
 	}
@@ -322,9 +322,11 @@ function endEdit(gname){
  * @param msg
  * @returns
  */
-function topWinTip(msg){
-	var wid = $(top.window).width()-290;
-	var hei = $(top.window).height()-130;
+function topWinTip(msg,w,h){
+	if(!w)w = 290;
+	if(!h)h = 130;
+	var wid = $(top.window).width()-w;
+	var hei = $(top.window).height()-h;
 	var icon = 7;
 	if(msg.indexOf("成功") > -1){
 		icon = 1;
@@ -334,7 +336,7 @@ function topWinTip(msg){
 	top.layer.open({
 		title:'提示信息',
 		offset: [hei+'px', wid+'px'],
-		area: ['273px', '120px'],
+		area: [(w-8)+'px', (h-8)+'px'],
 		content:msg,
 		time:3000,
 		btn:false,
@@ -346,7 +348,7 @@ function topWinTip(msg){
 }
 function topWinTip2(msg){
 	var wid = $(window).width()-290;
-	var hei = $(top.window).height()-120;
+	var hei = $(top.window).height()-130;
 	
 	var icon = 7;
 	if(msg.indexOf("成功") > -1){
@@ -358,7 +360,7 @@ function topWinTip2(msg){
 		title:'提示信息',
 		//offset:'rb',
 		offset: [hei+'px', wid+'px'],
-		area: ['273px', '120px'],
+		area: ['273px', '130px'],
 		content:msg,
 		time:300000,
 		btn:false,

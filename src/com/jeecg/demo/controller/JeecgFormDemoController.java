@@ -73,12 +73,11 @@ public class JeecgFormDemoController extends BaseController {
 		return new ModelAndView("com/jeecg/demo/form_uitag");
 	}
 
-	//add--begin--author:caoez Date:20180226 for:TASK #2536 【新功能】二维码生成功能
 	@RequestMapping(params = "qrcode")
 	public ModelAndView qrcode(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/form_QRCode");
 	}
-	//add--end--author:caoez Date:20180226 for:TASK #2536 【新功能】二维码生成功能
+
 
 	@RequestMapping(params = "formValidDemo")
 	public ModelAndView formValidDemo(HttpServletRequest request) {
@@ -99,21 +98,19 @@ public class JeecgFormDemoController extends BaseController {
 		request.setAttribute("regions", jsonArray.toString().replaceAll("pid","pId"));
 		return new ModelAndView("com/jeecg/demo/form_nature");
 	}
-	//update-begin--Author:dangzhenghui  Date:20170408 for：TASK #1836 【demo】动态创建多tab demo，参考截图效果
+
 	@RequestMapping(params = "ueditor")
 	public ModelAndView ueditor(HttpServletRequest request) {
 		logger.info("ueditor");
 		return new ModelAndView("com/jeecg/demo/ueditor");
 	}
-	//update-end--Author:dangzhenghui  Date:20170408 for：TASK #1836 【demo】动态创建多tab demo，参考截图效果
 
-	//update-begin--Author:xuelin  Date:20170822 for：TASK #2281 【demo】popup赋多个值 demo-------------------
 	@RequestMapping(params = "popupMultiValue")
 	public ModelAndView popupMultiValue(HttpServletRequest request) {
 		logger.info("popupMultiValue");
 		return new ModelAndView("com/jeecg/demo/form_popupMultiValue");
 	}
-	//update-end--Author:xuelin  Date:20170822 for：TASK #2281 【demo】popup赋多个值 demo----------------------
+
 
 	/**
 	 *下拉联动数据---省市区
@@ -226,9 +223,9 @@ public class JeecgFormDemoController extends BaseController {
 	 */
 	@RequestMapping(params = "getAutocompleteData",method ={RequestMethod.GET, RequestMethod.POST})
 	public void getAutocompleteData(HttpServletRequest request, HttpServletResponse response) {
-		//update-begin-author:taoYan date:20170803 for:参数名修改------
+
 		String searchVal = request.getParameter("q");
-		//update-end-author:taoYan date:20170803 for:参数名修改------
+
 		String hql = "from TSUser where userName like '%"+searchVal+"%'";
 		List autoList = systemService.findHql(hql);
 		try {
@@ -248,22 +245,18 @@ public class JeecgFormDemoController extends BaseController {
 		}
 
 	}
-	//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1904 【demo】电子签章
+
 	@RequestMapping(params = "eSign")
 	public ModelAndView eSignDemo(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/zsign");
 	}
-	//update-end--Author:dangzhenghui  Date:20170429 for：TASK #1904 【demo】电子签章
 
-	//add-begin--Author:xuelin  Date:20170503 for：#1903 【demo】左右布局demo--------------------
 	@RequestMapping(params = "siteSelect")
 	public ModelAndView siteSelect(HttpServletRequest request) {
 		logger.info("----左右布局 demo转入页面-----");
 		return new ModelAndView("com/jeecg/demo/siteSelect");
 	}	
-	//add-end--Author:xuelin  Date:20170503 for：#1903 【demo】左右布局demo----------------------
 
-	//add-begin--Author:xuelin  Date:20170506 for：TASK #1902 【demo】上下特殊布局--------------------	
 	/**
 	 * 上下特殊布局
 	 */
@@ -272,10 +265,8 @@ public class JeecgFormDemoController extends BaseController {
 		logger.info("----上下特殊布局 demo转入页面-----");
 		return new ModelAndView("com/jeecg/demo/specialLayout");
 	}
-	//add-end--Author:xuelin  Date:20170506 for：TASK #1902 【demo】上下特殊布局----------------------
-	
-	
-	//update--begin--author:zhangjiaqiang date:20170618 for:通用上传demo
+
+
 	@RequestMapping(params = "commonUpload")
 	public ModelAndView commonUploadDemo(){
 		return new ModelAndView("system/commonupload/commonUploadFile");
@@ -290,13 +281,13 @@ public class JeecgFormDemoController extends BaseController {
 	public AjaxJson saveUploadFile(String documentTitle,String filename,String swfpath){
 		AjaxJson ajaxJson = new AjaxJson();
 		try {
-			//update--begin--author:zhangjiaqiang date:20170914 for:未上传文件报错
+
 			if(StringUtil.isEmpty(filename)){
 				ajaxJson.setSuccess(false);
 				ajaxJson.setMsg("未上传文件");
 				return ajaxJson;
 			}
-			//update--end--author:zhangjiaqiang date:20170914 for:未上传文件报错
+
 			TSTypegroup tsTypegroup=systemService.getTypeGroup("fieltype","文档分类");
 			TSType tsType = systemService.getType("files","附件", tsTypegroup);
 			TSDocument document = new TSDocument();
@@ -306,11 +297,11 @@ public class JeecgFormDemoController extends BaseController {
 			document.setCreatedate(DateUtils.gettimestamp());
 			document.setTSType(tsType);
 			document.setSwfpath(swfpath);
-			//update--begin--author:zhangjiaqiang date:20170621 for:修订通用文件上传之后，下载和预览异常
+
 			String fileName = filename.substring(filename.lastIndexOf("/")+1,filename.lastIndexOf("."));
 			document.setAttachmenttitle(fileName);
 			document.setExtend(filename.substring(filename.lastIndexOf(".") + 1));
-			//update--end--author:zhangjiaqiang date:20170621 for:修订通用文件上传之后，下载和预览异常
+
 			systemService.save(document);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -319,14 +310,7 @@ public class JeecgFormDemoController extends BaseController {
 		}
 		return ajaxJson;
 	}
-	
-	
-	
-	//update--end--author:zhangjiaqiang date:20170618 for：通用上传demo
-	
-	
-	
-	//update-begin--Author:dangzhenghui  Date:20170524 for：TASK #1901 【demo】文档管理demo
+
 
 
 	/**
@@ -340,7 +324,6 @@ public class JeecgFormDemoController extends BaseController {
 		return new ModelAndView("system/document/files");
 	}
 
-	//update--begin--author:zhangjiaqiang date:20170911 for:文档管理编辑
 	/**
 	 * 文件编辑跳转
 	 *
@@ -356,7 +339,7 @@ public class JeecgFormDemoController extends BaseController {
 		}
 		return new ModelAndView("system/document/files");
 	}
-	//update--end--author:zhangjiaqiang date:20170911 for:文档管理编辑
+
 	/**
 	 * 保存文件
 	 *
@@ -371,7 +354,7 @@ public class JeecgFormDemoController extends BaseController {
 		Map<String, Object> attributes = new HashMap<String, Object>();
 		TSTypegroup tsTypegroup=systemService.getTypeGroup("fieltype","文档分类");
 		TSType tsType = systemService.getType("files","附件", tsTypegroup);
-		//update--begin--author:zhangjiaqiang date:20170914 for:文档管理编辑
+
 		String documentId = oConvertUtils.getString(request.getParameter("documentId"));// 文件ID
 		String documentTitle = oConvertUtils.getString(request.getParameter("documentTitle"));// 文件标题
 		if (StringUtil.isNotEmpty(documentId)) {
@@ -379,7 +362,7 @@ public class JeecgFormDemoController extends BaseController {
 			document = systemService.getEntity(TSDocument.class, documentId);
 			document.setDocumentTitle(documentTitle);
 		}
-		//update--end--author:zhangjiaqiang date:20170914 for:文档管理编辑
+
 		document.setSubclassname(MyClassLoader.getPackPath(document));
 		document.setCreatedate(DateUtils.gettimestamp());
 		document.setTSType(tsType);
@@ -432,8 +415,7 @@ public class JeecgFormDemoController extends BaseController {
 		j.setMsg(message);
 		return j;
 	}
-	//update-end--Author:dangzhenghui  Date:20170524 for：TASK #1901 【demo】文档管理demo
-	//update-begin--Author:dangzhenghui  Date:20170531 for：TASK #2038 【demo】树形列表 分页demo
+
 	/**
 	 * 权限列表
 	 */
@@ -459,17 +441,16 @@ public class JeecgFormDemoController extends BaseController {
 		cq.addOrder("functionOrder", SortDirection.asc);
 		cq.add();
 
-		//update--begin------author:scott--------------date:20151208-----------for:手工加载数据权限条件--------
 		//获取装载数据权限的条件HQL
 		cq = HqlGenerateUtil.getDataAuthorConditionHql(cq, new TSFunction());
 		cq.add();
-		//update--end------author:scott--------------date:20151208-----------for:手工加载数据权限条件--------
+
 
 		List<TSFunction> functionList = systemService.getListByCriteriaQuery(cq, pageflag);
 		Long total=systemService.getCountForJdbc("select count(*) from t_s_function where functionlevel=0");
-//        update-start-Author:zhangguoming  Date:20140914 for：菜单管理页面：菜单排序
+
 		Collections.sort(functionList, new NumberComparator());
-//        update-end-Author:zhangguoming  Date:20140914 for：菜单管理页面：菜单排序
+
 		List<TreeGrid> treeGrids = new ArrayList<TreeGrid>();
 		TreeGridModel treeGridModel = new TreeGridModel();
 		treeGridModel.setIcon("TSIcon_iconPath");
@@ -481,9 +462,9 @@ public class JeecgFormDemoController extends BaseController {
 		treeGridModel.setChildList("TSFunctions");
 		// 添加排序字段
 		treeGridModel.setOrder("functionOrder");
-		//        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 		treeGridModel.setIconStyle("functionIconStyle");
-		//        update-end--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 
 		treeGridModel.setFunctionType("functionType");
 
@@ -509,9 +490,7 @@ public class JeecgFormDemoController extends BaseController {
 	public ModelAndView function(ModelMap model) {
 		return new ModelAndView("com/jeecg/demo/functionList");
 	}
-	//update-end--Author:dangzhenghui  Date:20170531 for：TASK #2038 【demo】树形列表 分页demo
-	
-	//update-begin--Author:LiShaoQing Date:20170815 for：【demo】可排序多选demo
+
 	
 	/**
 	 * 菜单进入可排序多选界面
@@ -552,9 +531,7 @@ public class JeecgFormDemoController extends BaseController {
         this.systemService.getDataGridReturn(cq, true);
         TagUtil.datagrid(response, dataGrid);
 	}
-	//update-end--Author:LiShaoQing Date:20170815 for：【demo】可排序多选demo
-	
-	//update-begin--Author:zhangliang Date:20170823 for：TASK #2299 【jeecg demo】 ztree 实现一个可编辑的树
+
 	@RequestMapping(params = "ztreeDemo")
 	public ModelAndView ztreeDemo(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/ztreeDemo");
@@ -616,9 +593,7 @@ public class JeecgFormDemoController extends BaseController {
         j.setMsg("删除成功");
 		return j;
 	}
-	//update-end--Author:zhangliang Date:20170823 for：TASK #2299 【jeecg demo】 ztree 实现一个可编辑的树
 
-	//add-begin--Author:yugw  Date:20170910 for：TASK #2335 【UI例子】多tab例子--------------------	
 	/**
 	 * 多选项卡demo
 	 */
@@ -632,9 +607,7 @@ public class JeecgFormDemoController extends BaseController {
 		logger.info("----选项卡demo转入页面-----");
 		return new ModelAndView("com/jeecg/demo/tabDemo");
 	}
-	//add-end--Author:yugw  Date:20170910 for：TASK #2335 【UI例子】多tab例子----------------------
-	
-	//add-begin-Author:baiyu Date:2018-03-27 for:接口测试
+
 	/**
 	 * 常用示例Demo:接口测试页面跳转
 	 * @param request
@@ -686,5 +659,5 @@ public class JeecgFormDemoController extends BaseController {
 		}
 		return j;
 	}
-	//add-end-Author:baiyu Date:2018-03-27 for:接口测试
+
 }

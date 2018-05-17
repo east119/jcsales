@@ -49,9 +49,9 @@ public class PagerUtil {
 		int offset = 0;
 		try {
 			if (curPageNO > (int) Math.ceil((double) rowCounts / pageSize))
-				//update--begin--author:zhangjiaqiang date:20170408 for:修订列表页面序号错误
+
 				curPageNO = (int) Math.ceil((double) rowCounts / pageSize) + 1;
-				//update--end--author:zhangjiaqiang date:20170408 for:修订列表页面序号错误
+
 			// 得到第几页
 			if (curPageNO <= 1)
 				curPageNO = 1;
@@ -67,9 +67,9 @@ public class PagerUtil {
 		try {
 			// 得到第几页
 			if (curPageNO > (int) Math.ceil((double) rowCounts / pageSize))
-				//update--begin--author:zhangjiaqiang date:20170408 for:修订列表页面序号错误
+
 				curPageNO = (int) Math.ceil((double) rowCounts / pageSize) + 1;
-				//update--end--author:zhangjiaqiang date:20170408 for:修订列表页面序号错误
+
 			if (curPageNO <= 1)
 				curPageNO = 1;
 		} catch (Exception e) {

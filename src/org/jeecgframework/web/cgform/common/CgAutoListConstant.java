@@ -70,10 +70,10 @@ public class CgAutoListConstant {
 	public static final String FIELD_DICTTABLE = "field_dictTable";
 	/** 字典code */
 	public static final String FIELD_DICTFIELD = "field_dictField";
-	//<#--update--begin--author:gj_shaojc date:20180316 for:TASK #2557 【问题确认】网友问题确认 --
+
 	/** 字典Text */
 	public static final String FIELD_DICTTEXT = "field_dictText";
-	//<#--update--end--author:gj_shaojc date:20180316 for:TASK #2557 【问题确认】网友问题确认 --
+
 	/** 字典数据 */
 	public static final String FIELD_DICTLIST = "field_dictlist";
 	
@@ -163,13 +163,12 @@ public class CgAutoListConstant {
 	public static final String CODE_JSP_MODE_03 = "03";
 	/** 自定义模板 */
 	public static final String CODE_JSP_MODE_04 = "04";
-	//add-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,定义配置表版本号格式分隔符
+
 	/** online配置表单版本分隔符 */
 	public static final String ONLINE_TABLE_SPLIT_STR = "__";
-	//add-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,定义配置表版本号格式分隔符
-	
-	//update-begin--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
+
+
 	public static final String BASEPATH = "basePath";
-	//update-end--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
+
 	
 }

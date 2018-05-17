@@ -172,10 +172,9 @@ public class MigrateForm<T> {
 			ls_sql = "select * from cgform_head where id='" + id + "'"; // 获得导出表单
 			listTables.add(bulidDbTableFromSQL(ls_sql, CgFormHeadPojo.class, jdbcTemplate));
 
-			//update-begin--Author:dangzhenghui  Date:20170309 for：TASK #1694 【功能缺陷】Jeecg online配置导入导出，缺少索引配置部分
 			ls_tmpsql = "select * from cgform_index where table_id='" + id + "'"; // 获得导出索引的字段
 			listTables.add(bulidDbTableFromSQL(ls_tmpsql, CgFormIndexPojo.class, jdbcTemplate));
-			//update-end--Author:zhangdaihao  Date:20170309 for：TASK #1694 【功能缺陷】Jeecg online配置导入导出，缺少索引配置部分
+
 
 
 			ls_tmpsql = "select * from cgform_field where table_id='" + id + "'"; // 获得导出表单的字段
@@ -210,11 +209,11 @@ public class MigrateForm<T> {
 						if (subRowsList != null && subRowsList.size() > 0) {
 							subSqlMap = (Map) subRowsList.get(0);
 							ls_subid = (String) subSqlMap.get("id");
-							//update-begin--Author:dangzhenghui  Date:20170309 for：TASK #1694 【功能缺陷】Jeecg online配置导入导出，缺少索引配置部分
+
 							// 获得导出子表索引
 							ls_tmpsql = "select * from cgform_index where table_id='" + ls_subid + "'";
 							listTables.add(bulidDbTableFromSQL(ls_tmpsql, CgFormIndexPojo.class, jdbcTemplate));
-							//update-end--Author:zhangdaihao  Date:20170309 for：TASK #1694 【功能缺陷】Jeecg online配置导入导出，缺少索引配置部分
+
 
 							// 获得导出子表字段
 							ls_tmpsql = "select * from cgform_field where table_id='" + ls_subid + "'";
@@ -258,9 +257,9 @@ public class MigrateForm<T> {
 		DBTable<T> dbTable = new DBTable<T>();
 		dbTable.setTableName(PublicUtil.getTableName(sql));
 		dbTable.setClass1(clazz);
-		//-- update-begin author： xugj date:20160103  for: #851 controller 单元测试 升级spring 引起的变化
+
 		List<T> dataList = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(clazz));
-		//-- update-end author： xugj date:20160103  for: #851 controller 单元测试 升级spring 引起的变化
+
 		dbTable.setTableData(dataList);
 		return dbTable;
 	}

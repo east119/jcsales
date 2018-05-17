@@ -35,27 +35,27 @@ public class UploadTag extends JeecgTag {
 	protected boolean auto=false;//是否自动上传
 	protected String onUploadSuccess;//上传成功处理函数
 	protected boolean view=false;//生成查看删除链接
-//  update-begin--Author:jb_longjb 龙金波  Date:20150318 for:新增formId属性，保持formData属性向前兼容
+
 	protected String formId;//参数名称
-	 //update--begin--author:zhangjiaqiang date:20170709 for:多字段上传
+
 	private boolean outhtml = true;
-	
+
+	private String onUploadStart;//上传开始处理函数
+
 	public boolean isOuthtml() {
 		return outhtml;
 	}
 	public void setOuthtml(boolean outhtml) {
 		this.outhtml = outhtml;
 	}
-	 //update--end--author:zhangjiaqiang date:20170709 for:多字段上传
+
 	public String getFormId() {
 		return formId;
 	}
 	public void setFormId(String formId) {
 		this.formId = formId;
 	}
-//  update-end--Author:jb_longjb 龙金波  Date:20150318 for:新增formId属性，保持formData属性向前兼容
-	
-//  update-begin--Author:chenj 陈劲  Date:20160819 for:TASK #1318 【标签扩展】上传组件增加属性，上传文件大小设置
+
 	private String fileSizeLimit = "15MB";//上传文件大小设置
 	public String getFileSizeLimit() {
 		return fileSizeLimit;
@@ -63,7 +63,7 @@ public class UploadTag extends JeecgTag {
 	public void setFileSizeLimit(String fileSizeLimit) {
 		this.fileSizeLimit = fileSizeLimit;
 	}
-//  update-end--Author:chenj 陈劲  Date:20160819 for:TASK #1318 【标签扩展】上传组件增加属性，上传文件大小设置
+
 
 
 	public void setView(boolean view) {
@@ -96,16 +96,23 @@ public class UploadTag extends JeecgTag {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getOnUploadStart() {
+		return onUploadStart;
+	}
+	public void setOnUploadStart(String onUploadStart) {
+		this.onUploadStart = onUploadStart;
+	}
 	@SuppressWarnings("unchecked")
 	public int doStartTag() throws JspTagException {
-		 //update--begin--author:zhangjiaqiang date:20170709 for:多字段上传
+
 		List<String> idList  = (List<String>) pageContext.getRequest().getAttribute("nameList");
 		if(idList == null || idList.isEmpty()){
 			idList = new ArrayList<String>();
 		}
 		idList.add(id);
 		pageContext.getRequest().setAttribute("nameList", idList);
-		 //update--end--author:zhangjiaqiang date:20170709 for:多字段上传
+
 		return EVAL_PAGE;
 	}
 	public int doEndTag() throws JspTagException {
@@ -127,13 +134,13 @@ public class UploadTag extends JeecgTag {
 	}
 	@SuppressWarnings("unchecked")
 	public StringBuffer end() {
-		//update-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		StringBuffer sb = this.getTagCache();
 		if(sb != null){
 			return sb;
 		}
 		sb = new StringBuffer();
-		//update-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		if("pic".equals(extend))
 		{
 			extend="*.jpg;*.jpeg;*.png;*.gif;*.bmp;*.ico;*.tif";
@@ -142,15 +149,15 @@ public class UploadTag extends JeecgTag {
 		{
 			extend="*.doc;*.docx;*.txt;*.ppt;*.xls;*.xlsx;*.html;*.htm";
 		}
-		 //update--begin--author:zhangjiaqiang date:20170709 for:多字段上传
+
 		if(outhtml){
 			sb.append("<link rel=\"stylesheet\" href=\"plug-in/uploadify/css/uploadify.css\" type=\"text/css\"></link>");
 			sb.append("<script type=\"text/javascript\" src=\"plug-in/uploadify/jquery.uploadify-3.1.js\"></script>");
+
+			sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/Map.js\"></script>");
+
 		}
-		//update--begin--author:zhangjiaqiang date:20170731 for:兼容IE多文件上传
-		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/Map.js\"></script>");
-		//update--end--author:zhangjiaqiang date:20170731 for:兼容IE多文件上传
-		 //update--end--author:zhangjiaqiang date:20170709 for:多字段上传
+
 		sb.append("<script type=\"text/javascript\">"
 				+"var flag = false;"
 				+"var fileitem=\"\";"
@@ -172,50 +179,54 @@ public class UploadTag extends JeecgTag {
 				+"swf:\'plug-in/uploadify/uploadify.swf\',	"
 				+"uploader:\'"+getUploader()			
 						+"onUploadStart : function(file) { ");	
-				if (formData!=null) {
-					String[] paramnames=formData.split(",");				
-					for (int i = 0; i < paramnames.length; i++) {
-						String paramname=paramnames[i];
-						//update--begin--author:zhangjiaqiang date:20170727 for:支持同名多个参数设置
-						String fieldName = paramname;
-						if(paramname.indexOf("_")> -1 ){
-							fieldName = paramname.substring(0, paramname.indexOf("_"));
+				if(onUploadStart==null || "".equals(onUploadStart)){
+					if (formData!=null) {
+						String[] paramnames=formData.split(",");				
+						for (int i = 0; i < paramnames.length; i++) {
+							String paramname=paramnames[i];
+
+							String fieldName = paramname;
+							if(paramname.indexOf("_")> -1 ){
+								fieldName = paramname.substring(0, paramname.indexOf("_"));
+							}
+							sb.append("var "+fieldName+"=$(\'#"+paramname+"\').val();");
+
+						}				 
+				        sb.append("$(\'#"+id+"\').uploadify(\"settings\", \"formData\", {");
+				        for (int i = 0; i < paramnames.length; i++) {
+							String paramname=paramnames[i];
+
+							if(paramname.indexOf("_")> -1 ){
+								paramname = paramname.substring(0, paramname.indexOf("_"));
+							}
+
+							if (i==paramnames.length-1) {
+								sb.append("'"+paramname+"':"+paramname+"");	
+							}else{
+								sb.append("'"+paramname+"':"+paramname+",");
+							}
 						}
-						sb.append("var "+fieldName+"=$(\'#"+paramname+"\').val();");
-						//update--end--author:zhangjiaqiang date:20170727 for:支持同名多个参数设置
-					}				 
-			        sb.append("$(\'#"+id+"\').uploadify(\"settings\", \"formData\", {");
-			        for (int i = 0; i < paramnames.length; i++) {
-						String paramname=paramnames[i];
-						//update--begin--author:zhangjiaqiang date:20170727 for:支持同名多个参数设置
-						if(paramname.indexOf("_")> -1 ){
-							paramname = paramname.substring(0, paramname.indexOf("_"));
-						}
-						//update--end--author:zhangjiaqiang date:20170727 for:支持同名多个参数设置
-						if (i==paramnames.length-1) {
-							sb.append("'"+paramname+"':"+paramname+"");	
-						}else{
-							sb.append("'"+paramname+"':"+paramname+",");
-						}
+				        sb.append("});");
+
+					}else if (formId!=null) {
+						sb.append(" var o = {};");
+	            		sb.append("    var _array = $('#"+formId+"').serializeArray();");
+	            		sb.append("    $.each(_array, function() {");
+	            		sb.append("        if (o[this.name]) {");
+	            		sb.append("            if (!o[this.name].push) {");
+	            		sb.append("                o[this.name] = [ o[this.name] ];");
+	            		sb.append("            }");
+	            		sb.append("            o[this.name].push(this.value || '');");
+	            		sb.append("        } else {");
+	            		sb.append("            o[this.name] = this.value || '';");
+	            		sb.append("        }");
+	            		sb.append("    });");
+	            		sb.append("$(\'#"+id+"\').uploadify(\"settings\", \"formData\", o);");
 					}
-			        sb.append("});");
-//		          update-begin--Author:jb_longjb 龙金波  Date:20150318 for:用formId简化表单与附件同时提交的序列化问题
-				}else if (formId!=null) {
-					sb.append(" var o = {};");
-            		sb.append("    var _array = $('#"+formId+"').serializeArray();");
-            		sb.append("    $.each(_array, function() {");
-            		sb.append("        if (o[this.name]) {");
-            		sb.append("            if (!o[this.name].push) {");
-            		sb.append("                o[this.name] = [ o[this.name] ];");
-            		sb.append("            }");
-            		sb.append("            o[this.name].push(this.value || '');");
-            		sb.append("        } else {");
-            		sb.append("            o[this.name] = this.value || '';");
-            		sb.append("        }");
-            		sb.append("    });");
-            		sb.append("$(\'#"+id+"\').uploadify(\"settings\", \"formData\", o);");
-				};
-//          update-end--Author:jb_longjb 龙金波  Date:20150318 for:简化表单与附件同时提交的序列化问题
+				}else{
+					sb.append(this.onUploadStart+"(file);");
+				}
+
 		       sb.append("} ," 	          
 				+"onQueueComplete : function(queueData) { ");
 				if(dialog)
@@ -223,14 +234,14 @@ public class UploadTag extends JeecgTag {
 				sb.append("var win = frameElement.api.opener;"  	  
 	            +"win.reloadTable();"
 	            +"win.tip(serverMsg);"
-	            //update--begin--author:zhangjiaqiang Date:20170504 for:修订导入数据之后，loading弹出窗未关闭
+
 	            +"if(subDlgIndex && $('#infoTable-loading')){"
 				+"$('#infoTable-loading').hide();"
-	            //update--begin--author:zhangjiaqiang date:20170714 for:修订多文件导入问题
+
 				+"if(!subDlgIndex.closed)subDlgIndex.close();"
-				 //update--end--author:zhangjiaqiang date:20170714 for:修订多文件导入问题
+
 				+"}"
-				 //update--end--author:zhangjiaqiang Date:20170504 for:修订导入数据之后，loading弹出窗未关闭
+
 	            +"frameElement.api.close();");
 				}
 				else
@@ -250,9 +261,9 @@ public class UploadTag extends JeecgTag {
 				if(view)
 				{
 				sb.append("var fileitem=\"<span id=\'\"+d.attributes.id+\"\'><a href=\'#\' onclick=openwindow(\'文件查看\',\'\"+d.attributes.viewhref+\"\',\'70%\',\'80%\') title=\'查看\'>\"+d.attributes.name+\"</a><img border=\'0\' onclick=confuploadify(\'\"+d.attributes.delurl+\"\',\'\"+d.attributes.id+\"\') title=\'删除\' src=\'plug-in/uploadify/img/uploadify-cancel.png\' widht=\'15\' height=\'15\'>&nbsp;&nbsp;</span>\";");
-				//update-begin--author:scott-----date:20160511----for:火狐下上传问题,客户反馈--------
+
 				sb.append(" m=new Map(); ");
-				//update-begin--author:scott-----date:20160511----for:火狐下上传问题,客户反馈--------
+
 				sb.append("m.put(d.attributes.id,fileitem);");
 				sb.append("fileKey=d.attributes.fileKey;");
 				}
@@ -288,7 +299,7 @@ public class UploadTag extends JeecgTag {
 				+"}"
 	   			+"});"
 				+"});");
-		      //update--begin--author:zhangjiaqiang date:20170709 for:多字段上传
+
 		       if(outhtml){
 		    	   List<String> idList  = (List<String>) pageContext.getRequest().getAttribute("nameList");
 		    	   sb.append("function upload() {");
@@ -307,16 +318,16 @@ public class UploadTag extends JeecgTag {
 		   			sb.append("}");		
 		       }
 				sb.append("</script>");	
-				//update--end--author:zhangjiaqiang date:20170709 for:多字段上传		
+
 		       sb.append("<span id=\""+id+"span\"><input type=\"file\" name=\""+name+"\" id=\""+id+"\" /></span>");
 		       if(view)
 		       {
 		       sb.append("<span id=\"viewmsg\"></span>");
 		       sb.append("<input type=\"hidden\" name=\"fileKey\" id=\"fileKey\" />");
 		       }
-				//update-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 				this.putTagCache(sb);
-				//update-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		return sb;
 	}
 	
@@ -337,7 +348,7 @@ public class UploadTag extends JeecgTag {
 	public void setExtend(String extend) {
 		this.extend = extend;
 	}
-	//update-start--Author:yugwu  Date:20170830 for:key生成逻辑重新编写----
+
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -357,7 +368,7 @@ public class UploadTag extends JeecgTag {
 				.append("]");
 		return builder.toString();
 	}
-	//update-end--Author:yugwu  Date:20170830 for:key生成逻辑重新编写----
+
 
 	 
 	

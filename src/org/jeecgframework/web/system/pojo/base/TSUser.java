@@ -17,13 +17,13 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 public class TSUser extends TSBaseUser implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private String signatureFile;// 签名文件
-	//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能
+
 	@Excel(name = "手机" ,width = 20)
 	private String mobilePhone;// 手机
 	@Excel(name = "办公电话",width = 20)
 	private String officePhone;// 办公电话
 	@Excel(name = "邮箱",width = 25)
-	//update-end--Author:dangzhenghui  Date:20170429 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能
+
 	private String email;// 邮箱
 	/**创建时间*/
 	private java.util.Date createDate;
@@ -39,11 +39,10 @@ public class TSUser extends TSBaseUser implements java.io.Serializable {
 	private java.lang.String updateName;
 	/**头像*/
 	private java.lang.String portrait;
-	//update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
+
 	/**开发权限标志*/
 	private java.lang.String devFlag;
-	
-	//update-begin--Author:Yandong  Date:20171229 for：集成接口权限--------------------
+
 	private String userType;//用户类型  1:系统用户 \2接口用户
 	private String personType;//人员类型
 	private String sex;//性别
@@ -53,7 +52,7 @@ public class TSUser extends TSBaseUser implements java.io.Serializable {
 	private String address;//联系地址
 	private String post;//邮编
 	private String memo;//备注
-	//update-end--Author:Yandong  Date:20171229 for：集成接口权限--------------------
+
 	
 	
 	@Column(name = "dev_flag", length = 2)
@@ -64,7 +63,7 @@ public class TSUser extends TSBaseUser implements java.io.Serializable {
 	public void setDevFlag(String devFlag) {
 		this.devFlag = devFlag;
 	}
-	//update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
+
 	@Column(name = "signatureFile", length = 100)
 	public String getSignatureFile() {
 		return this.signatureFile;

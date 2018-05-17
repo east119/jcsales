@@ -5,7 +5,6 @@
 <link rel="stylesheet" type="text/css" href="plug-in/ztree/css/zTreeStyle.css">
 <script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.excheck-3.5.min.js"></script>
-<%--update-start--Author:wangkun  Date:20160327 TASK #956 【UI标签】封装选择用户标签--%>
 <script type="text/javascript">
     var setting = {
         check: {
@@ -68,9 +67,7 @@
 </script>
 <div class="easyui-layout" style="width:1000px;height:600px;">
     <div data-options="region:'west',split:true" title="<t:mutiLang langKey='common.department'/>" style="width:200px;">
-        <!-- update--begin---author:zhangjiaqiang date:20170223 for:TASK #1706 【格式】选择用户页面，多空白 -->
         <ul id="departSelect" class="ztree" ></ul>
-         <!-- update--end---author:zhangjiaqiang date:20170223 for:TASK #1706 【格式】选择用户页面，多空白 -->
     </div>
     <div data-options="region:'center'">
         <t:datagrid checkbox="true" name="userList1" title="common.user.select" actionUrl="userController.do?datagrid"

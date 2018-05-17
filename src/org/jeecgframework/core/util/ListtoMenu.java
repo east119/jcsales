@@ -260,7 +260,6 @@ public class ListtoMenu {
 		return menuString.toString();
 	}
 
-//        update-start--Author:zhangguoming  Date:20140622 for：左侧树调整：加大宽度、更换节点图标、修改选中颜色
 
     /**
      * 拼装EASYUI 多级 菜单  下级菜单为树形
@@ -309,7 +308,7 @@ public class ListtoMenu {
 
 		return menuString.toString();
 	}
-//        update-end--Author:zhangguoming  Date:20140622 for：左侧树调整：加大宽度、更换节点图标、修改选中颜色
+
 
 	/**
 	 * 获取顶级菜单的下级菜单-----面板式菜单
@@ -418,19 +417,19 @@ public class ListtoMenu {
 		menuString.append(getMutiLang(function.getFunctionName()));
 		menuString.append("\',\'");
 		menuString.append(function.getFunctionUrl());
-		//update-begin ---author:scott---for:外部链接在系统中配置无效----date:20150325
+
 		//如果是外部链接，则不加菜单ID
 		if(function.getFunctionUrl().indexOf("http:")==-1){
-		  //update-begin--Author:jg_renjie  Date:20150715 for：解决rest风格时，传入id错误的问题
+
 			if(function.getFunctionUrl().indexOf("?") == -1){
 				menuString.append("?clickFunctionId=");
 			} else {
 				menuString.append("&clickFunctionId=");
 			}
-		  //update-end--Author:jg_renjie  Date:20150715 for：解决rest风格时，传入id错误的问题
+
 			menuString.append(function.getId());
 		}
-		//update-end ---author:scott---for:外部链接在系统中配置无效----date:20150325
+
 		menuString.append("\',\'");
 		menuString.append(icon);
 		menuString.append("\')\"  title=\"");
@@ -522,9 +521,7 @@ public class ListtoMenu {
 		menuString.append("		</ul> ");
 		return menuString.toString();
 	}
-	
-	
-	//update-start--Author:gaofeng  Date:2014-02-14：新增webos头部菜单导航,多级菜单
+
 	/**
 	 * 拼装webos头部菜单
 	 * @param pFunctions
@@ -653,10 +650,10 @@ public class ListtoMenu {
 				dataString.append("'"+function.getId()+"':{ ");
 				dataString.append("appid:'"+function.getId()+"',");
 				dataString.append("url:'"+function.getFunctionUrl()+"',");
-                //        update-begin--Author:zhangguoming  Date:20140509 for：添加云桌面图标
+
 //				dataString.append(getIconandName(function.getFunctionName()));
 				dataString.append(getIconAndNameForDesk(function));
-                //        update-end--Author:zhangguoming  Date:20140509 for：添加云桌面图标
+
 				dataString.append("asc :"+function.getFunctionOrder());
 				dataString.append(" },");
 			}
@@ -666,7 +663,6 @@ public class ListtoMenu {
 		return data;
 	}
 
-    //        update-begin--Author:zhangguoming  Date:20140512 for：添加云桌面图标管理
     private static String getIconAndNameForDesk(TSFunction function) {
         StringBuffer dataString = new StringBuffer();
 
@@ -728,9 +724,7 @@ public class ListtoMenu {
 		
 		return dataString.toString();
 	}
-    
-    
-    //update-begin--author:scott Date:20180307 for:链接外部数据库登录很慢问题解决------
+
     /**
 	*  @Title: getMutiLang
 	*  @Description: 转换菜单多语言
@@ -742,10 +736,7 @@ public class ListtoMenu {
 		String lang_context = MutiLangUtil.getLang(functionName);
 		return lang_context;
 	}
-	//update-end--author:scott Date:20180307 for:链接外部数据库登录很慢问题解决------
-	
-    //update-end--Author:zhangguoming  Date:20140512 for：添加云桌面图标管理
-	//update-start--Author:gaofeng  Date:2014-02-14：新增Webos头部菜单导航，多级菜单
+
 	
 	public static String getDIYMultistageTree(Map<Integer, List<TSFunction>> map) {
 		if(map==null||map.size()==0||!map.containsKey(0)){return "不具有任何权限,\n请找管理员分配权限";}
@@ -754,13 +745,13 @@ public class ListtoMenu {
         int curIndex = 0;
             for (TSFunction function : list) {
                 menuString.append("<li>");
-                //        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
                 if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
     				 menuString.append("<a href=\"#\" class=\"dropdown-toggle\" ><i class=\"menu-icon fa "+function.getFunctionIconStyle()+"\"></i>");
     			}else{
     				 menuString.append("<a href=\"#\" class=\"dropdown-toggle\" ><i class=\"menu-icon fa fa-desktop\"></i>");
     			}
-                //        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
                 menuString.append(getMutiLang(function.getFunctionName()));
                /* int submenusize = function.getSubFunctionSize();
                 if (submenusize == 0) {
@@ -813,8 +804,7 @@ public class ListtoMenu {
 		}
 		return menuString.toString();
 	}
-	
-	//update-start--Author:龙金波  Date:2015-03-16：新增ACE左侧菜单导航，多级
+
 	public static String getAceMultistageTree(Map<Integer, List<TSFunction>> map) {
 		if(map==null||map.size()==0||!map.containsKey(0)){return "不具有任何权限,\n请找管理员分配权限";}
 		StringBuffer menuString = new StringBuffer();
@@ -822,15 +812,13 @@ public class ListtoMenu {
         int curIndex = 0;
             for (TSFunction function : list) {
                 menuString.append("<li>");
-				//        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
-				//-- update-start--Author: dangzhenghui Date:20170608 for: TASK #2088 【图标问题】首页风格图标统一
+
 				if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
     				menuString.append("<a href=\"#\" class=\"dropdown-toggle\" ><i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
     			}else{
     				menuString.append("<a href=\"#\" class=\"dropdown-toggle\" ><i class=\"fa fa-columns\"></i>");
     			}
-				//-- update-end--Author: dangzhenghui Date:20170608 for: TASK #2088 【图标问题】首页风格图标统一
-				//        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
                 
                 
                 menuString.append("<span class=\"menu-text\">");
@@ -870,7 +858,7 @@ public class ListtoMenu {
 				}else {
 					/* 20160830 wangkun TASK #1330 【改造】ace首页风格，菜单不支持三级菜单，改造支持三级*/
 					menuString.append("<li>");
-					//        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 					if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 						menuString.append("<a href=\"#\" class=\"dropdown-toggle\" ><i class=\""+function.getFunctionIconStyle()+"\"></i>");
 					}else{
@@ -960,13 +948,13 @@ public class ListtoMenu {
 		int curIndex = 0;
 		for (TSFunction function : list) {
 			menuString.append("<li>");
-	           //        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 			if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 				menuString.append("<a href=\"#\" class=\"\" ><i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 			}else{
 				menuString.append("<a href=\"#\" class=\"\" ><i class=\"fa fa-columns\"></i>");
 			}
-	           //        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 			menuString.append("<span class=\"menu-text\">");
 			menuString.append(getMutiLang(function.getFunctionName()));
 			menuString.append("</span>");
@@ -1013,18 +1001,18 @@ public class ListtoMenu {
 		String name = getMutiLang(function.getFunctionName()) ;
 		menuString.append("<li> <a class=\"J_menuItem\" href=\"").append(function.getFunctionUrl()).append("\">");
 		if(!function.hasSubFunction(map)){
-			//update-begin--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 			if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 				menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 			}
 			menuString.append("<span class=\"menu-text\">");
 			menuString.append(name);
 			menuString.append("</span>");
-			//update-end--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 			menuString.append("</a>");
 			menuString.append("</li>");
 		}else {
-			//update-begin--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 			if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 				menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 			}else{
@@ -1033,7 +1021,7 @@ public class ListtoMenu {
 			menuString.append("<span class=\"menu-text\">");
 			menuString.append(name);
 			menuString.append("</span>");
-			//update-end--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 			menuString.append("<span class=\"fa arrow\">");
 			menuString.append("</span>");
 			menuString.append("</a>");
@@ -1043,8 +1031,7 @@ public class ListtoMenu {
 		}
 		return menuString.toString();
 	}
-	
-	//update-begin-author:Yandong date:20171228 for:fineui首页集成---
+
 		/**
 		 * 获取fineUI菜单树
 		 * @param map
@@ -1109,18 +1096,18 @@ public class ListtoMenu {
 			String name = getMutiLang(function.getFunctionName()) ;
 			menuString.append("<li> <a class=\"F_menuItem\" href=\"").append(function.getFunctionUrl()).append("\">");
 			if(!function.hasSubFunction(map)){
-				//update-begin--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 				if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 					menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 				}
 				menuString.append("<span>");
 				menuString.append(name);
 				menuString.append("</span>");
-				//update-end--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 				menuString.append("</a>");
 				menuString.append("</li>");
 			}else {
-				//update-begin--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 				if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 					menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 				}else{
@@ -1129,7 +1116,7 @@ public class ListtoMenu {
 				menuString.append("<span>");
 				menuString.append(name);
 				menuString.append("</span>");
-				//update-end--Author:likai  Date:20160904 for：[1345]二级菜单图标样式设置了，但是菜单样式无效果--------------------
+
 				menuString.append("<i class=\"icon-font icon-right\"></i>");
 				menuString.append("</a>");
 				menuString.append("<ul class=\"menu-item-child\" >");
@@ -1138,5 +1125,5 @@ public class ListtoMenu {
 			}
 			return menuString.toString();
 		}
-		//update-begin-author:Yandong date:20171228 for:fineui首页集成---
+
 }

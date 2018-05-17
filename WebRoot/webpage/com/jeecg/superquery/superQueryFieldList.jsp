@@ -144,7 +144,6 @@
 				   <td align="left">
 							  <%-- <t:dictSelect field="superQueryFieldList[${stuts.index }].tableName" type="list"   typeGroupCode=""  defaultVal="${poVal.tableName }" hasLabel="false"  title="表名"></t:dictSelect>   --%>     
 							  <select id="fieldTableList[${stuts.index }]"  name="superQueryFieldList[${stuts.index}].tableName" class="fieldTableList4" style="width:180px" >  <!--onclick="sss()"  -->
-							  <!--onclick="updatelistTable()"  -->
 							  <c:if test="${not empty poVal.tableName}">
 							  	<option>${poVal.tableName}</option> 
 							  </c:if>

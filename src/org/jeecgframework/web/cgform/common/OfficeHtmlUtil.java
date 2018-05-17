@@ -270,10 +270,10 @@ public class OfficeHtmlUtil {
 			pattern = Pattern.compile(regEx_attr8,Pattern.CASE_INSENSITIVE);   
 			matcher = pattern.matcher(htmlStr);   
 			htmlStr = matcher.replaceAll(""); 
-			//update-start--Author: zhoujf  Date:20170524 for：TASK #2014 【online表单】online表单 模板配置 basePath问题 word模板文件上传问题
+
 			//include
 	    	StringBuilder ls_include = new StringBuilder("");
-	    	//update-begin--Author:zhoujf  Date:20170601 for：【online表单】 日期控件不好使
+
 	    	ls_include.append("<base href=\"${basePath}/\" />");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/jquery/jquery-1.8.3.js\"></script>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/dataformat.js\"></script>");
@@ -302,8 +302,7 @@ public class OfficeHtmlUtil {
 	    	ls_include.append("<link rel=\"stylesheet\" href=\"${basePath}/plug-in/Validform/css/metrole/tablefrom.css\" type=\"text/css\"/>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/ueditor/ueditor.config.js\"></script>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/ueditor/ueditor.all.js\"></script>");
-	    	//update-end--Author:zhoujf  Date:20170601 for：【online表单】 日期控件不好使
-	    	//update-end--Author: zhoujf  Date:20170524 for：TASK #2014 【online表单】online表单 模板配置 basePath问题 word模板文件上传问题
+
 	    	ls_include.append("<style>");
 	    	ls_include.append("body{font-size:12px;}");
 	    	ls_include.append("table{border: 1px solid #000000;padding:0; margin:0 auto;border-collapse: collapse;width:100%;align:right;}");

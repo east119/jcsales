@@ -465,7 +465,6 @@ fa fa-times
         <tr>
             <td class="value"><input type="radio" value="sliding" name="indexStyle"  /><span>Sliding云桌面</span></td>
         </tr>
-        <!-- update-end--Author:longjb  Date:2013-03-15 for:新增首页风格  -->
         <tr>
             <td class="value"><input type="radio" value="ace" name="indexStyle"  /><span>ACE平面风格</span></td>
         </tr>
@@ -1018,15 +1017,15 @@ fa fa-times
         url: "loginController.do?primaryMenuDiy",
         async:false,
         success: function (data) {
-//            update-begin--Author:zhangguoming  Date:20140429 for：一级菜单右侧有双引号，且在ie下样式错位
+
 //            $(".shortcut").html(data);
             $(".shortcut").html(data.replace(/\"/g,""));
-//            update-end--Author:zhangguoming  Date:20140429 for：一级菜单右侧有双引号，且在ie下样式错位
+
         }
     });
-    // update-start--Author:Peak  Date:2014-01-09：新增首页风格,初始化第一个菜单的内容显示
+
     $(".shortcut li").eq(0).trigger("click");
-    //update-end--Author:Peak  Date:2014-01-09：新增首页风格,初始化第一个菜单的内容显示
+
     $("#nav").show();
     //var tabs = $( "#tabs" ).tabs();
 

@@ -21,9 +21,9 @@ public class ConStant {
 	public static final String SWFTOOLS_BASE_DIR = "swftools";
 	/**PDF-SWF*/
 	public static final String SWFTOOLS_PDF2SWF_PATH ="pdf2swf.exe";
-	//update-begin--Author:dangzhenghui  Date:20170605 for：TASK #2020 【文件在线预览】测试linux系统下文档上传后在线预览功能--------------------
+
 	public static final String SWFTOOLS_PDF2SWF="pdf2swf";
-	//update-end--Author:dangzhenghui  Date:20170605 for：TASK #2020 【文件在线预览】测试linux系统下文档上传后在线预览功能--------------------
+
 	/**GIF-SWF*/
 	public static final String SWFTOOLS_GIF2SWF_PATH ="gif2swf.exe";
 	/**PNG-SWF*/
@@ -68,7 +68,7 @@ public class ConStant {
 		}
 		return SWFTOOLS_HOME;
 	}
-	//update-begin--Author:dangzhenghui  Date:20170605 for：TASK #2020 【文件在线预览】测试linux系统下文档上传后在线预览功能--------------------
+
 	public static String getSWFToolsForLinux(String extend)
 	{
 
@@ -95,5 +95,5 @@ public class ConStant {
 		}
 		return SWFTOOLS_HOME;
 	}
-	//update-end--Author:dangzhenghui  Date:20170605 for：TASK #2020 【文件在线预览】测试linux系统下文档上传后在线预览功能--------------------
+
 }

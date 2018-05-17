@@ -140,7 +140,7 @@ public class CgFormIndexServiceImpl extends CommonServiceImpl implements CgFormI
 		}
 		return isChange;
 	}	
-	//update-begin--Author:xuelin  Date:20170519 for：TASK #1803 【兼容】TODO 索引的创建和删除，需要兼容多数据库-------------------
+
 	@Override
 	public void createIndexes(CgFormHeadEntity cgFormHead) {
 		CgFormHeadEntity formhead = this.getEntity(CgFormHeadEntity.class, cgFormHead.getId());
@@ -206,6 +206,6 @@ public class CgFormIndexServiceImpl extends CommonServiceImpl implements CgFormI
 			this.getSession().createSQLQuery(sql).executeUpdate();
 		}
 	}
-	//update-end--Author:xuelin  Date:20170519 for：TASK #1803 【兼容】TODO 索引的创建和删除，需要兼容多数据库--------------------	
+
 		
 }

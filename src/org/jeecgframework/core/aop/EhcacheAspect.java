@@ -48,10 +48,10 @@ public class EhcacheAspect {
 	@Around("simplePointcut()")
 	public Object aroundLogCalls(ProceedingJoinPoint joinPoint)
 			throws Throwable {
-		//update-begin--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 		Cache eternalCache = CacheManager.getInstance().getCache("eternalCache");
 		Cache dictCache = CacheManager.getInstance().getCache("eternalCache");
-		//update-end--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 		String targetName = joinPoint.getTarget().getClass().toString();
 		String methodName = joinPoint.getSignature().getName();
 		Object[] arguments = joinPoint.getArgs();  

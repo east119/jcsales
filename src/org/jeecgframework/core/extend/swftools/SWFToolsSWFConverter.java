@@ -10,8 +10,7 @@ import org.jeecgframework.core.util.PinyinUtil;
 public class SWFToolsSWFConverter implements SWFConverter {
 	/** SWFTools pdf2swf.exe路径 */
 	private static String PDF2SWF_PATH = ConStant.SWFTOOLS_PDF2SWF_PATH;
-	
-//    update-start--Author:chenjin  Date:20160809 for：TASK #1237 在linux环境下，上传文件，转pdf 无法转换
+
 	/**
      * 判断是否是windows操作系统
       * @author chenj
@@ -21,7 +20,7 @@ public class SWFToolsSWFConverter implements SWFConverter {
        String p = System.getProperty("os.name");
        return p.toLowerCase().indexOf("windows") >= 0 ? true : false;
    }
-// update-end--Author:chenjin  Date:20160809 for：TASK #1237 在linux环境下，上传文件，转pdf 无法转换	
+
 	public void convert2SWF(String inputFile, String swfFile, String extend) {
 		File pdfFile = new File(inputFile);
 		File outFile = new File(swfFile);
@@ -37,7 +36,7 @@ public class SWFToolsSWFConverter implements SWFConverter {
 		}
 		try {
 			// 开始转换文档
-//		    update-start--Author:chenjin  Date:20160809 for：TASK #1237 在linux环境下，上传文件，转pdf 无法转换
+
 			//Process process = Runtime.getRuntime().exec(command);
 			Process process = null;
 	        if (isWindowsSystem()) {
@@ -46,24 +45,24 @@ public class SWFToolsSWFConverter implements SWFConverter {
 	        	//String cmd = exePath + " \"" + fileDir + "\" -o \"" + filePath + "/" + fileName + ".swf\" -T 9 -f";
 	        	//ConStant.getSWFToolsPath(extend)
 	        	String command = ConStant.getSWFToolsPath(extend) + " \"" + inputFile
-	        			//---update-for--文件预览无效------ scott@2013/05/22 ADD START
+
 	        					+ "\" -o " +" \""+ swfFile +" \""+ " -s languagedir=D:\\xpdf-chinese-simplified -T 9 -f";
 //	        					+ "\" -o " + swfFile + " -s languagedir=D:\\xpdf-chinese-simplified -T 9 -f";
-//	        			---update-for--文件预览无效----- scott@2013/05/22 ADD END
+
 	            //Runtime执行后返回创建的进程对象
 	        	process = Runtime.getRuntime().exec(command);
 	        } else {
 	            //如果是linux系统,路径不能有空格，而且一定不能用双引号，否则无法创建进程
 				  String[] command = new String[3];
-				//update-begin--Author:dangzhenghui  Date:20170605 for：TASK #2020 【文件在线预览】测试linux系统下文档上传后在线预览功能--------------------
+
 				command[0] = ConStant.getSWFToolsForLinux(extend);
-				//update-end--Author:dangzhenghui  Date:20170605 for：TASK #2020 【文件在线预览】测试linux系统下文档上传后在线预览功能--------------------
+
 				command[1] = inputFile;
 	              command[2] = swfFile;
 	            //Runtime执行后返回创建的进程对象
 	              process = Runtime.getRuntime().exec(command);
 	        }
-//	      update-end--Author:chenjin  Date:20160809 for：TASK #1237 在linux环境下，上传文件，转pdf 无法转换		
+
 			
 			
 			StreamGobbler errorGobbler = new StreamGobbler(
@@ -87,7 +86,7 @@ public class SWFToolsSWFConverter implements SWFConverter {
 		String swfFile = PinyinUtil.getPinYinHeadChar(FileUtils.getFilePrefix2(inputFile)) + ".swf";
 		convert2SWF(inputFile, swfFile, extend);
 	}
-//    update-start--Author:chenjin  Date:20160809 for：TASK #1237 在linux环境下，上传文件，转pdf 无法转换
+
 	/**
      * 测试main方法
       * @param args
@@ -97,5 +96,5 @@ public class SWFToolsSWFConverter implements SWFConverter {
         String exePath = "D:/SWFTools/pdf2swf.exe";
         new SWFToolsSWFConverter().convert2SWF("C:/Users/chenj/Desktop/jeecg/陈劲任务.pdf", exePath);
    }
-//   update-end--Author:chenjin  Date:20160809 for：TASK #1237 在linux环境下，上传文件，转pdf 无法转换
+
 }

@@ -114,7 +114,6 @@
 				  </td>
 				  <td align="left">
 					  		<input  onchange="myUpdateFunction()"  name="superQueryTableList[#index#].tableName" maxlength="32" type="text" class="inputxt   tableList  "  style="width:180px;"  ignore="ignore" />
-					  		<!-- updateTableList -->
 					  <label class="Validform_label" style="display: none;">表名</label>
 				  </td>
 				  <td align="left">
@@ -144,7 +143,6 @@
 				  <td align="left">
 							<%-- <t:dictSelect field="superQueryFieldList[#index#].tableName" type="list"   typeGroupCode=""  defaultVal="" hasLabel="false"  title="表名"></t:dictSelect> --%>     
 						<select   id="fieldTableList4" name="superQueryFieldList[#index#].tableName" class="fieldTableList  fieldTableList4" style="width:180px" datatype="*">
-						<!-- onclick="updatelistTable()" -->
 						<option >---请选择---</option>
 						</select>	
 					  <label class="Validform_label" style="display: none;">表名</label>

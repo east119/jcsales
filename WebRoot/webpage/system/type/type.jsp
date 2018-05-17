@@ -10,7 +10,6 @@
     <input name="id" type="hidden" value="${type.id }">
     <input name="TSTypegroup.id" type="hidden" value="${typegroupid}">
     <fieldset class="step">
-        <%--// add-start--Author:zhangguoming  Date:20140928 for：添加显示字段--%>
         <div class="form">
             <label class="Validform_label"> <t:mutiLang langKey="lang.dictionary.type"/>: </label>
             <input readonly="true" class="inputxt" value="${typegroupname }">

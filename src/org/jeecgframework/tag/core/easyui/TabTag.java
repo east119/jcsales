@@ -45,9 +45,9 @@ public class TabTag extends TagSupport {
 		this.id = id;
 	}
 	public void setTitle(String title) {
-		//update-begin--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 		MutiLangServiceI mutiLangService = ApplicationContextUtil.getContext().getBean(MutiLangServiceI.class);	
-		//update-end--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 		String lang_context = mutiLangService.getLang(title, langArg);
 		
 		this.title = lang_context;

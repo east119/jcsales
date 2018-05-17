@@ -45,11 +45,11 @@ public class CgformEnhanceJavaEntity implements java.io.Serializable {
 	/**表单ID*/
 	@Excel(name="表单ID")
 	private java.lang.String formId;
-//add-begin--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）--------------------
+
 	/**生效状态 0:无效/1:有效*/
 	@Excel(name="生效状态")
 	private java.lang.String activeStatus;	
-//add-end--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）----------------------
+
 	
 	/**
 	 *方法: 取得java.lang.String
@@ -131,7 +131,7 @@ public class CgformEnhanceJavaEntity implements java.io.Serializable {
 	public void setButtonCode(java.lang.String buttonCode) {
 		this.buttonCode = buttonCode;
 	}
-//add-begin--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）--------------------	
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  0:无效/1:有效
@@ -148,13 +148,13 @@ public class CgformEnhanceJavaEntity implements java.io.Serializable {
 	public void setActiveStatus(java.lang.String activeStatus){
 		this.activeStatus = activeStatus;
 	}
-//add-end--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）--------------------
-//update-begin--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）--------------------
+
+
 	@Override
 	public String toString() {
 		return "CgformEnhanceJavaEntity [id=" + id + ", buttonCode="
 				+ buttonCode + ", cgJavaType=" + cgJavaType + ", cgJavaValue="
 				+ cgJavaValue + ", formId=" + formId + ", activeStatus=" + activeStatus + "]";
 	}
-//update-end--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）--------------------	
+
 }

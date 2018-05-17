@@ -46,8 +46,7 @@ public class SysThemesUtil {
 		sb.append("<link id=\"easyuiTheme\" rel=\"stylesheet\" href=\"plug-in/easyui/themes/"+sysThemesEnum.getThemes()+"/easyui.css\" type=\"text/css\"></link>");
 		return sb.toString();
 	}
-	
-	//update--begin-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	/**
 	 * easyui.css 样式
 	 * @param sysThemesEnum
@@ -58,7 +57,7 @@ public class SysThemesUtil {
 		sb.append("<link id=\"easyuiTheme\" rel=\"stylesheet\" href=\""+basePath+"/plug-in/easyui/themes/"+sysThemesEnum.getThemes()+"/easyui.css\" type=\"text/css\"></link>");
 		return sb.toString();
 	}
-	//update--end-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 
 	/**
 	 * easyui main.css
@@ -74,8 +73,7 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	
-	//update--begin-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	/**
 	 * easyui main.css
 	 * @param sysThemesEnum
@@ -90,7 +88,7 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	//update--end-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 
 	
 	/**
@@ -122,13 +120,12 @@ public class SysThemesUtil {
 		}else{
 			sb.append("<link rel=\"stylesheet\" href=\"plug-in/tools/css/common.css\" type=\"text/css\"></link>");
 		}
-		//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 		sb.append("<link rel=\"stylesheet\" href=\"plug-in/ace/css/font-awesome.css\" type=\"text/css\"></link>");
-		//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 		return sb.toString();
 	}
-	
-	//update--begin-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	/**
 	 * tools common.css 样式
 	 * @param sysThemesEnum
@@ -143,12 +140,12 @@ public class SysThemesUtil {
 		}else{
 			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/tools/css/common.css\" type=\"text/css\"></link>");
 		}
-		//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 		sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/ace/css/font-awesome.css\" type=\"text/css\"></link>");
-		//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 		return sb.toString();
 	}
-	//update--end-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	
 	/**
 	 * lhgdialog 样式
@@ -166,8 +163,7 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	
-	//update--begin-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	/**
 	 * lhgdialog 样式
 	 * @param sysThemesEnum
@@ -184,7 +180,7 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	//update--end-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	
 	/**
 	 * lhgdialog 样式
@@ -252,8 +248,7 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	
-	//update--begin-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	/**
 	 * Validform style.css
 	 * @param sysThemesEnum
@@ -270,7 +265,7 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	//update--end-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	
 	/**
 	 * Validform tablefrom.css
@@ -288,8 +283,7 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	
-	//update--begin-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 	/**
 	 * Validform tablefrom.css
 	 * @param sysThemesEnum
@@ -306,5 +300,5 @@ public class SysThemesUtil {
 		}
 		return sb.toString();
 	}
-	//update--end-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 }

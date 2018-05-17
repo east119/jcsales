@@ -132,9 +132,9 @@ function doLine(){
 			color : '#1f7e92',
 			linewidth : 3
 		}],
-		//update-begin--author:zhangjiaqiang Date:20170213 for:修订综合报表当中折线图、面积图X轴信息错误
+
 		labels:labels,
-		//update-begin--author:zhangjiaqiang Date:20170213 for:修订综合报表当中折线图、面积图X轴信息错误
+
 		sub_option : {
 			label : {
 				fontsize : 14,

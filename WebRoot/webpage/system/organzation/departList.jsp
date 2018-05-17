@@ -13,18 +13,14 @@
             <t:dgCol title="common.fax" field="fax" treefield="fieldMap.fax" width="60"></t:dgCol>
             <t:dgCol title="common.address" field="address" treefield="fieldMap.address" width="100"></t:dgCol>
             <t:dgCol title="common.operation" field="opt" width="200"></t:dgCol>
-           <!-- 	//update-begin--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
             <t:dgDelOpt url="organzationController.do?del&id={id}" title="common.delete" urlclass="ace_button"  urlfont="fa-trash-o" urlStyle="background-color:#ec4758;"></t:dgDelOpt>
             <t:dgFunOpt funname="queryUsersByDepart(id)" title="view.member" urlclass="ace_button"  urlfont="fa-user"></t:dgFunOpt>
             <t:dgFunOpt funname="setRoleByDepart(id,text)" title="role.set" urlclass="ace_button"  urlfont="fa-cog" urlStyle="background-color:#1a7bb9;"></t:dgFunOpt>
-       	<!-- 	//update-end--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
         </t:datagrid>
         <div id="departListtb" style="padding: 3px; height: 25px">
             <div style="float: left;">
                 <a href="#" class="easyui-linkbutton" plain="true" icon="icon-add" onclick="addOrg()"><t:mutiLang langKey="common.add.param" langArg="common.department"/></a>
-                <!-- //update--begin--author:zhangjiaqiang Date:20170112 for:增加排序功能 -->
                 <a href="#" class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="update('<t:mutiLang langKey="common.edit.param" langArg="common.department"/>','organzationController.do?update','departList','680px','450px')"><t:mutiLang langKey="common.edit.param" langArg="common.department"/></a>
-                <!-- //update--end--author:zhangjiaqiang Date:20170112 for:增加排序功能 -->
                 <a href="#" class="easyui-linkbutton" plain="true" icon="icon-put" onclick="ImportXls()"><t:mutiLang langKey="excelImport" langArg="common.department"/></a>
                 <a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="ExportXls()"><t:mutiLang langKey="excelOutput" langArg="common.department"/></a>
                 <a href="#" class="easyui-linkbutton" plain="true" icon="icon-putout" onclick="ExportXlsByT()"><t:mutiLang langKey="templateDownload" langArg="common.department"/></a>
@@ -49,7 +45,7 @@
 
 <script type="text/javascript">
 <!--
-//update-start--Author:zhangguoming  Date:20140821 for：为组织机构设置角色
+
     $(function() {
         var li_east = 0;
     });
@@ -60,11 +56,9 @@
             id = rowsData[0].id;
         }
         var url = "organzationController.do?add&id=" + id;
-        //update--begin--author:zhangjiaqiang Date:20170112 for:增加排序功能
-        //update--begin--author:LiShaoQing  Date:20180802 for:新增页面给定高宽值
+
         add('<t:mutiLang langKey="common.add.param" langArg="common.department"/>', url, "departList","660px","480px");
-        //update--end--author:LiShaoQing Date:20170802 for:新增页面给定高宽值
-      //update--end--author:zhangjiaqiang Date:20170112 for:增加排序功能
+
     }
 
     function queryUsersByDepart(departid){
@@ -111,6 +105,6 @@
     function ExportXlsByT() {
         JeecgExcelExport("organzationController.do?exportXlsByT","departList");
     }
-//update-end--Author:zhangguoming  Date:20140821 for：为组织机构设置角色
+
 //-->
 </script>

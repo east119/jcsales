@@ -122,27 +122,26 @@ public class DictSelectTag extends TagSupport {
 				}
 			}else {
 				sb.append("<select name=\"" + field + "\"");
-			//  update-begin--Author:gj_shaojc  Date:20180326 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题
+
 				//增加扩展属性
 				if (!StringUtils.isBlank(this.extendJson)) {
-				//  update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题(修改)
+
 					sb.append(this.getExtendJsonCommon(extendJson));
-				//  update-end--Author:gj_shaojc  Date:20180327 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题(修改)
+
 				}
-				//update-begin--Author:jg_xugj  许国杰  Date:20151209 for：#775 增加只读属性
+
 				this.readonly(sb);
-			    //update-end--Author:jg_xugj 许国杰  Date:20151209 for：#775 增加只读属性
-			//  update-end--Author:gj_shaojc  Date:20180326 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题
+
 				if (!StringUtils.isBlank(this.id)) {
 					sb.append(" id=\"" + id + "\"");
 				}
-				//update-begin--Author:xuelin  Date:20170512 for：TASK #1896 [Online开发] 关于标签dictSelect的dataType属性的bug--------------------
+
 				this.datatype(sb);
-				//update-end--Author:xuelin  Date:20170512 for：TASK #1896 [Online开发] 关于标签dictSelect的dataType属性的bug--------------------	
+
 				sb.append(">");
-				//update-begin--Author:zhangdaihao  Date:20140724 for：[bugfree号]默认选择项目--------------------
+
 				select("common.please.select", "", sb);
-				//update-end--Author:zhangdaihao  Date:20140724 for：[bugfree号]默认选择项目----------------------
+
 				for (Map<String, Object> map : list) {
 					select(map.get("text").toString(), map.get("field").toString(), sb);
 				}
@@ -177,23 +176,22 @@ public class DictSelectTag extends TagSupport {
 					}
 				} else {
 					sb.append("<select name=\"" + field + "\"");
-				//  update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题（修改）
+
 					//增加扩展属性
 					if (!StringUtils.isBlank(this.extendJson)) {
 						sb.append(this.getExtendJsonCommon(extendJson));
 					}
-					//update-begin--Author:jg_xugj  许国杰  Date:20151209 for：#775 增加只读属性
+
 					this.readonly(sb);
-				    //update-end--Author:jg_xugj 许国杰  Date:20151209 for：#775 增加只读属性
-				//  update-end--Author:gj_shaojc  Date:20180327 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题（修改）
+
 					if (!StringUtils.isBlank(this.id)) {
 						sb.append(" id=\"" + id + "\"");
 					}
 					this.datatype(sb);
 					sb.append(">");
-					//update-begin--Author:zhangdaihao  Date:20140724 for：[bugfree号]默认选择项目--------------------
+
 					select("common.please.select", "", sb);
-					//update-end--Author:zhangdaihao  Date:20140724 for：[bugfree号]默认选择项目----------------------
+
 					for (TSType type : types) {
 						select(type.getTypename(), type.getTypecode(), sb);
 					}
@@ -207,7 +205,7 @@ public class DictSelectTag extends TagSupport {
 
 		return sb;
 	}
-//  update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题（修改）
+
 	private StringBuffer getExtendJsonCommon(String extendJson){
 		Gson gson = new Gson();
 		Map<String, String> mp = gson.fromJson(extendJson, Map.class);
@@ -232,7 +230,7 @@ public class DictSelectTag extends TagSupport {
 		}
 		return sb;
 	}
-//  update-end--Author:gj_shaojc  Date:20180327 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题（修改）
+
 	/**
 	 * 文本框方法
 	 * @param name
@@ -257,31 +255,25 @@ public class DictSelectTag extends TagSupport {
 	 * @param sb
 	 */
 	private void radio(String name, String code, StringBuffer sb) {
-		if (code.equals(this.defaultVal)) {
-			sb.append("<input type=\"radio\" name=\"" + field
-					+ "\" checked=\"checked\" value=\"" + code + "\"");
-			if (!StringUtils.isBlank(this.id)) {
-				sb.append(" id=\"" + id + "\"");
-			}
-			//update-begin--Author:jg_xugj  许国杰  Date:20151209 for：#775 增加只读属性
-			this.readonly(sb);
-		    //update-end--Author:jg_xugj 许国杰  Date:20151209 for：#775 增加只读属性
 
-			this.datatype(sb);
-			sb.append(" />");
+		if (code.equals(this.defaultVal)) {
+			sb.append("<input type=\"radio\" name=\"" + field + "\" checked=\"checked\" value=\"" + code + "\"");
 		} else {
-			sb.append("<input type=\"radio\" name=\"" + field + "\" value=\""
-					+ code + "\"");
-			if (!StringUtils.isBlank(this.id)) {
-				sb.append(" id=\"" + id + "\"");
-			}
-			//update-begin--Author:jg_xugj  许国杰  Date:20151209 for：#775 增加只读属性
-			this.readonly(sb);
-		    //update-end--Author:jg_xugj 许国杰  Date:20151209 for：#775 增加只读属性
-			this.datatype(sb);
-			sb.append(" />");
+			sb.append("<input type=\"radio\" name=\"" + field + "\" value=\""+ code + "\"");
 		}
-		sb.append(MutiLangUtil.getLang(name));
+		if (!StringUtils.isBlank(this.id)) {
+			sb.append(" id=\"" + id + "\"");
+		}
+
+		this.readonly(sb);
+
+		this.datatype(sb);
+		if (!StringUtils.isBlank(this.extendJson)) {
+			sb.append(this.getExtendJsonCommon(extendJson));
+		}
+		sb.append(" />");
+		sb.append(MutiLangUtil.getLang(name)+"&nbsp;&nbsp;");
+
 	}
 
 	/**
@@ -294,11 +286,11 @@ public class DictSelectTag extends TagSupport {
 	 * @param sb
 	 */
 	private void checkbox(String name, String code, StringBuffer sb) {
-		//update-begin--Author:scott  --- date:20160819 --- for：论坛问题，多选框出错
+
 		if(this.defaultVal==null){
 		       this.defaultVal="";
 		}
-		//update-end--Author:scott --- date:20160819 --- for：论坛问题，多选框出错
+
 		String[] values = this.defaultVal.split(",");
 		Boolean checked = false;
 		for (int i = 0; i < values.length; i++) {
@@ -309,30 +301,27 @@ public class DictSelectTag extends TagSupport {
 			}
 			checked = false;
 		}
+
 		if(checked){
 			sb.append("<input type=\"checkbox\" name=\"" + field
 					+ "\" checked=\"checked\" value=\"" + code + "\"");
-			if (!StringUtils.isBlank(this.id)) {
-				sb.append(" id=\"" + id + "\"");
-			}
-			//update-begin--Author:jg_xugj  许国杰  Date:20151209 for：#775 增加只读属性
-			this.readonly(sb);
-		    //update-end--Author:jg_xugj 许国杰  Date:20151209 for：#775 增加只读属性
-			this.datatype(sb);
-			sb.append(" />");
 		} else {
 			sb.append("<input type=\"checkbox\" name=\"" + field
 					+ "\" value=\"" + code + "\"");
-			if (!StringUtils.isBlank(this.id)) {
-				sb.append(" id=\"" + id + "\"");
-			}
-			//update-begin--Author:jg_xugj  许国杰  Date:20151209 for：#775 增加只读属性
-			this.readonly(sb);
-		    //update-end--Author:jg_xugj 许国杰  Date:20151209 for：#775 增加只读属性
-			this.datatype(sb);
-			sb.append(" />");
 		}
-		sb.append(MutiLangUtil.getLang(name));
+		if (!StringUtils.isBlank(this.id)) {
+			sb.append(" id=\"" + id + "\"");
+		}
+
+		this.readonly(sb);
+
+		this.datatype(sb);
+		if (!StringUtils.isBlank(this.extendJson)) {
+			sb.append(" "+this.getExtendJsonCommon(extendJson));
+		}
+		sb.append(" />");
+		sb.append(MutiLangUtil.getLang(name)+"&nbsp;&nbsp;");
+
 	}
 
 	/**
@@ -345,7 +334,7 @@ public class DictSelectTag extends TagSupport {
 	 * @param sb
 	 */
 	private void select(String name, String code, StringBuffer sb) {
-	//  update-begin--Author:gj_shaojc  Date:20180326 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题
+
 		if (code.equals(this.defaultVal)) {
 			if(StringUtils.isNotBlank(readonly) &&readonly.equals("readonly")){
 				sb.append(" <option style=\"display: none;\"  value=\"" + code + "\" selected=\"selected\">");
@@ -359,7 +348,7 @@ public class DictSelectTag extends TagSupport {
 				sb.append(" <option  value=\"" + code + "\">");
 			}
 		}
-	//  update-end--Author:gj_shaojc  Date:20180326 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题
+
 		sb.append(MutiLangUtil.getLang(name));
 		sb.append(" </option>");
 	}
@@ -372,11 +361,11 @@ public class DictSelectTag extends TagSupport {
 	private List<Map<String, Object>> queryDic() {
 		String sql = "select " + dictField + " as field," + dictText
 				+ " as text from " + dictTable;
-			//  update-begin--Author:jg_longjb龙金波  Date:20150313 for：增加查询条件属性 例如：where type='xxx'
+
 	       if(dictCondition!=null){
 	           sql+=" "+dictCondition+" ";
 	       }
-	       //  update--end--Author:jg_longjb龙金波  Date:20150313 for：增加查询条件属性
+
 		systemService = ApplicationContextUtil.getContext().getBean(
 				SystemService.class);
 		List<Map<String, Object>> list = systemService.findForJdbc(sql);
@@ -402,7 +391,7 @@ public class DictSelectTag extends TagSupport {
 	 * @return sb
 	 */
 	private StringBuffer readonly(StringBuffer sb){
-	//  update-begin--Author:gj_shaojc  Date:20180326 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题
+
 		if(StringUtils.isNotBlank(readonly) &&readonly.equals("readonly")){
 			if ("radio".equals(type)) {
 				sb.append(" readonly=\"readonly\" style=\"background-color:#eee;cursor:no-drop;\" disabled=\"true\" ");
@@ -420,7 +409,7 @@ public class DictSelectTag extends TagSupport {
 				sb.append(" readonly=\"readonly\" style=\"background-color:#eee;cursor:no-drop;\" ");
 			}
 		}
-	//  update-end--Author:gj_shaojc  Date:20180326 for：TASK #2582 【bug修改】t:dictSelect标签 readonly 的问题	
+
 		return sb;
 	}
 

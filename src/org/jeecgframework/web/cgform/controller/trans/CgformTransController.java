@@ -72,9 +72,9 @@ public class CgformTransController {
 			e1.printStackTrace();
 		}
 		String html = "";
-		//update-begin--Author:zhoujf  Date:20170302 for：TASK #1335 【扩展】列表支持多字段排序
+
 		Collections.sort(list,new StringSort(SortDirection.toEnum(dataGrid.getOrder())));
-		//update-end--Author:zhoujf  Date:20170302 for：TASK #1335 【扩展】列表支持多字段排序
+
 		List<String> tables = cgFormFieldService.findByQueryString("select tableName from CgFormHeadEntity");
 		list.removeAll(tables);
 		List<String> index = new ArrayList<String>();
@@ -108,7 +108,7 @@ public class CgformTransController {
 	public AjaxJson transEditor(HttpServletRequest request, String id)
 			throws Exception {
 		AjaxJson j = new AjaxJson();
-		//update-begin--Author:scott  Date:20170621 for：防止快速点击按钮，导致生成多个重复表单----
+
 		//TODO 1.存在缺陷，表单移除再点击生成违法生成
 		//TODO 2.重复提醒，在前段没提示信息
 		if(GENERATE_FORM_IDS!=null && GENERATE_FORM_IDS.equals(id)){
@@ -118,7 +118,7 @@ public class CgformTransController {
 		}else{
 			GENERATE_FORM_IDS = id;
 		}
-		//update-end--Author:scott  Date:20170621 for：防止快速点击按钮，导致生成多个重复表单----
+
 		
 		String ids[] = id.split(",");
 		String no = "";
@@ -211,13 +211,13 @@ public class CgformTransController {
 						if (StringUtil.isNotEmpty(columnt.getPrecision())) {
 							cgFormField.setLength(Integer.valueOf(columnt.getPrecision()));
 						}
-						//update-begin--Author:zhangdaihao  Date:20140212 for：[001]oracle下number类型，数据库表导出表单，默认长度为0同步失败
+
 						else{
 							if(cgFormField.getType().equals(DataBaseConst.INT)){
 								cgFormField.setLength(10);
 							}
 						}
-						//update-end--Author:zhangdaihao  Date:20140212 for：[001]oracle下number类型，数据库表导出表单，默认长度为0同步失败
+
 						if (StringUtil.isNotEmpty(columnt.getScale()))
 							cgFormField.setPointLength(Integer.valueOf(columnt.getScale()));
 
@@ -225,11 +225,11 @@ public class CgformTransController {
 					columnsList.add(cgFormField);
 				}
 				cgFormHead.setColumns(columnsList);
-				//update-begin--Author:scott  Date:20170720  for：导入报单报错-----
+
 				if(oConvertUtils.isEmpty(cgFormHead.getJformCategory())){
 					cgFormHead.setJformCategory("bdfl_include");
 				}
-				//update-end--Author:scott  Date:20170720  for：导入报单报错-----
+
 				cgFormFieldService.saveTable(cgFormHead, "");
 				if (yes != "")
 					yes += ",";

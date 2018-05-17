@@ -157,10 +157,33 @@ public class FunctionController extends BaseController {
 		systemService
 				.updateBySqlString("delete from t_s_role_function where functionid='"
 						+ function.getId() + "'");
-		//update-begin--Author:张忠亮  Date:20150605 for：删除时，提示先删除页面权限和数据规则
+
 		TSFunction parent = function.getTSFunction();
 		try{
-			//update-begin--Author:yugwu  Date:20170619 for：[TASK #2151] 【严重bug-优先处理】三级菜单删除不成功
+
+			List<TSFunction> listFunction = function.getTSFunctions();
+			if(listFunction!=null&&listFunction.size()>0){
+				message="菜单【"+function.getFunctionName()+"】存在下级菜单，不能删除";
+				j.setMsg(message);
+				j.setSuccess(false);
+				return j;
+			}
+			List<TSOperation> op = systemService.findHql("from TSOperation where TSFunction.id = ?", function.getId());
+			if(op!=null&&op.size()>0){
+				message="菜单【"+function.getFunctionName()+"】有设置页面权限，不能删除";
+				j.setMsg(message);
+				j.setSuccess(false);
+				return j;
+			}
+
+			List<TSDataRule> tsdr=systemService.findByProperty(TSDataRule.class,"TSFunction",function);
+			if(tsdr!=null&&tsdr.size()>0){
+				message="菜单【"+function.getFunctionName()+"】存在数据规则，不能删除";
+				j.setMsg(message);
+				j.setSuccess(false);
+				return j;
+			}
+
 			if(parent != null){
 				parent.getTSFunctions().remove(function);
 			}
@@ -169,11 +192,11 @@ public class FunctionController extends BaseController {
 			if(parent != null){
 				parent.getTSFunctions().add(function);
 			}
-			//update-end--Author:yugwu  Date:20170619 for：[TASK #2151] 【严重bug-优先处理】三级菜单删除不成功
+
 			e.printStackTrace();
 			message=MutiLangUtil.getLang("common.menu.del.fail");
 		}
-		//update-end--Author:张忠亮  Date:20150605 for：删除时，提示先删除页面权限和数据规则
+
 		systemService.addLog(message, Globals.Log_Type_DEL,
 				Globals.Log_Leavel_INFO);
 
@@ -211,7 +234,7 @@ public class FunctionController extends BaseController {
 				operation.getId());
 		message = MutiLangUtil.paramDelSuccess("common.operation");
 		userService.delete(operation);
-//		---author:jg_xugj----start-----date:20151211--------for：#779 【菜单问题】当删了t_s_operation表中记录时， t_s_role_function 表中operation 字段应该同步更新。
+
 		String operationId = operation.getId();
 		String hql = "from TSRoleFunction rolefun where rolefun.operation like '%"+operationId+"%'";
 		List<TSRoleFunction> roleFunctions= userService.findByQueryString(hql);
@@ -223,7 +246,7 @@ public class FunctionController extends BaseController {
 			roleFunction.setOperation(newOper);
 			userService.updateEntitie(roleFunction);
 		}
-//		---author:jg_xugj----start-----date:20151211--------for：#779 【菜单问题】当删了t_s_operation表中记录时， t_s_role_function 表中operation 字段应该同步更新。
+
 
 		systemService.addLog(message, Globals.Log_Type_DEL,
 				Globals.Log_Leavel_INFO);
@@ -277,25 +300,25 @@ public class FunctionController extends BaseController {
 		}
 		if (StringUtil.isNotEmpty(function.getId())) {
 			message = MutiLangUtil.paramUpdSuccess("common.menu");
-			// update-begin--Author:scott Date:20170619 for：菜单编辑保存报错----------------------------
+
 			TSFunction t = systemService.getEntity(TSFunction.class,function.getId());
 			try {
 				MyBeanUtils.copyBeanNotNull2Bean(function, t);
-				// update-begin--Author:gj_shaojc Date:20180329 for：TASK #2595 【严重bug】三级菜单编辑，改成一级菜单不成功---------
+
 				if(t.getFunctionLevel()==0){
 					t.setTSFunction(null);
 				}
-				// update-end--Author:gj_shaojc Date:20180329 for：TASK #2595 【严重bug】三级菜单编辑，改成一级菜单不成功---------
+
 				userService.saveOrUpdate(t);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// update-end--Author:scott Date:20170619 for：菜单编辑保存报错----------------------------
+
 			systemService.addLog(message, Globals.Log_Type_UPDATE,Globals.Log_Leavel_INFO);
-			// update-begin--Author:anchao Date:20140914 for：Jeecg bug 20140914 菜单更新级别后显示混乱
+
 			List<TSFunction> subFunction = systemService.findByProperty(TSFunction.class, "TSFunction.id", function.getId());
 			updateSubFunction(subFunction,function);
-			// update-end--Author:anchao Date:20140914 for：Jeecg bug 20140914 菜单更新级别后显示混乱
+
 			// ----------------------------------------------------------------
 
 			systemService.flushRoleFunciton(function.getId(), function);
@@ -368,7 +391,7 @@ public class FunctionController extends BaseController {
 		String functionid = req.getParameter("id");
 		List<TSFunction> fuinctionlist = systemService.getList(TSFunction.class);
 		req.setAttribute("flist", fuinctionlist);
-		// update-begin--Author:zhangguoming Date:20140509 for：添加云桌面图标管理
+
 		// List<TSIcon> iconlist = systemService.getList(TSIcon.class);
 		List<TSIcon> iconlist = systemService
 				.findByQueryString("from TSIcon where iconType != 3");
@@ -376,7 +399,7 @@ public class FunctionController extends BaseController {
 		List<TSIcon> iconDeskList = systemService
 				.findByQueryString("from TSIcon where iconType = 3");
 		req.setAttribute("iconDeskList", iconDeskList);
-		// update-end--Author:zhangguoming Date:20140509 for：添加云桌面图标管理
+
 		if (functionid != null) {
 			function = systemService.getEntity(TSFunction.class, functionid);
 			req.setAttribute("function", function);
@@ -435,16 +458,15 @@ public class FunctionController extends BaseController {
 		cq.addOrder("functionOrder", SortDirection.asc);
 		cq.add();
 
-		//update--begin------author:scott--------------date:20151208-----------for:手工加载数据权限条件--------
 		//获取装载数据权限的条件HQL
 		cq = HqlGenerateUtil.getDataAuthorConditionHql(cq, new TSFunction());
 		cq.add();
-		//update--end------author:scott--------------date:20151208-----------for:手工加载数据权限条件--------
+
 		
 		List<TSFunction> functionList = systemService.getListByCriteriaQuery(cq, false);
-//        update-start-Author:zhangguoming  Date:20140914 for：菜单管理页面：菜单排序
+
         Collections.sort(functionList, new NumberComparator());
-//        update-end-Author:zhangguoming  Date:20140914 for：菜单管理页面：菜单排序
+
         List<TreeGrid> treeGrids = new ArrayList<TreeGrid>();
 		TreeGridModel treeGridModel = new TreeGridModel();
 		treeGridModel.setIcon("TSIcon_iconPath");
@@ -456,21 +478,18 @@ public class FunctionController extends BaseController {
 		treeGridModel.setChildList("TSFunctions");
 		// 添加排序字段
 		treeGridModel.setOrder("functionOrder");
-	    //        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 		treeGridModel.setIconStyle("functionIconStyle");
-	    //        update-end--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 
 		treeGridModel.setFunctionType("functionType");
 
 		treeGrids = systemService.treegrid(functionList, treeGridModel);
 
-		//update-begin--Author:Yandong  Date:20171226 for：TASK #2463 【bug】菜单维护，添加三级子菜单的时候，二级父级菜单的URL丢了--------------------
-		// update-begin--Author:gj_shaojc Date:20180329 for：TASK #2599 【菜单问题】 类型为菜单类型的菜单，如果下级有权限类型的菜单，菜单地址不显示了---------
 //		for (TreeGrid tg : treeGrids) {
 //			if("closed".equals(tg.getState()))tg.setSrc("");
 //		}
-		// update-end--Author:gj_shaojc Date:20180329 for：TASK #2599 【菜单问题】 类型为菜单类型的菜单，如果下级有权限类型的菜单，菜单地址不显示了---------
-		//update-end--Author:Yandong  Date:20171226 for：TASK #2463 【bug】菜单维护，添加三级子菜单的时候，二级父级菜单的URL丢了--------------------
+
 		
 		
 		MutiLangUtil.setMutiTree(treeGrids);
@@ -524,7 +543,6 @@ public class FunctionController extends BaseController {
 		return comboTrees;
 	}
 
-	// update-end--Author:gaofeng Date:20140619 for：修改云桌面的搜索功能中的系统中应用内搜索
 	/**
 	 * 菜单模糊检索功能
 	 * 
@@ -593,7 +611,6 @@ public class FunctionController extends BaseController {
 		return new ModelAndView("system/function/menuAppList");
 	}
 
-	// update-end--Author:gaofeng Date:20140619 for：修改云桌面的搜索功能中的系统中应用内搜索
 
 	/**
 	 * 
@@ -717,9 +734,9 @@ public class FunctionController extends BaseController {
 		String sql = "SELECT id FROM t_s_data_rule WHERE functionId='"+dataRule.getTSFunction()
 				.getId()+"' AND rule_column='"+dataRule.getRuleColumn()+"' AND rule_conditions='"+dataRule
 				.getRuleConditions()+"'";
-		//update-begin-author:taoYan date:20170811 for:新增数据权限规则验重过滤不为空的
+
 		sql+=" AND rule_column IS NOT NULL AND rule_column <> ''";
-		//update-end-author:taoYan date:20170811 for:新增数据权限规则验重过滤不为空的
+
 		List<String> hasOperList = this.systemService.findListbySql(sql); 
 		return hasOperList.size();
 	}

@@ -15,9 +15,9 @@ public interface CgFormFieldServiceI extends CommonService {
 	 * @param t
 	 * @param isChange 索引是否更新
 	 */
-	//update-begin--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 	void updateTable(CgFormHeadEntity t, String sign, boolean isChange);
-	//update-end--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 	/**
 	 * 创建表
 	 * 
@@ -185,16 +185,14 @@ public interface CgFormFieldServiceI extends CommonService {
 	 * @return
 	 */
 	public boolean checkTableExist(String tableName);
-	
-	//add-begin--Author:taoyan  Date:20170321 for：TASK #1788 【online功能】没有配置表的时候，该按钮隐藏(增加查询根据physiceId)-----
+
 	public int getByphysiceId(String id);
-	//add-end--Author:taoyan  Date:20170321 for：TASK #1788 【online功能】没有配置表的时候，该按钮隐藏(增加查询根据physiceId)-----
-	//add-begin--Author:xuelin  Date:20170601 for：TASK #1913 【性能优化】online表单访问慢，优化--------------------
+
 	/**
 	 * 获取指定physiceId的配置记录数量	 
 	 * @param list
 	 * @return 键值对集合列表
 	 */
 	public List<Map<String,Object>> getPeizhiCountByIds(List<CgFormHeadEntity> list);
-	//add-end--Author:xuelin  Date:20170601 for：TASK #1913 【性能优化】online表单访问慢，优化----------------------
+
 }

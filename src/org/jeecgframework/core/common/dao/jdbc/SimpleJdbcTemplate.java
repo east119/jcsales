@@ -20,14 +20,11 @@ import org.springframework.util.Assert;
  */
 @SuppressWarnings("unchecked")
 
-
-//update-begin--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo-------------------- 
 public class SimpleJdbcTemplate extends JdbcTemplate{
-//update-end--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo---------------------- 
+
 
 	protected final Log logger = LogFactory.getLog(getClass());
-	
-	//-- update-begin author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本  SimpleJdbcTemplate的功能 使用  JdbcTemplate 与 NamedParameterJdbcTemplate 实现 
+
 	protected JdbcTemplate  jdbcTemplate;
 	protected NamedParameterJdbcTemplate  namedJdbcTemplate;
 	
@@ -37,7 +34,7 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 		namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		simpleJdbcInsert=new SimpleJdbcInsert(dataSource);
 	}
-	//-- update-end author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本  SimpleJdbcTemplate的功能 使用  JdbcTemplate 与 NamedParameterJdbcTemplate 实现 
+
 
 	/**
 	 * 根据sql语句，返回对象集合
@@ -74,9 +71,9 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 			if(parameters!=null){
 				return jdbcTemplate.queryForObject(sql, resultBeanMapper(clazz), parameters);
 			}else{
-				//-- update-begin author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本   
+
 				return jdbcTemplate.queryForObject(sql, resultBeanMapper(clazz),Long.class);
-				//-- update-end author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本   
+
 
 			}
 		}catch (Exception e) {
@@ -93,13 +90,13 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 	public long findForLong(final String sql,Map parameters){
 		try{
 			Assert.hasText(sql,"sql语句不正确!");
-			//-- update-begin author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本  SimpleJdbcTemplate的功能 使用  JdbcTemplate 与 NamedParameterJdbcTemplate 实现 
+
 			if(parameters!=null){
 				return namedJdbcTemplate.queryForObject(sql, parameters,Long.class);
 			}else{
 				return jdbcTemplate.queryForObject(sql,Long.class);
 			}
-			//-- update-end author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本  SimpleJdbcTemplate的功能 使用  JdbcTemplate 与 NamedParameterJdbcTemplate 实现 
+
 		}catch (Exception e) {
 			return 0;
 		}
@@ -194,14 +191,11 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
         int[] updateCounts = jdbcTemplate.batchUpdate(sql,batch);
         return updateCounts;
 	}
-	
-	
-	
-	//-- update-begin author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本  SimpleJdbcTemplate的功能 使用  JdbcTemplate 与 NamedParameterJdbcTemplate 实现 
+
 	protected BeanPropertyRowMapper resultBeanMapper(Class clazz) {
 		return BeanPropertyRowMapper.newInstance(clazz);
 	}
-	//-- update-end author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本  SimpleJdbcTemplate的功能 使用  JdbcTemplate 与 NamedParameterJdbcTemplate 实现 
+
 
 	protected BeanPropertySqlParameterSource paramBeanMapper(Object object) {
 		return new BeanPropertySqlParameterSource(object);

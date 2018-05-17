@@ -30,9 +30,9 @@ public class DataGridColumnTag extends TagSupport {
 	protected boolean checkbox;
 	protected String formatter;
 	protected String formatterjs;//自定义函数名称(调用页面自定义js方法 参数为(value,row,index)
-//    update-start-Author:zhangguoming  Date:20140921 for：TASK #458 列表hidden=false，才是隐藏好像有点问题
+
 	protected boolean hidden=false;
-//    update-end-Author:zhangguoming  Date:20140921 for：TASK #458 列表hidden=false，才是隐藏好像有点问题
+
 	protected String replace;
 	protected String treefield;
 	protected boolean image;
@@ -55,16 +55,15 @@ public class DataGridColumnTag extends TagSupport {
 	private String extendParams;//扩展参数
 	private String langArg;
 	protected String editor;//高级查询用的编辑器
-//    update-start--Author:chenjin  Date:20160715 for：扩展标签<t:dgCol 增加字段defaultVal=""
+
 	private String defaultVal = "";//列默认值
-//    update-end--Author:chenjin  Date:20160715 for：扩展标签<t:dgCol 增加字段defaultVal=""	
-	//update-begin--Author:xuelin  Date:20170706 for：TASK #2205 【UI标签库】列表查询条件动态生成，下拉换成redio模式切换--------------------
+
 	protected String showMode;//表单元素,查询表单中显示样式,默认样式select
-	//update--begin--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
+
 	protected boolean newColumn = false;//是否新起一行
-	//-- update-begin--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	protected String dictCondition; //自定义字典表的显示文本-字典查询条件
-	//-- update-end--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	
 	public boolean isNewColumn() {
 		return newColumn;
@@ -73,7 +72,7 @@ public class DataGridColumnTag extends TagSupport {
 	public void setNewColumn(boolean newColumn) {
 		this.newColumn = newColumn;
 	}
-	//update--end--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
+
 	public String getShowMode() {
 		return showMode;
 	}
@@ -81,7 +80,7 @@ public class DataGridColumnTag extends TagSupport {
 	public void setShowMode(String showMode) {
 		this.showMode = showMode;
 	}
-	//update-end--Author:xuelin  Date:20170706 for：TASK #2205 【UI标签库】列表查询条件动态生成，下拉换成redio模式切换----------------------
+
 
 	public String getEditor() {
 		return editor;
@@ -95,13 +94,9 @@ public class DataGridColumnTag extends TagSupport {
 		
 		Tag t = findAncestorWithClass(this, DataGridTag.class);
 		DataGridTag parent = (DataGridTag) t;
-		//update-begin--Author:xuelin  Date:20170706 for：TASK #2205 【UI标签库】列表查询条件动态生成，下拉换成redio模式切换--------------------
-		//update--begin--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
-		//-- update-begin--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 		parent.setColumn(title,field,width,showLen,rowspan,colspan,align,sortable,checkbox,formatter,formatterjs,hidden,replace,treefield,image,imageSize,query,url,funname,arg,queryMode, dictionary,popup,frozenColumn,extend,style,downloadName,autocomplete,extendParams,editor,defaultVal,showMode,newColumn,dictCondition);
-		//-- update-end--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
-		//update--end--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
-		//update-end--Author:xuelin  Date:20170706 for：TASK #2205 【UI标签库】列表查询条件动态生成，下拉换成redio模式切换----------------------
+
 		return EVAL_PAGE;
 	}
 	
@@ -193,11 +188,11 @@ public class DataGridColumnTag extends TagSupport {
 	public void setDictionary(String dictionary) {
 		this.dictionary = dictionary;
 	}
-	//-- update-begin--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	public void setdictCondition(String dictCondition) {
 		this.dictCondition = dictCondition;
 	}
-	//-- update-end--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	public String getQueryMode() {
 		return queryMode;
 	}
@@ -239,11 +234,11 @@ public class DataGridColumnTag extends TagSupport {
 	}
 
 	public void setExtendParams(String extendParams) {
-		//update--begin--author:zhangjiaqiang date:20170705 for:TASK #2195 【ui标签参数美化改进】这个参数用途，为什么多个逗号
+
 		if(StringUtil.isNotEmpty(extendParams) && !extendParams.endsWith(",")){
 			extendParams = extendParams + ",";
 		}
-		//update--end--author:zhangjiaqiang date:20170705 for:TASK #2195 【ui标签参数美化改进】这个参数用途，为什么多个逗号
+
 		this.extendParams = extendParams;
 	}
 

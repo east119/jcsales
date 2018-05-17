@@ -45,14 +45,12 @@
 						</label>
 					</td>
 					<td class="value">
-						<!-- update-begin-Author:LiShaoQing date:20171127 for:机构类型改为radio选择,目前只有公司类型 -->
 					     	 <%-- <select name="orgType" id="orgType"> 
 					                 <option value="1" <c:if test="${orgType=='1'}">selected="selected"</c:if>>公司</option> 
 					                 <option value="2" <c:if test="${orgType=='2'}">selected="selected"</c:if>>部门</option> 
 					                 <option value="3" <c:if test="${orgType=='3'}">selected="selected"</c:if>>岗位</option>
 					         </select> --%>
 					         <input type="radio" value="1" name="orgType" id="orgType" checked="checked"/> 公司 
-					    <!-- update-end-Author:LiShaoQing date:20171127 for:机构类型改为radio选择,目前只有公司类型 -->
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">机构类型</label>
 						</td>

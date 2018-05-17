@@ -22,7 +22,7 @@ public final class Globals {
 	public static final Short User_Normal=1;//正常
 	public static final Short User_Forbidden=0;//禁用
 	public static final Short User_ADMIN=-1;//超级管理员
-	//update--begin--author:zhangjiaqiang date:20180223 for:TASK #2531 【改造】用户列表不显示接口类型的用户
+
 	/**
 	 * 用户类型：1、系统类型用户
 	 */
@@ -32,7 +32,7 @@ public final class Globals {
 	 *
 	 */
 	public static final String USER_TYPE_INTERFACE = "2";
-	//update--end--author:zhangjiaqiang date:20180223 for:TASK #2531 【改造】用户列表不显示接口类型的用户
+
 	
 	/**
 	 * 逻辑删除标记
@@ -80,8 +80,7 @@ public final class Globals {
 	  */
 	 public static final String Function_Order_ONE="ofun";//一级权限
 	 public static final String Function_Order_TWO="tfun";//二级权限
-	 
-	//update-begin--Author:anchao  Date:20140822 for：[bugfree号]字段级权限（表单，列表）--------------------
+
 	 /**
 	  * 权限类型
 	  */
@@ -112,7 +111,7 @@ public final class Globals {
 	  * 数据权限 - 菜单数据规则sql
 	  */
 	 public static final String MENU_DATA_AUTHOR_RULE_SQL ="MENU_DATA_AUTHOR_RULE_SQL";
-	//update-end--Author:anchao  Date:20140822 for：[bugfree号]字段级权限（表单，列表）--------------------
+
 	 /**
 	  * 新闻法规
 	  */

@@ -156,7 +156,7 @@ public class DepartSelectTag extends TagSupport {
 			sb.append(" value=\""+departNamesDefalutVal+"\"");
 		}
 		sb.append(" />");
-		//update-begin--Author:xuelin  Date:20170411 for：#1847 [bug]弹出组织机构 ,departSelect 标签默认赋值问题--------------------		
+
 		String orgIds = "";		
 		sb.append("<input class=\"inuptxt\" id=\"" + selectedIdsInputId + "\" name=\"" + selectedIdsInputId + "\" type=\"hidden\" ");
 		if(StringUtils.isNotBlank(departIdsDefalutVal)){
@@ -177,7 +177,7 @@ public class DepartSelectTag extends TagSupport {
 		sb.append("       {name: '" + commonCancel + "', callback: function (){}}");
 		sb.append("   ]}).zindex();");
 		sb.append("}");
-		//update-end--Author:xuelin  Date:20170411 for：#1847 [bug]弹出组织机构 ,departSelect 标签默认赋值问题----------------------
+
 		sb.append("function callbackDepartmentSelect() {");
 		sb.append("    var iframe = this.iframe.contentWindow;");
 		sb.append(" var treeObj = iframe.$.fn.zTree.getZTreeObj(\"departSelect\");");

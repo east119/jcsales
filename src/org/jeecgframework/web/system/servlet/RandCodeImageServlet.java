@@ -176,7 +176,7 @@ public class RandCodeImageServlet extends HttpServlet {
  * 
  */
 enum RandCodeImageEnum {
-	//update--begin--author:zhangjiaqiang date:20170523 for:去除大写字母I、小写字母l
+
 	/**
 	 * 混合字符串
 	 */
@@ -197,7 +197,7 @@ enum RandCodeImageEnum {
 	 * 大写字符
 	 */
 	UPPER_CHAR("ABCDEFGHJKLMNOPQRSTUVWXYZ");
-	//update--end--author:zhangjiaqiang date:20170523 for:去除大写字母I、小写字母l
+
 	/**
 	 * 待生成的字符串
 	 */

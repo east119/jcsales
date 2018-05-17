@@ -8,13 +8,12 @@ public enum InterfaceEnum {
 	blacklist_add("blacklist_add", "黑名单添加", "/rest/tsBlackListController", "POST", 3),
 	blacklist_edit("blacklist_edit", "黑名单编辑", "/rest/tsBlackListController", "PUT", 4),
 	blacklist_delete("blacklist_delete", "黑名单删除", "/rest/tsBlackListController/{id}", "DELETE", 5)	,
-  
-	//update-begin-author:taoYan date:20180123 for:TASK#2507:【online开发】online对外接口改造-
+
 	onlineform_get("onlineform_get", "根据tableName和记录ID获取online表单详细信息", "/rest/cgFormDataController/get/{tableName}/{id}", "GET", 1),
 	onlineform_add("onlineform_add", "online表单增加一条记录", "/rest/cgFormDataController/add", "POST", 2),
 	onlineform_update("onlineform_update", "online表单修改一条记录", "/rest/cgFormDataController/update", "POST", 3),
 	onlineform_delete("onlineform_delete", "online表单删除一条记录", "/rest/cgFormDataController/delete/{tableName}/{id}", "DELETE", 4),
-	//update-end-author:taoYan date:20180123 for:TASK#2507:【online开发】online对外接口改造-
+
 	
 	jeecgdemo_list("jeecgdemo_list", "jeecgDemo列表查询", "/rest/jeecgListDemoController/list", "GET", 1),
 	jeecgdemo_get("jeecgdemo_get", "jeecgDemo单条数据查询", "/rest/jeecgListDemoController/{id}", "GET", 2),

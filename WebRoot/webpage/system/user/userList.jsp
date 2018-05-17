@@ -18,9 +18,7 @@
 	
 	<t:dgCol title="common.operation" field="opt" width="100"></t:dgCol>
 	<t:dgFunOpt funname="deleteDialog(id)" title="common.delete" urlclass="ace_button"  urlfont="fa-trash-o"></t:dgFunOpt>
-	<!-- update-begin--Author:LiShaoQing  Date:20170802 for 新增页面调高高度-------------------- -->
 	<t:dgToolBar title="common.add.param" langArg="common.user" icon="icon-add" url="userController.do?addorupdate" funname="add" height="420"></t:dgToolBar>
-	<!-- update-end--Author:LiShaoQing  Date:20170802 for 新增页面调高高度-------------------- -->
 	<t:dgToolBar title="common.edit.param" langArg="common.user" icon="icon-edit" url="userController.do?addorupdate" funname="update"></t:dgToolBar>
 	<t:dgToolBar title="common.password.reset" icon="icon-edit" url="userController.do?changepasswordforuser" funname="update"></t:dgToolBar>
 	<t:dgToolBar title="common.lock.user" icon="icon-edit" url="userController.do?lock&lockvalue=0" funname="lockObj"></t:dgToolBar>
@@ -75,12 +73,12 @@ function unlockObj(title,url, id) {
 		tip('<t:mutiLang langKey="common.please.select.edit.item"/>');
 		return;
 	}
-    //update-begin--Author:caoez  Date:20180202 for：TASK #2514 已经激活的用户不让激活
+
     if(rowsData[0].status == 1){
         tip('<t:mutiLang langKey="common.please.select.user.status.inactive"/>');
         return;
     }
-    //update-end--Author:caoez  Date:20180202 for：TASK #2514 已经激活的用户不让激活
+
 		url += '&id='+rowsData[0].id;
 
 	$.dialog.confirm('<t:mutiLang langKey="common.unlock.user.tips"/>', function(){

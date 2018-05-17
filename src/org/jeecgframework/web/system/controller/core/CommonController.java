@@ -94,9 +94,9 @@ public class CommonController extends BaseController {
 			return new ModelAndView("common/upload/imageView");
 		} else {
 			String swfpath = oConvertUtils.getString(reflectHelper.getMethodValue("swfpath"));
-			//update-begin--Author:dangzhenghui  Date:20170524 for：TASK #1901 【demo】文档管理demo
+
 			swfpath=swfpath.replace("\\","/");
-			//update-end--Author:dangzhenghui  Date:20170524 for：TASK #1901 【demo】文档管理demo
+
 			request.setAttribute("swfpath", swfpath);
 			return new ModelAndView("common/upload/swfView");
 		}
@@ -111,7 +111,7 @@ public class CommonController extends BaseController {
 	@RequestMapping(params = "viewFile")
 	public void viewFile(HttpServletRequest request, HttpServletResponse response) {
 		String fileid =oConvertUtils.getString(request.getParameter("fileid"));
-		//update-start--Author:scott  Date:20170608 for：判断是否默认上传实体，是则原生态写法不用反射，提高效率----
+
 		String subclassname = request.getParameter("subclassname");
 		if(oConvertUtils.isEmpty(subclassname)){
 			TSAttachment tsAttachment = systemService.getEntity(TSAttachment.class, fileid);
@@ -146,7 +146,7 @@ public class CommonController extends BaseController {
 			systemService.viewOrDownloadFile(uploadFile);
 			logger.info("--附件预览---自定义实体类："+subclassname+"--viewFile-----path--"+path);
 		}
-		//update-end--Author:scott  Date:20170608 for：判断是否默认上传实体，是则原生态写法不用反射，提高效率----
+
 	}
 
 	@RequestMapping(params = "importdata")
@@ -330,4 +330,21 @@ public class CommonController extends BaseController {
 		this.systemService.getDataGridReturn(cq, true);
 		TagUtil.datagrid(response, dataGrid);
 	}
+
+	@RequestMapping(params = "superQueryExist")
+	@ResponseBody
+	public String superQueryExist(HttpServletRequest request,String superQueryCode) {
+		if(oConvertUtils.isEmpty(superQueryCode)){
+			return "no";
+		}
+		String sql = "select count(1) from super_query_main where query_code = '"+superQueryCode+"'";
+		long count = this.systemService.getCountForJdbc(sql);
+		if(count>0){
+			return "yes";
+		}else{
+			return "no";
+		}
+	}
+
+
 }

@@ -66,15 +66,13 @@ public interface SystemService extends CommonService{
 	 * @return
 	 */
 	public  Set<String> getOperationCodesByUserIdAndFunctionId(String userId,String functionId);
-	
-	//update-begin--Author:taoYan  Date:20170814 for：获取操作权限方法[剔除选中的按钮]--------------------
+
 	/***
 	 * 根据用户ID 和 菜单Id 获取 具有操作权限的按钮
 	 */
-	//update-begin-Author:LiShaoQing Date:20171024 for:权限集成，直接传TSUser-----
+
 	public List<TSOperation> getOperationsByUserIdAndFunctionId(TSUser currLoginUser,String functionId);
-	//update-end-Author:LiShaoQing Date:20171024 for:权限集成，直接传TSUser-----
-	//update-end--Author:taoYan  Date:20170814 for：获取操作权限方法[剔除选中的按钮]--------------------
+
 	
 	/**
 	 * 根据角色ID 和 菜单Id 获取 具有操作权限的按钮Codes
@@ -83,14 +81,14 @@ public interface SystemService extends CommonService{
 	 * @return
 	 */
 	public  Set<String> getOperationCodesByRoleIdAndFunctionId(String roleId,String functionId);
-	//update-begin--Author:scott  Date:20170330 for：重构页面智能权限控制JS生成方法--------------------
+
 	/**
 	 * 获取页面控件权限控制的
 	 * JS片段
 	 * @param out
 	 */
 	public String getAuthFilterJS();
-	//update-end--Author:scott  Date:20170330 for：重构页面智能权限控制JS生成方法--------------------
+
 	
 	/**
 	 * 根据编码获取字典组
@@ -113,12 +111,12 @@ public interface SystemService extends CommonService{
 	 * 刷新字典分组缓存
 	 */
 	public void refleshTypeGroupCach();
-	//add--begin--author:guoxianhui Date:20171128 for:TASK #2427 【新功能】字典增加一个刷新缓存功能
+
 	/**
 	 * 刷新字典分组缓存&字典缓存
 	 */
 	public void refreshTypeGroupAndTypes();
-	//add--end--author:guoxianhui Date:20171128 for:TASK #2427 【新功能】字典增加一个刷新缓存功能
+
 	
 	/**
 	 * 刷新菜单
@@ -151,9 +149,8 @@ public interface SystemService extends CommonService{
 
 	public  Set<String> getOperationCodesByRoleIdAndruleDataId(String roleId,String functionId);
 
-	//update-begin-Author:LiShaoQing Date:20171024 for:权限集成，直接传TSUser-----
 	public  Set<String> getOperationCodesByUserIdAndDataId(TSUser currLoginUser,String functionId);
-	//update-end-Author:LiShaoQing Date:20171024 for:权限集成，直接传TSUser-----
+
 
 	/**
 	 * 加载所有图标
@@ -178,13 +175,9 @@ public interface SystemService extends CommonService{
 	 * @param dataId		数据ID
 	 * @param dataContent	内容(JSON格式)
 	 */
-	//update-begin--Author: jg_huangxg  Date:20150629 for：增加数据日志功能
-	//update-begin--Author: jg_huangxg  Date:20150630 for：修改数据日志功能
+
 	public void addDataLog(String tableName, String dataId, String dataContent);
-	//update-end--Author: jg_huangxg  Date:20150630 for：修改数据日志功能
-	//update-end--Author: jg_huangxg  Date:20150629 for：增加数据日志功能
-	
-	//update-begin--Author: LiShaoQing Date:20171226 for：授权组页面操作权限
+
 	/***
 	 * 获取二级管理员页面控件权限授权配置【二级管理员后台权限配置功能】
 	 * @param groupId 部门角色组ID
@@ -200,5 +193,5 @@ public interface SystemService extends CommonService{
 	 * @Param type  0:部门管理员组/1:部门角色
 	 */
 	public Set<String> getDepartAuthGroupDataRuleSet(String groupId,String functionId,String type);
-	//update-end--Author: LiShaoQing Date:20171226 for：授权组页面操作权限
+
 }

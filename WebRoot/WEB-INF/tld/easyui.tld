@@ -264,6 +264,18 @@
 			<description>主表表名</description>
 		</attribute>
 		<!-- update-end-Author:guoxianhui  Date:20171214 for：TASK #2450 【改造】支持主子表效果 -->
+		<!-- update-begin-Author:zhoujf  Date:20180504 for：TASK #2687 【datagrid标签】使用freemaker重写datagrid标签 -->
+		<attribute>
+			<name>component</name>
+			<rtexprvalue></rtexprvalue>
+			<description>列表组件名称（默认easyui,bootstrap-table）</description>
+		</attribute>
+		<attribute>
+			<name>query</name>
+			<rtexprvalue></rtexprvalue>
+			<description>是否显示查询条件（默认true,显示为true,不显示为false）</description>
+		</attribute>
+		<!-- update-end-Author:zhoujf  Date:20180504 for：TASK #2687 【datagrid标签】使用freemaker重写datagrid标签 -->
 	</tag>
 	<tag>
 		<name>dgCol</name>
@@ -1098,6 +1110,13 @@
 			<description>是否生成HTML（true/false）</description>
 		</attribute>
 		<!-- update-end-author:zhangjiaqiang date:20170714 for:去除必填项 -->
+		<!-- update-begin-author:taoyan date:20180427 for:增加自定义onUploadStart处理方法 -->
+		<attribute>
+			<name>onUploadStart</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>自定义onUploadStart调用函数</description>
+		</attribute>
+		<!-- update-end-author:taoyan date:20180427 for:增加自定义onUploadStart处理方法 -->
 	</tag>
 	<tag>
 		<name>ckeditor</name>
@@ -1971,6 +1990,13 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>输入框样式</description>
 		</attribute>
+		<!-- update-begin-Author:taoYan Date:20180427 for:增加表单风格,不同风格有不同样式 -->
+		<attribute>
+			<name>formStyle</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>表单风格</description>
+		</attribute>
+		<!-- update-end-Author:taoYan Date:20180427 for:增加表单风格,不同风格有不同样式 -->
 	</tag>
 	<!-- add-end-author:zhangjiaqiang Date:20170913 for:treeSelectTag -->
 	<!-- update-begin-Author:taoYan Date:20180327 for:主从页按钮菜单标签 可配权限 -->

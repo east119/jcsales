@@ -79,8 +79,7 @@ public class TimeTaskController extends BaseController {
 		this.timeTaskService.getDataGridReturn(cq, true);
 		TagUtil.datagrid(response, dataGrid);
 	}
-	
-	//update-begin--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置-------------------
+
 	/**
 	 * 删除定时任务管理
 	 * 
@@ -203,9 +202,9 @@ public class TimeTaskController extends BaseController {
 		//String serverIp = InetAddress.getLocalHost().getHostAddress();
 		List<String> ipList = IpUtil.getLocalIPList();
 		String runServerIp = timeTask.getRunServerIp();
-		//update-begin--Author:xuelin  Date:20170822 for：TASK #1742 【新功能】定时任务配置    增加“本地”默认值设定-------------------
+
 		if(ipList.contains(runServerIp) || StringUtil.isEmpty(runServerIp) || "本地".equals(runServerIp)){//当前服务器IP匹配成功
-		//update-end--Author:xuelin  Date:20170822 for：TASK #1742 【新功能】定时任务配置    增加“本地”默认值设定-------------------	
+
 			isSuccess = dynamicTask.startOrStop(timeTask ,isStart);	
 		}else{
 			try {
@@ -253,5 +252,5 @@ public class TimeTaskController extends BaseController {
 		json.put("success", isSuccess);
 		return json;
 	}
-	//update-end--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置----------------------
+
 }

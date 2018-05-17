@@ -62,12 +62,12 @@ public class CgformTemplateEntity implements java.io.Serializable {
 	private String templateComment;
 
 	private String templateZipName;
-//update-begin--Author:张忠亮  Date:20150707 for：加入 列表、添加、修改、详情模板名称
+
 	private String templateListName;
 	private String templateAddName;
 	private String templateUpdateName;
 	private String templateDetailName;
-	//update-end--Author:张忠亮  Date:20150707 for：加入 列表、添加、修改、详情模板名称
+
 	
 	/**
 	 * 状态 0 失效 1 有效

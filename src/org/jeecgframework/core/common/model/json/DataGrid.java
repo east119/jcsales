@@ -17,20 +17,19 @@ public class DataGrid {
 	private int page = 1;// 当前页
 	private int rows = 10;// 每页显示记录数
 	private String sort = null;// 排序字段名
-	//update-begin--Author:zhoujf  Date:20170302 for：TASK #1335 【扩展】列表支持多字段排序
+
 	private String order = "asc";// 按什么排序(asc,desc)
-	//update-end--Author:zhoujf  Date:20170302 for：TASK #1335 【扩展】列表支持多字段排序
+
 	private String field;//字段
 	private String treefield;//树形数据表文本字段
 	private List results;// 结果集
 	private int total;//总记录数
 	private String footer;//合计列
 	private String sqlbuilder;//合计列
-	
-	//update--begin--author:zhangjiaqiang date:20170413 for:支持jqgrid列表 json格式
+
 	//数据格式
 	private String dataStyle = "easyui";
-	//update--end--author:zhangjiaqiang date:20170413 for:支持jqgrid列表 json格式
+
 	
 	
 	public String getDataStyle() {
@@ -46,11 +45,11 @@ public class DataGrid {
 	}
 
 	public void setSqlbuilder(String sqlbuilder) {
-		//update-begin-Author:LiShaoQing -- date:20171026 -- for:多条件动态查询判断小于等于----
+
 		if(sqlbuilder.indexOf("≤") > 0) {
 			sqlbuilder = sqlbuilder.replace("≤", "<=");
 		}
-		//update-end-Author:LiShaoQing -- date:20171026 -- for:多条件动态查询判断小于等于----
+
 		this.sqlbuilder = sqlbuilder;
 	}
 
@@ -142,9 +141,9 @@ public class DataGrid {
 			results.clear();
 			results = null;
 		}
-		//update-begin--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 		field = null;
 		treefield = null;
-		//update-end--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 	}
 }

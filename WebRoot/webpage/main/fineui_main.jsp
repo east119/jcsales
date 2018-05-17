@@ -11,7 +11,7 @@
 	<meta name="keywords" content="JEECG 企业级快速开发平台">
     <meta name="description" content="JEECG 企业级快速开发平台，她采用强大代码生成，在线开发能力">
     <title><t:mutiLang langKey="jeect.platform"/></title>
-    <link href="plug-in-ui/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="plug-in/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
 	<link rel="stylesheet" href="plug-in/themes/fineui/common/css/sccl.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/themes/fineui/common/skin/qingxin/skin.css" id="layout-skin"/>
 	<link rel="stylesheet" href="plug-in/themes/fineui/common/iconfont/iconfont.css">
@@ -30,12 +30,15 @@
 	    filter: alpha(opacity=50);
 	    background-color: rgba(255, 255, 255, 0.20);
 	}
+	/* update-begin--Author:zhoujf  Date:20180503 for：TASK #2670 【fineUI】fineUI 首页加载聊天插件时 菜单样式乱了 --*/
 	.titlecell{
 		width:100%;
 		position: relative;
 		vertical-align: middle;
 	    padding: 0;
+	    line-height: 24px;
     }
+	/* update-end--Author:zhoujf  Date:20180503 for：TASK #2670 【fineUI】fineUI 首页加载聊天插件时 菜单样式乱了 --*/
     
     .searchbox{
         border-radius: 0;    
@@ -250,9 +253,9 @@
 	
 	
 	<!-- 在线聊天 -->
-	//@include file="/context/layui.jsp"%>
+	<%@include file="/context/layui.jsp"%>
 	<script type="text/javascript">
-	//--update-begin--Author:gj_shaojc  Date:20180306 for：[TASK #2515] 【新功能】首页搜索没有用，可以做成SAP 事务代码的形式 菜单模糊搜索吧 --
+
 	function checkput(){
 		var name = $("#searchbox").val();
     	$.ajax({
@@ -316,7 +319,7 @@
                  }); 
         }
 	 })
-	//--update-end--Author:gj_shaojc  Date:20180306 for：[TASK #2515] 【新功能】首页搜索没有用，可以做成SAP 事务代码的形式 菜单模糊搜索吧 --
+
 	
 	
 	function logout(){

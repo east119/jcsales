@@ -30,11 +30,10 @@ public class DateConvertEditor extends PropertyEditorSupport {
 				} else if (text.indexOf(":") > 0 && text.length() == 21) {
 					text = text.replace(".0", "");
 					setValue(this.datetimeFormat.parse(text));
-					// author:scott----start-----date:20170725--------for：SqlServer、oracle时间格式兼容问题----
+
 				} else if (text.indexOf(":") > 0 && text.indexOf(".") > 0 && text.length() > 21) {
 					text = text.substring(0, text.indexOf("."));
 					setValue(this.datetimeFormat.parse(text));
-					// author:scott----end-----date:20170725--------for：SqlServer、oracle时间格式兼容问题----
 				} else {
 					throw new IllegalArgumentException("Could not parse date, date format is error ");
 				}

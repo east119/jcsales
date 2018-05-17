@@ -25,7 +25,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @Table(name = "t_s_depart")
 public class TSDepart extends IdEntity implements java.io.Serializable {
 	private TSDepart TSPDepart;//上级部门
-	//update-begin-Author:caoez  Date:20180210 for：TASK #2524 【扩展】组织机构增加标准字段
+
 	/**创建人名称*/
 	private java.lang.String createName;
 	/**创建人登录名称*/
@@ -42,8 +42,7 @@ public class TSDepart extends IdEntity implements java.io.Serializable {
 	private java.lang.String sysOrgCode;
 	/**所属公司*/
 	private java.lang.String sysCompanyCode;
-	//update-end-Author:caoez  Date:20180210 for：TASK #2524 【扩展】组织机构增加标准字段
-	//update-begin--Author:dangzhenghui  Date:20170430 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能--------------------
+
 	@Excel(name = "部门名称" ,width = 20)
 	private String departname;//部门名称
 	@Excel(name = "部门描述",width = 20)
@@ -57,7 +56,7 @@ public class TSDepart extends IdEntity implements java.io.Serializable {
 	@Excel(name = "传真",width = 20)
 	private String fax;//传真
 	@Excel(name = "地址",width = 20)
-	//update-end--Author:dangzhenghui  Date:20170430 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能--------------------
+
 	private String address;//地址
 	
 	private String departOrder;//排序
@@ -73,7 +72,7 @@ public class TSDepart extends IdEntity implements java.io.Serializable {
 	public void setTSPDepart(TSDepart TSPDepart) {
 		this.TSPDepart = TSPDepart;
 	}
-    //update-begin-Author:caoez  Date:20180210 for：TASK #2524 【扩展】组织机构增加标准字段
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  创建人名称
@@ -212,7 +211,7 @@ public class TSDepart extends IdEntity implements java.io.Serializable {
 	public void setSysCompanyCode(java.lang.String sysCompanyCode){
 		this.sysCompanyCode = sysCompanyCode;
 	}
-	//update-end-Author:caoez  Date:20180210 for：TASK #2524 【扩展】组织机构增加标准字段
+
 
 	@Column(name = "departname", nullable = false, length = 100)
 	public String getDepartname() {

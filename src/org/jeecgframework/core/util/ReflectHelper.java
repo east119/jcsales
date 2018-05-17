@@ -114,8 +114,7 @@ public class ReflectHelper {
 		}
 		return value;
 	}
-	
-	//add-start--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 把map中的内容全部注入到obj中
 	 * @param data
@@ -159,8 +158,7 @@ public class ReflectHelper {
 		}
 		return (T) setAll(o, data);
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
-	//add-begin--Author:yugwu  Date:20170810 for:根据clazz转换list----
+
 	/**
 	 * 根据传入的class将mapList转换为实体类list
 	 * @param mapist
@@ -176,9 +174,8 @@ public class ReflectHelper {
 		}
 		return list;
 	}
-	//add-begin--Author:yugwu  Date:20170810 for:根据clazz转换list----
-	
-	//update-begin--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果---新增反射获取字段函数
+
+
 	/** 
 	 * 根据属性名获取属性值 
 	 * */  
@@ -237,5 +234,5 @@ public class ReflectHelper {
 	    }  
 	    return value;  
    }   
-   //update-end--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果---新增反射获取字段函数
+
 }

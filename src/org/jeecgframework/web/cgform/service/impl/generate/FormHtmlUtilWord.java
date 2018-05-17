@@ -79,10 +79,8 @@ public class FormHtmlUtilWord {
       if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
-      //update--begin---author:scott------date:20151118---for:online代码生成自定义word模板----------------------
-      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
-      //update--begin---author:scott------date:20151118---for:online代码生成自定义word模板---------------------
-      if("Y".equals(cgFormFieldEntity.getIsNull())){
+     html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
+     if("Y".equals(cgFormFieldEntity.getIsNull())){
     	  html.append("ignore=\"ignore\" ");
       }
       if(cgFormFieldEntity.getFieldValidType()!=null&&cgFormFieldEntity.getFieldValidType().length()>0){
@@ -314,9 +312,9 @@ public class FormHtmlUtilWord {
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
       html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("}\" ");
-      //-- update-begin--Author:zhoujf  Date:20180409 for：TASK #2627 【online表单】online表单 表单模板 popup控件回填问题--
+
       html.append("onclick=\"popupClick(this,'"+cgFormFieldEntity.getDictText()+"','"+cgFormFieldEntity.getDictField()+"','"+cgFormFieldEntity.getDictTable()+"');\" ");
-      //-- update-end--Author:zhoujf  Date:20180409 for：TASK #2627 【online表单】online表单 表单模板 popup控件回填问题--
+
       if("Y".equals(cgFormFieldEntity.getIsNull())){
     	  html.append("ignore=\"ignore\" ");
       }

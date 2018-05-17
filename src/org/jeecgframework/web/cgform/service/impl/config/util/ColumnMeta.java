@@ -41,8 +41,7 @@ public class ColumnMeta {
 			        &&isEquals(comment,meta.getComment())&&isEquals(fieldDefault,meta.getFieldDefault());
 			}
 	}
-	
-	//update-begin--Author:qinfeng  Date:20180118 for：Sqlserver2008 字段类型适配问题解决-------------------
+
 	/**
 	 * 新增对比方法： 针对Sqlserver2008数据库，不对比字段备注和默认值
 	 * 
@@ -77,7 +76,7 @@ public class ColumnMeta {
 				}
 	        }
 	}
-	//update-end--Author:qinfeng  Date:20180118 for：Sqlserver2008 字段类型适配问题解决-------------------
+
 	
 	public boolean equalsDefault(ColumnMeta meta){
 		if (meta == this) {

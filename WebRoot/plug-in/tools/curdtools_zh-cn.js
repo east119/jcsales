@@ -5,8 +5,7 @@ if(!window.console){
 if(!window.console.log){
     window.console.log = function(msg){};
 }
-// update--end--author:zhangjiaqiang date:20170621 for:如何避免console.log引起javascript的兼容问题
-//update-begin--Author:scott  --- Date:20170401 --- for：inputclick ajax请求追加根路径，防止深路径访问有问题----
+
 ﻿var basePath;
 try{
 	var local = window.location;  
@@ -14,7 +13,7 @@ try{
 	basePath = local.protocol+"//"+local.host+"/"+contextPath;
 	//alert(basePath);
 }catch(e){}
-//update-end--Author:scott  --- Date:20170401 --- for：inputclick ajax请求追加根路径，防止深路径访问有问题----
+
 
 //﻿var jq = jQuery.noConflict();
 /**
@@ -86,7 +85,7 @@ function addTreeNode(title,addurl,gname) {
  * @param addurl//目标页面地址
  * @param id//主键字段
  */
-//update-begin--Author:luobaoli  Date:20150705 for：增加了一个判断是否需要转换为restful风格URL的参数，如果该参数为true，那么转换为restful风格
+
 function update(title,url, id,width,height,isRestful) {
 	gridname=id;
 	var rowsData = $('#'+id).datagrid('getSelections');
@@ -105,9 +104,7 @@ function update(title,url, id,width,height,isRestful) {
 	}
 	createwindow(title,url,width,height);
 }
-//update-end--Author:luobaoli  Date:20150705 for：增加了一个判断是否需要转换为restful风格URL的参数，如果该参数为true，那么转换为restful风格
 
-//update-begin--Author:gj_shaojc  Date:20180330 for：TASK #2580 【论坛问题 - 问题确认】树状的数据列表添加checkbox后全选选不中 
 function updatetree(title,url, id,width,height,isRestful) {
 	gridname=id;
 	var rowsData = $('#'+id).treegrid('getSelections');
@@ -182,7 +179,7 @@ function deleteALLSelecttree(title,url,gname) {
 		tip("请选择需要删除的数据");
 	}
 }
-//update-end--Author:gj_shaojc  Date:20180330 for：TASK #2580 【论坛问题 - 问题确认】树状的数据列表添加checkbox后全选选不中 
+
 /**
  * 如果页面是详细查看页面，无效化所有表单元素，只能进行查看
  */
@@ -289,7 +286,7 @@ function createdetailwindow(title, addurl,width,height) {
 		    cancel: true /*为true等价于function(){}*/
 		});
 	}else{
-		//update-begin--Author:xuelin  Date:20170421 for：#1804 【体验】需要选中行数据，点击阅读才弹出页面--------------------
+
 		W.$.dialog({
 			content: 'url:'+addurl,
 			zIndex: getzIndex(),
@@ -306,7 +303,7 @@ function createdetailwindow(title, addurl,width,height) {
 		    }
 			//cancel:true /*为true等价于function(){}*/
 		});
-		//update-end--Author:xuelin  Date:20170421 for：#1804 【体验】需要选中行数据，点击阅读才弹出页面----------------------
+
 	}
 	
 }
@@ -323,11 +320,11 @@ function editfs(title,url) {
 		return;
 	}
 	url += '&id='+rowid;
-	//update-begin--Author:scott  --- Date:20170406 --- for：弹出窗口最大化问题处理----
+
 	width = window.top.document.body.offsetWidth;
 	height =window.top.document.body.offsetHeight-100;
 	openwindow(title,url,name,width,height);
-	//update-end--Author:scott  --- Date:20170406 --- for：弹出窗口最大化问题处理----
+
 }
 // 删除调用函数
 function delObj(url,name) {
@@ -367,11 +364,11 @@ function deluploadify(url, id) {
 	});
 }
 // 普通询问操作调用函数
-//update-begin-author:taoyan date:20171130 for：增加是否显示遮罩--
+
 function confirm(url, content,name,noShade) {
 	createdialog('提示信息 ', content, url,name,noShade);
 }
-//update-end-author:taoyan date:20171130 for：增加是否显示遮罩--
+
 /**
  * 提示信息
  */
@@ -385,11 +382,11 @@ function tip_old(msg) {
 function tip(msg) {
 	try{
 		$.dialog.setting.zIndex = getzIndex(true);
-		//update--begin--author:zhangjiaqiang Date:20170227 for:更新提示框
+
 		var navigatorName = "Microsoft Internet Explorer";
-		//update--begin--author:taoYan Date:20170628 for:default/shortcut提示用原风格---
+
 		if(navigator.appName == navigatorName||"default,shortcut".indexOf(getCookie("JEECGINDEXSTYLE"))>=0){
-		//update--end--author:taoYan Date:20170628 for:default/shortcut提示用原风格---
+
 			$.messager.show({
 				title : '提示信息',
 				msg : msg,
@@ -413,7 +410,7 @@ function tip(msg) {
 				shift:2
 			});
 		}
-		//update--begin--author:zhangjiaqiang Date:20170227 for:更新提示框
+
 	}catch(e){
 		alertTipTop(msg,'10%');
 	}
@@ -428,9 +425,9 @@ function alerLayerTip(msg) {
 	}
 	try{
 		var navigatorName = "Microsoft Internet Explorer"; 
-		//update--begin--author:zhangjiaqiang date:20170711 for:TASK 2218 shortcut风格 使用jqueryui对话框
+
 		if( navigator.appName == navigatorName ||"default,shortcut".indexOf(getCookie("JEECGINDEXSTYLE"))>=0){
-		//update--end--author:zhangjiaqiang date:20170711 for:TASK 2218 shortcut风格 使用jqueryui对话框
+
 			$.messager.alert('提示信息',msg);
 		}else{
 			layer.open({
@@ -506,7 +503,7 @@ function createwindow(title, addurl,width,height) {
 		    cancel: true /*为true等价于function(){}*/
 		});
 	}else{
-		//update-begin--Author:xuelin  Date:20170705 for：TASK #2196 【bug】云桌面问题--------------------
+
 		/*W.*/$.dialog({//使用W，即为使用顶级页面作为openner，造成打开的次级窗口获取不到关联的主窗口
 			content: 'url:'+addurl,
 			lock : true,
@@ -525,7 +522,7 @@ function createwindow(title, addurl,width,height) {
 		    cancelVal: '关闭',
 		    cancel: true /*为true等价于function(){}*/
 		});
-		//update-end--Author:xuelin  Date:20170705 for：TASK #2196 【bug】云桌面问题----------------------
+
 	}
     //--author：JueYue---------date：20140427---------for：弹出bug修改,设置了zindex()函数
 	
@@ -603,12 +600,12 @@ function opensearchdwin(title, url, width, height) {
  * @param saveurl
  */
 function openwindow(title, url,name, width, height) {
-	//update-begin--Author:scott  --- Date:20170406 --- for：弹出窗口最大化问题处理----
+
 	if(width=="100%" || height=="100%"){
 		width = window.top.document.body.offsetWidth;
 		height =window.top.document.body.offsetHeight-100;
 	}
-	//update-end--Author:scott  --- Date:20170406 --- for：弹出窗口最大化问题处理----
+
 	gridname=name;
 	if (typeof (width) == 'undefined'&&typeof (height) != 'undefined')
 	{
@@ -721,7 +718,7 @@ function openwindow(title, url,name, width, height) {
  * @param url
  * @param noShade 不赋值则有遮罩
  */
- //update-begin-author:taoyan date:20171129 for:不显示遮罩---
+
 function createdialog(title, content, url,name,noShade) {
 	$.dialog.setting.zIndex = getzIndex(true);
 //	$.dialog.confirm(content, function(){
@@ -729,11 +726,11 @@ function createdialog(title, content, url,name,noShade) {
 //		rowid = '';
 //	}, function(){
 //	});
-	//update--begin---author:zhangjiaqiang date:20170301 for:修订提示框
+
 	var navigatorName = "Microsoft Internet Explorer"; 
-	//update--begin--author:zhangjiaqiang date:20170711 for:TASK 2218 shortcut风格 使用jqueryui对话框
+
 	if( navigator.appName == navigatorName ||"default,shortcut".indexOf(getCookie("JEECGINDEXSTYLE"))>=0){ 
-	//update--begin--author:zhangjiaqiang date:20170711 for:TASK 2218 shortcut风格 使用jqueryui对话框
+
 		$.dialog.confirm(content, function(){
 			doSubmit(url,name);
 			rowid = '';
@@ -755,8 +752,7 @@ function createdialog(title, content, url,name,noShade) {
 			}
 		});
 	}
-	//update-end-author:taoyan date:20171129 for:不显示遮罩---
-	//update--end---author:zhangjiaqiang date:20170301 for:修订提示框
+
 }
 /**
  * 执行保存
@@ -1001,12 +997,12 @@ function addOneTab(subtitle, url, icon) {
 		var id = "";
 		id = createTabId(subtitle);
 		window.top.addTabs({id:id,title:subtitle,close: true,url: url});
-		//update-begin-author:taoyan date:20171121 for:fineui-addTab--
+
 	}else if(indexStyle=='fineui'){
 		var id = "";
 		id = createTabId(subtitle);
 		window.top.addFineuiTab({id:id,title:subtitle,close: true,url: url});
-		//update-end-author:taoyan date:20171121 for:fineui-addTab--
+
 	}else{
 		if (icon == '') {
 			icon = 'icon folder';
@@ -1080,9 +1076,9 @@ function inputClick(obj,name,code) {
 		 alert("popup参数配置不全");
 		 return;
 	 }
-	 //update-begin--Author:scott  --- Date:20170401 --- for：inputclick ajax请求追加根路径，防止深路径访问有问题----
+
 	 var inputClickUrl = basePath + "/cgReportController.do?popup&id="+code;
-	 //update-end--Author:scott  --- Date:20170401 --- for：inputclick ajax请求追加根路径，防止深路径访问有问题----
+
 	 if(typeof(windowapi) == 'undefined'){
 		 $.dialog({
 				content: "url:"+inputClickUrl,
@@ -1267,13 +1263,13 @@ function JeecgExcelExport(url,datagridId){
 			fields+=val.field+',';
 		}
 	});
-    //update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1869 【demo】jeecg excel导出 可以导出 指定行的数据
+
     var id='&id=';
     $.each($('#'+ datagridId).datagrid('getSelections'), function(i, val){
         id+=val.id+",";
     });
 	window.location.href = url+ encodeURI(fields+params+id);
-    //update-end--Author:dangzhenghui  Date:20170429 for：TASK #1869 【demo】jeecg excel导出 可以导出 指定行的数据
+
 }
 /**
  * 自动完成的解析函数
@@ -1346,9 +1342,9 @@ function viewNotCreateWin(title,url, id,isRestful)
  *   pcode:动态报表的code
  */
 function popupClick(pobj,tablefield,inputnames,pcode) {
-	//update--begin--author:zhoujf date:20180316 for:popup弹框出现在录入弹框后面的问题
+
 	 $.dialog.setting.zIndex = getzIndex(false);
-	//update--end--author:zhoujf date:20180316 for:popup弹框出现在录入弹框后面的问题
+
 	 if(inputnames==""||pcode==""){
 		 alert("popup参数配置不全");
 		 return;
@@ -1356,9 +1352,9 @@ function popupClick(pobj,tablefield,inputnames,pcode) {
 	 if(typeof(windowapi) == 'undefined'){
 		 $.dialog({
 				content: "url:cgReportController.do?popup&id="+pcode,
-				//update--begin--author:zhoujf date:20180316 for:popup弹框出现在录入弹框后面的问题
+
 				//zIndex: getzIndex(),
-				//update--end--author:zhoujf date:20180316 for:popup弹框出现在录入弹框后面的问题
+
 				lock : true,
 				title:"选择",
 				width:800,
@@ -1392,16 +1388,16 @@ function popupClick(pobj,tablefield,inputnames,pcode) {
 						    		if(inputs.length>1){
 						    		﻿	//update--begin--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
 						    			var inpu = inputs[0]+"."+inputfield[i1];
-						    			//update--end--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
+
 						    			$("input[name='"+inpu+"']").val(str);
 						    		}else{
 						    			$("input[name='"+inputfield[i1]+"']").val(str);
 						    		}
 						    	}else{
 						    		if(inputs.length>1){
-						    			//update--begin--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
+
 						    			var inpu = inputs[0]+"."+inputfield[i1];
-						    			//update--end--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
+
 						    			$("input[name='"+inpu+"']").val("");
 						    		}else{
 						    			$("input[name='"+inputfield[i1]+"']").val("");
@@ -1453,18 +1449,18 @@ function popupClick(pobj,tablefield,inputnames,pcode) {
 						    	var inputs = inputname.split(".");
 						    	if(str.indexOf("undefined")==-1){
 						    		if(inputs.length>1){
-						    			//update--begin--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
+
 						    			var inpu = inputs[0]+"."+inputfield[i1];
-						    			//update--end--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
+
 						    			$("input[name='"+inpu+"']").val(str);
 						    		}else{
 						    			$("input[name='"+inputfield+"']").val(str);
 						    		}
 						    	}else{
 						    		if(inputs.length>1){
-						    			//update--begin--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
+
 						    			var inpu = inputs[0]+"."+inputfield[i1];
-						    			//update--end--author:scott date:20171031 for:TASK #2385 online和代码生成器 一对多行popup多字段赋值问题解决-----------
+
 						    			$("input[name='"+inpu+"']").val("");
 						    		}else{
 						    			$("input[name='"+inputfield+"']").val("");
@@ -1482,9 +1478,9 @@ function popupClick(pobj,tablefield,inputnames,pcode) {
 		}else{
 			$.dialog({
 				content: "url:cgReportController.do?popup&id="+pcode,
-				//update--begin--author:zhoujf date:20180316 for:popup弹框出现在录入弹框后面的问题
+
 				//zIndex: getzIndex(),
-				//update--end--author:zhoujf date:20180316 for:popup弹框出现在录入弹框后面的问题
+
 				lock : true,
 				title:"选择",
 				width:800,
@@ -1602,7 +1598,6 @@ function popupClick(pobj,tablefield,inputnames,pcode) {
 	}
 //add--end--Author:gengjiajia date:20160802 for: TASK #1175 批量添加数据的时popup多值的传递
 
-//update--begin--author:zhangjiaqiang date:20170527 for:增加鼠标放在图片上方，显示图片大图
 /*
  * 鼠标放在图片上方，显示大图
  */
@@ -1643,7 +1638,7 @@ function moveTipImg(){
 		
 	}
 }
-//update--end--author:zhangjiaqiang date:20170527 for:增加鼠标放在图片上方，显示图片大图
+
 //<!-- update-begin-author:zhangjiaqiang date:20170815 for:TASK #2274 【online】Online 表单支持树控件 -->
 function treeFormater(value,row,index){
 	return getTreeResult(value);

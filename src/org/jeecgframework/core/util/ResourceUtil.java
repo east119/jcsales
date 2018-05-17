@@ -58,9 +58,9 @@ public class ResourceUtil {
 	 * #默认开启模糊查询方式 1为开启 条件无需带*就能模糊查询[暂时取消]
 	 * fuzzySearch=0
 	 */
-	//update-begin--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
+
 //	public final static boolean fuzzySearch= ResourceUtil.isFuzzySearch();
-	//update-end--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
+
 
 	/**
 	 * 获取session定义名称
@@ -74,7 +74,7 @@ public class ResourceUtil {
 		HttpSession session = ContextHolderUtils.getSession();
 		if(ClientManager.getInstance().getClient(session.getId())!=null){
 			return ClientManager.getInstance().getClient(session.getId()).getUser();
-		//update-begin--update---author:scott-----------date:20151218-------for:解决分布式登录问题-------
+
 		}else{
 			TSUser u = (TSUser) session.getAttribute(ResourceUtil.LOCAL_CLINET_USER);
 			Client client = new Client();
@@ -83,7 +83,7 @@ public class ResourceUtil {
 	        client.setUser(u);
 	        ClientManager.getInstance().addClinet(session.getId(), client);
 		}
-		//update-end--update---author:scott-----------date:20151218-------for:解决分布式登录问题-------
+
 		return null;
 	}
 	@Deprecated
@@ -108,28 +108,28 @@ public class ResourceUtil {
 	 * @return
 	 */
 	public static String getRequestPath(HttpServletRequest request) {
-//	    update-begin--Author:zhoujf  Date:20170331 for：BUG请求中没有参数时 会给加上?null
+
 //		String requestPath = request.getRequestURI() + "?" + request.getQueryString();
 		String queryString = request.getQueryString();
 		String requestPath = request.getRequestURI();
 		if(StringUtils.isNotEmpty(queryString)){
 			requestPath += "?" + queryString;
 		}
-//	    update-begin--Author:zhoujf  Date:20170331 for：BUG请求中没有参数时 会给加上?null
+
 		if (requestPath.indexOf("&") > -1) {// 去掉其他参数(保留一个参数) 例如：loginController.do?login
 			requestPath = requestPath.substring(0, requestPath.indexOf("&"));
 		}
-		//update-begin--Author:scott  Date:20170906 for：TASK #2298 【权限请求带参问题】权限拦截，请求带参问题
+
 		if(requestPath.indexOf("=")!=-1){
-			//update-begin--Author:scott  Date:20171108 for：restful请求报错--------
+
 			if(requestPath.indexOf(".do")!=-1){
 				requestPath = requestPath.substring(0,requestPath.indexOf(".do")+3);
 			}else{
 				requestPath = requestPath.substring(0,requestPath.indexOf("?"));
 			}
-			//update-end--Author:scott  Date:20171108 for：restful请求报错--------
+
 		}
-		//update-end--Author:scott  Date:20170906 for：TASK #2298 【权限请求带参问题】权限拦截，请求带参问题
+
 		requestPath = requestPath.substring(request.getContextPath().length() + 1);// 去掉项目路径
 		return requestPath;
 	}
@@ -212,7 +212,6 @@ public class ResourceUtil {
 		return DBTypeUtil.getDBType().toLowerCase();
 	}
 
-//    update-begin--Author:zhangguoming  Date:20140226 for：添加验证码
     /**
      * 获取随机码的长度
      *
@@ -230,7 +229,7 @@ public class ResourceUtil {
     public static String getRandCodeType() {
         return bundle.getString("randCodeType");
     }
-//    update-end--Author:zhangguoming  Date:20140226 for：添加验证码
+
 
     /**
      * 获取组织机构编码长度的类型
@@ -261,7 +260,7 @@ public class ResourceUtil {
 		}
 		
 		 //----------------------------------------------------------------
-		//update-begin--Author:zhangdaihao  Date:20140913 for：获取系统上下文变量
+
 	
 		//替换为系统的登录用户账号
 //		if (key.equals(DataBaseConstant.CREATE_BY)
@@ -283,15 +282,14 @@ public class ResourceUtil {
 			) {
 			returnValue =  getSessionUser().getRealName();
 		}
-		
-		//update-end--Author:zhangdaihao  Date:20140913 for：获取系统上下文变量
+
 		//---------------------------------------------------------------- 
 		//替换为系统登录用户的公司编码
 		if (key.equals(DataBaseConstant.SYS_COMPANY_CODE)|| key.equals(DataBaseConstant.SYS_COMPANY_CODE_TABLE)) {
-			//update-begin--author:zhangjiaqiang Date:20170112 for:业务数据当中的公司编码错误
+
 			returnValue = getSessionUser().getCurrentDepart().getOrgCode()
 					.substring(0, Integer.valueOf(getOrgCodeLengthType()) + 1);
-			//update-end--author:zhangjiaqiang Date:20170112 for:业务数据当中的公司编码错误
+
 		}
 		//替换为系统用户登录所使用的机构编码
 		if (key.equals(DataBaseConstant.SYS_ORG_CODE)|| key.equals(DataBaseConstant.SYS_ORG_CODE_TABLE)) {
@@ -312,7 +310,7 @@ public class ResourceUtil {
 		if(returnValue!=null){returnValue = returnValue + moshi;}
 		return returnValue;
 	}
-	//---author:jg_xugj----start-----date:20151226--------for：#814 【数据权限】扩展支持写表达式，通过session取值
+
     /**
      * 获取用户session 中的变量
      * @param key
@@ -327,7 +325,7 @@ public class ResourceUtil {
 			 moshi = key.substring(key.indexOf("}")+1);
 		}
 		String returnValue = null;
-//---author:jg_xugj----start-----date:20151226--------for：修改bug 1、key.contains("${")  应改为 key.contains("#{") 2、StringUtil.isEmpty(key) 判断 不为空
+
 		if (key.contains("#{")) {
 			key = key.substring(2,key.indexOf("}"));
 		}
@@ -336,7 +334,6 @@ public class ResourceUtil {
 			HttpSession session = ContextHolderUtils.getSession();
 			returnValue = (String) session.getAttribute(key);
 		}
-//---author:jg_xugj----end-----date:20151226--------for：修改bug 1、key.contains("${")  应改为 key.contains("#{") 2、StringUtil.isEmpty(key) 判断 不为空
 
 		//结果加上${} 后面的值
 		if(returnValue!=null){returnValue = returnValue + moshi;}
@@ -356,19 +353,16 @@ public class ResourceUtil {
 			value = ResourceUtil.getUserSystemData(ruleValue);
 		return value!= null ? value : ruleValue;
 	}
-	//---author:jg_xugj----end-----date:20151226--------for：#814 【数据权限】扩展支持写表达式，通过session取值
 
 	public static void main(String[] args) {
 		org.jeecgframework.core.util.LogUtil.info(getPorjectPath());
 		org.jeecgframework.core.util.LogUtil.info(getSysPath());
 	}
-	//update-begin--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
+
 //	public static boolean isFuzzySearch(){
 //		return "1".equals(bundle.getString("fuzzySearch"));
 //	}
-	//update-end--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
-	
-	//update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式--
+
 	/**
 	 * 【Minidao写法】
 	 * 将Sql增强中的系统变量替换掉
@@ -420,5 +414,5 @@ public class ResourceUtil {
 				.replace("#{sys."+DataBaseConstant.SYS_TIME_TABLE+"}",  DateUtils.formatTime());
 		return sql;
 	}
-	//update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式--
+
 }

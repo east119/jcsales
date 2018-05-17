@@ -38,7 +38,9 @@ public class CgReportQueryParamUtil
 		String filedType = (String) item.get(CgReportConstant.ITEM_FIELDTYPE);
 		if("single".equals(queryMode)){
 			//单条件组装方式
-			String value =request.getParameter(filedName);
+
+			String value =request.getParameter(filedName.toLowerCase());
+
 			try {
 				if(StringUtil.isEmpty(value)){
 					return;
@@ -193,11 +195,11 @@ public class CgReportQueryParamUtil
 		if(!StringUtil.isEmpty(value)){
 			String result = "";
 			if(CgReportConstant.TYPE_STRING.equalsIgnoreCase(fieldType)){
-				//update-begin--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
+
 				//if(ResourceUtil.fuzzySearch&&(!value.contains("*"))){
 				//	value="*"+value+"*";
 				//}
-				//update-end--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
+
 				result = "'" +value+ "'";
 			}else if(CgReportConstant.TYPE_DATE.equalsIgnoreCase(fieldType)){
 				result = getDateFunction(value, "yyyy-MM-dd");

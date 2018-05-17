@@ -6700,12 +6700,10 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                     options.initialFrameHeight = options.minFrameHeight = container.offsetHeight;
                 }
 
-                //update-begin--Author:yugwu  Date:20170626 for：[TASK #2135]【浏览器兼容问题】IE8下样式乱了-------------------- --
                 container.style.width = !/^\+?[1-9][0-9]*$/.test(options.initialFrameWidth) ?  '100%' : options.initialFrameWidth-
                     getStyleValue("padding-left")- getStyleValue("padding-right") +'px';
                 container.style.height = !/^\+?[1-9][0-9]*$/.test(options.initialFrameHeight) ?  '100%' : options.initialFrameHeight -
                     getStyleValue("padding-top")- getStyleValue("padding-bottom") +'px';
-                //update-end--Author:yugwu  Date:20170626 for：[TASK #2135]【浏览器兼容问题】IE8下样式乱了-------------------- --
 
                 container.style.zIndex = options.zIndex;
 
@@ -27193,9 +27191,9 @@ baidu.editor.ui = {};
                     if(holder.style.height){
                         holder.style.height = ''
                     }
-                    //update-begin--Author:yugwu  Date:20170626 for：[TASK #2135]【浏览器兼容问题】IE8下样式乱了-------------------- --
+
                     editor.container.style.width = opt.initialFrameWidth + (!/^\+?[1-9][0-9]*$/.test(opt.initialFrameWidth) ? '' : 'px');
-                    //update-end--Author:yugwu  Date:20170626 for：[TASK #2135]【浏览器兼容问题】IE8下样式乱了-------------------- --
+
                     editor.container.style.zIndex = opt.zIndex;
                     oldRender.call(editor, editor.ui.getDom('iframeholder'));
                     editor.fireEvent("afteruiready");

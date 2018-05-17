@@ -2,19 +2,22 @@ package org.jeecgframework.web.system.service.impl;
 
 import java.util.List;
 
+import org.jeecgframework.core.common.dao.ICommonDao;
+import org.jeecgframework.core.util.ResourceUtil;
+import org.jeecgframework.web.system.pojo.base.DynamicDataSourceEntity;
+import org.jeecgframework.web.system.service.DynamicDataSourceServiceI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
-import org.jeecgframework.core.util.ResourceUtil;
-import org.jeecgframework.web.system.service.DynamicDataSourceServiceI;
-import org.jeecgframework.web.system.pojo.base.DynamicDataSourceEntity;
 
 
 @Service("dynamicDataSourceService")
-@Transactional
-public class DynamicDataSourceServiceImpl extends CommonServiceImpl implements DynamicDataSourceServiceI {
-
+public class DynamicDataSourceServiceImpl implements DynamicDataSourceServiceI {
+	@Autowired
+	public ICommonDao commonDao;
+	
 	/**初始化数据库信息，TOMCAT启动时直接加入到内存中**/
+	@Transactional(readOnly = true)
 	public List<DynamicDataSourceEntity> initDynamicDataSource() {
 		ResourceUtil.dynamicDataSourceMap.clear();
 
@@ -36,16 +39,13 @@ public class DynamicDataSourceServiceImpl extends CommonServiceImpl implements D
 		initDynamicDataSource();
 	}
 
-	//add-begin--Author:luobaoli  Date:20150620 for：增加通过数据源Key获取数据源Type
 	@Override
-	//update-begin--Author:luobaoli  Date:20150623 for：增加通过数据源Key获取数据源
+	@Transactional(readOnly = true)
 	public DynamicDataSourceEntity getDynamicDataSourceEntityForDbKey(String dbKey){
 		List<DynamicDataSourceEntity> dynamicDataSourceEntitys = commonDao.findHql("from DynamicDataSourceEntity where dbKey = ?", dbKey);
 		if(dynamicDataSourceEntitys.size()>0)
 			return dynamicDataSourceEntitys.get(0);
 		return null;
 	}
-	//update-end--Author:luobaoli  Date:20150623 for：增加通过数据源Key获取数据源
-	//add-end--Author:luobaoli  Date:20150620 for：增加通过数据源Key获取数据源Type
 
 }

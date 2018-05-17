@@ -70,8 +70,6 @@ public class CgFormBuildController extends BaseController {
 	@Autowired
 	private CgFormFieldServiceI cgFormFieldService;
 
-	//update-begin--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
-	//update-begin--Author:许国杰  Date:20151219 for：#813 【online表单】扩展出三个请求：独立的添加、查看、编辑请求，原来的保留
 	@RequestMapping(value = "ftlForm/{tableName}/goAdd")
 	public void goAdd(@PathVariable("tableName") String tableName,HttpServletRequest request,HttpServletResponse response) {
 		 ftlForm(tableName,"",request,response);
@@ -92,10 +90,7 @@ public class CgFormBuildController extends BaseController {
 	public void goDatilFtlForm(@PathVariable("tableName") String tableName,HttpServletRequest request,HttpServletResponse response) {
 		 ftlForm(tableName,"read",request,response);
 	}
-	//update-end--Author:许国杰  Date:20151219 for：#813 【online表单】扩展出三个请求：独立的添加、查看、编辑请求，原来的保留
-	//update-end--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
-	
-	//add-start--Author:scott Date:20160301 for：online表单移动样式单独配置
+
 	/**
 	 * Online表单移动端，访问页面
 	 */
@@ -110,14 +105,12 @@ public class CgFormBuildController extends BaseController {
 				request.setAttribute("olstylecode", mp.get("form_template_mobile").toString().trim());
 			}
 		}
-		//update-begin--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
+
 		ftlForm(tableName,"",request,response);
-		//update-end--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
+
 		
 	}
-	//add-end--Author:scott Date:20160301 for：online表单移动样式单独配置
-	
-	//add-begin--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
+
 	private void putFormData(List<Map<String,Object>> list,Map<String,Object> dataForm){
 		if(list!=null && !list.isEmpty()){
 			for (Map<String, Object> column : list) {
@@ -128,9 +121,8 @@ public class CgFormBuildController extends BaseController {
 			}
 		}
 	}
-	//add-end--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
-	
-	//update-begin--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
+
+
 	/**
 	 * form表单页面跳转
 	 */
@@ -142,23 +134,19 @@ public class CgFormBuildController extends BaseController {
 //			String tableName =request.getParameter("tableName");
 	        Map<String, Object> data = new HashMap<String, Object>();
 	        String id = request.getParameter("id");
-			//update-begin--Author:张忠亮  Date:20150707 for：online表单风格加入录入、编辑、列表、详情页面设置
+
 //			String mode=request.getParameter("mode");
-			//update-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
+
 			String tablename = PublicUtil.replaceTableName(tableName);
 			String templateName=tablename+"_";
 			//String templateName=tableName+"_";
-			//update-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
-			
-			//update-begin--Author:scott  Date:20170804 for：online表单维护页面，添加页面带id参数报错处理--------------------
-			//update-begin--Author:gj_shaojc  Date:20180404 for：TASK #2586 【问题确认】online 自定义word模板---------
+
 //			Map<String, Object> dataForm = new HashMap<String, Object>();
 //	        if(StringUtils.isNotEmpty(id)){
-//	        	//update-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
+
 //	        	dataForm = dataBaseService.findOneForJdbc(tablename, id);
 //	        	//dataForm = dataBaseService.findOneForJdbc(tableName, id);
-//	        	//update-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
-//	        	//update-begin--Author:zhoujf  Date:20151223 for：恢复--------------------
+
 //		        if(dataForm!=null){
 //		        	Iterator it=dataForm.entrySet().iterator();
 //				    while(it.hasNext()){
@@ -172,12 +160,9 @@ public class CgFormBuildController extends BaseController {
 //		        	id = null;
 //		        	dataForm = new HashMap<String, Object>();
 //		        }
-//		      //update-begin--Author:zhoujf  Date:20151223 for：恢复--------------------
+
 //	        }
-			//update-end--Author:gj_shaojc  Date:20180404 for：TASK #2586 【问题确认】online 自定义word模板---------
-	        //update-end--Author:scott  Date:20170804 for：online表单维护页面，添加页面带id参数报错处理-------------------
-	        
-			//update-begin--Author:张忠亮  Date:20151019 for：url中加入olstylecode 可指定风格
+
 			TemplateUtil.TemplateType templateType=TemplateUtil.TemplateType.LIST;
 			if(StringUtils.isBlank(id)){
 				templateName+=TemplateUtil.TemplateType.ADD.getName();
@@ -194,7 +179,7 @@ public class CgFormBuildController extends BaseController {
 	        //装载表单配置
 	    	Map configData = cgFormFieldService.getFtlFormConfig(tableName,version);
 	    	data = new HashMap(configData);
-	    	//update-begin--Author:gj_shaojc  Date:20180404 for：TASK #2586 【问题确认】online 自定义word模板---------
+
 	    	Map<String, Object> dataForm = new HashMap<String, Object>();
 	    	if(StringUtils.isNotEmpty(id)){
 		        	dataForm = dataBaseService.findOneForJdbc(tablename, id);
@@ -212,15 +197,13 @@ public class CgFormBuildController extends BaseController {
 			        	dataForm = new HashMap<String, Object>();
 			        }
 		        }
-	    	//update-end--Author:gj_shaojc  Date:20180404 for：TASK #2586 【问题确认】online 自定义word模板---------
+
 	    	//如果该表是主表查出关联的附表
 	    	CgFormHeadEntity head = (CgFormHeadEntity)data.get("head");
 	      
 	        Map<String, Object> tableData  = new HashMap<String, Object>();
 	        //获取主表或单表表单数据
-	      //update-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
-	        
-	        //update-begin--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
+
 			if(StringUtils.isBlank(id)){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				logger.info("============================填值规则开始时间:"+sdf.format(new Date())+"==============================");
@@ -249,12 +232,12 @@ public class CgFormBuildController extends BaseController {
 				logger.info("================================填值规则结束时间:"+sdf.format(new Date())+"==============================");
 				logger.info("================================填值规则耗时:"+(endTime-startTime)+"ms==============================");
 			}
-			//update-end--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
+
 
 	        
 	        tableData.put(tablename, dataForm);
 	        //tableData.put(tableName, dataForm);
-	      //update-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
+
 	        //获取附表表表单数据
 	    	if(StringUtils.isNotEmpty(id)){
 		    	if(head.getJformType()==CgAutoListConstant.JFORM_TYPE_MAIN_TALBE){
@@ -272,9 +255,9 @@ public class CgFormBuildController extends BaseController {
 	    	//装载单表/(主表和附表)表单数据
 	    	data.put("data", tableData);
 	    	data.put("id", id);
-	    	//update-begin--Author:钟世云  Date:20150610 for：online支持树配置--------------------
+
 	    	data.put("head", head);
-			//update-end--Author:钟世云  Date:20150610 for：online支持树配置----------------------
+
 	    	
 	    	//页面样式js引用
 	    	data.put(CgAutoListConstant.CONFIG_IFRAME, getHtmlHead(request));
@@ -286,18 +269,18 @@ public class CgFormBuildController extends BaseController {
 	    	//String basePath = request.getContextPath();
 	    	String basePath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 	    	data.put(CgAutoListConstant.BASEPATH, basePath);
-	    	//update--begin--author:scott date:20170628 for: 需要根据浏览器IE进行切换 提示消息方式，layer/easyui
+
 	    	data.put("brower_type", ContextHolderUtils.getSession().getAttribute("brower_type"));
-	        //update--end--author:scott date:20170628 for: T 需要根据浏览器IE进行切换 提示消息方式，layer/easyui
+
 			String content =null;
 			response.setContentType("text/html;charset=utf-8");
-			//update-begin--Author:张忠亮  Date:20151019 for：url中加入olstylecode 可指定风格
+
 			String urlTemplateName = request.getParameter("olstylecode");
-			//update-begin---author:scott---date:20160301-----for:online表单移动样式单独配置-----
+
 			if(oConvertUtils.isEmpty(urlTemplateName)){
 				urlTemplateName = (String) request.getAttribute("olstylecode");
 			}
-			//update-end---author:scott---date:20160301-----for:online表单移动样式单独配置-----
+
 			
 			if(StringUtils.isNotBlank(urlTemplateName)){
 				data.put("this_olstylecode",urlTemplateName);
@@ -308,7 +291,7 @@ public class CgFormBuildController extends BaseController {
 				LogUtil.debug("-------------formTemplate-----------"+head.getFormTemplate());
 				content=getTableTemplate(templateName,request,data);
 			}
-			//update-end--Author:张忠亮  Date:20151019 for：url中加入olstylecode 可指定风格
+
 			response.getWriter().print(content);
 			response.getWriter().flush();
 			long end = System.currentTimeMillis();
@@ -324,10 +307,7 @@ public class CgFormBuildController extends BaseController {
 		}
 
 	}
-	//update-end--Author:zhoujf  Date:20170310 for：TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）--------------------
-	
-	
-//update-begin--Author:张忠亮  Date:20151020 for：url中加入olstylecode 可指定风格 代码优化
+
 	/**
 	 * 获取url指定模板
 	 * @param templateName
@@ -340,9 +320,9 @@ public class CgFormBuildController extends BaseController {
 		CgformTemplateEntity entity=cgformTemplateService.findByCode(templateName);
 		if(entity!=null){
 			FreemarkerHelper viewEngine = new FreemarkerHelper();
-			//update-begin---author:scott---date:20160301-----for:解决传递stylecode解析模板报错问题-----
+
 			dataMap.put("DictData", ApplicationContextUtil.getContext().getBean("dictDataTag"));
-			//update-end---author:scott---date:20160301-----for:解决传递stylecode解析模板报错问题-----
+
 			content = viewEngine.parseTemplate(TemplateUtil.getTempletPath(entity,0, templateType), dataMap);
 		}
 		return content;
@@ -358,17 +338,17 @@ public class CgFormBuildController extends BaseController {
 	private String getTableTemplate(String templateName,HttpServletRequest request,Map data){
 		StringWriter stringWriter = new StringWriter();
 		BufferedWriter writer = new BufferedWriter(stringWriter);
-		//update--begin-------author:scott------date:20151118----for:online表单缓存问题---------------
+
 		String ftlVersion =request.getParameter("ftlVersion");
 //		String ftlVersion = oConvertUtils.getString(data.get("version"));
-		//update--begin-------author:scott------date:20151118----for:online表单缓存问题---------------
+
 		Template template = templetContext.getTemplate(templateName, ftlVersion);
 		try {
-			//update-begin---author:scott---date:20150118-----for:修改linux时间格式不对问题-------------
+
 			template.setDateTimeFormat("yyyy-MM-dd HH:mm:ss");  
 			template.setDateFormat("yyyy-MM-dd");  
 			template.setTimeFormat("HH:mm:ss");
-			//update-end---author:scott---date:20150118-----for:修改linux时间格式不对问题---------------
+
 			template.process(data, writer);
 		} catch (TemplateException e) {
 			e.printStackTrace();
@@ -377,9 +357,7 @@ public class CgFormBuildController extends BaseController {
 		}
 		return stringWriter.toString();
 	}
-	
-//update--begin-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
-//update-end--Author:张忠亮  Date:20151020 for：url中加入olstylecode 可指定风格 代码优化
+
 	private String getHtmlHead(HttpServletRequest request){
 		HttpSession session = ContextHolderUtils.getSession();
 		String lang = (String)session.getAttribute("lang");
@@ -394,10 +372,10 @@ public class CgFormBuildController extends BaseController {
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/dataformat.js\"></script>");
 		sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""+basePath+"/plug-in/accordion/css/accordion.css\">");
 		sb.append(SysThemesUtil.getEasyUiTheme(sysThemesEnum,basePath));
-		//update-begin--Author:scott ---  Date:20170406 ------ for：online一对多样式加载未按照风格切换--------
+
 		sb.append(SysThemesUtil.getEasyUiIconTheme(sysThemesEnum));
 		//sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""+basePath+"/plug-in/accordion/css/icons.css\">");
-		//update-end--Author:scott --- Date:20170406 ------ for：online一对多样式加载未按照风格切换--------
+
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/easyui/jquery.easyui.min.1.3.2.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/easyui/locale/zh-cn.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/syUtil.js\"></script>");
@@ -407,9 +385,9 @@ public class CgFormBuildController extends BaseController {
 		sb.append(SysThemesUtil.getCommonTheme(sysThemesEnum,basePath));
 //		sb.append("<script type=\"text/javascript\" src=\"plug-in/lhgDialog/lhgdialog.min.js\"></script>");
 		sb.append(SysThemesUtil.getLhgdialogTheme(sysThemesEnum,basePath));
-		//update--begin--author:scott Date:20170304 for:替换layer风格提示框
+
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/layer/layer.js\"></script>");
-		//update--end--author:scott Date:20170304 for:替换layer风格提示框
+
 		sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/easyuiextend.js\"></script>");
 		sb.append(SysThemesUtil.getEasyUiMainTheme(sysThemesEnum,basePath));
@@ -424,15 +402,15 @@ public class CgFormBuildController extends BaseController {
 		sb.append(SysThemesUtil.getValidformStyleTheme(sysThemesEnum,basePath));
 		//tablefrom.css
 		sb.append(SysThemesUtil.getValidformTablefrom(sysThemesEnum,basePath));
-		//update--begin-------author:zhoujf------date:20170316----for:TASK #1770 【删除】删除插件umeditor
+
 		//uedit
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/ueditor/ueditor.config.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/ueditor/ueditor.all.js\"></script>");
-		//update--end-------author:zhoujf------date:20170316----for:TASK #1770 【删除】删除插件umeditor
+
 		
 		return sb.toString();
 	}
-	//update--end-------author:zhoujf------date:20170315----for:TASK #1736 【改造】online、自定义表单，请求方式改造，采用restful方式实现（改成.do）(basePath问题)---------------
+
 
 	
 	/**
@@ -457,7 +435,7 @@ public class CgFormBuildController extends BaseController {
 		}
 		data.put("filesList", files);
 	}
-//update-start--Author: jg_huangxg  Date:20160113 for：TASK #824 【online开发】控件类型扩展增加一个图片类型 image
+
 	/**
 	 * 如果表单带有 附件(图片),则查询出来传递到页面
 	 * @param data 传往页面的数据容器
@@ -480,7 +458,7 @@ public class CgFormBuildController extends BaseController {
 		}
 		data.put("imageList", images);
 	}
-//update-end--Author: jg_huangxg  Date:20160113 for：TASK #824 【online开发】控件类型扩展增加一个图片类型 image
+
 	/**
 	 * 保存或更新
 	 * 
@@ -649,9 +627,9 @@ public class CgFormBuildController extends BaseController {
 			    }
 				data = CommUtils.mapConvert(data);
 				dataBaseService.executeSqlExtend(formId, buttonCode, data);
-				//update-start--Author:luobaoli  Date:20150630 for：  增加java增强逻辑处理
+
 				dataBaseService.executeJavaExtend(formId, buttonCode, data);
-				//update-end--Author:luobaoli  Date:20150630 for：  增加java增强逻辑处理
+
 			}
 			j.setSuccess(true);
 			message = "操作成功";

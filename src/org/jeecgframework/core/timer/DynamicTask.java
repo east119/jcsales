@@ -13,7 +13,7 @@ import org.jeecgframework.core.constant.Globals;
 import org.jeecgframework.core.util.HttpRequest;
 import org.jeecgframework.core.util.IpUtil;
 import org.jeecgframework.core.util.MyClassLoader;
-import org.jeecgframework.p3.core.common.utils.StringUtil;
+import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.web.system.pojo.base.TSTimeTaskEntity;
 import org.jeecgframework.web.system.service.SystemService;
 import org.jeecgframework.web.system.service.TimeTaskServiceI;
@@ -42,8 +42,7 @@ public class DynamicTask {
 
 	@Resource
 	private Scheduler schedulerFactory;
-	
-	//update-begin--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置-------------------
+
 	@Autowired
 	private TimeTaskServiceI timeTaskService;
 	
@@ -117,17 +116,16 @@ public class DynamicTask {
 		boolean isSuccess = start ? startTask(task) : endTask(task);
 		if(isSuccess){
 			task.setIsStart(start?"1":"0");
-			//update-begin--Author:zhoujf  Date:20180228 for：TASK #2523 【定时任务】立即生效BUG-------------------
+
 			task.setIsEffect("1");
-			//update-end--Author:zhoujf  Date:20180228 for：TASK #2523 【定时任务】立即生效BUG-------------------
+
 			timeTaskService.updateEntitie(task);
 			systemService.addLog((start?"开启任务":"停止任务")+task.getTaskId(), Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 			logger.info((start?"开启任务":"停止任务")+"-------TaskId:"+task.getTaskId()+"-------Describe:"+task.getTaskDescribe()+"-----ClassName:"+task.getClassName() );
 		}
 		return isSuccess;
 	}
-	
-	//update-begin--Author:zhoujf  Date:20180228 for：TASK #2523 【定时任务】立即生效BUG-------------------
+
 	/**
 	 * 更新触发规则
 	 * @param task
@@ -204,7 +202,7 @@ public class DynamicTask {
 		try {
 			String newExpression = task.getCronExpression();		
 			task = timeTaskService.get(TSTimeTaskEntity.class, task.getId());		
-			//update-begin--Author:zhoujf  date:20171114 -- for: 定时任务BUG修改---
+
 			//任务运行中
 			if("1".equals(task.getIsStart())){
 				CronTriggerBean trigger = (CronTriggerBean)schedulerFactory.getTrigger("cron_" + task.getId(), Scheduler.DEFAULT_GROUP);             
@@ -223,7 +221,7 @@ public class DynamicTask {
 				systemService.addLog(("立即生效开启任务")+task.getTaskId(), Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 				logger.info(("立即生效开启任务")+"-------TaskId:"+task.getTaskId()+"-------Describe:"+task.getTaskDescribe()+"-----ClassName:"+task.getClassName() );
 			}
-			//update-end--Author:zhoujf  date:20171114 -- for: 定时任务BUG修改---
+
 			
 			return true;
 		} catch (SchedulerException e) {
@@ -234,7 +232,7 @@ public class DynamicTask {
 		
 		return false;
 	}*/
-	//update-end--Author:zhoujf  Date:20180228 for：TASK #2523 【定时任务】立即生效BUG-------------------
+
 	
 	/**
 	 * 系统初始加载任务
@@ -253,10 +251,10 @@ public class DynamicTask {
 			for (TSTimeTaskEntity task : tasks) {
 				//startTask(task);
 				try {
-					//update-begin--Author:xuelin  Date:20170822 for：TASK #1742 【新功能】定时任务配置    增加“本地”默认值设定-------------------
+
 					String runServerIp = task.getRunServerIp();					
 					if(ipList.contains(runServerIp) || StringUtil.isEmpty(runServerIp) || "本地".equals(runServerIp)){//当前服务器IP匹配成功
-					//update-end--Author:xuelin  Date:20170822 for：TASK #1742 【新功能】定时任务配置    增加“本地”默认值设定-------------------
+
 						//quartz 1.6
 						JobDetail jobDetail = new JobDetail();
 						jobDetail.setName(task.getId());
@@ -275,7 +273,6 @@ public class DynamicTask {
 			}
 		}
 	}
-	
-	//update-end--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置----------------------
+
 
 }

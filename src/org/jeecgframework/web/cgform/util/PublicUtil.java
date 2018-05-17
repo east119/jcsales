@@ -82,8 +82,7 @@ public class PublicUtil {
 		}
 		return s.trim();
 	}
-	
-	//add-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
+
 	/**
 	 * online配置表截取下划线获取真实物理表名称
 	 */
@@ -96,5 +95,5 @@ public class PublicUtil {
 		//否则返回原数据
 		return tableName;
 	}
-	//add-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置,还原真实表名
+
 }

@@ -55,12 +55,12 @@ public class NoticeController extends BaseController{
 	
 	@Autowired
 	private NoticeService noticeService;
-	//update--begin--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
+
 	@Autowired
 	private NoticeAuthorityRoleController noticeAuthorityRoleController;
 	@Autowired
 	private NoticeAuthorityUserController noticeAuthorityUserController;
-	//update--end--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
+
 
 	@Autowired
 	public void setSystemService(SystemService systemService) {
@@ -80,7 +80,7 @@ public class NoticeController extends BaseController{
 		AjaxJson j = new AjaxJson();
 		try {
 			TSUser user = ResourceUtil.getSessionUser();
-			//update--begin--author:zhangjiaqiang date:20170309 for:修订日志获取速度慢的问题
+
 			String sql = "SELECT notice.*,noticeRead.is_read as is_read FROM t_s_notice notice "
 					+ "LEFT JOIN t_s_notice_read_user noticeRead ON  notice.id = noticeRead.notice_id "
 					+ "WHERE noticeRead.del_flag = 0 and noticeRead.user_id = '"+user.getId()+"' ";
@@ -91,7 +91,7 @@ public class NoticeController extends BaseController{
 			}
 			sql += " ORDER BY noticeRead.create_time DESC ";		
 			List<Map<String, Object>> noticeList =  systemService.findForJdbc(sql,1,10);
-			//update-end-Alex 20160310 for:去除LIMIT,解决数据库兼容性问题
+
 			
 			//将List转换成JSON存储
 			JSONArray result = new JSONArray();
@@ -118,7 +118,7 @@ public class NoticeController extends BaseController{
 					+ "LEFT JOIN t_s_notice_read_user noticeRead ON  notice.id = noticeRead.notice_id "
 					+ "WHERE noticeRead.del_flag = 0 and noticeRead.user_id = '"+user.getId()+"' "
 					+ "and noticeRead.is_read = 0";
-			//update--end--author:zhangjiaqiang date:20170309 for:修订日志获取速度慢的问题
+
 			List<Map<String, Object>> resultList2 =  systemService.findForJdbc(sql2);
 			Object count = resultList2.get(0).get("count");
 			j.setObj(count);
@@ -149,7 +149,7 @@ public class NoticeController extends BaseController{
 		if (StringUtil.isNotEmpty(notice.getId())) {
 			notice = this.systemService.getEntity(TSNotice.class, notice.getId());
 			request.setAttribute("notice", notice);
-			//update--begin--author:zhangjiaqiang date:20170314 for:修订日志列表的获取缓慢问题
+
 			TSUser user = ResourceUtil.getSessionUser();
 			String hql = "from TSNoticeReadUser where noticeId = '"+notice.getId()+"' and userId = '"+user.getId()+"'";
 			List<TSNoticeReadUser> noticeReadList = systemService.findHql(hql);
@@ -160,7 +160,7 @@ public class NoticeController extends BaseController{
 					systemService.saveOrUpdate(readUser);
 				}
 			}
-			//update--end--author:zhangjiaqiang date:20170314 for:修订日志列表的获取缓慢问题
+
 		}
 		return new ModelAndView("system/notice/noticeinfo");
 	}
@@ -179,8 +179,7 @@ public class NoticeController extends BaseController{
 //			//查询条件组装器
 //			org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, notice, request.getParameterMap());
 //			this.noticeService.getDataGridReturn(cq, true);
-			
-			//update--begin--author:zhangjiaqiang date:20170309 for:修订日志列表的获取
+
 			TSUser user = ResourceUtil.getSessionUser();
 			String sql = "SELECT notice.*,noticeRead.is_read as is_read FROM t_s_notice notice "
 					+ " LEFT JOIN t_s_notice_read_user noticeRead ON  notice.id = noticeRead.notice_id "
@@ -189,7 +188,7 @@ public class NoticeController extends BaseController{
 			
 			List<Map<String, Object>> resultList =  systemService.findForJdbc(sql,dataGrid.getPage(),dataGrid.getRows());
 			//将List转换成JSON存储
-			//update-begin--Author:xugj  Date:20160330 for：#1012 【平台bug】系统公告列表时间格式不对
+
 			List<Map<String, Object>> noticeList = new ArrayList<Map<String, Object>>();
 			if(resultList!=null && resultList.size()>0){
 				for(int i=0;i<resultList.size();i++){
@@ -203,14 +202,14 @@ public class NoticeController extends BaseController{
 					noticeList.add(n);	
 				}
 			}
-			//update-end--Author:xugj  Date:20160330 for：#1012 【平台bug】系统公告列表时间格式不对
+
 	
 			dataGrid.setResults(noticeList);
 			String getCountSql ="SELECT count(notice.id) as count FROM t_s_notice notice LEFT JOIN t_s_notice_read_user noticeRead ON  notice.id = noticeRead.notice_id "
 					+ "WHERE noticeRead.del_flag = 0 and noticeRead.user_id = '"+user.getId()+"' and noticeRead.is_read = 0";
 			List<Map<String, Object>> resultList2 =  systemService.findForJdbc(getCountSql);
 			Object count = resultList2.get(0).get("count");
-			//update--end--author:zhangjiaqiang date:20170309 for:修订日志列表的获取
+
 			dataGrid.setTotal(Integer.valueOf(count.toString()));
 			TagUtil.datagrid(response, dataGrid);
 	}
@@ -285,7 +284,7 @@ public class NoticeController extends BaseController{
 		tSNotice = systemService.getEntity(TSNotice.class, tSNotice.getId());
 		message = "通知公告删除成功";
 		try{
-			//update--begin--author:zhangjiaqiang date:20170309 for:修订日志信息获取缓慢
+
 			if("2".equals(tSNotice.getNoticeLevel())){
 				String sql = "delete from t_s_notice_authority_role where notice_id = '"+tSNotice.getId()+"'";
 				systemService.executeSql(sql);
@@ -295,7 +294,7 @@ public class NoticeController extends BaseController{
 			}
 			String sql = "delete from t_s_notice_read_user where notice_id = '"+tSNotice.getId()+"'";
 			systemService.executeSql(sql);
-			//update--end--author:zhangjiaqiang date:20170309 for:修订日志信息获取缓慢
+
 			noticeService.delete(tSNotice);
 			systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
@@ -347,7 +346,7 @@ public class NoticeController extends BaseController{
 		AjaxJson j = new AjaxJson();
 		message = "通知公告添加成功";
 		try{
-			//update--begin--author:zhangjiaqiang date:20170309 for:修订日志信息获取缓慢
+
 			Serializable noticeSerializable = noticeService.save(tSNotice);
 			if("1".equals(tSNotice.getNoticeLevel())){
 				//全员进行授权
@@ -378,7 +377,7 @@ public class NoticeController extends BaseController{
 					}
 				});
 			}
-			//update--begin--author:zdangzhenghui date: 20170322 for: TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
+
 			if ("2".equals(tSNotice.getNoticeLevel())) {
 				clearRole(tSNotice.getId(),request);
 				String roleid[]=request.getParameter("roleid").split(",");
@@ -402,9 +401,7 @@ public class NoticeController extends BaseController{
 					this.noticeAuthorityUserController.doSave(noticeAuthorityUser,request);
 				}
 			}
-			//update--end--author:zdangzhenghui date: 20170322 for: TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
 
-			//update--end--author:zhangjiaqiang date:20170309 for:修订日志信息获取缓慢
 			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -430,7 +427,7 @@ public class NoticeController extends BaseController{
 		TSNotice t = noticeService.get(TSNotice.class, tSNotice.getId());
 		
 		try {
-			//update--begin--author:zhangjiaqiang date:20170309 for:修订日志信息获取缓慢
+
 			if("1".equals(tSNotice.getNoticeLevel()) && !t.getNoticeLevel().equals(tSNotice.getNoticeLevel())){
 				clearRole(tSNotice.getId(),request);
 				clearUser(tSNotice.getId(),request);
@@ -466,11 +463,10 @@ public class NoticeController extends BaseController{
 					String sql = "delete from t_s_notice_read_user where notice_id = '"+t.getId()+"' ";
 					systemService.executeSql(sql);
 			}
-			//update--end--author:zhangjiaqiang date:20170309 for:修订日志信息获取缓慢
+
 			MyBeanUtils.copyBeanNotNull2Bean(tSNotice, t);
 			noticeService.saveOrUpdate(t);
 
-			//update--begin--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
 			if ("2".endsWith(tSNotice.getNoticeLevel())) {
 				clearRole(tSNotice.getId(),request);
 				clearUser(tSNotice.getId(),request);
@@ -498,7 +494,7 @@ public class NoticeController extends BaseController{
 					this.noticeAuthorityUserController.doSave(noticeAuthorityUser,request);
 				}
 			}
-			//update--end--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
+
 
 			systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 		} catch (Exception e) {
@@ -509,8 +505,7 @@ public class NoticeController extends BaseController{
 		j.setMsg(message);
 		return j;
 	}
-	
-	//update--begin--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
+
 	private void clearUser(String id,HttpServletRequest request){
 		TSNoticeAuthorityUser user=new TSNoticeAuthorityUser();
 		user.setNoticeId(id);
@@ -529,7 +524,7 @@ public class NoticeController extends BaseController{
 		}
 
 	}
-	//update--end--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
+
 	
 	/**
 	 * 通知公告新增页面跳转
@@ -558,7 +553,6 @@ public class NoticeController extends BaseController{
 			}
 			req.setAttribute("tSNoticePage", tSNotice);
 
-			//update--begin--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
 			if (tSNotice.getNoticeLevel().equals("2")){
 				TSNoticeAuthorityRole role=new TSNoticeAuthorityRole();
 				role.setNoticeId(tSNotice.getId());
@@ -585,7 +579,7 @@ public class NoticeController extends BaseController{
 				req.setAttribute("usersid",usersid);
 				req.setAttribute("usersName",usersName);
 			}
-			//update--end--author:dangzhenghui date:20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可
+
 
 		}
 		return new ModelAndView("system/notice/tSNotice-update");

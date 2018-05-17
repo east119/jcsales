@@ -133,9 +133,9 @@ function doLine(){
 			color : '#1f7e92',
 			linewidth : 3
 		}],
-		//update-begin--author:zhangjiaqiang Date:20170213 for:修订移动报表X坐标轴数据信息错误
+
 		labels:labels,
-		//update-end--author:zhangjiaqiang Date:20170213 for:修订移动报表X坐标轴数据信息错误
+
 		sub_option : {
 			label : {
 				fontsize : 14,

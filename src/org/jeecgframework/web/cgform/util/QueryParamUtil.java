@@ -34,22 +34,22 @@ public class QueryParamUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void loadQueryParams(HttpServletRequest request, CgFormFieldEntity b, Map params) {
-		//--add-begin--Author:钟世云  Date:20150614 for：online支持树配置
+
 		if(CgAutoListConstant.BOOL_FALSE.equalsIgnoreCase(b.getIsQuery())) {
 			return;
 		}
-		//--add-end--Author:钟世云  Date:20150614 for：online支持树配置
+
 		
 		if("single".equals(b.getQueryMode())){
 			//单条件组装方式
-			//--update-begin--Author:dangzhenghui  Date:20170502 for：Online Excel导出数据bug，中文乱码问题----
+
 			String value = request.getParameter(b.getFieldName());
-				//--update-begin--Author:scott  Date:20180223 for：Online数据导出，单查询模式，默认背景值导致导出数据为空问题----
+
 				if(StringUtil.isEmpty(value)||"请输入关键字".equals(value)){
-				//--update-end--Author:scott  Date:20180223 for：Online数据导出，单查询模式，默认背景值导致导出数据为空问题----
+
 					return;
 				}
-			//update-begin--Author:dangzhenghui  Date:20170502 for：Online Excel导出数据bug，中文乱码问题----
+
 			sql_inj_throw(value);
 			value = applyType(b.getType(),value);
 			if(!StringUtil.isEmpty(value)){
@@ -91,11 +91,11 @@ public class QueryParamUtil {
 		if(!StringUtil.isEmpty(value)){
 			String result = "";
 			if(CgAutoListConstant.TYPE_STRING.equalsIgnoreCase(fieldType)){
-				//update-begin--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
+
 				//if(ResourceUtil.fuzzySearch&&(!value.contains("*"))){
 				//	value="*"+value+"*";
 				//}
-				//update-end--Author:zzl  Date:20151123 for：加入配置属性可默认进行模糊查询
+
 				result = "'" +value+ "'";
 			}else if(CgAutoListConstant.TYPE_DATE.equalsIgnoreCase(fieldType)){
 				result = getDateFunction(value, "yyyy-MM-dd");
@@ -164,11 +164,11 @@ public class QueryParamUtil {
 			dateFunction = "TO_DATE('"+dateStr+"','"+dateFormat+"')";
 		}else if("sqlserver".equalsIgnoreCase(dbType)){
 			//sqlserver日期函数
-			//update-begin author:taoYan date:20170727 for:sqlserver时间格式化----
+
 			//dateFunction = "(CONVERT(VARCHAR,'"+dateStr+"') as DATETIME)";
 			dateFunction = "CONVERT(VARCHAR,'"+dateStr+"',120)";
 			//120 或者 20	yyyy-mm-dd hh:mi:ss(24h)
-			//update-end author:taoYan date:20170727 for:sqlserver时间格式化----
+
 		}else if("postgres".equalsIgnoreCase(dbType)){
 			//postgres日期函数
 			dateFunction = "'"+dateStr+"'::date ";

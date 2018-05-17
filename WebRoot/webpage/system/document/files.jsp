@@ -16,9 +16,7 @@
 		<span class="Validform_checktip">标题名称在3~50位字符,且不为空</span>
 	</div>
 	<div class="form">
-		<!-- update--begin--author:zhangjiaqiang date:20170914 for:文档附件编辑没保存 -->
 		<t:upload name="fiels" buttonText="上传文件" uploader="jeecgFormDemoController.do?saveFiles&documentId=${doc.id}" extend="" id="file_upload" formData="documentTitle"></t:upload>
-		<!-- update--end--author:zhangjiaqiang date:20170914 for:文档附件编辑没保存 -->
 	</div>
 	<div class="form" id="filediv" style="height: 50px">
 		<c:if test="${not empty attachment }">

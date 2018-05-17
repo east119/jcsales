@@ -47,8 +47,7 @@ public class TsBlackListServiceImpl extends CommonServiceImpl implements TsBlack
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	/**
 	 * 更新操作增强业务
 	 * @param t
@@ -59,8 +58,7 @@ public class TsBlackListServiceImpl extends CommonServiceImpl implements TsBlack
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	/**
 	 * 删除操作增强业务
 	 * @param id
@@ -71,8 +69,7 @@ public class TsBlackListServiceImpl extends CommonServiceImpl implements TsBlack
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	
  	private Map<String,Object> populationMap(TsBlackListEntity t){
 		Map<String,Object> map = new HashMap<String,Object>();

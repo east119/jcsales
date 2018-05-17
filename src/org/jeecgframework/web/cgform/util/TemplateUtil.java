@@ -82,7 +82,7 @@ public class TemplateUtil {
         }
         String templateCode=entity.getTemplateCode();
         String templateName=null;
-        //update--begin--author:zhoujf date:20170320 for:TASK 1796【online】online改造模板，不区分一对多和单表的，固化模板文件名字，不需要复杂配置
+
         switch (type){
             case ADD:
 //                templateName=entity.getTemplateAddName();
@@ -115,14 +115,13 @@ public class TemplateUtil {
             default:
                 templateName=entity.getTemplateListName();
         }
-        //update--end--author:zhoujf date:20170320 for:TASK 1796【online】online改造模板，不区分一对多和单表的，固化模板文件名字，不需要复杂配置
+
         StringBuffer buffer=new StringBuffer(BASE_DIR+templateCode+"/");
         buffer.append(TEMPLET_VIEW_DIR_DEFAULT+"/");
         buffer.append(templateName);
         return buffer.toString();
     }
-    
-    //add-start--Author:jg_renjie  Date:20150706 for：解析经过leipiFormDesign.parse_form()格式化的表单模板html
+
     /**
      * 解析经过leipiFormDesign.parse_form()格式化的表单模板html
      * @param content
@@ -172,9 +171,7 @@ public class TemplateUtil {
 		}
 		return map;
 	}
-	//add-start--Author:jg_renjie  Date:20150706 for：解析经过leipiFormDesign.parse_form()格式化的表单模板html
-	
-	//add-start--Author:jg_renjie  Date:20150719 for：列表控件的展示功能
+
 	private static String GetListctrl(JSONObject item,
 			Map<String, Object> formData, String action) {
 		String valuetest = "{\"data_110\":[\"1\",\"2\"],\"data_111\":[\"21\",\"22\",\"22\"]}";
@@ -291,13 +288,13 @@ public class TemplateUtil {
 				}
 				if ((i+1) == tdCount)// 最后一列不显示 && 第一列也不显示
 				{   
-					//update-begin--Author:jg_renjie  Date:20150806 for：第一列不显示删除功能
+
 					if(row == 0){
 						tr += "<td></td>";
 					} else {
 						tr += "<td><a href=\"javascript:void(0);\" class=\"delrow \">删除</a></td>";
 					}
-					//update-end--Author:jg_renjie  Date:20150806 for：第一列不显示删除功能
+
 				}
 				if (row == 0)// 统计的行只有一行
 				{
@@ -349,5 +346,5 @@ public class TemplateUtil {
 		
 		return temp_html;
 	}
-	//add-end--Author:jg_renjie  Date:20150719 for：列表控件的展示功能
+
 }

@@ -32,7 +32,7 @@ import org.jeecgframework.core.util.FileUtils;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.core.util.StringUtil;
-import org.jeecgframework.p3.core.util.oConvertUtils;
+import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
@@ -349,9 +349,9 @@ public class CgformTemplateController extends BaseController {
 		if(StringUtils.isNotBlank(id)) {
 			CgformTemplateEntity entity = cgformTemplateService.getEntity(CgformTemplateEntity.class, id);
 			if (entity != null && entity.getTemplateCode() != null) {
-				//update-begin--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 				File dirFile=new File(getUploadBasePath(request)+File.separator+entity.getTemplateCode());
-				//update-end--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 				if(dirFile.exists()&&dirFile.isDirectory()){
 					flag=true;
 				}
@@ -447,9 +447,9 @@ public class CgformTemplateController extends BaseController {
 			tempDir.mkdirs();
 		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
 			MultipartFile file = entity.getValue();
-			//update-begin--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 			picTempFile=new File(tempDir.getAbsolutePath(),File.separator+"index_"+request.getSession().getId()+"."+FileUtils.getExtend(file.getOriginalFilename()));
-			//update-begin--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 			try{
 				if(picTempFile.exists())
 					org.apache.commons.io.FileUtils.forceDelete(picTempFile);
@@ -484,9 +484,9 @@ public class CgformTemplateController extends BaseController {
 			tempDir.mkdirs();
 		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
 			MultipartFile file = entity.getValue();
-			//update-begin--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 			picTempFile=new File(tempDir.getAbsolutePath(),File.separator+"zip_"+request.getSession().getId()+"."+ FileUtils.getExtend(file.getOriginalFilename()));
-			//update-begin--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 			try{
 				if(picTempFile.exists())
 					org.apache.commons.io.FileUtils.forceDelete(picTempFile);
@@ -515,7 +515,7 @@ public class CgformTemplateController extends BaseController {
 		String defaultPath="default.jpg";
 		String defaultCode="default/images/";
 		//无图片情况
-		//update-begin-author:taoYan date:20170727 for:参数可能是""，修改判断方法，不然会出现自动下载文件的情况。。。 
+
 		if(oConvertUtils.isEmpty(path)){
 			path=defaultPath;
 			code=defaultCode;
@@ -527,7 +527,7 @@ public class CgformTemplateController extends BaseController {
 				code+="/images/";
 			}
 		}
-		//update-end-author:taoYan date:20170727 for:参数可能是""，修改判断方法，不然会出现自动下载文件的情况。。。 
+
 		FileInputStream fis = null;
 		OutputStream out = null;
 		response.setContentType("image/" + FileUtils.getExtend(path));
@@ -541,9 +541,9 @@ public class CgformTemplateController extends BaseController {
 			byte[] b = new byte[fis.available()];
 			fis.read(b);
 			out.write(b);
-			//update-start--Author:scott  Date:20170608 for：图片流异常----
+
 			//out.flush();
-			//update-end--Author:scott  Date:20170608 for：图片流异常----
+
 		} catch (Exception e) {
 			logger.error(e.toString());
 //			e.printStackTrace();
@@ -560,20 +560,17 @@ public class CgformTemplateController extends BaseController {
 	}
 	//获取上传根路径
 	private String getUploadBasePath(HttpServletRequest request){
-//      update-start--Author:zhoujf  Date:20150623 for：文件basePath获取
+
 //		String path=request.getSession().getServletContext().getRealPath("/WEB-INF/classes/online/template");
-//      update-start--Author:zhoujf  Date:20170220 for：TASK #1339 【bug】online表单样式模板，采用maven方式启动，图片显示不出来，图片读取方式不对
+
 		ClassLoader classLoader = this.getClass().getClassLoader();  
         URL resource = classLoader.getResource("sysConfig.properties");  
         String path = resource.getPath(); 
         path = path.substring(0,path.indexOf("sysConfig.properties"))+"online/template";
 //		String path= this.getClass().getResource("/").getPath()+"online/template";
-//      update-end--Author:zhoujf  Date:20170220 for：TASK #1339 【bug】online表单样式模板，采用maven方式启动，图片显示不出来，图片读取方式不对
-//      update-end--Author:zhoujf  Date:20150623 for：文件basePath获取
-        
-        //update-begin--Author:xuelin  Date:20170328 for：[#1820]Online表单样式 预览图不显示--------------------
-        path = path.replaceAll("%20", " ");//解决tomcat安装路径包含空格的问题
-        //update-end--Author:xuelin  Date:20170328 for：[#1820]Online表单样式 预览图不显示----------------------
+
+       path = path.replaceAll("%20", " ");//解决tomcat安装路径包含空格的问题
+
 		return path;
 	}
 
@@ -643,14 +640,14 @@ public class CgformTemplateController extends BaseController {
 	//下载文件
 	private  void downLoadFile(InputStream inputStream,String fileName,long size,HttpServletResponse response){
 		try{
-			//update-begin author:taoYan date:20170727 for:ie下载文件 文件名乱码
+
 			String userAgent =ContextHolderUtils.getRequest().getHeader("user-agent").toLowerCase();
 			if (userAgent.contains("msie") || userAgent.contains("like gecko") ) {
 				fileName = URLEncoder.encode(fileName, "UTF-8");
 			}else {  
 				fileName = new String(fileName.getBytes("UTF-8"),"iso-8859-1");
 			} 
-			//update-end author:taoYan date:20170727 for:ie下载文件 文件名乱码
+
 		}catch (Exception e){
 			e.printStackTrace();
 		}

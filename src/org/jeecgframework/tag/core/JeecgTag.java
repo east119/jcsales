@@ -22,12 +22,11 @@ public abstract class JeecgTag extends TagSupport {
 	 */
 	public StringBuffer getTagCache(){
 		//EhcacheUtil.remove(EhcacheUtil.TagCache, toString());
-		
-		//update-start--Author:scott  Date:20170912 for：开发模式下，标签不做缓存便于调试---------
+
 		if(CgAutoListConstant.SYS_MODE_DEV.equalsIgnoreCase(TempletContext._sysMode)){
 			return null;
 		}
-		//update-end--Author:scott  Date:20170912 for：开发模式下，标签不做缓存便于调试---------
+
 		
 		//log.info("-----TagCache-----toString()-----"+toString());
 		return (StringBuffer) EhcacheUtil.get(EhcacheUtil.TagCache, toString());

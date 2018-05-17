@@ -99,14 +99,12 @@ public class CgFormFieldEntity implements java.io.Serializable {
 	private java.lang.String oldFieldName;
 	/**字段默认值*/
 	private java.lang.String fieldDefault;
-	//add-start--Author:luobaoli  Date:20150610 for：添加扩展参数字段
+
 	/**扩展参数**/
 	private java.lang.String extendJson;
-	//add-start--Author:luobaoli  Date:20150610 for：添加扩展参数字段
-	
-	//add-begin--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
+
 	private String fillRuleCode;
-	//add-end--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
+
 	
 	
 	
@@ -563,7 +561,6 @@ public class CgFormFieldEntity implements java.io.Serializable {
 		this.fieldDefault = fieldDefault;
 	}
 
-	//add-start--Author:luobaoli  Date:20150610 for：添加扩展参数字段
 	@Column(name ="extend_json",nullable=true,length=500)
 	public java.lang.String getExtendJson() {
 		return extendJson;
@@ -572,9 +569,8 @@ public class CgFormFieldEntity implements java.io.Serializable {
 	public void setExtendJson(java.lang.String extendJson) {
 		this.extendJson = extendJson;
 	}
-	//add-end--Author:luobaoli  Date:20150610 for：添加扩展参数字段
-	
-	//update--start--author:zhangjiaqiang date:20170413 for:增加字段是否必填
+
+
 	@Column(name="field_must_input")
 	public String getFieldMustInput() {
 		return fieldMustInput;
@@ -583,9 +579,7 @@ public class CgFormFieldEntity implements java.io.Serializable {
 	public void setFieldMustInput(String fieldMustInput) {
 		this.fieldMustInput = fieldMustInput;
 	}
-	//update--end--author:zhangjiaqiang date:20170413 for:增加字段是否必填
 
-	//add-begin--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
 	@Column(name="fill_rule_code")
 	public String getFillRuleCode() {
 		return fillRuleCode;
@@ -594,7 +588,7 @@ public class CgFormFieldEntity implements java.io.Serializable {
 	public void setFillRuleCode(String fillRuleCode) {
 		this.fillRuleCode = fillRuleCode;
 	}
-	//add-end--Author:Yandong  Date:20180105 for：TASK #2469 【online改造】增加填值规则字段
+
 	
 	
 }

@@ -114,13 +114,13 @@ public class TabsTag extends JeecgTag {
 	}
 
 	public StringBuffer end() {
-		//update-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		StringBuffer sb = this.getTagCache();
 		if(sb != null){
 			return sb;
 		}
 		sb = new StringBuffer();
-		//update-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		if (iframe) {
 			sb.append("<script type=\"text/javascript\">");
 			sb.append("$(function(){");
@@ -158,16 +158,16 @@ public class TabsTag extends JeecgTag {
 
 			sb.append("function createFrame" + id + "(id)");
 			sb.append("{");
-			//--update--start--date:20160601--Author: jg_huangxg for: 修正 iframe id 多了一对 单引号的问题
+
 			sb.append("var s = \'<iframe id=\"+id+\" scrolling=\"no\" frameborder=\"0\"  src=\"about:blank\" width=\""+oConvertUtils.getString(width, "100%")+"\" height=\""+oConvertUtils.getString(heigth, "99.5%")+"\"></iframe>\';");
-			//--update--end--date:20160601--Author: jg_huangxg for: 修正 iframe id 多了一对 单引号的问题
+
 			sb.append("return s;");
 			sb.append("}");
 			sb.append("});");
 			sb.append("</script>");
 		}
 		if (tabs) {
-			//update-begin--Author:xuelin  Date:20170427 for：#1755 【美化】用户分析报表，多tab格式，是否可以美化--------------------
+
 				//增加width属性，fit属性之前写死，改为由页面设定，不填默认true
 			sb.append("<div id=\"" + id + "\" tabPosition=\"" + tabPosition + "\" border=flase style=\"margin:0px;padding:0px;overflow-x:hidden;width:"+oConvertUtils.getString(width, "auto")+";\" class=\"easyui-tabs\" fit=\""+fit+"\">");
 			if (!iframe) {
@@ -176,20 +176,20 @@ public class TabsTag extends JeecgTag {
 						sb.append("<div title=\"" + tab.getTitle() + "\" " + (tab.getIcon() != null ? ("iconCls=\"" + tab.getIcon() + "\" ") : "") + " href=\"" + tab.getHref() + "\" style=\"margin:0px;padding:0px;overflow-x:hidden;overflow-y:auto;width=auto;\"></div>");
 					} else {
 						sb.append("<div " + (tab.getIcon() != null ? ("iconCls=\"" + tab.getIcon() + "\" ") : "") + " title=\"" + tab.getTitle() + "\"  style=\"margin:0px;padding:0px;overflow-x:hidden;overflow-y:auto;width=auto;\">");
-						//--update--start--date:20160601--Author: jg_huangxg for: 修正 iframe 输出时,尾部多了三个字符的问题 和 iframe id 多了一对 单引号的问题
+
 						sb.append("<iframe id=\""+tab.getId()+"\" scrolling=\"no\" frameborder=\"0\"  src=\""+tab.getIframe()+"\" width=\""+oConvertUtils.getString(tab.getWidth(), "100%")+"\" height=\""+oConvertUtils.getString(tab.getHeigth(), "99.5%")+"\"></iframe>");
-						//--update--end--date:20160601--Author: jg_huangxg for: 修正 iframe 输出时,尾部多了三个字符的问题 和 iframe id 多了一对 单引号的问题
+
 						sb.append("</div>");
 					}
 
 				}
 			}
 			sb.append("</div>");
-			//update-end--Author:xuelin  Date:20170427 for：#1755 【美化】用户分析报表，多tab格式，是否可以美化----------------------
+
 		}
-		//update-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		this.putTagCache(sb);
-		//update-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		return sb;
 	}
 
@@ -208,7 +208,6 @@ public class TabsTag extends JeecgTag {
 		tabList.add(tab);
 	}
 
-	//update-start--Author:yugwu  Date:20170830 for:key生成逻辑重新编写----
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -240,6 +239,6 @@ public class TabsTag extends JeecgTag {
 				.append("]");
 		return builder.toString();
 	}
-	//update-end--Author:yugwu  Date:20170830 for:key生成逻辑重新编写----
+
 
 }

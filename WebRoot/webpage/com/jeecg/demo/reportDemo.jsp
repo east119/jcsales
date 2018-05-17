@@ -76,9 +76,9 @@
 				url : "jeecgListDemoController.do?broswerCount&reportType=column",
 				success : function(jsondata) {
 					data = eval(jsondata);
-					//update-begin--Author:xuelin  Date:20170804 for：TASK #2246 【IE兼容问题】两个报表，不兼容IE8，代码优化-------------------
+
 					//console.log(data);//Highcharts报表插件bug,IE8下不能出现该语句,否则报表不显示					
-					//update-end--Author:xuelin  Date:20170804 for：TASK #2246 【IE兼容问题】两个报表，不兼容IE8，代码优化----------------------
+
 					chart = new Highcharts.Chart({
 						chart : {
 							renderTo : 'containerCol',
@@ -90,9 +90,9 @@
 							text : '<t:mutiLang langKey="broswer.count.analysis"/>-<b><t:mutiLang langKey="common.histogram"/></b>'
 						},
 						xAxis : {
-							//update-begin--Author:weict  Date:20170515 for：TASK #1973 【demo 问题】综合报表挤一块了，少点数据，提高效果--------------------
+
 							categories : [ 'Chrome', 'Firefox', 'IE', 'MSIE 7.0', 'MSIE 8.0','MSIE 9.0','rv:11.0','Safari']
-							//update-end--Author:weict  Date:20170515 for：TASK #1973 【demo 问题】综合报表挤一块了，少点数据，提高效果----------------------
+
 						},
 						tooltip : {
 							 percentageDecimals : 1,
@@ -115,16 +115,16 @@
 									color : '#000000',
 									connectorColor : '#000000',
 									formatter : function() {
-										//update-begin--Author:weict  Date:20170515 for：TASK #1973 【demo 问题】综合报表挤一块了，少点数据，提高效果--------------------
+
 										return  Highcharts.numberFormat(this.percentage, 1)+"%";
-										//update-end--Author:weict  Date:20170515 for：TASK #1973 【demo 问题】综合报表挤一块了，少点数据，提高效果----------------------
+
 									}
 								}
 							}
 						},
-						//update-begin--Author:xuelin  Date:20170804 for：TASK #2246 【IE兼容问题】两个报表，不兼容IE8，代码优化 -------------------
+
 						series:data//,IE8不喜欢多余的逗号
-						//update-begin--Author:xuelin  Date:20170804 for：TASK #2246 【IE兼容问题】两个报表，不兼容IE8，代码优化-------------------
+
 					});
 				}
 			});

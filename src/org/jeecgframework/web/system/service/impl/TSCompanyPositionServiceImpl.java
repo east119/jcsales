@@ -48,8 +48,7 @@ public class TSCompanyPositionServiceImpl extends CommonServiceImpl implements T
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	/**
 	 * 更新操作增强业务
 	 * @param t
@@ -60,8 +59,7 @@ public class TSCompanyPositionServiceImpl extends CommonServiceImpl implements T
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	/**
 	 * 删除操作增强业务
 	 * @param id
@@ -72,8 +70,7 @@ public class TSCompanyPositionServiceImpl extends CommonServiceImpl implements T
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	
  	private Map<String,Object> populationMap(TSCompanyPositionEntity t){
 		Map<String,Object> map = new HashMap<String,Object>();

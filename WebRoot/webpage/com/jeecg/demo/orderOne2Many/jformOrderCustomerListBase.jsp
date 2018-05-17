@@ -3,7 +3,6 @@
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
 <div class="easyui-layout" fit="true">
   <div region="center" style="padding:0px;border:0px">
-  <!-- update-begin-author:taoyan date:20171031 for:TASK #2388 【demo】做个demo，一个页面有多个 datagrid 叠在一起 -->
   <t:datagrid name="jformOrderCustomerList" checkbox="true" fitColumns="true" title="" actionUrl="jformOrderMainController.do?customerDatagrid" 
   	idField="id" fit="true" queryMode="group" collapsible="true">
    <t:dgCol title="主键"  field="id"  hidden="true"  queryMode="single"  width="0"></t:dgCol>
@@ -21,9 +20,8 @@
   </div>
  </div>
  <script type="text/javascript" src="webpage/com/jeecg/demo/orderOne2Many/rowedit.js" ></script>
- <!-- update-end-author:taoyan date:20171031 for:TASK #2388 【demo】做个demo，一个页面有多个 datagrid 叠在一起 -->
  <script type="text/javascript">
- //update-begin-author:taoYan date:20171031 for:TASK #2388 【demo】做个demo，一个页面有多个 datagrid 叠在一起 
+
  var selectIframe;//iframe对象
  var iframeCloseFlag = 1;//避免多次创建弹框
  $(function(){
@@ -81,5 +79,5 @@ function callbackSelect(obj) {
 		iframeCloseFlag = 1;
 	}
 }
- //update-end-author:taoYan date:20171031 for:TASK #2388 【demo】做个demo，一个页面有多个 datagrid 叠在一起 
+
  </script>

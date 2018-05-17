@@ -10,14 +10,10 @@
 	<t:dgCol title="激活状态" field="ftlStatus" replace="未激活_0,已激活_1"></t:dgCol>
 	<t:dgCol title="word路径" field="ftlWordUrl"></t:dgCol>
 	<t:dgCol title="操作" field="opt" width="100"></t:dgCol>
-	<!-- 	//update-begin--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 	<t:dgDelOpt title="删除" exp="ftlStatus#eq#0" url="cgformFtlController.do?del&id={id}&formId=${formid}" urlclass="ace_button"  urlfont="fa-trash-o"/>
 	<t:dgConfOpt title="激活" url="cgformFtlController.do?active&id={id}&formId=${formid}" urlclass="ace_button"  urlfont="fa-toggle-on" message="确认激活模板" exp="ftlStatus#eq#0"/>
 	<t:dgConfOpt title="取消激活" url="cgformFtlController.do?cancleActive&id={id}&formId=${formid}" urlclass="ace_button"  urlfont="fa-toggle-off" message="确认取消激活" exp="ftlStatus#eq#1"/>
-	<!-- update-begin--Author:zhoujf  Date:20180326 for：TASK #2593 【online表单模板】表单模板预览功能有问题  -->
 	<t:dgFunOpt funname="preview(cgformName,ftlVersion)" title="模板预览"  urlclass="ace_button"  urlfont="fa-search"></t:dgFunOpt>
-	<!-- update-begin--Author:zhoujf  Date:20180326 for：TASK #2593 【online表单模板】表单模板预览功能有问题  -->
-	<!-- 	//update-begin--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 	<t:dgToolBar title="创建模板" icon="icon-add" funname="add" width="100%" url="cgformFtlController.do?addorupdate&cgformId=${formid}" height="100%"></t:dgToolBar>
 	<%-- 
 	<t:dgToolBar title="自定义布局模板" icon="icon-add" funname="add" url="cgformFtlController.do?addorupdate&editorType=02&cgformId=${formid}" width="100%" height="100%"></t:dgToolBar>
@@ -26,7 +22,7 @@
 	<t:dgToolBar title="上传Word模板" icon="icon-add" funname="add" url="cgformFtlController.do?addorupdate&editorType=03&cgformId=${formid}"></t:dgToolBar>
 </t:datagrid></div>
 </div><script type="text/javascript">
-    //update-begin--Author:zhoujf  Date:20180326 for：TASK #2593 【online表单模板】表单模板预览功能有问题
+
   	function preview(cgformName,ftlVersion){
   		$.dialog({
 			content: "url:cgFormBuildController/ftlForm/${tableName}/goAdd.do?ftlVersion="+ftlVersion,
@@ -40,7 +36,7 @@
 		    cancel: true /*为true等价于function(){}*/
 		});
 	}
-  //update-begin--Author:zhoujf  Date:20180326 for：TASK #2593 【online表单模板】表单模板预览功能有问题
+
   
 function updateOneTab(title,url, id,width,height) {
 		gridname=id;

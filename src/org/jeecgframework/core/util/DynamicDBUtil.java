@@ -39,12 +39,11 @@ public class DynamicDBUtil {
 		String driverClassName = dynamicSourceEntity.getDriverClass();
 		String url = dynamicSourceEntity.getUrl();
 		String dbUser = dynamicSourceEntity.getDbUser();
-//	      update-start--Author:chenjin  Date:20160712 for：多数据源目前数据库密码是明文，采用加密方式存储
+
 		//设置数据源的时候，要重新解密
 		//String dbPassword = dynamicSourceEntity.getDbPassword();
 		String dbPassword  = PasswordUtil.decrypt(dynamicSourceEntity.getDbPassword(), dynamicSourceEntity.getDbUser(), PasswordUtil.getStaticSalt());//解密字符串；
-		
-//	      update-end--Author:chenjin  Date:20160712 for：多数据源目前数据库密码是明文，采用加密方式存储
+
 		
 		dataSource.setDriverClassName(driverClassName);
 		dataSource.setUrl(url);
@@ -116,8 +115,7 @@ public class DynamicDBUtil {
 		}
 		return effectCount;
 	}
-	
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的Update
 	 * @param dbKey 数据源标识
@@ -134,13 +132,13 @@ public class DynamicDBUtil {
 		effectCount = namedParameterJdbcTemplate.update(sql, data);
 		return effectCount;
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	
 	public static Object findOne(final String dbKey, String sql, Object... param) {
 		List<Map<String, Object>> list;
-		//update-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 		list = findList(dbKey, sql, param);
-		//update-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 		
 		if(ListUtils.isNullOrEmpty(list))
 		{
@@ -154,7 +152,7 @@ public class DynamicDBUtil {
 		
 		return list.get(0);
 	}
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的查询 返回HashMap
 	 * @param dbKey 数据源标识
@@ -173,8 +171,7 @@ public class DynamicDBUtil {
 		}
 		return list.get(0);
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
-	//add-begin--Author:yugwu  Date:20170810 for:返回单个实例而非hashMap----
+
 	/**
 	 * 直接sql查询 根据clazz返回单个实例
 	 * @param dbKey 数据源标识
@@ -201,7 +198,7 @@ public class DynamicDBUtil {
 		Map<String, Object> map = (Map<String, Object>) findOneByHash(dbKey, sql, data);
 		return ReflectHelper.setAll(clazz, map);
 	}
-	//add-begin--Author:yugwu  Date:20170810 for:返回单个实例而非hashMap----
+
 	public static List<Map<String, Object>> findList(final String dbKey, String sql, Object... param) {
 		List<Map<String, Object>> list;
 		JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
@@ -213,7 +210,7 @@ public class DynamicDBUtil {
 		}
 		return list;
 	}
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的查询
 	 * @param dbKey 数据源标识
@@ -230,8 +227,7 @@ public class DynamicDBUtil {
 		list = namedParameterJdbcTemplate.queryForList(sql, data);
 		return list;
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
-	//add-begin--Author:luobaoli  Date:20150620 for：增加返回值为List的方法
+
 	//此方法只能返回单列，不能返回实体类
 	public static <T> List<T> findList(final String dbKey, String sql, Class<T> clazz,Object... param) {
 		List<T> list;
@@ -244,8 +240,7 @@ public class DynamicDBUtil {
 		}
 		return list;
 	}
-	//add-end--Author:luobaoli  Date:20150620 for：增加返回值为List的方法
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的查询 返回单列数据list
 	 * @param dbKey 数据源标识
@@ -287,7 +282,7 @@ public class DynamicDBUtil {
 		List<Map<String,Object>> queryList = findListByHash(dbKey, sql, data);
 		return ReflectHelper.transList2Entrys(queryList, clazz);
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {

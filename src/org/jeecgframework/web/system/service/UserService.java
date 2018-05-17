@@ -27,8 +27,7 @@ public interface UserService extends CommonService{
 	 * @param user
 	 */
 	public String trueDel(TSUser user);
-	
-	//update--begin-- author:Yandong -- date:20180115-- for:TASK #2494 【改造】Jeecg 代码事务不严谨，control的逻辑改到service里面---
+
 	/**
 	 * 添加或者修改用户，添加用户组织机构关联表，用户角色关联表
 	 * @param user
@@ -36,5 +35,5 @@ public interface UserService extends CommonService{
 	 * @param roleIds
 	 */
 	public void saveOrUpdate(TSUser user, String[] orgIds, String[] roleIds);
-	//update--end-- author:Yandong -- date:20180115-- for:TASK #2494 【改造】Jeecg 代码事务不严谨，control的逻辑改到service里面---
+
 }

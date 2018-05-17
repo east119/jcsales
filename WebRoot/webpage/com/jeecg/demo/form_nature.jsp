@@ -26,20 +26,16 @@
 <!-- select2 -->
 <link rel="stylesheet" href="plug-in/select2/css/select2.min.css">
 <script type="text/javascript" src="plug-in/select2/js/select2.full.min.js"></script>
-<!-- update-begin--Author:gj_shaojc  Date:20180301 for：[TASK #2537 ]增加省市区三级联动 -->
 <!-- 省市区provinces三级联动 -->
 <script src="plug-in/provinces/js/city-picker.data.js"></script>
 <script src="plug-in/provinces/js/city-picker.js"></script>
 <script src="plug-in/provinces/js/main.js"></script>
 <link href="plug-in/provinces/css/bootstrap.css" rel="stylesheet" type="text/css" />
 <link href="plug-in/provinces/css/city-picker.css" rel="stylesheet" type="text/css" />
-<!-- update-end--Author:gj_shaojc  Date:20180301 for：[TASK #2537 ]增加省市区三级联动 -->
  
 </head>
 <body>
 <t:formvalid layout="div" formid="dd" dialog="" >
-
-<!-- update-begin--Author:yugwu  Date:20170626 for：[TASK #2135]【浏览器兼容问题】IE8下样式乱了-------------------- -->
  <fieldset>
  <legend>文件上传</legend>
 	<div id="uploader" class="wu-example">
@@ -50,8 +46,6 @@
 	    </div>
 	</div>
  </fieldset>
- 
-<!--  //update--begin--author:zhangjiaqiang date:20171108 for:select2 -->
  <fieldset>
  <legend>select2</legend>
   <table>
@@ -63,7 +57,6 @@
 	</tr>
  </table>
  </fieldset>
-<!--  //update--begin--author:zhangjiaqiang date:20171108 for:select2 -->
  
  <fieldset>
  <legend>autocomplete</legend>
@@ -79,7 +72,6 @@
   
  <fieldset>
  <legend>联动下拉省市区</legend>
-	<!-- update-begin_author:taoYan date:20170803 for:修复ie下样式变乱   -->
  	<div style="width:80%;margin:5px 0 0 10px;">
 	  <input type="text" id="province" style="width:32%;" value=""/> 
 	  <input type="text" id="city" style="width:32%;" value=""/> 
@@ -94,7 +86,6 @@
 		<ul id="treeDemo" class="ztree"></ul>
 	</div>
  </fieldset>
- <!-- update-end-author:taoYan date:20170803 for:修复ie下样式变乱  -->
  
  <fieldset>
  <legend>ueditor</legend>
@@ -113,7 +104,6 @@
 	</tr>
  	</table>
  </fieldset>
- <!-- update-begin--Author:gj_shaojc  Date:20180301 for：[TASK #2537 ]增加省市区三级联动 -->
 <fieldset>
 	<legend>省市区三级联动</legend>
 	<div class="container">
@@ -135,12 +125,8 @@
 		</div>
 	</div>
 </fieldset>
-<!-- update-end--Author:gj_shaojc  Date:20180301 for：[TASK #2537 ]增加省市区三级联动 -->
  
 </t:formvalid>
-<!-- update-end--Author:yugwu  Date:20170626 for：[TASK #2135]【浏览器兼容问题】IE8下样式乱了-------------------- -->
-
-<!-- update-begin--Author:taoYan  Date:20170803 for：代码格式修改 -->
 <script type="text/javascript">
 function printobj(obj){
 	var str='[';
@@ -255,12 +241,9 @@ $(function() {
         $("#userNameAuto").val(row['userName']);
     });
 	/*-------------------------------------------自动补全----------------------------------------------*/
-	//update-begin--Author:LiShaoQing  Date:20170803 for：解決上传按钮在ie7下不兼容的问题
+
 	$("div.webuploader-container").css("width","78px");
-	//update-end--Author:LiShaoQing  Date:20170803 for：解決上传按钮在ie7下不兼容的问题
-	
-	
-	//update--begin--author:zhangjiaqiang date:20171108 for:select2
+
 	var select2Data = new Array();
 	$.ajax({
 		url:'jeecgFormDemoController.do?regionSelect&pid=1',
@@ -283,8 +266,7 @@ $(function() {
 			});
 		}
 	});
-	
-	//update--end--author:zhangjiaqiang date:20171108 for:select2
+
 	
 });
 </script>

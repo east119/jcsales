@@ -17,13 +17,11 @@
 				<span class="bigger-110 no-text-shadow">添加公司</span>
 			</a>
 			</div>
-			<!-- update-begin-Author:LiShaoQing date:20171127 for:供应商添加暂时注释掉--- -->
 			<!-- <div style="width:10px;float: left;margin-top: 2px;">
 			<a  icon="icon-add" class="easyui-linkbutton l-btn l-btn-plain" onclick="addSupplierNode()">
 				<span class="bigger-110 no-text-shadow">添加供应商</span>
 			</a>
 			</div> -->
-			<!-- update-end-Author:LiShaoQing date:20171127 for:供应商添加暂时注释掉--- -->
 			 <div class="clear"></div> 
 	        <div id="orgTree" class="ztree"></div>
 	        <input type="hidden" id="userName" name="userName" value="${userName}"/>
@@ -149,12 +147,12 @@ function zTreeOnLeftClick(event, treeId, treeNode) {
 				var url = "organzationController.do?comDetail&id="+treeNode.id;
 				addtt('基本信息', url, '01','icon-comturn', 'false');
 			}else if(orgType=="9"){
-				//update-begin-Author:LiShaoQing -- date: 20171211 for:供应商展示基本信息和用户信息---
+
 				var url = "organzationController.do?comDetail&id="+treeNode.id;
 				addtt('基本信息', url, '01','icon-comturn', 'false');
 				url = "organzationController.do?userOrgList&departid="+treeNode.id;
 				addtt('用户信息', url, '02','icon-user-set', 'false');
-				//update-end-Author:LiShaoQing -- date: 20171211 for:供应商展示基本信息和用户信息---
+
 			}else{
 				var url = "organzationController.do?comDetail&id="+treeNode.id;
 				addtt('基本信息', url, '01','icon-comturn', 'false');

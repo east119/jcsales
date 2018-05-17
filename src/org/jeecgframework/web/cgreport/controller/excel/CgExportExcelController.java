@@ -77,7 +77,7 @@ public class CgExportExcelController extends BaseController {
 				}
 			}
 			//step.3 进行查询返回结果
-            //update-begin--Author:张忠亮  Date:20150608 for：多数据源支持
+
             String dbKey=(String)configM.get("db_source");
             List<Map<String, Object>> result=null;
             if(StringUtils.isNotBlank(dbKey)){
@@ -87,7 +87,7 @@ public class CgExportExcelController extends BaseController {
             }
 			//--author：JueYue---------date:20150620--------for: 导出替换成EasyPoi
 			List<ExcelExportEntity> entityList = new ArrayList<ExcelExportEntity>();
-			//update-begin--Author:Yandong Date:20180416 for：TASK #2624 【论坛问题】动态报表 导出excle 数据没有使用字典名称，而是字典编码
+
 			//配置字典的字段列表
 			List<Map<String,Object>> dictFieldList=new ArrayList<Map<String,Object>>();
 			//字典value值列表
@@ -115,7 +115,7 @@ public class CgExportExcelController extends BaseController {
 					}
 				}
 			}
-			//update-end--Author:Yandong Date:20180416 for：TASK #2624 【论坛问题】动态报表 导出excle 数据没有使用字典名称，而是字典编码
+
 			modelMap.put(MapExcelConstants.ENTITY_LIST,entityList);
 			modelMap.put(MapExcelConstants.MAP_LIST,result);
 			modelMap.put(MapExcelConstants.FILE_NAME,codedFileName);

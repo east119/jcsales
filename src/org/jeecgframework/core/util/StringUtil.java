@@ -357,7 +357,7 @@ public class StringUtil {
 		}
 		return true;
 	}
-	//add-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 	/**
 	 * 转化为String时过滤空
 	 * @param o
@@ -386,7 +386,7 @@ public class StringUtil {
 		}
 		return result.toString();
 	}
-	//add-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 
 	/**
 	 * 自定义的分隔字符串函数 例如: 1,2,3 =>[1,2,3] 3个元素 ,2,3=>[,2,3] 3个元素 ,2,3,=>[,2,3,] 4个元素 ,,,=>[,,,] 4个元素
@@ -449,8 +449,7 @@ public class StringUtil {
 		}
 		return null;
 	}
-	
-	//add-start--Author:yugwu  Date:20170930 for:UserRestControllerTest中传参hashmap转换为json----
+
 	/**
 	 * 把 名=值 参数表转换成字符串 {"a":"1","b":"2"}
 	 * @param map
@@ -471,7 +470,7 @@ public class StringUtil {
 		}
 		return null;
 	}
-	//add-end--Author:yugwu  Date:20170930 for:UserRestControllerTest中传参hashmap转换为json----
+
 
 	/**
 	 * 解析字符串返回 名称=值的参数表 (a=1&b=2 => a=1,b=2)

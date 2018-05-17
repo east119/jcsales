@@ -104,11 +104,11 @@ public class TSOperation extends IdEntity implements java.io.Serializable {
         	return false;  
         }
     } 
-	//update-begin-Author:LiShaoQing Date:20171024 for:list并集去重---------
+
 	@Override
 	public int hashCode(){
 		String in = super.getId() + operationname;
 		return in.hashCode();
 	}
-	//update-begin-Author:LiShaoQing Date:20171024 for:list并集去重---------
+
 }

@@ -102,7 +102,7 @@ public class DbTableProcess {
 								}
 						}
 						//判断注释是不是相同,修改注释
-						//update-begin--Author:qinfeng  Date:20180118 for：Sqlserver2008同步在字段备注和默认值有问题，暂时注释掉 -------------------
+
 						if(!"SQLSERVER".equals(dataType) && !dataColumnMeta.equalsComment(cgFormColumnMeta)){
 							strings.add(getCommentSql(cgFormColumnMeta));
 						}
@@ -111,21 +111,21 @@ public class DbTableProcess {
 						if(!"SQLSERVER".equals(dataType) && StringUtils.isNotEmpty(cgFormColumnMeta.getComment())){
 							strings.add(getCommentSql(cgFormColumnMeta));
 						}
-						//update-end--Author:qinfeng  Date:20180118 for：Sqlserver2008同步在字段备注和默认值有问题，暂时注释掉 -------------------
+
 					}
 				}else {//已经存在的判断是否修改了类型长度。。
 					//判断是否类型、长度、是否为空、精度被修改，如果有修改则处理修改
 					ColumnMeta dataColumnMeta = dataBaseColumnMetaMap.get(columnName);
 					ColumnMeta cgFormColumnMeta = cgFormColumnMetaMap.get(columnName);
 					//如果不相同，则表示有变化，则需要修改
-					//update-begin--Author:qinfeng  Date:20180118 for：Sqlserver2008同步在字段备注和默认值有问题，暂时注释掉 -------------------
+
 					if (!dataColumnMeta.equalsByDataType(cgFormColumnMeta,dataType)) {
 						strings.add(alterTable+getUpdateColumnSql(cgFormColumnMeta,dataColumnMeta));
 					}
 					if(!"SQLSERVER".equals(dataType) && !dataColumnMeta.equalsComment(cgFormColumnMeta)){
 						strings.add(getCommentSql(cgFormColumnMeta));
 					}
-					//update-end--Author:qinfeng  Date:20180118 for：Sqlserver2008同步在字段备注和默认值有问题，暂时注释掉 -------------------
+
 				}
 				
 			}
@@ -160,15 +160,14 @@ public class DbTableProcess {
 			SchemaExport dbExport;
 			dbExport = new SchemaExport(newconf,SessionFactoryUtils.getDataSource(session.getSessionFactory()).getConnection());
 			dbExport.execute(true, true, false, true);
-			
-			//update-begin--Author:Robin  Date:20140507 for：TASK #409 字段长度未注明时，显示同步数据库成功，但实则未创建数据表
+
 			//抛出执行异常，抛出第一个即可  
 			@SuppressWarnings("unchecked")
 			List<Exception> exceptionList = dbExport.getExceptions();
 			for (Exception exception : exceptionList) {
 				throw new DBException(exception.getMessage());
 			}
-			//update-end--Author:Robin  Date:20140507 for：TASK #409 字段长度未注明时，显示同步数据库成功，但实则未创建数据表
+
 	}
 
 	/**
@@ -194,21 +193,20 @@ public class DbTableProcess {
 	 */
 	public static Map<String, ColumnMeta> getColumnMetadataFormDataBase(String schemaName, String tableName, Session session) throws SQLException{
 		Connection conn = null;
-		//-------author: scott---start---date:20170609----for:连接池关闭异常--------
+
 		try {
 			conn = SessionFactoryUtils.getDataSource(session.getSessionFactory()).getConnection();
 		} catch (Exception e) {
 			logger.error(e);
 			e.printStackTrace();
 		}
-		//-------author: scott---end---date:20170609----for:连接池关闭异常--------
 		
 		DatabaseMetaData dbMetaData = conn.getMetaData();
 		ResultSet rs = dbMetaData.getColumns(null, schemaName, tableName, "%");	
 		ColumnMeta columnMeta;
 		Map<String, ColumnMeta> columnMap = new HashMap<String, ColumnMeta>();
 		while (rs.next()){
-			//-------author: zhoujf---start---date:20160923----for:Oracle 环境下online开发同步数据库失败问题
+
 			columnMeta = new ColumnMeta();
 			columnMeta.setTableName(tableName);
 			String columnName = rs.getString("COLUMN_NAME").toLowerCase();
@@ -241,7 +239,6 @@ public class DbTableProcess {
 			logger.info("getColumnMetadataFormDataBase --->COLUMN_NAME:"+rs.getString("COLUMN_NAME")+" TYPE_NAME :"+rs.getString("TYPE_NAME")
 					+" DECIMAL_DIGITS:"+rs.getInt("DECIMAL_DIGITS")+" COLUMN_SIZE:"+rs.getInt("COLUMN_SIZE"));
 			columnMap.put(rs.getString("COLUMN_NAME").toLowerCase(), columnMeta);*/
-			//-------author: zhoujf---end---date:20160923----for:Oracle 环境下online开发同步数据库失败问题
 		}
 		
 		return columnMap;

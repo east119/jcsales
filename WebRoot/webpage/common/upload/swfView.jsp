@@ -7,10 +7,8 @@
 <script type="text/javascript" src="plug-in/Flexpaper/flexpaper_flash.js"></script>
 </head>
 <body>
-<%--update-begin--Author:dangzhenghui  Date:20170601 for:TASK #2047 【bug】在线文档预览功能--%>
 <div style="position: absolute; left: 5px; top: 5px;width: 100%">
 <a id="viewerPlaceHolder" style="width: auto; height: 700px; display: block;"></a>
-<%--update-end--Author:dangzhenghui  Date:20170601 for:TASK #2047 【bug】在线文档预览功能--%>
 <script type="text/javascript">
 			var fp = new FlexPaperViewer('plug-in/Flexpaper/FlexPaperViewer',
 			'viewerPlaceHolder', {

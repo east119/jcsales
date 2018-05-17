@@ -73,10 +73,10 @@ public class GraphReportController extends BaseController {
 		FreemarkerHelper viewEngine = new FreemarkerHelper();
 		//step.3 组合模板+数据参数，进行页面展现
 		loadVars(cgReportMap);
-//      update-start--Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		//step.4 页面css js引用
 		cgReportMap.put(CgReportConstant.CONFIG_IFRAME, getHtmlHead(request));
-//      update-end----Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		String html = viewEngine.parseTemplate("/org/jeecgframework/web/graphreport/engine/core/graphreportlist.ftl", cgReportMap);
 		PrintWriter writer = null;
 		try {
@@ -100,9 +100,9 @@ public class GraphReportController extends BaseController {
 		HttpSession session = ContextHolderUtils.getSession();
 		String lang = (String)session.getAttribute("lang");
 		StringBuilder sb= new StringBuilder("");
-		//update-begin--Author:xuelin  Date:20170804 for：TASK #2246 【IE兼容问题】两个报表，不兼容IE8，代码优化	IE浏览器专用标签，指定文本模式-------------------
+
 		sb.append("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"/>");
-		//update-end--Author:xuelin  Date:20170804 for：TASK #2246 【IE兼容问题】两个报表，不兼容IE8，代码优化	IE浏览器专用标签，指定文本模式----------------------		
+
 		SysThemesEnum sysThemesEnum = SysThemesUtil.getSysTheme(request);
 		sb.append(SysThemesUtil.getReportTheme(sysThemesEnum));
 		sb.append(SysThemesUtil.getCommonTheme(sysThemesEnum));
@@ -116,9 +116,9 @@ public class GraphReportController extends BaseController {
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/easyui/locale/zh-cn.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/syUtil.js\"></script>");
 		sb.append(SysThemesUtil.getLhgdialogTheme(sysThemesEnum));
-		//update--begin--author:zhangjiaqiang date:20170315 for:修订layer对话框风格
+
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/layer/layer.js\"></script>");
-		//update--end--author:zhangjiaqiang date:20170315 for:修订layer对话框风格
+
 		sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/easyuiextend.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/easyui/extends/datagrid-scrollview.js\"></script>");
@@ -150,10 +150,10 @@ public class GraphReportController extends BaseController {
 		FreemarkerHelper viewEngine = new FreemarkerHelper();
 		//step.3 组合模板+数据参数，进行页面展现
 		loadVars(cgReportMap);
-//      update-start--Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		//step.4 页面css js引用
 		cgReportMap.put(CgReportConstant.CONFIG_IFRAME, getHtmlHead(request));
-//      update-end----Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		String html = viewEngine.parseTemplate("/org/jeecgframework/web/cgreport/engine/core/cgreportlistpopup.ftl", cgReportMap);
 		PrintWriter writer = null;
 		try {
@@ -251,9 +251,9 @@ public class GraphReportController extends BaseController {
 		List<Map<String, Object>> dicDatas = null;
 		dictCodeOrSQL = dictCodeOrSQL.trim();
 		if(dictCodeOrSQL.toLowerCase().startsWith("select ")) {
-			//update-begin-----author:scott----date:20151105-------for:改造支持oracle--------
+
 			dictCodeOrSQL = dictCodeOrSQL.replaceAll("'[kK][eE][yY]'", "typecode").replaceAll("'[vV][aA][lL][uU][eE]'", "typename");
-			//update-end-----author:scott----date:20151105-------for:改造支持oracle--------
+
 			dicDatas = systemService.findForJdbc(dictCodeOrSQL, null);
 		}else {
 			dicDatas = queryDic(dictCodeOrSQL);

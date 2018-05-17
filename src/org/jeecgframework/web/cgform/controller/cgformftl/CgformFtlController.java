@@ -196,12 +196,12 @@ public class CgformFtlController extends BaseController {
 				cgformFtl.setFtlStatus("1");
 				cgformFtlService.saveOrUpdate(cgformFtl);
 				message = "激活成功";
-				//update-begin----date:20160721------for:清除缓存---------------------------------------------
+
 				CgFormHeadEntity po = systemService.getEntity(CgFormHeadEntity.class, cgformFtl.getCgformId());
 				templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.ADD.getName());
 				templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.DETAIL.getName());
 				templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.UPDATE.getName());
-				//update-end----date:20160721------for:清除缓存----------------------------------------------
+
 				systemService.addLog(message, Globals.Log_Type_UPDATE,Globals.Log_Leavel_INFO);
 				logger.info("["+IpUtil.getIpAddr(request)+"][online表单模板激活]"+message+"表名："+po.getTableName());
 				j.setSuccess(true);
@@ -233,12 +233,12 @@ public class CgformFtlController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		try {
 			cgformFtl = systemService.getEntity(CgformFtlEntity.class,cgformFtl.getId());
-			//update-begin----date:20160721------for:清除缓存----------------------------------------------
+
 			CgFormHeadEntity po = systemService.getEntity(CgFormHeadEntity.class, cgformFtl.getCgformId());
 			templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.ADD.getName());
 			templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.DETAIL.getName());
 			templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.UPDATE.getName());
-			//update-end----date:20160721------for:清除缓存-----------------------------------------------
+
 			cgformFtl.setFtlStatus("0");
 			cgformFtlService.saveOrUpdate(cgformFtl);
 			message = "取消激活成功";
@@ -304,10 +304,9 @@ public class CgformFtlController extends BaseController {
 		HttpSession session = ContextHolderUtils.getSession();
 		String lang = (String)session.getAttribute("lang");
 		StringBuffer sb = new StringBuffer();
-		//update-begin--Author:zhoujf  Date:20170601 for：【online表单】拷贝Word内容创建表单模板页面样式问题
-		//update-begin--author:scott  Date:20170731 for：IE8 下online 自定义模板提交不了问题解决，切换老的提示方式---------
+
 		sb.append("<!DOCTYPE html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\"><head><title></title>");
-		//update-end--author:scott  Date:20170731 for：IE8 下online 自定义模板提交不了问题解决，切换老的提示方式---------
+
 		sb.append("<base href=\"${basePath}/\" />");
     	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/jquery/jquery-1.8.3.js\"></script>");
     	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/dataformat.js\"></script>");
@@ -339,18 +338,18 @@ public class CgformFtlController extends BaseController {
     	sb.append("<style type=\"text/css\">body{font-size:12px;}table{border: 1px solid #000000;padding:0; ");
 		sb.append("margin:0 auto;border-collapse: collapse;width:100%;align:right;}td {border: 1px solid ");
 		sb.append("#000000;background: #fff;font-size:12px;padding: 3px 3px 3px 8px;color: #000000;word-break: keep-all;}");
-		//update-begin-author:taoYan date:20170807 for:TASK #2247 【online表单样式】onbutton模式下，提交按钮样式优化
+
 		sb.append(".ui_state_highlight{border:1px solid #39befb;position:relative;display:inline-block;cursor:pointer;text-align:center;overflow:hidden;border-radius:10px;padding:4px 30px;font-size:14px;background-color:#39befb;color:#fff}.ui_state_highlight:hover{background-color:#3aace5;color:#000;}");
-		//update-end-author:taoYan date:20170807 for:TASK #2247 【online表单样式】onbutton模式下，提交按钮样式优化
+
 		sb.append("</style></head>"); 
 		
 		sb.append("<body>");
 		
 		sb.append("<div align=\"center\" id=\"sub_tr\" style=\"display: none;\"><input class=\"ui_state_highlight\" onclick=\"neibuClick()\" type=\"button\" value=\"提交\" /></div>");
 		sb.append("</body>");
-		//update-begin--author:scott  Date:20170731 for：IE8 下online 自定义模板提交不了问题解决，切换老的提示方式---------
+
 		sb.append("<script type=\"text/javascript\">$(function(){$(\"#formobj\").Validform({tiptype:1,btnSubmit:\"#btn_sub\",btnReset:\"#btn_reset\",ajaxPost:true,usePlugin:{passwordstrength:{minLen:6,maxLen:18,trigger:function(obj,error){if(error){obj.parent().next().find(\".Validform_checktip\").show();obj.find(\".passwordStrength\").hide();}else{$(\".passwordStrength\").show();obj.parent().next().find(\".Validform_checktip\").hide();}}}},callback:function(data){if(data.success==true){uploadFile(data);}else{if(data.responseText==''||data.responseText==undefined){$.messager.alert('错误', data.msg);$.Hidemsg();}else{try{var emsg = data.responseText.substring(data.responseText.indexOf('错误描述'),data.responseText.indexOf('错误信息')); $.messager.alert('错误',emsg);$.Hidemsg();}catch(ex){$.messager.alert('错误',data.responseText+'');}} return false;}if(!neibuClickFlag){var win = frameElement.api.opener; win.reloadTable();}}});});</script>");
-		//update-end--author:scott  Date:20170731 for：IE8 下online 自定义模板提交不了问题解决，切换老的提示方式---------
+
 		sb.append("<script type=\"text/javascript\">");
 		sb.append("$(function(){if(location.href.indexOf(\"goDetail.do\")!=-1){$(\".jeecgDetail\").hide();}if(location.href.indexOf(\"goDetail.do\")!=-1){$(\"#formobj\").find(\":input\").attr(\"disabled\",\"disabled\");}if(location.href.indexOf(\"goAddButton.do\")!=-1||location.href.indexOf(\"goUpdateButton.do\")!=-1){$(\"#sub_tr\").show();}});");
 		sb.append(" var neibuClickFlag = false;");
@@ -359,7 +358,7 @@ public class CgformFtlController extends BaseController {
 		sb.append(" $.dialog.setting.zIndex =9999;");
 		sb.append(" function del(url,obj){$.dialog.confirm(\"确认删除该条记录?\", function(){$.ajax({async : false,cache : false,type : 'POST',url : url,error : function() {},success : function(data) {var d = $.parseJSON(data);if (d.success) {var msg = d.msg;tip(msg);$(obj).closest(\"tr\").hide(\"slow\");}}});}, function(){ });}");
 		sb.append("</script>");
-		//update-end--Author:zhoujf  Date:20170601 for：【online表单】拷贝Word内容创建表单模板页面样式问题
+
 		sb.append("<script type=\"text/javascript\">${js_plug_in?if_exists}</script></html>");
 		
 		
@@ -427,17 +426,17 @@ public class CgformFtlController extends BaseController {
 			}
 			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 			// 文件数据库保存路径
-			//update-begin--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 			String path = uploadbasepath + File.separator;// 文件保存在硬盘的相对路径
 			String realPath = uploadFile.getMultipartRequest().getSession()
 					.getServletContext().getRealPath(File.separator)
 					+ path;// 文件的硬盘真实路径
-			//update-end--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 			File file = new File(realPath);
 			if (!file.exists()) {
 				file.mkdir();// 创建根目录
 			}
-			//update-begin--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 			if (uploadFile.getCusPath() != null) {
 				realPath += uploadFile.getCusPath() + File.separator;
 				path += uploadFile.getCusPath() +File.separator;
@@ -448,7 +447,7 @@ public class CgformFtlController extends BaseController {
 			} else {
 				realPath += DateUtils.getDataString(DateUtils.yyyyMMdd) +File.separator;
 				path += DateUtils.getDataString(DateUtils.yyyyMMdd) +File.separator;
-				//update-end--Author:dangzhenghui  Date:20170522 for：TASK #1991 【bug】文件上传在linux下路径有问题--------------------
+
 				file = new File(realPath);
 				if (!file.exists()) {
 					file.mkdir();// 创建文件时间子目录
@@ -499,7 +498,7 @@ public class CgformFtlController extends BaseController {
 				StringBuilder script = new StringBuilder("");
 				script.append("<div align=\"center\" id=\"sub_tr\" style=\"display: none;\"><input class=\"ui_state_highlight\" onclick=\"neibuClick()\" type=\"button\" value=\"提交\" /></div>");
 				script.append("</body>");
-				//update-start--Author: zhoujf  Date:20170524 for：TASK #2014 【online表单】online表单 模板配置 basePath问题 word模板文件上传问题
+
 				script.append("<script type=\"text/javascript\">$(function(){$(\"#formobj\").Validform({tiptype:function(msg,o,cssctl){if(o.type == 3){layer.open({title:'提示信息',content:msg,icon:5,shift:6,btn:false,shade:false,time:5000,cancel:function(index){o.obj.focus();layer.close(index);},yes:function(index){o.obj.focus();layer.close(index);},})}},btnSubmit:\"#btn_sub\",btnReset:\"#btn_reset\",ajaxPost:true,usePlugin:{passwordstrength:{minLen:6,maxLen:18,trigger:function(obj,error){if(error){obj.parent().next().find(\".Validform_checktip\").show();obj.find(\".passwordStrength\").hide();}else{$(\".passwordStrength\").show();obj.parent().next().find(\".Validform_checktip\").hide();}}}},callback:function(data){if(data.success==true){uploadFile(data);}else{if(data.responseText==''||data.responseText==undefined){$.messager.alert('错误', data.msg);$.Hidemsg();}else{try{var emsg = data.responseText.substring(data.responseText.indexOf('错误描述'),data.responseText.indexOf('错误信息')); $.messager.alert('错误',emsg);$.Hidemsg();}catch(ex){$.messager.alert('错误',data.responseText+'');}} return false;}if(!neibuClickFlag){var win = frameElement.api.opener; win.reloadTable();}}});});</script>");
 				script.append("<script type=\"text/javascript\">");
 				script.append("$(function(){if(location.href.indexOf(\"goDetail.do\")!=-1){$(\".jeecgDetail\").hide();}if(location.href.indexOf(\"goDetail.do\")!=-1){$(\"#formobj\").find(\":input\").attr(\"disabled\",\"disabled\");}if(location.href.indexOf(\"goAddButton.do\")!=-1||location.href.indexOf(\"goUpdateButton.do\")!=-1){$(\"#sub_tr\").show();}});");
@@ -509,7 +508,7 @@ public class CgformFtlController extends BaseController {
 				script.append(" $.dialog.setting.zIndex =9999;");
 				script.append(" function del(url,obj){$.dialog.confirm(\"确认删除该条记录?\", function(){$.ajax({async : false,cache : false,type : 'POST',url : url,error : function() {},success : function(data) {var d = $.parseJSON(data);if (d.success) {var msg = d.msg;tip(msg);$(obj).closest(\"tr\").hide(\"slow\");}}});}, function(){ });}");
 				script.append("</script>");
-				//update-end--Author: zhoujf  Date:20170524 for：TASK #2014 【online表单】online表单 模板配置 basePath问题 word模板文件上传问题
+
 				script.append("<script type=\"text/javascript\">");
 				script.append("${js_plug_in?if_exists}");
 				script.append("</script>");
@@ -538,12 +537,12 @@ public class CgformFtlController extends BaseController {
 	// for：放弃jacob和poi上传word，改用ckeditor
 	@RequestMapping(params = "cgformFtl2")
 	public ModelAndView cgformFtl2(HttpServletRequest request) {
-		//update-begin--Author:zhujf  Date:20180326 for：TASK #2593 【online表单模板】表单模板预览功能有问题
+
 		String formid = request.getParameter("formid");
 		CgFormHeadEntity po = systemService.getEntity(CgFormHeadEntity.class, formid);
 		request.setAttribute("formid", formid);
 		request.setAttribute("tableName", po.getTableName());
-		//update-begin--Author:zhujf  Date:20180326 for：TASK #2593 【online表单模板】表单模板预览功能有问题
+
 		return new ModelAndView("jeecg/cgform/cgformftl/cgformFtlList2");
 	}
 
@@ -657,7 +656,7 @@ public class CgformFtlController extends BaseController {
 //			System.out.println(json.getString("data"));
 //			// 判断有没有激活过的模板
 //			message = FormUtil.GetHtml(json.getString("parse"),json.getString("data"), action);
-			//update-begin--Author:jg_renjie  Date:20150706 for：更改解析前台传来的html
+
 			if(StringUtils.isNotBlank(parseForm)){
 				TemplateUtil tool = new TemplateUtil();
 				Map<String,Object> map = tool.processor(parseForm);
@@ -665,7 +664,7 @@ public class CgformFtlController extends BaseController {
 			} else {
 				j.setMsg("");
 			}
-			//update-end--Author:jg_renjie  Date:20150706 for：更改解析前台传来的html
+
 			j.setSuccess(true);
 		} catch (Exception e) {
 			logger.info(e.getMessage());

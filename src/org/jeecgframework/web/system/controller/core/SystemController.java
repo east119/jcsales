@@ -123,8 +123,7 @@ public class SystemController extends BaseController {
 	public ModelAndView druid() {
 		return new ModelAndView(new RedirectView("druid/index.html"));
 	}
-	
-	//update--start--author:zhangjiaqiang date:20170406 for:字典数据信息获取
+
 	@RequestMapping(params = "typeListJson")
 	@ResponseBody
 	public AjaxJson typeListJson(@RequestParam(required=true)String typeGroupName) {
@@ -140,7 +139,13 @@ public class SystemController extends BaseController {
 				for (TSType type : typeList) {
 					JSONObject typeJson = new JSONObject();
 					typeJson.put("typecode", type.getTypecode());
-					typeJson.put("typename", type.getTypename());
+
+					String typename = type.getTypename();
+					if(MutiLangUtil.existLangKey(typename)){
+						typename = MutiLangUtil.doMutiLang(typename,"");
+					}
+					typeJson.put("typename",typename );
+
 					typeArray.add(typeJson);
 				}
 			}
@@ -152,7 +157,7 @@ public class SystemController extends BaseController {
 		}
 		return ajaxJson;
 	}
-	//update--end--author:zhangjiaqiang date:20170406 for:字典数据信息获取
+
 	
 	/**
 	 * 类型字典列表页面跳转
@@ -196,7 +201,7 @@ public class SystemController extends BaseController {
 	@RequestMapping(params = "typeGroupGrid")
 	public void typeGroupGrid(HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid, TSTypegroup typegroup) {
 		CriteriaQuery cq = new CriteriaQuery(TSTypegroup.class, dataGrid);
-//        add-start--Author:zhangguoming  Date:20140929 for：多语言条件添加
+
         String typegroupname = request.getParameter("typegroupname");
         if(oConvertUtils.isNotEmpty(typegroupname)) {
             typegroupname = typegroupname.trim();
@@ -214,13 +219,11 @@ public class SystemController extends BaseController {
         }
 		this.systemService.getDataGridReturn(cq, true);
         MutiLangUtil.setMutiLangValueForList(dataGrid.getResults(), "typegroupname");
-//        add-end--Author:zhangguoming  Date:20140929 for：多语言条件添加
+
 
 		TagUtil.datagrid(response, dataGrid);
 	}
 
-
-	//add-start--Author:luobaoli  Date:20150607 for：增加表单分类树
 	/**
 	 *
 	 * @param request
@@ -248,7 +251,7 @@ public class SystemController extends BaseController {
 
 		return new ArrayList<ComboTree>(){{add(rootCombotree);}};
 	}
-	//add-end--Author:luobaoli  Date:20150607 for：增加表单分类树
+
 
 	/**
 	 * easyuiAJAX请求数据
@@ -265,19 +268,18 @@ public class SystemController extends BaseController {
 		CriteriaQuery cq = new CriteriaQuery(TSType.class, dataGrid);
 		cq.eq("TSTypegroup.id", typegroupid);
 		cq.like("typename", typename);
-		//update-begin--Author:zhangjiaqiang  Date:20160904 for：TASK #1338 【功能改造】字典表，没有创建时间，列表按照创建时间排序
+
 		cq.addOrder("createDate", SortDirection.desc);
-		//update-end--Author:zhangjiaqiang  Date:20160904 for：TASK #1338 【功能改造】字典表，没有创建时间，列表按照创建时间排序
+
 		cq.add();
 		this.systemService.getDataGridReturn(cq, true);
-        // add-start--Author:zhangguoming  Date:20140928 for：处理多语言
+
         MutiLangUtil.setMutiLangValueForList(dataGrid.getResults(), "typename");
-        // add-end--Author:zhangguoming  Date:20140928 for：处理多语言
+
 
 		TagUtil.datagrid(response, dataGrid);
 	}
 
-    // add-start--Author:zhangguoming  Date:20140928 for：数据字典修改
     /**
      * 跳转到类型页面
      * @param request request
@@ -289,7 +291,7 @@ public class SystemController extends BaseController {
         request.setAttribute("typegroupid", typegroupid);
 		return new ModelAndView("system/type/typeListForTypegroup");
 	}
-    // add-end--Author:zhangguoming  Date:20140928 for：数据字典修改
+
 //	@RequestMapping(params = "typeGroupTree")
 //	@ResponseBody
 //	public List<ComboTree> typeGroupTree(HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
@@ -340,16 +342,16 @@ public class SystemController extends BaseController {
 			}
 		} else {
 			cq = new CriteriaQuery(TSTypegroup.class);
-//            add-begin--Author:zhangguoming  Date:20140807 for：添加字典查询条件
+
             String typegroupcode = request.getParameter("typegroupcode");
             if(typegroupcode != null ) {
-            	//begin--Author:JueYue  Date:2014-8-23 for：修改查询拼装
+
                 HqlRuleEnum rule = PageValueConvertRuleEnum
 						.convert(typegroupcode);
                 Object value = PageValueConvertRuleEnum.replaceValue(rule,
                 		typegroupcode);
 				ObjectParseUtil.addCriteria(cq, "typegroupcode", rule, value);
-				//end--Author:JueYue  Date:2014-8-23 for：修改查询拼装
+
                 cq.add();
             }
             String typegroupname = request.getParameter("typegroupname");
@@ -358,7 +360,7 @@ public class SystemController extends BaseController {
                 List<String> typegroupnameKeyList = systemService.findByQueryString("select typegroupname from TSTypegroup");
                 MutiLangSqlCriteriaUtil.assembleCondition(typegroupnameKeyList, cq, "typegroupname", typegroupname);
             }
-//            add-end--Author:zhangguoming  Date:20140807 for：添加字典查询条件
+
             List<TSTypegroup> typeGroupList = systemService.getListByCriteriaQuery(cq, false);
 			for (TSTypegroup obj : typeGroupList) {
 				TreeGrid treeNode = new TreeGrid();
@@ -445,7 +447,7 @@ public class SystemController extends BaseController {
 		String message = null;
 		AjaxJson j = new AjaxJson();
 		typegroup = systemService.getEntity(TSTypegroup.class, typegroup.getId());
-//        add-begin--Author:zhangguoming  Date:20140929 for：数据字典修改
+
 		message = "类型分组: " + mutiLangService.getLang(typegroup.getTypegroupname()) + " 被删除 成功";
         if (ListUtils.isNullOrEmpty(typegroup.getTSTypes())) {
             systemService.delete(typegroup);
@@ -455,7 +457,7 @@ public class SystemController extends BaseController {
         } else {
             message = "类型分组: " + mutiLangService.getLang(typegroup.getTypegroupname()) + " 下有类型信息，不能删除！";
         }
-//        add-end--Author:zhangguoming  Date:20140929 for：数据字典修改
+
 		j.setMsg(message);
 		return j;
 	}
@@ -500,9 +502,7 @@ public class SystemController extends BaseController {
 		}
 		return v;
 	}
-	
-	
-	//add--begin--author:guoxianhui Date:20171128 for:TASK #2427 【新功能】字典增加一个刷新缓存功能
+
 	/**
 	 * 刷新字典分组缓存&字典缓存
 	 *
@@ -523,7 +523,7 @@ public class SystemController extends BaseController {
 		j.setMsg(message);
 		return j;
 	}
-	//add--end--author:guoxianhui Date:20171128 for:TASK #2427 【新功能】字典增加一个刷新缓存功能
+
 	
 	/**
 	 * 添加类型分组
@@ -705,7 +705,7 @@ public class SystemController extends BaseController {
             systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 
 		} else {
-//	      update-start--Author:zhoujf  Date:20150615 for：组织机构管理编码规则生成
+
 //			String orgCode = systemService.generateOrgCode(depart.getId(), pid);
 //			depart.setOrgCode(orgCode);
 			if(oConvertUtils.isNotEmpty(pid)){
@@ -716,7 +716,7 @@ public class SystemController extends BaseController {
 				String localMaxCode  = getMaxLocalCode(null);
 				depart.setOrgCode(YouBianCodeUtil.getNextYouBianCode(localMaxCode));
 			}
-//	      update-start--Author:zhoujf  Date:20150615 for：组织机构管理编码规则生成
+
 			userService.save(depart);
             message = MutiLangUtil.paramAddSuccess("common.department");
             systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
@@ -733,28 +733,28 @@ public class SystemController extends BaseController {
 		int localCodeLength = parentCode.length() + YouBianCodeUtil.zhanweiLength;
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT org_code FROM t_s_depart");
-		//-update-begin--author:scott--date:20160414--for:数据库兼容性修改---
+
 		if(ResourceUtil.getJdbcUrl().indexOf(JdbcDao.DATABSE_TYPE_SQLSERVER)!=-1){
 			sb.append(" where LEN(org_code) = ").append(localCodeLength);
 		}else{
 			sb.append(" where LENGTH(org_code) = ").append(localCodeLength);
 		}
-		//-update-end--author:scott--date:20160414--for:数据库兼容性修改---
+
 		if(oConvertUtils.isNotEmpty(parentCode)){
 			sb.append(" and  org_code like '").append(parentCode).append("%'");
 		} else {
-			//-update-begin--author:LiShaoQing --date:20180104--for:只取非供应商节点---
+
 			sb.append(" and LEFT(org_code,1)='A'");
-			//-update-end--author:LiShaoQing --date:20180104--for:只取非供应商节点---
+
 		}
-		//update-begin-Alex 20160310 for:去除LIMIT,解决数据库兼容性问题
+
 		sb.append(" ORDER BY org_code DESC");
 		List<Map<String, Object>> objMapList = systemService.findForJdbc(sb.toString(), 1, 1);
 		String returnCode = null;
 		if(objMapList!=null && objMapList.size()>0){
 			returnCode = (String)objMapList.get(0).get("org_code");
 		}
-		//update-end-Alex 20160310 for:去除LIMIT,解决数据库兼容性问题
+
 		return returnCode;
 	}
 
@@ -1130,15 +1130,12 @@ public class SystemController extends BaseController {
     public ModelAndView commonUpload(HttpServletRequest req) {
             return new ModelAndView("common/upload/uploadView");
     }
-    
-  //add-begin--Author: taoyan  Date:20170405 for：文件上传通用跳转
+
     @RequestMapping(params = "commonWebUpload")
     public ModelAndView commonWebUpload(HttpServletRequest req) {
             return new ModelAndView("common/upload/uploadView2");
     }
-  //add-end--Author: taoyan  Date:20170405 for：文件上传通用跳转
 
-	//add-begin--Author: jg_huangxg  Date:20150629 for：增加数据日志功能
     /************************************** 数据日志 ************************************/
     /**
      * 转跳到 数据日志
@@ -1166,9 +1163,7 @@ public class SystemController extends BaseController {
         modelMap.put("dataContent",datalogEntity.getDataContent());
 		return new ModelAndView("system/dataLog/popDataContent");
 	}
-	//add-end--Author: jg_huangxg  Date:20150629 for：增加数据日志功能
 
-	//add-begin--Author: jg_huangxg  Date:20150701 for：增加数据日志Diff功能
     /**
      * 转跳到 数据日志
      * @param request
@@ -1193,7 +1188,6 @@ public class SystemController extends BaseController {
     	return j;
     }
 
-	//update-begin--Author: jg_huangxg  Date:20150701 for：修改数据日志Diff功能
 	@RequestMapping(params = "diffDataVersion")
 	public ModelAndView diffDataVersion(HttpServletRequest request, @RequestParam String id1, @RequestParam String id2) throws ParseException {
 		String hql1 = "from TSDatalogEntity where id = '" + id1 + "'";
@@ -1229,9 +1223,7 @@ public class SystemController extends BaseController {
 			for (String string : set) {
 				DataLogDiff dataLogDiff = new DataLogDiff();
 				dataLogDiff.setName(string);
-				
-				//update-begin--Author:	jg_huangxg Date: 20150723 for：修复key找不到的bug
-				//update-begin--Author:	dangzhenghui Date: 20170613 for：日期格式化
+
 				if (map1.containsKey(string)) {
 					if ("createDate".equals(string)&&StringUtil.isNotEmpty(map1.get(string))){
 						java.util.Date date=new Date((String) map1.get(string));
@@ -1240,7 +1232,7 @@ public class SystemController extends BaseController {
 					}else {
 						value1 = map1.get(string).toString();
 					}
-					//update-begin--Author:	dangzhenghui Date: 20170613 for：日期格式化
+
 					if (value1 == null) {
 						dataLogDiff.setValue1("");
 					}else {
@@ -1249,7 +1241,7 @@ public class SystemController extends BaseController {
 				}else{
 					dataLogDiff.setValue1("");
 				}
-				//update-begin--Author:	dangzhenghui Date: 20170613 for：日期格式化
+
 				if (map2.containsKey(string)) {
 					if ("createDate".equals(string)&&StringUtil.isNotEmpty(map2.get(string))){
 						java.util.Date date=new Date((String) map2.get(string));
@@ -1258,7 +1250,7 @@ public class SystemController extends BaseController {
 					}else {
 						value2 = map2.get(string).toString();
 					}
-					//update-begin--Author:	dangzhenghui Date: 20170613 for：日期格式化
+
 					if (value2 == null) {
 						dataLogDiff.setValue2("");
 					}else {
@@ -1267,7 +1259,7 @@ public class SystemController extends BaseController {
 				}else {
 					dataLogDiff.setValue2("");
 				}
-				//update-end--Author:	jg_huangxg Date: 20150723 for：修复key找不到的bug
+
 				
 				if (value1 == null && value2 == null) {
 					dataLogDiff.setDiff("N");
@@ -1296,10 +1288,8 @@ public class SystemController extends BaseController {
 		}
 		return new ModelAndView("system/dataLog/diffDataVersion");
 	}
-	//update-end--Author: jg_huangxg  Date:20150701 for：修改数据日志Diff功能
-	//add-end--Author: jg_huangxg  Date:20150701 for：增加数据日志Diff功能
-	
-	//update-begin--author:YanDong ---date:20171027 ----for:#2387 【新功能】WebUploaderTag的通用上传请求，实现一个采用ftpclient的
+
+
 	/**
 	 * ftpUploader
 	 * ftp实现 文件上传处理/删除处理
@@ -1538,8 +1528,7 @@ public class SystemController extends BaseController {
 		}
 		return success;
 	}
-	
-	//update-end--author:YanDong ---date:20171027 ----for:#2387 【新功能】WebUploaderTag的通用上传请求，实现一个采用ftpclient的
+
 	
 	/**
 	 * WebUploader
@@ -1620,7 +1609,7 @@ public class SystemController extends BaseController {
 		if("1".equals(flag)){
 			response.setContentType("application/x-msdownload;charset=utf-8");
 			String fileName=dbpath.substring(dbpath.lastIndexOf(File.separator)+1);
-			//update-begin author:taoYan date:20170728 for:ie下载文件 文件名乱码
+
 			String userAgent = request.getHeader("user-agent").toLowerCase();
 			if (userAgent.contains("msie") || userAgent.contains("like gecko") ) {
 				fileName = URLEncoder.encode(fileName, "UTF-8");
@@ -1628,7 +1617,7 @@ public class SystemController extends BaseController {
 				fileName = new String(fileName.getBytes("UTF-8"), "iso-8859-1");  
 			} 
 			response.setHeader("Content-disposition", "attachment; filename="+ fileName);
-			//update-end author:taoYan date:20170728 for:ie下载文件 文件名乱码
+
 		}else{
 			response.setContentType("image/jpeg;charset=utf-8");
 		}

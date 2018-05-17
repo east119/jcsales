@@ -36,7 +36,7 @@ import freemarker.template.TemplateException;
   *
  */
 public class TuiSongMsgUtil {
-	//update-begin--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 	
 //	private static TSSmsServiceI tSSmsService; //短信表service；
 //	private static SystemService systemService;
@@ -44,8 +44,7 @@ public class TuiSongMsgUtil {
 //	private static TSSmsTemplateServiceI tSSmsTemplateService;//消息模板service
 //	private static TSSmsSqlServiceI tSSmsSqlService;//业务sqlservice
 //	private static NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	
-	//update-end--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 	private static Configuration configuration;
 	/**
 	  * sendMessage 统一消息发送接口

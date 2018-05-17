@@ -76,13 +76,11 @@
 						</label>
 					</td>
 					<td class="value">
-					<!-- update-begin-Author:LiShaoQing date:20171127 for:机构类型改为radio选择,目前选择公司类型 -->
 					     	 <%-- <select name="orgType" id="orgType"> 
 					                 <option value="1" >公司</option> 
 					                 <option value="2" >部门</option> 
 					                 <option value="3" >岗位</option>
 					         </select> --%>
-					<!-- update-begin-Author:LiShaoQing date:20171127 for:机构类型改为radio选择,目前选择公司类型 -->
 					        <input name="orgType" id="orgType" type="radio" value="1" checked="checked"/> 公司 
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">机构类型</label>

@@ -20,8 +20,7 @@ public interface GraphReportServiceI extends CommonService{
 	 * @return
 	 */
 	public Map<String,Object> queryCgReportConfig(String reportId);
-	
-	//update-begin-----author:scott-----------date:20160817-------for:注释掉无用代码----------
+
 //	/**
 //	 * 根据报表id获得报表抬头配置
 //	 * @param reportId
@@ -34,7 +33,7 @@ public interface GraphReportServiceI extends CommonService{
 //	 * @return
 //	 */
 //	public List<Map<String,Object>> queryCgReportItems(String reportId);
-	//update-end-----author:scott-----------date:20160817-------for:注释掉无用代码----------
+
 	
 	/**
 	 * 执行报表SQL获取结果集

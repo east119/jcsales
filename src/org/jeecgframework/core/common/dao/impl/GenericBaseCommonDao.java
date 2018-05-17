@@ -692,9 +692,9 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 	/**
 	 * 返回easyui datagrid DataGridReturn模型对象
 	 */
-	//update-begin--Author:scott  Date:20170908 for：TASK #1756 【性能优化】目前分页方法返回对象没有使用，创建对象无用还占内存，暂时注释---
+
 	public void getDataGridReturn(CriteriaQuery cq,final boolean isOffset) {
-	//update-end--Author:scott  Date:20170908 for：TASK #1756 【性能优化】目前分页方法返回对象都没用，创建对象无用还占内存，暂时注释---
+
 		Criteria criteria = cq.getDetachedCriteria().getExecutableCriteria(getSession());
 		CriteriaImpl impl = (CriteriaImpl) criteria;
 		// 先把Projection和OrderBy条件取出来,清空两者来执行Count操作
@@ -704,9 +704,7 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		if (projection == null) {
 			criteria.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
 		}
-		//update-begin--Author:zhoujf  Date:20170320 for：TASK #1335 【扩展】列表支持多字段排序
-		//update-begin--Author:zhoujf  Date:20170302 for：TASK #1335 【扩展】列表支持多字段排序
-		//update--begin--Author:zhangjiaqiang Date:20171031 for:TASK #2396 【bug】查询排序问题，确认
+
 		Map<String, Object> ordermap = cq.getOrdermap();
 		if(ordermap==null){
 			ordermap = new LinkedHashMap<String, Object>();
@@ -737,9 +735,7 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		if(!ordermap.isEmpty() && ordermap.size()>0){
 			cq.setOrder(ordermap);
 		}
-		//update--end--Author:zhangjiaqiang Date:20171031 for:TASK #2396 【bug】查询排序问题，确认
-		//update-end--Author:zhoujf  Date:20170302 for：TASK #1335 【扩展】列表支持多字段排序
-		//update-end--Author:zhoujf  Date:20170320 for：TASK #1335 【扩展】列表支持多字段排序
+
 
 		// 判断是否有排序字段
 //		if (!cq.getOrdermap().isEmpty()) {
@@ -759,14 +755,12 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		List<?> list = criteria.list();
 		cq.getDataGrid().setResults(list);
 		cq.getDataGrid().setTotal(allCounts);
-		//update-begin--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 		cq.clear();
 		cq = null;
-		//update-end--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
-		
-		//update-begin--Author:scott  Date:20170908 for：TASK #1756 【性能优化】目前分页方法返回对象没有使用，创建对象无用还占内存，暂时注释---
+
 		//return new DataGridReturn(allCounts, list);
-		//update-end--Author:scott  Date:20170908 for：TASK #1756 【性能优化】目前分页方法返回对象没有使用，创建对象无用还占内存，暂时注释---
+
 	}
 
 	/**
@@ -922,9 +916,9 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 	 *
 	 */
 	public Long getCountForJdbcParam(String sql, Object[] objs) {
-		//-- update-begin author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本    -->
+
 		return this.jdbcTemplate.queryForObject(sql, objs,Long.class);
-		//-- update-end author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本    -->
+
 
 	}
 
@@ -948,13 +942,11 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		KeyHolder keyHolder = null;
 		SqlParameterSource sqlp  = new MapSqlParameterSource(param);
 
-		//update-begin--Author:	jg_huangxg Date: 20150625 for：[bugfree号]oc时,录入数据在Oracle下 数据写入错误--------------------
 		if (StringUtil.isNotEmpty(param.get("id"))) {//表示已经生成过id(UUID),则表示是非序列或数据库自增的形式
 			this.namedParameterJdbcTemplate.update(sql,sqlp);
 		//--author：zhoujf---start------date:20170216--------for:自定义表单保存数据格sqlserver报错问题
 		}else if (StringUtil.isNotEmpty(param.get("ID"))) {//表示已经生成过id(UUID),则表示是非序列或数据库自增的形式
 			this.namedParameterJdbcTemplate.update(sql,sqlp);
-		//--author：zhoujf---end------date:20170216--------for:自定义表单保存数据格sqlserver报错问题
 		}else{//NATIVE or SEQUENCE
 			keyHolder = new GeneratedKeyHolder();
 			this.namedParameterJdbcTemplate.update(sql,sqlp, keyHolder, new String[]{"id"});
@@ -963,14 +955,14 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 				keyValue = keyHolder.getKey().longValue();
 			}
 		}
-		//update-end--Author: jg_huangxg Date: 20150625 for：[bugfree号]oc时,录入数据在Oracle下 数据写入错误----------------------
+
 		return keyValue;
 	}
 
 	public Integer countByJdbc(String sql, Object... param) {
-		//-- update-begin author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本    -->
+
 		return this.jdbcTemplate.queryForObject(sql, param,Integer.class);
-		//-- update-end author： xugj date:20160103  for: #851 controller 单元测试升级spring 版本    -->
+
 
 	}
 
@@ -1026,7 +1018,6 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		return dc.getExecutableCriteria(getSession()).list();
 	}
 
-	//update-begin--Author:luobaoli  Date:20150710 for：增加执行存储过程方法
 	/**
 	 * 调用存储过程
 	 */
@@ -1040,5 +1031,5 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		
 		return sqlQuery.list();
 	}
-	//update-end--Author:luobaoli  Date:20150710 for：增加执行存储过程方法
+
 }

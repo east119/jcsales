@@ -345,7 +345,7 @@ extend(Chart.prototype, {
 		// clean up
 		discardElement(form);
 	},
-	//update-begin--Author:xuelin  Date:20170329 for：[#1823]【bug】报表点击打印后，页面乱的问题解决--------------------
+
 	/**
 	 * Print the chart
 	 */
@@ -391,7 +391,7 @@ extend(Chart.prototype, {
 		}, 1000);
 
 	},
-	//update-end--Author:xuelin  Date:20170329 for：[#1823]【bug】报表点击打印后，页面乱的问题解决----------------------
+
 	/**
 	 * Display a popup menu for choosing the export type
 	 *

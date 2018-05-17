@@ -43,14 +43,12 @@ public class SysContextSqlConvert {
 		return "";
 		String sqlValue="";
 		HqlRuleEnum ruleEnum=HqlRuleEnum.getByValue(dataRule.getRuleConditions());
-		//update-begin-author:taoYan date:20170811 for:数据权限minidao模式下的自定义sql表达式拼接--
-		//update-begin-author:zhoujf date:20171225 for:TASK #2459 【改进】数据权限新增SQL片段支持，但是不支持解析表达式需要改造--
+
 		if(ruleEnum == HqlRuleEnum.SQL_RULES){
 			sqlValue +=" and ("+ getSqlRuleValue(dataRule.getRuleValue())+")";
 			return sqlValue;
 		}
-		//update-end-author:zhoujf date:20171225 for:TASK #2459 【改进】数据权限新增SQL片段支持，但是不支持解析表达式需要改造--
-		//update-end-author:taoYan date:20170811 for:数据权限minidao模式下的自定义sql表达式拼接--
+
 		//-----------------------------------------------------------------------
 		//#{sys_user_code}%
 		String ValueTemp = dataRule.getRuleValue();
@@ -67,9 +65,8 @@ public class SysContextSqlConvert {
 		}
 		//-----------------------------------------------------------------------
 		String tempValue = null;
-		//---author:jg_xugj----start-----date:20151226--------for：#814 【数据权限】扩展支持写表达式，通过session取值
+
 		tempValue = ResourceUtil.converRuleValue(ValueTemp);
-		//---author:jg_xugj----end-----date:20151226--------for：#814 【数据权限】扩展支持写表达式，通过session取值
 
 		if(tempValue!=null){
 			tempValue = tempValue + moshi;
@@ -107,8 +104,7 @@ public class SysContextSqlConvert {
 		
 		return sqlValue;
 	}
-	
-	//update-begin-author:zhoujf date:20171225 for:TASK #2459 【改进】数据权限新增SQL片段支持，但是不支持解析表达式需要改造--
+
 	private static String getSqlRuleValue(String sqlRule){
 		try {
 			Set<String> varParams = getSqlRuleParams(sqlRule);
@@ -137,7 +133,7 @@ public class SysContextSqlConvert {
 		}
 		return varParams;
 	}
-	//update-end-author:zhoujf date:20171225 for:TASK #2459 【改进】数据权限新增SQL片段支持，但是不支持解析表达式需要改造--
+
 	
 	// /**
 	// *

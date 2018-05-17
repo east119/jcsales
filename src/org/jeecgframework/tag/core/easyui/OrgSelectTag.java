@@ -139,12 +139,11 @@ public class OrgSelectTag extends TagSupport {
 		if(StringUtils.isBlank(inputWidth)){
 			inputWidth = "150px";
 		}
-		
-		//add-begin--Author:xuelin  Date:20170408 for：[#1814]【标签】弹出组织机构选择，树列表方式，修改默认值显示样式--------------------	
+
 		if(StringUtils.isBlank(windowWidth)){
 			windowWidth = "660px";
 		}
-		//add-end--Author:xuelin  Date:20170408 for：[#1814]【标签】弹出组织机构选择，树列表方式，修改默认值显示样式----------------------	
+
 		
 		if(StringUtils.isBlank(windowHeight)){
 			windowHeight = "350px";

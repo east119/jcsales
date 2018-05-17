@@ -28,10 +28,10 @@ public class TSType extends IdEntity implements java.io.Serializable {
 	private TSType TSType;//父类型
 	private String typename;//类型名称
 	private String typecode;//类型编码
-	//update-begin--Author:zhangjiaqiang  Date:20160904 for：TASK #1338 【功能改造】字典表，没有创建时间，列表按照创建时间排序
+
 	private Date createDate;//创建时间
 	private String createName;//创建用户
-	//update-begin--Author:zhangjiaqiang  Date:20160904 for：TASK #1338 【功能改造】字典表，没有创建时间，列表按照创建时间排序
+
 //	private List<TPProcess> TSProcesses = new ArrayList();
 	private List<TSType> TSTypes =new ArrayList();
 
@@ -72,7 +72,7 @@ public class TSType extends IdEntity implements java.io.Serializable {
 	public void setTypecode(String typecode) {
 		this.typecode = typecode;
 	}
-	//update-begin--Author:zhangjiaqiang  Date:20160904 for：TASK #1338 【功能改造】字典表，没有创建时间，列表按照创建时间排序
+
 	@Column(name="create_date")
 	public Date getCreateDate() {
 		return createDate;
@@ -90,7 +90,7 @@ public class TSType extends IdEntity implements java.io.Serializable {
 	public void setCreateName(String createName) {
 		this.createName = createName;
 	}
-	//update-end--Author:zhangjiaqiang  Date:20160904 for：TASK #1338 【功能改造】字典表，没有创建时间，列表按照创建时间排序
+
 	
 //	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "TSType")
 //	public List<TPProcess> getTSProcesses() {

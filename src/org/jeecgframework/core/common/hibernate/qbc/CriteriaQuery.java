@@ -101,9 +101,9 @@ public class CriteriaQuery {
 	public CriteriaQuery(Class<?> c) {
 		this.detachedCriteria = DetachedCriteria.forClass(c);
 		this.map = new HashMap<String, Object>();
-		//update--begin--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 		this.ordermap = new LinkedHashMap<String, Object>();
-		//update--end--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 	}
 
 	public CriteriaQuery(Class<?> c, int curPage, String myAction, String myForm) {
@@ -118,9 +118,9 @@ public class CriteriaQuery {
 		this.curPage = curPage;
 		this.detachedCriteria = DetachedCriteria.forClass(c);
 		this.map = new HashMap<String, Object>();
-		//update--begin--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 		this.ordermap = new LinkedHashMap<String, Object>();
-		//update--end--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 	}
 
 	public CriteriaQuery(Class<?> entityClass, int curPage) {
@@ -141,9 +141,9 @@ public class CriteriaQuery {
 		this.dataGrid=dg;
 		this.pageSize=dg.getRows();
 		this.map = new HashMap<String, Object>();
-		//update--begin--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 		this.ordermap = new LinkedHashMap<String, Object>();
-		//update--end--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 	}
 	public CriteriaQuery(Class entityClass,DataTables dataTables) {
 		this.curPage = dataTables.getDisplayStart();
@@ -156,9 +156,9 @@ public class CriteriaQuery {
 		this.dataTables=dataTables;
 		this.pageSize=dataTables.getDisplayLength();
 		this.map = new HashMap<String, Object>();
-		//update--begin--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 		this.ordermap = new LinkedHashMap<String, Object>();
-		//update--end--Author:zhangjiaqiang date:20171031 for:ordermap修订有有序列表
+
 		addJqCriteria(dataTables);
 	}
 
@@ -716,11 +716,11 @@ public class CriteriaQuery {
 		if(map!=null){map.clear();}
 		if(ordermap!=null){ordermap.clear();}
 		entityClass=null;
-		//update-begin--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 		dataGrid = null;
 		dataTables = null;
 		detachedCriteria = null;
-		//update-end--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 		criterionList = null;
 		jqcriterionList = null;
 		jqcriterionList = null;

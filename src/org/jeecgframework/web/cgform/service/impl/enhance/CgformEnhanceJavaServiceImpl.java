@@ -59,8 +59,7 @@ public class CgformEnhanceJavaServiceImpl extends CommonServiceImpl implements C
  	public boolean doDelSql(CgformEnhanceJavaEntity t){
 	 	return true;
  	}
-//update-begin--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）--------------------  	
- 	/**
+	/**
 	 * 替换sql中的变量
 	 * @param sql
 	 * @return
@@ -74,7 +73,7 @@ public class CgformEnhanceJavaServiceImpl extends CommonServiceImpl implements C
  		sql  = sql.replace("#{active_status}", String.valueOf(t.getActiveStatus()));
  		return sql;
  	}
-//update-end--Author:xuelin  Date:20170408 for：[#1838]【online表单】Java 增强拓展字段，生效状态（采用radio 默认生效）--------------------  	
+
 	@Override
 	public CgformEnhanceJavaEntity getCgformEnhanceJavaEntityByCodeFormId(
 			String buttonCode, String formId) {
@@ -107,7 +106,7 @@ public class CgformEnhanceJavaServiceImpl extends CommonServiceImpl implements C
 	public boolean checkClassOrSpringBeanIsExist(CgformEnhanceJavaEntity cgformEnhanceJavaEntity) {
 		String cgJavaType = cgformEnhanceJavaEntity.getCgJavaType();
 		String cgJavaValue = cgformEnhanceJavaEntity.getCgJavaValue();
-		//update-start--Author:luobaoli  Date:20150701 for： 如果springKey或者javaClass值为空时，不做操作
+
 		if(StringUtil.isNotEmpty(cgJavaValue)){
 			try {
 				if("class".equals(cgJavaType)){
@@ -126,7 +125,7 @@ public class CgformEnhanceJavaServiceImpl extends CommonServiceImpl implements C
 				return false;
 			}
 		}
-		//update-end--Author:luobaoli  Date:20150701 for： 如果springKey或者javaClass值为空时，不做操作
+
 		return true;
 	}
 }

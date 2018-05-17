@@ -50,7 +50,7 @@
 		
 		<!-- 主表 --> 
 		<div title="订单信息" data-options="iconCls:'icon-ok',selected:true"  >
-			<div id="easyui_mainList" class="easyui-resizable"  style="height:375px;padding-bottom:6px;margin-bottom:6px;border-bottom:2px solid rgb(0, 116, 101)">
+			<div id="easyui_mainList" class="easyui-resizable"  style="height:275px;padding-bottom:6px;margin-bottom:6px;border-bottom:2px solid rgb(0, 116, 101)">
 				<iframe id="mainList" height="99%" width="100%" frameborder="0" 
 					src="${webRoot}/jformOrderMain2Controller.do?list"></iframe>
 			</div>

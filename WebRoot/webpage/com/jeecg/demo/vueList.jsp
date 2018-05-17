@@ -1,17 +1,27 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
 <meta charset="UTF-8">
 	<title>ElementDemo</title>
-	<link rel="stylesheet" href="https://cdn.bootcss.com/element-ui/1.2.8/theme-default/index.css"/>
 	<script src="https://cdn.bootcss.com/vue/2.2.2/vue.js"></script>
 	<script src="https://cdn.bootcss.com/vue-resource/1.5.0/vue-resource.js"></script>  
-	<script src="https://cdn.bootcss.com/element-ui/1.2.8/index.js"></script>
-	<script src="webpage/com/jeecg/demo/vueList.js"></script>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui@1.4/lib/theme-default/index.css">
+	<!-- 引入组件库 -->
+	<script src="https://unpkg.com/element-ui@1.4/lib/index.js"></script>
+<style>
+.toolbar {
+    background: #f2f2f2;
+    padding: 10px;
+    margin: 10px 0;
+}
+.toolbar .el-form-item {
+    margin-bottom: 10px;
+}
+</style>
 </head>
-<body>
+<body bgcolor="white">
 	<div id="test">
 		<!--工具条-->
 		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
@@ -19,16 +29,15 @@
 				<el-form-item style="margin-bottom: 8px;">
 					<el-input v-model="filters.name" placeholder="姓名"></el-input>
 				</el-form-item>
+				<el-form-item>
+			    	<el-button type="primary" v-on:click="getUsers" >查询</el-button>
+			    </el-form-item>
+			    <el-form-item>
+			    	<el-button type="primary" @click="handleAdd">新增</el-button>
+			    </el-form-item>
 			</el-form>
 		</el-col>
 
-		<!--工具条-->
-		<el-col :span="24" class="toolbar" style="padding-bottom: 8px;">
-			<el-button type="primary" @click="handleAdd">新增</el-button>
-			<el-button type="primary" @click="handleEdit" :disabled="this.sels.length!=1">编辑</el-button>
-			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
-			<el-button type="primary" v-on:click="getUsers" style="float: right;" >查询</el-button>
-		</el-col>
 		<!--列表-->
 		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
 			<el-table-column type="selection" width="55">
@@ -41,12 +50,13 @@
 			</el-table-column>
 			<el-table-column prop="age" label="年龄" width="100" sortable>
 			</el-table-column>
-			<el-table-column prop="birthday" label="生日" width="120" :formatter="formatDate"  sortable>
+			<el-table-column prop="birthday" label="生日" width="120" :formatter="formatBirthday"  sortable>
 			</el-table-column>
 			<el-table-column prop="phone" label="电话" min-width="120" sortable>
 			</el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
+					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
 					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
@@ -54,30 +64,29 @@
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-pagination layout="prev, pager, next" @current-change="handleCurrentChange" :page-size="10" :total="total" style="float:right;">
-			</el-pagination>
+			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+			 <el-pagination @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]"
+      			:page-size="10" :total="total" layout="sizes, prev, pager, next"  style="float:right;"></el-pagination>
 		</el-col>
 
 		<!--编辑界面-->
 		<el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
 			<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
 				<el-form-item label="姓名" prop="name">
-					<el-input v-model="editForm.name" auto-complete="off"></el-input>
+					<el-input v-model="editForm.name" auto-complete="off" placeholder="请输入用戶名"></el-input>
 				</el-form-item>
 				<el-form-item label="性别">
-					<el-radio-group v-model="editForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
+					<el-radio v-model="editForm.sex" :label="1">男</el-radio>
+					<el-radio v-model="editForm.sex" :label="0">女</el-radio>
 				</el-form-item>
 				<el-form-item label="年龄">
-					<el-input v-model="editForm.age"></el-input>
+					<el-input v-model="editForm.age" :min="0" :max="200"></el-input>
 				</el-form-item>
 				<el-form-item label="生日">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.birthday"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="电话">
-					<el-input v-model="editForm.phone"></el-input>
+					<el-input v-model="editForm.phone"  placeholder="请输入手机号"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -90,22 +99,20 @@
 		<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
 			<el-form :model="addForm" label-width="80px" :rules="addFormRules" ref="addForm">
 				<el-form-item label="姓名" prop="name">
-					<el-input v-model="addForm.name" auto-complete="off"></el-input>
+					<el-input v-model="addForm.name" auto-complete="off" placeholder="请输入用戶名"></el-input>
 				</el-form-item>
 				<el-form-item label="性别">
-					<el-radio-group v-model="addForm.sex">
-						<el-radio class="radio" :label="1">男</el-radio>
-						<el-radio class="radio" :label="0">女</el-radio>
-					</el-radio-group>
+					<el-radio v-model="addForm.sex" :label="1">男</el-radio>
+					<el-radio v-model="addForm.sex" :label="0">女</el-radio>
 				</el-form-item>
 				<el-form-item label="年龄">
-					<el-input v-model="addForm.age"></el-input>
+					<el-input v-model="addForm.age" :min="0" :max="200"></el-input>
 				</el-form-item>
 				<el-form-item label="生日">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.birthday"></el-date-picker>
 				</el-form-item>
 				<el-form-item label="电话">
-					<el-input v-model="addForm.phone"></el-input>
+					<el-input v-model="addForm.phone" placeholder="请输入手机号"></el-input>
 				</el-form-item>
 			</el-form>
 			<div slot="footer" class="dialog-footer">
@@ -113,6 +120,7 @@
 				<el-button type="primary" @click.native="addSubmit" :loading="addLoading">提交</el-button>
 			</div>
 		</el-dialog>
+	</section>
 	</div>
 </body>
 <script>
@@ -176,8 +184,8 @@
 			formatSex: function (row, column) {
 				return row.sex == 1 ? '男' : row.sex == 0 ? '女' : '未知';
 			},
-			formatDate: function(row,column){
-				return !!row.birthday?util.formatDate.format(new Date(row.birthday), 'yyyy-MM-dd'):'';
+			formatBirthday: function(row,column){
+				return !!row.birthday?formatDate(new Date(row.birthday), 'yyyy-MM-dd'):'';
 			},
 			handleCurrentChange(val) {
 				this.page = val;
@@ -196,6 +204,10 @@
 				this.listLoading = true;
 				this.$http.get(this.url.list,para).then((res) => {
 					this.total = res.data.total;
+					for (var i=0; i<res.data.rows.length; i++)
+				  	{
+						res.data.rows[i].sex=parseInt(res.data.rows[i].sex);
+				  	}
 					this.users = res.data.rows;
 					this.listLoading = false;
 				});
@@ -220,10 +232,9 @@
 				});
 			},
 			//显示编辑界面
-			handleEdit: function () {
+			handleEdit: function (index, row) {
 				this.editFormVisible = true;
-				this.editForm = Object.assign({}, this.sels[0]);
-				this.editForm.sex=!!this.editForm.sex?parseInt(this.editForm.sex):-1;
+				this.editForm = Object.assign({}, row);
 			},
 			//显示新增界面
 			handleAdd: function () {
@@ -243,7 +254,7 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.editLoading = true;
 							let para = Object.assign({}, this.editForm);
-							para.birthday = (!para.birthday || para.birthday == '') ? '' : util.formatDate.format(new Date(para.birthday), 'yyyy-MM-dd');
+							para.birthday = (!para.birthday || para.birthday == '') ? '' : formatDate(new Date(para.birthday), 'yyyy-MM-dd');
 							this.$http.post(this.url.edit,para,{emulateJSON: true}).then((res) => {
 								this.editLoading = false;
 								this.$message({
@@ -265,7 +276,7 @@
 						this.$confirm('确认提交吗？', '提示', {}).then(() => {
 							this.addLoading = true;
 							let para = Object.assign({}, this.addForm);
-							para.birthday = (!para.birthday || para.birthday == '') ? '' : util.formatDate.format(new Date(para.birthday), 'yyyy-MM-dd');
+							para.birthday = (!para.birthday || para.birthday == '') ? '' : formatDate(new Date(para.birthday), 'yyyy-MM-dd');
 							this.$http.post(this.url.save,para,{emulateJSON: true}).then((res) => {
 								this.addLoading = false;
 								this.$message({
@@ -307,5 +318,25 @@
 			this.getUsers();
 		}
 	});
+	
+	function formatDate(date, pattern) {
+        pattern = pattern || "yyyy-MM-dd";
+        return pattern.replace(/([yMdhsm])(\1*)/g, function ($0) {
+            switch ($0.charAt(0)) {
+                case 'y': return padding(date.getFullYear(), $0.length);
+                case 'M': return padding(date.getMonth() + 1, $0.length);
+                case 'd': return padding(date.getDate(), $0.length);
+                case 'w': return date.getDay() + 1;
+                case 'h': return padding(date.getHours(), $0.length);
+                case 'm': return padding(date.getMinutes(), $0.length);
+                case 's': return padding(date.getSeconds(), $0.length);
+            }
+        });
+    };
+	function padding(s, len) {
+	    var len = len - (s + '').length;
+	    for (var i = 0; i < len; i++) { s = '0' + s; }
+	    return s;
+	};
 </script>
 </html>

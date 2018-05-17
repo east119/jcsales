@@ -33,9 +33,9 @@ public class DataGridColumn {
 	protected String funname="openwindow";//自定义函数名称
 	protected String arg;
 	protected String dictionary;
-	//-- update-begin--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	protected String dictCondition;
-	//-- update-end--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	protected boolean popup=false;	//是否启用popup模式选择 默认不启用
 	protected String replace;
 	protected String extend;
@@ -45,12 +45,11 @@ public class DataGridColumn {
 	protected boolean autocomplete;//自动补全
 	protected String extendParams;//扩展参数,easyui有的,但是jeecg没有的参数进行扩展
 	protected String editor;//高级查询用的编辑器
-//  update-start--Author:chenjin  Date:20160715 for：扩展标签<t:dgCol 增加字段defaultVal=""
+
 	private String defaultVal = "";//列默认值
-//  update-end--Author:chenjin  Date:20160715 for：扩展标签<t:dgCol 增加字段defaultVal=""	
-	//update-begin--Author:xuelin  Date:20170706 for：TASK #2205 【UI标签库】列表查询条件动态生成，下拉换成redio模式切换----------------------
+
 	protected String showMode;//表单元素,查询表单中显示样式,默认样式select	
-	//update--begin--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
+
 	protected boolean newColumn;
 	
 	public boolean isNewColumn() {
@@ -60,7 +59,7 @@ public class DataGridColumn {
 	public void setNewColumn(boolean newColumn) {
 		this.newColumn = newColumn;
 	}
-	//update--begin--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
+
 	public String getShowMode() {
 		return showMode;
 	}
@@ -68,7 +67,7 @@ public class DataGridColumn {
 	public void setShowMode(String showMode) {
 		this.showMode = showMode;
 	}
-	//update-end--Author:xuelin  Date:20170706 for：TASK #2205 【UI标签库】列表查询条件动态生成，下拉换成redio模式切换----------------------
+
 
 	public String getEditor() {
 		return editor;
@@ -234,7 +233,7 @@ public class DataGridColumn {
 	public void setDictionary(String dictionary) {
 		this.dictionary = dictionary;
 	}
-	//-- update-begin--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	public String getDictCondition() {
 		return dictCondition;
 	}
@@ -242,7 +241,7 @@ public class DataGridColumn {
 	public void setDictCondition(String dictCondition) {
 		this.dictCondition = dictCondition;
 	}
-	//-- update-end--Author:gj_shaojc  Date:20180314 for：TASK #2560 【UI标签扩展】column列表字典属性扩展dictCondition加sql条件  --
+
 	public boolean isPopup() {
 		return popup;
 	}

@@ -69,7 +69,6 @@ public class ChooseTag extends TagSupport {
 		sb.append("try{");
 		sb.append("windowapi = frameElement.api, W = windowapi.opener;");
 		sb.append("}catch(e){}");
-		 //--author：scott-----end----date:20170407--------for: 异常捕获避免js报错-------------
 		sb.append("function choose_"+methodname+"(){");
 		 //--author：zhoujf-----start----date:20150531--------for: 编辑用户，选择角色,弹出的角色列表页面，默认没选中 标签扩展
 		sb.append("var url = ").append("'").append(url).append("';");
@@ -77,13 +76,12 @@ public class ChooseTag extends TagSupport {
 			sb.append("var initValue = ").append("$(\'#" + hiddenName + "\').val();");
 			sb.append("url += ").append("'&ids='+initValue;"); 
 		}
-		// --author：zhoujf------end-----date:20150531--------for: 编辑用户，选择角色,弹出的角色列表页面，默认没选中 标签扩展
 		sb.append("if(typeof(windowapi) == 'undefined'){");
 			sb.append("$.dialog({");
 			sb.append("content: \'url:\'+url,");
-			//update-begin--author: scott  Date: 20170307 for： 弹出窗口遮挡问题--
+
 			sb.append("zIndex: getzIndex(),");
-			//update-end--author: scott  Date: 20170307 for： 弹出窗口遮挡问题--
+
 			if (title != null) {
 				sb.append("title: \'" + title + "\',");
 			}
@@ -122,9 +120,9 @@ public class ChooseTag extends TagSupport {
 		sb.append("}else{");
 			sb.append("$.dialog({");
 			sb.append("content: \'url:\'+url,");
-			//update-begin--author: scott  Date: 20170307 for： 弹出窗口遮挡问题--
+
 			sb.append("zIndex: getzIndex(),");
-			//update-end--author: scott  Date: 20170307 for： 弹出窗口遮挡问题--
+
 			if (title != null) {
 				sb.append("title: \'" + title + "\',");
 			}
@@ -175,11 +173,11 @@ public class ChooseTag extends TagSupport {
 	private void clearAll(StringBuffer sb,String methodname) {
 		String[] textnames=null;
 		String[] inputTextnames=null;
-		//update-begin--Author: jg_huangxg  Date: 20160330 for： 防止空指针
+
 		if (!StringUtil.isEmpty(this.textname)) {
 			textnames = textname.split(",");
 		}
-		//update-end--Author: jg_huangxg  Date: 20160330 for： 防止空指针
+
 		if(StringUtil.isNotEmpty(inputTextname)){
 			inputTextnames = inputTextname.split(",");
 		}else{

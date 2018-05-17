@@ -97,7 +97,7 @@ public class NoticeAuthorityUserController extends BaseController {
 		noticeAuthorityUser = systemService.getEntity(TSNoticeAuthorityUser.class, noticeAuthorityUser.getId());
 		message = "通知公告用户授权删除成功";
 		try{
-			//update--begin--author:zhangjiaqiang date:20170309 for:修订通知公告获取速度慢
+
 			if(noticeAuthorityUser != null){
 				//删除授权关系的时候，判断是否已被阅读，如果已被阅读过，通过标记逻辑删除，否则直接删除数据
 				String hql = "from TSNoticeReadUser where noticeId = '"+noticeAuthorityUser.getNoticeId()+"' "
@@ -115,7 +115,7 @@ public class NoticeAuthorityUserController extends BaseController {
 					noticeReadList.clear();
 				}
 			}
-			//update--end--author:zhangjiaqiang date:20170309 for:修订通知公告获取速度慢
+
 			noticeAuthorityUserService.delete(noticeAuthorityUser);
 			systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
@@ -198,7 +198,7 @@ public class NoticeAuthorityUserController extends BaseController {
 			if(this.noticeAuthorityUserService.checkAuthorityUser(noticeId, userId)){
 				message = "该用户已授权，请勿重复操作。";
 			}else{
-				//update--begin--author:zhangjiaqiang date:20170309 for:修订通知公告获取速度慢
+
 				String hql = "from TSNoticeReadUser where noticeId = '"+noticeId+"' and userId = '"+userId+"'";
 				List<TSNoticeReadUser> noticeReadList = systemService.findHql(hql);
 				if(noticeReadList == null || noticeReadList.isEmpty()){
@@ -217,7 +217,7 @@ public class NoticeAuthorityUserController extends BaseController {
 					}
 					noticeReadList.clear();
 				}
-				//update--end--author:zhangjiaqiang date:20170309 for:修订通知公告获取速度慢
+
 				noticeAuthorityUserService.save(noticeAuthorityUser);
 				systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 			}

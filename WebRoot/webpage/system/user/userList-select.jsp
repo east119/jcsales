@@ -19,7 +19,6 @@
   		}
   		return rowsData[0].id;
   	}
-  	<%-- update-begin--Author:dangzhenghui  --date-- 20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可 --%>
     function initCheck(data){
         var ids = "${ids}";
         var idArr = ids.split(",");
@@ -29,6 +28,5 @@
             }
         }
     }
-    <%-- update-end--Author:dangzhenghui  --date-- 20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可 --%>
 
 </script>

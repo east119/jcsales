@@ -11,12 +11,11 @@ import net.sf.ehcache.Element;
  */
 public class EhcacheUtil {
 
-	//add-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
 	//缓存NAME静态名称
 	public static String DictCache = "dictCache";
 	public static String EternalCache = "eternalCache";
 	public static String TagCache = "tagCache";
-	//add-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 	
 	public static CacheManager manager = CacheManager.create();
 

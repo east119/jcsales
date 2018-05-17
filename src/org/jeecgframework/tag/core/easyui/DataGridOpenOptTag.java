@@ -20,10 +20,10 @@ public class DataGridOpenOptTag extends TagSupport {
 	private String exp;//判断链接是否显示的表达式
 	private String operationCode;//按钮的操作Code
 	private String urlStyle;//样式
-	//update--begin--author:zhangjiaqiang date:20170912 for:TASK 1779 UI标签样式修订
+
 	private String urlclass;//按钮样式
 	private String urlfont;//按钮图标
-	//update--end--author:zhangjiaqiang date:20170912 for:TASK 1779 UI标签样式修订
+
 	private String openModel = "OpenWin";	//弹出方式
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;

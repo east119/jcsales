@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <script type="text/javascript">
-//update-begin--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树--------------------	
+
 	var setting = {
 		check: {
 			enable: true
@@ -36,7 +36,7 @@
 			onAsyncError: function(){},
 			onClick: function (event, treeId, treeNode){
 						//console.info(treeNode.id + ", " + treeNode.tId + ", " + treeNode.name + ", " + treeNode.children);
-						// update-begin--Author:gj_shaojc Date:20180329 for：TASK #2594 【菜单问题】角色授权，权限加载不出来------
+
 						//if (null == treeNode.children) {
 							var roleId = $("#rid").val();
 							$('#operationListpanel').panel(
@@ -47,7 +47,7 @@
 									"roleController.do?dataRuleListForFunction&functionId="+ treeNode.id + "&roleId=" + roleId);
 						//} else {
 						//}
-						// update-end--Author:gj_shaojc Date:20180329 for：TASK #2594 【菜单问题】角色授权，权限加载不出来------
+
 			}
 		}
 	};
@@ -149,7 +149,7 @@
 		zTree.setting.check.chkboxType = type;
 		$("#typeMode").val(typeMode % 2 + 1);			
 	}
-// update-end--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树----------------------	
+
 	$('#selecrAllBtn').linkbutton({});
 	$('#resetBtn').linkbutton({});
 	$('#changeBtn').linkbutton({});
@@ -161,10 +161,8 @@
 			<input type="hidden" id="typeMode" value="1"/>
 			<a id="selecrAllBtn" onclick="selecrAll();"><t:mutiLang langKey="select.all" /></a> 
 			<a id="resetBtn" onclick="reset();"><t:mutiLang langKey="common.reset" /></a>
-			<!-- update-begin--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树-------------------- -->
 			<a id="changeBtn" onclick="changeMode();"><t:mutiLang langKey="common.typemode" /></a>
 			<ul id="functionid" class="ztree"></ul>
-			<!-- update-end--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树---------------------- -->			
 		</div>
 	</div>
 	<div region="east" style="width: 300px; overflow: hidden;" split="true">

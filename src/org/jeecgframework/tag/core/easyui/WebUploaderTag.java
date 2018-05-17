@@ -158,8 +158,7 @@ public class WebUploaderTag extends TagSupport {
 			sb.append("\r\nvar imgDelReq=function(delpath,spanobj){$.post('"+url+"',{path:delpath,isdel:\"1\"},function(aj){var data=JSON.parse(aj);if(data.success){reset_"+name+"_dataTypeInpVal(0);exsitPathArr_"+name+".removeItem(delpath);$list.children('.fordel').children('input').val(exsitPathArr_"+name+".join(','));var myimgli=$(spanobj).closest('li');myimgli.off().find('.hidetitle').off().end().remove();}});}\r\n");
 			sb.append("var "+name+"addFile=function(file,filepath){\r\nuploader.makeThumb(file, function(error,src) {\r\nif(error){return false;}\r\nif(isSupportBase64()){if(filepath==''){"+name+"addImgli(src,file.id,0,0);}\r\n}else if(filepath!=''){\r\nvar actSrc=\""+showAndDownUrl+"\"+filepath;\r\n"+name+"addImgli(actSrc,file.id,0,0);}}, thumbnailWidth, thumbnailHeight );}");
 			sb.append("\r\nvar updatetdState=function(id,content){$list.children('table').find('#"+name+"'+id).find('.state').text('--'+content+'--');}\r\n");
-			
-			//update-begin-author:taoyan date:20180411 for:TASK #2589 【UI标签扩展】上传新功能,当限制图片数量为1时，让新图片替换老的
+
 			if(fileNumLimit==1){
 				if(auto){
 					sb.append("var "+name+"_oneLimit = 0;");
@@ -182,7 +181,7 @@ public class WebUploaderTag extends TagSupport {
 					sb.append("var currLi=$('#"+name+"thelist>table').find('tr.item:last');if(currLi.length>0){currLi.addClass('wait-remove');var abcfile=currLi[0].id;if(abcfile.indexOf('id')==0){}else{abcfile=abcfile.substring("+name.length()+");uploader.removeFile(abcfile)}}});");
 				}
 			}
-			//update-end-author:taoyan date:20180411 for:TASK #2589 【UI标签扩展】上传新功能,当限制图片数量为1时，让新图片替换老的
+
 			
 			//当文件被加入队列以后触发。
 			sb.append("uploader.on( 'fileQueued', function( file ) {"//'+file.name+'---等待上传---</span>
@@ -191,7 +190,6 @@ public class WebUploaderTag extends TagSupport {
 			//上传过程中触发，携带上传进度。
 			sb.append("	uploader.on( 'uploadProgress', function( file, percentage ) {var $li = $('#"+name+"'+file.id+' td:last'),$percent = $li.find('.progress .progress-bar');if ( !$percent.length ) {$percent = $('<div class=\"progress progress-striped active\"><div class=\"progress-bar\" role=\"progressbar\" style=\"width: 0%\"></div></div>').appendTo($li).find('.progress-bar');}updatetdState(file.id,'上传中');$percent.css( 'width', percentage * 100 + '%' );});");
 
-			//update-begin-author:taoyan date:20180411 for:TASK #2589 【UI标签扩展】上传新功能,当限制图片数量为1时，让新图片替换老的
 			//当文件上传成功时触发，会给表单增加一个input赋值 filePath
 			sb.append("uploader.on( 'uploadSuccess', function(file,response) {if(response.success){updatetdState(file.id,'上传成功');reset_"+name+"_dataTypeInpVal(1);"
 					+"var filepath=response['"+name+"']||response.obj;$('#"+name+"'+file.id+' td:first').append('<input type=\"hidden\" name=\""+name+"\" value=\"'+filepath+'\" />');"+name+"addFile(file, filepath);");
@@ -208,7 +206,7 @@ public class WebUploaderTag extends TagSupport {
 				}
 			}
 			sb.append("}else{updatetdState(file.id,'上传出错'+response.msg);}});\r\n");
-			//update-end-author:taoyan date:20180411 for:TASK #2589 【UI标签扩展】上传新功能,当限制图片数量为1时，让新图片替换老的
+
 			
 			//上传失败
 			sb.append("uploader.on( 'uploadError', function( file,reason ) {updatetdState(file.id,'上传出错-code:'+reason);});");
@@ -318,11 +316,11 @@ public class WebUploaderTag extends TagSupport {
 		return extendParams;
 	}
 	public void setExtendParams(String extendParams) {
-		//update--begin--author:zhangjiaqiang date:20170705 for:TASK #2195 【ui标签参数美化改进】这个参数用途，为什么多个逗号
+
 		if(StringUtil.isNotEmpty(extendParams) && !extendParams.endsWith(",")){
 			extendParams = extendParams + ",";
 		}
-		//update--end--author:zhangjiaqiang date:20170705 for:TASK #2195 【ui标签参数美化改进】这个参数用途，为什么多个逗号
+
 		this.extendParams = extendParams;
 	}
 	public String getPathValues() {

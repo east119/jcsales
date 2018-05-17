@@ -90,29 +90,23 @@ public class CgFormHeadEntity implements java.io.Serializable {
 	private java.lang.String treeIdFieldname;
 	/**树形列表 菜单列名*/
 	private java.lang.String treeFieldname;
-	
-	//add-start--Author:luobaoli  Date:20150607 for：增加表单分类列
+
 	/**表单分类*/
 	private java.lang.String jformCategory;
-	//add-end--Author:luobaoli  Date:20150607 for：增加表单分类列
-	//add-start--Author:张忠亮  Date:20150618 for：增加表单模板选择
+
 	/**表单模板*/
 	private String formTemplate;
-	//add-end--Author:张忠亮  Date:20150618 for：增加表单模板选择
-	
-	//add-start--Author:scott Date:20160301 for：online表单移动样式单独配置
+
 	/**表单模板样式(移动端)*/
 	private String formTemplateMobile;
-	//add-end--Author:scott Date:20160301 for：online表单移动样式单独配置
-	
-	//add-start--Author:gengjiajia Date:20160803 for：增加配置表 表单表类型,表版本
+
 	/**表单类型，0为物理表，1为配置表*/
 	private String tableType;
 	/**配置表版本*/
 	private Integer tableVersion;
 	/**物理表id*/
 	private String physiceId;
-	//add-end--Author:gengjiajia Date:20160803 for：增加配置表 表单表类型,表版本
+
 	
 	
 	/**
@@ -500,7 +494,7 @@ public class CgFormHeadEntity implements java.io.Serializable {
 	public void setJformCategory(java.lang.String jformCategory) {
 		this.jformCategory = jformCategory;
 	}
-	//add-start--Author:张忠亮  Date:20150618 for：增加表单模板选择
+
 	@Column(name ="form_template",length=50)
 	public String getFormTemplate() {
 		return formTemplate;
@@ -509,7 +503,7 @@ public class CgFormHeadEntity implements java.io.Serializable {
 	public void setFormTemplate(String formTemplate) {
 		this.formTemplate = formTemplate;
 	}
-	//add-end--Author:张忠亮  Date:20150618 for：增加表单模板选择
+
 	@Column(name ="form_template_mobile",length=50)
 	public String getFormTemplateMobile() {
 		return formTemplateMobile;

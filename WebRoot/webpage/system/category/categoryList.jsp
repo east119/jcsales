@@ -12,10 +12,8 @@
 				image="true" hidden="true"></t:dgCol>
 			<t:dgCol title="common.type.code" field="code" treefield="id"></t:dgCol>
 			<t:dgCol title="common.operation" field="opt" width="100"></t:dgCol>
-			<!-- 	//update-begin--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 			<t:dgDelOpt title="common.delete"
 				url="categoryController.do?del&id={src}" urlclass="ace_button"  urlfont="fa-trash-o" />
-			<!-- 	//update-end--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 			<t:dgToolBar icon="icon-add" title="common.add"
 				url="categoryController.do?addorupdate" funname="addCategory"></t:dgToolBar>
 			<t:dgToolBar icon="icon-edit" title="common.edit"
@@ -29,9 +27,9 @@
 		if (rowData) {
 			url += '&parent.code=' + rowData.id;
 		}
-		//update-begin--Author:LiShaoQing  Date:20170816 for：[TASK #2284]界面大小调整
+
 		add(title, url, 'categoryList', 500, 340);
-		//update-end--Author:LiShaoQing  Date:20170816 for：[TASK #2284]界面大小调整
+
 	}
 	
 	function updateCategory(title, url, id) {
@@ -39,8 +37,8 @@
 		if (rowData) {
 			url += '&code=' + rowData.id;
 		}
-		//update-begin--Author:LiShaoQing  Date:20170816 for：[TASK #2284]界面大小调整
+
 		update(title, url, 'categoryList', 500, 340);
-		//update-end--Author:LiShaoQing  Date:20170816 for：[TASK #2284]界面大小调整
+
 	}
 </script>

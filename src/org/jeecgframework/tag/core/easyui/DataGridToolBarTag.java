@@ -21,9 +21,9 @@ public class DataGridToolBarTag extends TagSupport {
 	private String height;
 	private String operationCode;//按钮的操作Code
 	private String langArg;//按钮的操作Code
-	//update--begin--author:zhangjiaqiang date:20170620 for:增加控件ID
+
 	private String id;//控件ID
-	//update--end--author:zhangjiaqiang date:20170620 for:增加控件ID
+
 	
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;

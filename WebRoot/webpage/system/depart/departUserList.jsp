@@ -7,12 +7,8 @@
 	<t:dgCol title="common.real.name" field="realName" width="100" query="true"></t:dgCol>
 	<t:dgCol title="common.status" sortable="true" width="50" field="status" replace="common.active_1,common.inactive_0,super.admin_-1"></t:dgCol>
 	<t:dgCol title="common.operation" field="opt" width="100"></t:dgCol>
-	<!-- 	//update-begin--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 	<t:dgDelOpt title="common.delete" url="departController.do?delUserOrg&userid={id}&departid=${departid }" urlclass="ace_button"  urlfont="fa-trash-o"/>
-	<!-- 	//update-end--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 	<t:dgToolBar title="common.add.param" langArg="common.user" icon="icon-add" url="userController.do?addorupdate&departid=${departid}" funname="add"></t:dgToolBar>
 	<t:dgToolBar title="common.edit.param" langArg="common.user" icon="icon-edit" url="userController.do?addorupdate&departid=${departid}" funname="update"></t:dgToolBar>
-    <%--update-start--Author:zhangguoming  Date:20140826 for：添加有客户--%>
 	<t:dgToolBar title="common.add.exist.user" icon="icon-add" url="departController.do?goAddUserToOrg&orgId=${departid}" funname="add" width="600"></t:dgToolBar>
-    <%--update-end--Author:zhangguoming  Date:20140826 for：添加有客户--%>
 </t:datagrid>

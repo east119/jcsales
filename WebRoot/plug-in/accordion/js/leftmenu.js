@@ -65,10 +65,10 @@ function openThisNoed(node) {
 	}
 	if (children == null || children.length == 0) {
 		var fun = $(node.target).find('a').attr("onclick");
-		//update-begin--Author:Yandong  Date:20180322 for：TASK #2569 【严重bug】Jeecg 新版菜单加载慢问题解决
+
 //		var params = fun.substring(7, fun.length - 1).replaceAll("'", "").split(",");
 		eval(fun);
-		//update-begin--Author:Yandong  Date:20180322 for：TASK #2569 【严重bug】Jeecg 新版菜单加载慢问题解决
+
 	}
 }
 
@@ -93,19 +93,18 @@ function addTab(subtitle, url, icon) {
 	var progress = $("div.messager-progress");
 	if(progress.length){return;}
 	rowid="";
-	//update-begin--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，新的遮罩模式--------
-	//update-begin--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 	//showloading();
-	//update-end--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 //	$.messager.progress({
 //		text : loading,
 //		interval : 200
 //	});
-	//update-end--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，新的遮罩模式--------
+
 	if (!$('#maintabs').tabs('exists', subtitle)) {
-		//update-begin--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 		showloading();
-		//update-end--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 		//判断是否进行href方式打开tab，默认为iframe方式
 		if(url.indexOf('isHref') != -1){
 			$('#maintabs').tabs('add', {
@@ -118,9 +117,9 @@ function addTab(subtitle, url, icon) {
 			
 			$('#maintabs').tabs('add', {
 				title : subtitle,
-				//update-begin--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，新的遮罩模式--------
+
 				content : '<iframe onreadystatechange="hiddenloading();" onload="hiddenloading();" src="' + url + '" frameborder="0" style="border:0;width:100%;height:99.4%;"></iframe>',
-				//update-end--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，新的遮罩模式--------
+
 				closable : true,
 				icon : icon
 			});		
@@ -129,11 +128,9 @@ function addTab(subtitle, url, icon) {
 	} else {
 		$('#maintabs').tabs('select', subtitle);
 		$.messager.progress('close');
-		//update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
-		//update-begin--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 		//hiddenloading();
-		//update-end--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
-		//update-end--Author:gj_shaojc  Date:20180327 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 	}
 
 	// $('#maintabs').tabs('select',subtitle);
@@ -192,9 +189,9 @@ function tabClose() {
 	$(".tabs-inner").dblclick(function() {
 		var subtitle = $(this).children(".tabs-closable").text();
 		$('#tabs').tabs('close', subtitle);
-		//update-begin--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
+
 		hiddenloading();
-	    //update-end--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
+
 	})
 	/* 为选项卡绑定右键 */
 	$(".tabs-inner").bind('contextmenu', function(e) {
@@ -207,9 +204,9 @@ function tabClose() {
 
 		$('#mm').data("currtab", subtitle);
 		// $('#maintabs').tabs('select',subtitle);
-		//update-begin--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
+
 		hiddenloading();
-	    //update-end--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
+
 		return false;
 	});
 }
@@ -289,7 +286,6 @@ $.parser.onComplete = function() {/* 页面所有easyui组件渲染成功后，�
 	}, 200);
 };
 
-//update-begin--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
 function hiddenloading(){
 	$("#panelloadingDiv").hide();
 }
@@ -297,4 +293,4 @@ function hiddenloading(){
 function showloading(){
 	$("#panelloadingDiv").show();
 }
-//update-end--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
+

@@ -124,6 +124,12 @@ function iframeMainPageid(id){
 		return id;
 	}
 }
+//删除主表数据后刷新子表
+function freshSubList(){
+	var id = iframeMainPageid(0);
+	var listname = $("#mainPageFrameActived").val();
+	$("#"+listname+"Iframe")[0].contentWindow.curd.initListByMain(id,1);
+}
 //切换子表的时候切换对应菜单的激活状态
 function toggleMenus(index){
 	$("#tab-menus-attached").find("div."+$('#mainPageFrameActived').val()+"-ul").removeClass("active");
@@ -295,6 +301,21 @@ function mainPageQueryReset(){
 }
 //联合查询
 function associatedQuery(queryCode,dgname){
+	$.ajax({
+		url:"commonController.do?superQueryExist&superQueryCode="+queryCode,
+		type:"GET",
+		dataType:"text",
+		success:function(data){
+			if(data=='yes'){
+				doAssociatedQuery(queryCode,dgname);
+			}else{
+				$("#mainList")[0].contentWindow.topWinTip('请先去【在线开发->Online组合查询配置】配置相应的查询规则','',145);
+			}
+			
+		}
+	});
+}
+function doAssociatedQuery(queryCode,dgname){
 	var sqlbuildArr = [];
 	var sqlbuildObj = {};
 	sqlbuildObj.queryCode = queryCode;

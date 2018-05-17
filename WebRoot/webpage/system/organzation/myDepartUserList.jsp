@@ -149,18 +149,12 @@ function GetAuthNode() {
 		<t:dgCol title="common.real.name" field="realName" query="true" width="50"></t:dgCol>
 		<t:dgCol title="common.status" sortable="true" width="20" field="status" replace="common.active_1,common.inactive_0,super.admin_-1"></t:dgCol>
 		<t:dgCol title="common.operation" field="opt" width="130"></t:dgCol>
-		<!-- 	//update-begin--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 		<t:dgDelOpt title="解除机构关系" url="organzationController.do?delUserOrg&userid={id}&departid=${departid }" urlclass="ace_button"  urlfont="fa-trash-o"/>
 		<t:dgFunOpt funname="setUsersCompanyPosition(id)" title="分配职务" urlclass="ace_button"  urlfont="fa-user"></t:dgFunOpt>
-		<!-- 	//update-end--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 		<t:dgToolBar title="common.add.param" width="800" height="500" langArg="common.user" icon="icon-add" url="userController.do?addorupdateMyOrgUser&departid=${departid}" funname="add"></t:dgToolBar>
 		<t:dgToolBar title="common.edit.param" width="800" height="500"  langArg="common.user" icon="icon-edit" url="userController.do?addorupdateMyOrgUser&departid=${departid}" funname="update"></t:dgToolBar>
-	    <%--update-start--Author:zhangguoming  Date:20140826 for：添加有客户--%>
 		<t:dgToolBar title="添加已有用户" icon="icon-add" url="organzationController.do?goAddMyOrgUserToOrg&orgId=${departid}" funname="add" width="650"></t:dgToolBar>
-	    <%--update-end--Author:zhangguoming  Date:20140826 for：添加有客户--%>
-	    <%--update-begin-LiShaoQing Date:20171221 for: 添加分配部门角色 --%>
 	    <t:dgFunOpt funname="openAuthorizeSet(id)" title="分配部门角色" urlclass="ace_button"  urlfont="fa-cog" urlStyle="background-color:#18a689;"></t:dgFunOpt>
-	    <%--update-end-LiShaoQing Date:20171221 for: 添加分配部门角色 --%>
 	</t:datagrid>
  </div>
 </div>

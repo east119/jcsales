@@ -100,7 +100,7 @@ public class NoticeAuthorityRoleController extends BaseController {
 		noticeAuthorityRole = systemService.getEntity(TSNoticeAuthorityRole.class, noticeAuthorityRole.getId());
 		message = "通知公告角色授权删除成功";
 		try{
-			//update--begin--author:zhangjiaqiang date:20170309 for:修订通知公告获取速度慢
+
 			final String noticeId = noticeAuthorityRole.getNoticeId();
 			final String roleId = noticeAuthorityRole.getRole().getId();
 			executor.execute(new Runnable() {
@@ -137,7 +137,7 @@ public class NoticeAuthorityRoleController extends BaseController {
 					roleUserList.clear();
 				}
 			});
-			//update--end--author:zhangjiaqiang date:20170309 for:修订通知公告获取速度慢
+
 			noticeAuthorityRoleService.delete(noticeAuthorityRole);
 			systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 		}catch(Exception e){

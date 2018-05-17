@@ -1,9 +1,9 @@
 ﻿﻿﻿$(function() {
 	$("#nav").hide();
 	//easy ui树加载会在文档加载完执行,所以初始化菜单要延迟一秒 by jueyue
-	// update-start--Author:gaofeng  Date:2014-01-09：由于不需展示左侧的树，因此降低刷新的延迟时间  
+
 	setTimeout(InitLeftMenu,100);
-	//update-start--Author:gaofeng  Date:2014-01-09：由于不需展示左侧的树，因此降低刷新的延迟时间 
+
 	tabClose();
 	tabCloseEven();
 	// 释放内存
@@ -30,13 +30,13 @@
 var rowid="";
 // 初始化左侧
 function InitLeftMenu() {
-	// update-start--Author:刘洋  Date:2015-04-11 for:修改左侧菜单栏，当侧拉左侧菜单栏宽度，菜单高度不能自适应的问题
+
 	var navaa=$("#nav .panel");
     var winheight = document.body.clientHeight - 157;
     navaa.find(".panel-body").panel({//左侧菜单 宽度拉伸，自动调整
     	onResize:function(){ navaa.find(".panel-body").css("height",winheight); }
     });
-    // update-end--Author:刘洋  Date:2014-04-11 for:修改左侧菜单栏，当侧拉左侧菜单栏宽度，菜单高度不能自适应的问题
+
 	
 	$('.easyui-accordion li div').click(function() {
 		$('.easyui-accordion li div').removeClass("selected");
@@ -46,8 +46,7 @@ function InitLeftMenu() {
 	}, function() {
 		$(this).parent().removeClass("hover");
 	});
-	
-	// update-start--Author:gaofeng  Date:2014-01-09 for:新增首页风格,一级菜单点击事件的切换操作
+
 	 $(".shortcut li").live("click",function(){
 	   $(this).find(".imag1").hide();
 	   $(this).find(".imag2").show();
@@ -61,7 +60,6 @@ function InitLeftMenu() {
 	    var winheight = document.body.clientHeight - 157;//计算左侧二级菜单的行高度，以便自动判断是否需要滚动条
 	    navaa.find(".panel-body").css("height",winheight);
 	 });
-	// update-end--Author:gaofeng  Date:2014-01-09 for:新增首页风格,一级菜单点击事件的切换操作
 
 	// begin author：屈然博 2013-8-04 for：避免监听树自带三角点击事件
 	$('.easyui-tree').tree({
@@ -74,15 +72,15 @@ function InitLeftMenu() {
         url: "loginController.do?primaryMenu",
         async:false,
         success: function (data) {
-//            update-begin--Author:zhangguoming  Date:20140429 for：一级菜单右侧有双引号，且在ie下样式错位
+
 //            $(".shortcut").html(data);
             $(".shortcut").html(data.replaceAll("\"", ""));
-//            update-end--Author:zhangguoming  Date:20140429 for：一级菜单右侧有双引号，且在ie下样式错位
+
         }
     });
-	// update-start--Author:Peak  Date:2014-01-09：新增首页风格,初始化第一个菜单的内容显示
+
 	$(".shortcut li").eq(0).trigger("click");
-	//update-end--Author:Peak  Date:2014-01-09：新增首页风格,初始化第一个菜单的内容显示
+
 	$("#nav").show();
 }
 
@@ -106,16 +104,16 @@ function openThisNoed(node) {
 		$('.easyui-tree').tree('collapseAll');
 		$('.easyui-tree').tree('expand', node.target);
 	}
-	// update-begin--Author:屈然博 Date:20130712 for：叶子节点扩大点击范围
+
 	if (children = null || children.length == 0) {
 		var fun = $(node.target).find('a').attr("onclick");
-		// update-begin--Author:Yandong  Date:20180322 for：TASK #2569 【严重bug】Jeecg 新版菜单加载慢问题解决
+
 //		var params = fun.substring(7, fun.length - 1).replaceAll("'", "")
 //				.split(",");
 		eval(fun);
-		// update-end--Author:Yandong  Date:20180322 for：TASK #2569 【严重bug】Jeecg 新版菜单加载慢问题解决
+
 	}
-	// update-end--Author:屈然博 Date:20130712 for：叶子节点扩大点击范围
+
 	
 }
 
@@ -142,19 +140,18 @@ function addTab(subtitle, url, icon) {
 	if(progress.length){return;}
 	// begin author：屈然博 2013-7-12 for：解决firefox 点击一次请求两次的问题
 	rowid="";
-	//update-begin--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，新的遮罩模式--------
-	//update-begin--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 	//showloading();
-	//update-end--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 //	$.messager.progress({
 //		text : loading,
 //		interval : 200
 //	});
-	//update-end--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，新的遮罩模式--------
+
 	if (!$('#maintabs').tabs('exists', subtitle)) {
-		//update-begin--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 		showloading();
-		//update-end--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 		//判断是否进行iframe方式打开tab，默认为href方式
 		if(url.indexOf('isHref') != -1){
 			$('#maintabs').tabs('add', {
@@ -166,9 +163,9 @@ function addTab(subtitle, url, icon) {
 		}else{
 			$('#maintabs').tabs('add', {
 				title : subtitle,
-				//update-begin--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
+
 				content : '<iframe onreadystatechange="hiddenloading();" onload="hiddenloading();" src="' + url + '" frameborder="0" style="border:0;width:100%;height:99.4%;"></iframe>',
-				//update-end--Author:zhoujf  Date:20171227 for：TASK #2327 【效果问题】经典风格下，页面加载出现两个遮罩--------------------
+
 				closable : true,
 				icon : icon
 			});		
@@ -177,11 +174,9 @@ function addTab(subtitle, url, icon) {
 	} else {
 		$('#maintabs').tabs('select', subtitle);
 		$.messager.progress('close');
-		//update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
-		//update-begin--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 		//hiddenloading();
-		//update-end--Author:zhoujf  Date:20180329 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
-		//update-end--Author:gj_shaojc  Date:20180327 for：TASK #2591 【UI页面】ShortCut风格 与经典风格 同一菜单点击两次 页面加载遮罩不关闭--------
+
 	}
 
 	// $('#maintabs').tabs('select',subtitle);
@@ -240,9 +235,9 @@ function tabClose() {
 	$(".tabs-inner").dblclick(function() {
 		var subtitle = $(this).children(".tabs-closable").text();
 		$('#tabs').tabs('close', subtitle);
-		//update-begin--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
 		hiddenloading();
-	    //update-end--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
 	})
 	/* 为选项卡绑定右键 */
 	$(".tabs-inner").bind('contextmenu', function(e) {
@@ -255,9 +250,9 @@ function tabClose() {
 
 		$('#mm').data("currtab", subtitle);
 		// $('#maintabs').tabs('select',subtitle);
-		//update-begin--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
 		hiddenloading();
-	    //update-end--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
 		return false;
 	});
 }
@@ -283,11 +278,11 @@ function tabCloseEven() {
 	$('#mm-tabcloseall').click(function() {
 		$('.tabs-inner span').each(function(i, n) {
 			var t = $(n).text();
-//            update-begin--Author:zhangguoming  Date:20140905 for：不关闭首页
+
             if (t != '首页') {
                 $('#maintabs').tabs('close', t);
             }
-//            update-end--Author:zhangguoming  Date:20140905 for：不关闭首页
+
 		});
 	});
 	// 关闭除当前之外的TAB
@@ -318,11 +313,11 @@ function tabCloseEven() {
 		}
 		prevall.each(function(i, n) {
 			var t = $('a:eq(0) span', $(n)).text();
-//            update-begin--Author:zhangguoming  Date:20140612 for：不关闭首页
+
             if (t != '首页') {
                 $('#maintabs').tabs('close', t);
             }
-//            update-end--Author:zhangguoming  Date:20140612 for：不关闭首页
+
 		});
 		return false;
 	});
@@ -341,7 +336,6 @@ $.parser.onComplete = function() {/* 页面所有easyui组件渲染成功后，�
 	}, 200);
 };
 
-//update-begin--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
 function hiddenloading(){
 	$("#panelloadingDiv").hide();
 }
@@ -349,4 +343,3 @@ function hiddenloading(){
 function showloading(){
 	$("#panelloadingDiv").show();
 }
-//update-end--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------

@@ -45,7 +45,7 @@ public class MenuTag extends JeecgTag {
 		JspWriter out = null;
 		StringBuffer endString = null;
 		try {
-			//update-begin--author:scott---date:20160529----for:取消缓存方式，直接读取数据库，减低内存消耗----
+
 			out = this.pageContext.getOut();
 			endString = end();
 			out.print(endString.toString());
@@ -60,19 +60,19 @@ public class MenuTag extends JeecgTag {
 //				out.print(menu);
 //				out.flush();
 //			}
-			//update-end--author:scott---date:20160529----for:取消缓存方式，直接读取数据库，减低内存消耗----
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}finally{
 			try {
 				out.clearBuffer();
-				//update-begin--Author:yugwu  Date:20170617 for：避免二次调用end()浪费效率--------------------
+
 				//添加缓存后，不需要清空，并且清空后会对缓存造成影响
 //				if(endString != null){
 //					endString.setLength(0);
 //				}
 				//end().setLength(0);
-				//update-end--Author:yugwu  Date:20170617 for：避免二次调用end()浪费效率--------------------
+
 			} catch (Exception e2) {
 			}
 		}
@@ -80,29 +80,28 @@ public class MenuTag extends JeecgTag {
 	}
 
 	public StringBuffer end() {	
-		//update-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		StringBuffer sb = this.getTagCache();
 		if(sb != null){
 			return sb;
 		}
 		sb = new StringBuffer();
-		//update-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
-//        update-begin--Author:zhangguoming  Date:20140622 for：左侧树调整：加大宽度、更换节点图标、修改选中颜色
+
         if (style.equals("easyui")) {
             sb.append("<ul id=\"nav\" class=\"easyui-tree tree-lines\" fit=\"true\" border=\"false\">");
             sb.append(ListtoMenu.getEasyuiMultistageTree(menuFun, style));
             sb.append("</ul>");
         }
 		if(style.equals("shortcut"))
-//            update-begin--Author:zhangguoming  Date:20140429 for：在IE7下 导航显示问题
+
 //		{	sb.append("<div id=\"nav\" style=\"display:none;\" class=\"easyui-accordion\" fit=\"true\" border=\"false\">");
 		{
             sb.append("<div id=\"nav\" style=\"display:block;\" class=\"easyui-accordion\" fit=\"true\" border=\"false\">");
-//            update-end--Author:zhangguoming  Date:20140429 for：在IE7下 导航显示问题
+
 			sb.append(ListtoMenu.getEasyuiMultistageTree(menuFun, style));
 			sb.append("</div>");
 		}
-//        update-end--Author:zhangguoming  Date:20140622 for：左侧树调整：加大宽度、更换节点图标、修改选中颜色
+
 		if(style.equals("bootstrap"))
 		{
 			sb.append(ListtoMenu.getBootMenu(parentFun, childFun));
@@ -130,9 +129,9 @@ public class MenuTag extends JeecgTag {
 		}else if (style.equals("fineui")){
 			sb.append(ListtoMenu.getFineuiMultistageTree(menuFun));
 		}
-		//update-start--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		this.putTagCache(sb);
-		//update-end--Author:yugwu  Date:20170828 for:TASK #2258 【优化系统】jeecg的jsp页面，采用标签方式，每次都生成html，很慢----
+
 		return sb;
 	}
 	public void setStyle(String style) {
@@ -143,7 +142,6 @@ public class MenuTag extends JeecgTag {
 		this.menuFun = menuFun;
 	}
 
-	//update-start--Author:yugwu  Date:20170830 for:key生成逻辑重新编写----
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -154,7 +152,7 @@ public class MenuTag extends JeecgTag {
 				.append("]");
 		return builder.toString();
 	}
-	//update-end--Author:yugwu  Date:20170830 for:key生成逻辑重新编写----
+
 
 	
 

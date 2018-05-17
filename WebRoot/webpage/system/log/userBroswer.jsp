@@ -11,12 +11,12 @@
 				url : "logController.do?getBroswerBar&reportType=${reportType}",
 				success : function(jsondata) {
 					data = eval(jsondata);
-					//update-begin--author:zhangjiaqiang Date:20170213 for:修订X坐标轴信息
+
 					var xAxisCategories = new Array();
 					for(var i = 0; i < data[0].data.length; i++){
 						xAxisCategories[i] = data[0].data[i].name;
 					}
-					//update-end--author:zhangjiaqiang Date:20170213 for:修订X坐标轴信息
+
 					chart = new Highcharts.Chart({
 						chart : {
 							renderTo : 'containerCol',

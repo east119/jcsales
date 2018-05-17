@@ -31,8 +31,6 @@ import com.alibaba.fastjson.JSONObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-//update-begin-author:taoYan date:20180123 for:TASK#2507:【online开发】online对外接口改造-
-//update-begin--Author:dangzhenghui  Date:20170402 for：对外接口改造 api 设置为默认对外路径
 @Controller
 @RequestMapping("/cgFormDataController")
 @Api(value = "online表单服务", description = "online表单接口", tags = "onlineFormAPI")
@@ -312,4 +310,4 @@ public class CgFormDataController {
 		return j;
 	}
 }
-//update-end-author:taoYan date:20180123 for:TASK#2507:【online开发】online对外接口改造-
+

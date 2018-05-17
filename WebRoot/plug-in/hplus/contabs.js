@@ -104,7 +104,7 @@ $(function () {
             $(this).attr('data-index', index);
         }
     });
-    //update-begin--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
     function hiddenloading(){
 		$("#panelloadingDiv").hide();
 	}
@@ -112,7 +112,6 @@ $(function () {
     function showloading(){
 		$("#panelloadingDiv").show();
 	}
-	//update-end--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
 
     function menuItem() {
         // 获取标识数据
@@ -147,9 +146,9 @@ $(function () {
             $('.J_menuTab').removeClass('active');
 
             // 添加选项卡对应的iframe
-            //update-begin--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
             var str1 = '<iframe class="J_iframe" onreadystatechange="hiddenloading();" onload="hiddenloading();" name="iframe' + dataIndex + '" width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
-            //update-end--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
             $('.J_mainContent').find('iframe.J_iframe').hide().parents('.J_mainContent').append(str1);
 
             //显示loading提示
@@ -161,9 +160,9 @@ $(function () {
 //            });
             // 添加选项卡
             $('.J_menuTabs .page-tabs-content').append(str);
-            //update-begin--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
             showloading();
-            //update-end--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
             scrollToTab($('.J_menuTab.active'));
         }
         //var last = $("a[data-id='"+dataUrl+"']");
@@ -198,9 +197,9 @@ $(function () {
     function closeTab() {
         var closeTabId = $(this).parents('.J_menuTab').data('id');
         var currentWidth = $(this).parents('.J_menuTab').width();
-        //update-begin--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
         hiddenloading();
-        //update-end--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
         // 当前元素处于活动状态
         if ($(this).parents('.J_menuTab').hasClass('active')) {
 
@@ -287,9 +286,9 @@ $(function () {
             $(this).remove();
         });
         $('.page-tabs-content').css("margin-left", "0");
-        //update-begin--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
         hiddenloading();
-        //update-end--Author:zhoujf  Date:20170707 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板--------------------
+
     }
     $('.J_tabCloseOther').on('click', closeOtherTabs);
 

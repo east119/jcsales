@@ -234,7 +234,6 @@ public class OrganzationController extends BaseController {
 		TagUtil.datagrid(response, dataGrid);
 	}
 
-	//update-begin--author:zhangjiaqiang Date:20170112 for:在组织机构对应的用户列表当中删除用户对应的组织机构关系
 		@RequestMapping(params = "delUserOrg")
 		@ResponseBody
 		public AjaxJson delUserOrg(@RequestParam(required=true)String userid,@RequestParam(required=true)String departid) {
@@ -271,9 +270,7 @@ public class OrganzationController extends BaseController {
 			}
 			return ajaxJson;
 		}
-		//update-end--author:zhangjiaqiang Date:20170112 for:在组织机构对应的用户列表当中删除用户对应的组织机构关系
-	
-    // update-start--Author:zhangguoming  Date:20140825 for：添加业务逻辑；添加类注释；
+
 	/**
 	 * 删除部门：
 	 * <ul>
@@ -305,9 +302,9 @@ public class OrganzationController extends BaseController {
                 systemService.delete(depart);
                 systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
             }else{
-            	//update--begin--author:zhangjiaqiang date:20170223 for:TASK #1709 【bug】组织机构删除失败，删除不掉
+
             	message = MutiLangUtil.getLang("common.department.hasuser");
-            	//update--end--author:zhangjiaqiang date:20170223 for:TASK #1709 【bug】组织机构删除失败，删除不掉
+
             }
         } else {
             message = MutiLangUtil.paramDelFail("common.department");
@@ -316,7 +313,7 @@ public class OrganzationController extends BaseController {
         j.setMsg(message);
 		return j;
 	}
-    // update-end--Author:zhangguoming  Date:20140825 for：添加业务逻辑；添加类注释；
+
 
 	public void upEntity(TSDepart depart) {
 		List<TSUser> users = systemService.findByProperty(TSUser.class, "TSDepart.id", depart.getId());
@@ -411,19 +408,19 @@ public class OrganzationController extends BaseController {
 		if (comboTree.getId() == null) {
 			cq.isNull("TSPDepart");
 		}
-		//update--begin--author:zhangjiaqiang Date:20170112 for:增加排序功能
+
 		cq.addOrder("orgCode", SortDirection.asc);
-		//update--end--author:zhangjiaqiang Date:20170112 for:增加排序功能
+
 		cq.add();
 		List<TSDepart> departsList = systemService.getListByCriteriaQuery(cq, false);
 		List<ComboTree> comboTrees = new ArrayList<ComboTree>();
 		ComboTreeModel comboTreeModel = new ComboTreeModel("id", "departname", "TSDeparts");
-		//update-begin--author:zhangjiaqiang date:20170112 for:增加一级默认组织机构
+
 		TSDepart defaultDepart = new TSDepart();
 		defaultDepart.setId("");
 		defaultDepart.setDepartname("请选择组织机构");
 		departsList.add(0, defaultDepart);
-		//update-begin--author:zhangjiaqiang date:20170112 for:增加一级默认组织机构
+
 		comboTrees = systemService.ComboTree(departsList, comboTreeModel, null, true);
 		return comboTrees;
 
@@ -452,9 +449,9 @@ public class OrganzationController extends BaseController {
 		if (treegrid.getId() == null) {
 			cq.isNull("TSPDepart");
 		}
-		//update--begin--author:zhangjiaqiang Date:20170223 for:TASK 1708
+
 		cq.addOrder("orgCode", SortDirection.asc);
-		//update--end--author:zhangjiaqiang Date:20170112 for:TASK 1708
+
 		cq.add();
 		List<TreeGrid> departList =null;
 		departList=systemService.getListByCriteriaQuery(cq, false);
@@ -548,24 +545,24 @@ public class OrganzationController extends BaseController {
 	 */
 	@RequestMapping(params = "userDatagrid")
 	public void userDatagrid(TSUser user,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
-//      update-start--Author:chenjin  Date:20160708 for：设置用户的所属部门的查询条件为空,因为已经不维护这个字段了
+
 		if(user!=null&&user.getDepartid()!=null){
 			user.setDepartid(null);//设置用户的所属部门的查询条件为空；
 		}
-//      update-end--Author:chenjin  Date:20160708 for：设置用户的所属部门的查询条件为空,因为已经不维护这个字段了
+
 		CriteriaQuery cq = new CriteriaQuery(TSUser.class, dataGrid);
 		//查询条件组装器
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, user);
 		String departid = oConvertUtils.getString(request.getParameter("departid"));
 		if (!StringUtil.isEmpty(departid)) {
-//            update-start--Author:zhangguoming  Date:20140825 for：用户表字段变更后的查询字段修改
+
 			DetachedCriteria dc = cq.getDetachedCriteria();
 			DetachedCriteria dcDepart = dc.createCriteria("userOrgList");
 			dcDepart.add(Restrictions.eq("tsDepart.id", departid));
             // 这种方式也是可以的
 //            DetachedCriteria dcDepart = dc.createAlias("userOrgList", "userOrg");
 //            dcDepart.add(Restrictions.eq("userOrg.tsDepart.id", departid));
-//            update-end--Author:zhangguoming  Date:20140825 for：用户表字段变更后的查询字段修改
+
 		}
 		Short[] userstate = new Short[] { Globals.User_Normal, Globals.User_ADMIN };
 		cq.in("status", userstate);
@@ -575,7 +572,6 @@ public class OrganzationController extends BaseController {
 	}
 	//----
 
-//    update-start--Author:zhangguoming  Date:20140826 for：获取机构树；
     /**
      * 获取机构树-combotree
      * @param request
@@ -592,10 +588,7 @@ public class OrganzationController extends BaseController {
         comboTrees = systemService.ComboTree(departsList, comboTreeModel, null, true);
         return comboTrees;
     }
-//    update-end--Author:zhangguoming  Date:20140826 for：获取机构树；
 
-
-//    update-start--Author:zhangguoming  Date:20140826 for：添加已有用户到组织机构；
     /**
      * 添加 用户到组织机构 的页面  跳转
      * @param req request
@@ -718,9 +711,7 @@ public class OrganzationController extends BaseController {
             systemService.batchSave(userOrgList);
         }
     }
-//    update-end--Author:zhangguoming  Date:20140826 for：添加已有用户到组织机构
 
-//    update-start--Author:zhangguoming  Date:20140827 for：用户列表页面 组织机构查询条件：选择组织机构列表 相关操作
     /**
      * 用户选择机构列表跳转页面
      *
@@ -759,9 +750,6 @@ public class OrganzationController extends BaseController {
         TagUtil.datagrid(response, dataGrid);
     }
 
-//    update-end--Author:zhangguoming  Date:20140827 for：用户列表页面 组织机构查询条件：选择组织机构列表 相关操作
-    
-//add-begin--Author:xuelin  Date:20170407 for：[#1814]【标签】弹出组织机构选择，目前页面是ztree的，太简单了，应该做成树列表--------------------    
     /**
      * 用户选择机构列表跳转页面(树列表)
      *
@@ -774,7 +762,7 @@ public class OrganzationController extends BaseController {
 
         return "system/organzation/orgSelect";
     }
-//add-end--Author:xuelin  Date:20170407 for：[#1814]【标签】弹出组织机构选择，目前页面是ztree的，太简单了，应该做成树列表----------------------    
+
     
 	/**
 	 * 导入功能跳转
@@ -863,7 +851,7 @@ public class OrganzationController extends BaseController {
 						MyBeanUtils.copyBeanNotNull2Bean(tsDepart,depart);
 						systemService.saveOrUpdate(depart);
 					}else {
-						//update-begin--author:zhangjiaqiang Date:20170112 for:组织机构导入
+
 						if(oConvertUtils.isNotEmpty(tsDepart.getOrgType())){
 							String orgType = tsDepart.getOrgType().substring(0,1);
 							if("1".equals(orgType) || "2".equals(orgType) || "3".equals(orgType)){
@@ -876,7 +864,7 @@ public class OrganzationController extends BaseController {
 							j.setMsg("机构类型编码不能为空");
 							return j;
 						}
-						//update-end--author:zhangjiaqiang Date:20170112 for:组织机构导入
+
 						//TSTypegroup ts = systemService.findByProperty(TSTypegroup.class,"typegroupcode","orgtype").get(0);
 						//List<TSType> types = systemService.findByProperty(TSType.class,"id",ts.getId());
 						//int len = 3;//每级组织机构得长度
@@ -886,7 +874,7 @@ public class OrganzationController extends BaseController {
 						}*/
 						String orgcode = tsDepart.getOrgCode();
 						String parentOrgCode = orgcode.substring(0,orgcode.length()-3);
-						//update-begin--author:zhangjiaqiang Date:20170112 for:组织机构导入
+
 						List<TSDepart> parentList = systemService.getSession().createSQLQuery("select * from t_s_depart where ORG_CODE = :parentOrgCode")
 								.addEntity(TSDepart.class)
 								.setString("parentOrgCode",parentOrgCode)
@@ -896,7 +884,7 @@ public class OrganzationController extends BaseController {
 							tsDepart.setTSPDepart(parentDept);
 						}
 						tsDepart.setDepartOrder("0");
-						//update-end--author:zhangjiaqiang Date:20170112 for:组织机构导入
+
 						systemService.save(tsDepart);
 					}
 				}
@@ -914,9 +902,7 @@ public class OrganzationController extends BaseController {
 		}
 		return j;
 	}
-	
-	//update--start--by:jg_renjie--at:20160318 for:#942 【组件封装】组织机构弹出模式，目前是列表，得改造成树方式
-	//update-start--Author: os_renjie  Date:20160529 for：TASK #1056 【bug】用户编辑，弹出组织机构，默认没选中
+
 	@RequestMapping(params = "getDepartInfo")
 	@ResponseBody
 	public AjaxJson getDepartInfo(HttpServletRequest request, HttpServletResponse response){
@@ -955,9 +941,9 @@ public class OrganzationController extends BaseController {
 				map = new HashMap<String,Object>();
 				map.put("id", depart.getId());
 				map.put("name", depart.getDepartname());
-				//update-begin-Author:LiShaoQing Date:20170829 for:添加编码在前台获取
+
 				map.put("code",depart.getOrgCode());
-				//update-end-Author:LiShaoQing Date:20170829 for:添加编码在前台获取
+
 				if(ids.length>0){
 					for(String id:ids){
 						if(id.equals(depart.getId())){
@@ -985,8 +971,7 @@ public class OrganzationController extends BaseController {
 		j.setMsg(jsonArray.toString());
 		return j;
 	}
-	//update-start--Author: os_renjie  Date:20160529 for：TASK #1056 【bug】用户编辑，弹出组织机构，默认没选中
-	//update--end--by:jg_renjie--at:20160318 for:#942 【组件封装】组织机构弹出模式，目前是列表，得改造成树方式
+
 	
 	
 	@RequestMapping(params = "getMyDepartInfo")
@@ -1031,9 +1016,9 @@ public class OrganzationController extends BaseController {
 				map = new HashMap<String,Object>();
 				map.put("id", depart.getId());
 				map.put("name", depart.getDepartname());
-				//update-begin-Author:LiShaoQing Date:20170829 for:添加编码在前台获取
+
 				map.put("code",depart.getOrgCode());
-				//update-end-Author:LiShaoQing Date:20170829 for:添加编码在前台获取
+
 				if(ids.length>0){
 					for(String id:ids){
 						if(id.equals(depart.getId())){
@@ -1117,7 +1102,7 @@ public class OrganzationController extends BaseController {
 				List<TSDepart> departList =  this.systemService.findHql(hql,id);
 				populateTree(departList,dataList);
 			}else{
-				//update-begin-Author:LiShaoQing -- date:20171221 for:当其他用户登陆的时候查询用户关联的管理员组的组织机构
+
 				String userName = ResourceUtil.getSessionUser().getUserName();
 				StringBuffer hql = new StringBuffer(" from TSDepart t where 1=1 ");
 				//当其他用户登陆的时候查询用户关联的管理员组的组织机构
@@ -1125,7 +1110,7 @@ public class OrganzationController extends BaseController {
 					hql.append(" and id in (select deptId from TSDepartAuthGroupEntity where id in (select groupId from TSDepartAuthgManagerEntity where userId = '"+userName+"'))");
 				}
 				List<TSDepart> departList = this.systemService.findHql(hql.toString());
-				//update-end-Author:LiShaoQing -- date:20171221 for:当其他用户登陆的时候查询用户关联的管理员组的组织机构
+
 				populateTree(departList,dataList);
 			}
 			
@@ -1150,7 +1135,7 @@ public class OrganzationController extends BaseController {
 //				map.put("struct","TREE");
 //				map.put("title","01title");
 //				map.put("level", "1");
-				//update-begin-Author:LiShaoQing date:20171211 for:组织机构管理展示供应商虚拟节点-----
+
 				if(!depart.getOrgCode().equals(OrgConstants.SUPPLIER_ORG_CODE)) {
 					//判断是否有子节点
 					String hql = "select count(*) from TSDepart t where t.TSPDepart.id = '"+depart.getId()+"' ";
@@ -1180,7 +1165,7 @@ public class OrganzationController extends BaseController {
 				} else {
 					map.put("icon","plug-in/ztree/css/img/diy/gysroot.png");
 				}
-				//update-end-Author:LiShaoQing date:20171211 for:组织机构管理展示供应商虚拟节点-----
+
 				dataList.add(map);
 			}
 		}

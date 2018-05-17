@@ -11,9 +11,9 @@
 			url : 'departController.do?setPFunction&selfId=${depart.id}',
             width: 155,
             onSelect : function(node) {
-            	//-- update--begin--author:qinfeng Date:20170309 for:无法选择公司问题---
+
                 changeOrgType(node.id);
-                //-- update--end--author:qinfeng Date:20170309 for:无法选择公司问题---
+
             }
         });
 		
@@ -34,7 +34,7 @@
             $('#cc').combotree('setValue', '${pid}');
         }
 	});
-	//-- update--begin--author:qinfeng Date:20170309 for:无法选择公司问题---
+
     function changeOrgType(parentId) { // 处理组织类型，不显示公司选择项
         var orgTypeSelect = $("#orgType");
         if(parentId!=null && parentId!='') {
@@ -49,7 +49,7 @@
             orgTypeSelect.append(companyOrgType);
         }
     }
-   //-- update--end--author:qinfeng Date:20170309 for:无法选择公司问题---
+
 </script>
 </head>
 <body style="overflow-y: hidden" scroll="no">

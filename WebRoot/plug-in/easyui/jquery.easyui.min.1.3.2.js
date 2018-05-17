@@ -2146,14 +2146,14 @@ _1b2.find(">div.panel-header>div.panel-tool .panel-tool-a").appendTo(opts.tools)
 }
 _1a2(_1b2.children("div.panel-header"));
 if(opts.title&&!opts.noheader){
-//update-begin--Author:xuelin  Date:20170607 for：TASK #2083 【样式】JEECG样式专项工作  问题7 断网后，点击下一页提示风格--------------------
+
 var _1b3=$("<div class=\"panel-header\"><div class=\"panel-title messager-title\">"+opts.title+"</div></div>").prependTo(_1b2);
 if(opts.iconCls){
 _1b3.find(".panel-title").addClass("panel-with-icon");
 $("<div class=\"panel-icon\"></div>").addClass(opts.iconCls).appendTo(_1b3);
 }
 var tool=$("<div class=\"panel-tool messager-tool\"></div>").appendTo(_1b3);
-//update-end--Author:xuelin  Date:20170607 for：TASK #2083 【样式】JEECG样式专项工作  问题7 断网后，点击下一页提示风格----------------------
+
 tool.bind("click",function(e){
 e.stopPropagation();
 });
@@ -2644,12 +2644,12 @@ _1f6(_201);
 };
 function _206(_207){
 var _208=$.data(_207,"window");
-//update-begin--Author:xuelin  Date:20170607 for：TASK #2083 【样式】JEECG样式专项工作  问题7 断网后，点击下一页提示风格--------------------
+
 var win=$(_207).panel($.extend({},_208.options,{border:false,doSize:true,closed:true,cls:"window",headerCls:"window-header messager-header",bodyCls:"window-body "+(_208.options.noheader?"window-body-noheader":""),onBeforeDestroy:function(){
 if(_208.options.onBeforeDestroy.call(_207)==false){
 return false;
 }
-//update-end--Author:xuelin  Date:20170607 for：TASK #2083 【样式】JEECG样式专项工作  问题7 断网后，点击下一页提示风格----------------------
+
 if(_208.shadow){
 _208.shadow.remove();
 }
@@ -3067,10 +3067,10 @@ win.append(_239);
 if(_23a){
 var tb=$("<div class=\"messager-button\"></div>").appendTo(win);
 for(var _23b in _23a){
-//update-begin--Author:xuelin  Date:20170607 for：TASK #2083 【样式】JEECG样式专项工作  问题7 断网后，点击下一页提示风格--------------------
+
 $("<a></a>").attr("href","javascript:void(0)").text(_23b).css("margin-left",10).bind("click",eval(_23a[_23b])).appendTo(tb).linkbutton();
 	//$("<a></a>").text(_23b).css("margin-left",10).bind("click",eval(_23a[_23b])).appendTo(tb);
-//update-end--Author:xuelin  Date:20170607 for：TASK #2083 【样式】JEECG样式专项工作  问题7 断网后，点击下一页提示风格----------------------
+
 }
 }
 win.window({title:_238,noheader:(_238?false:true),width:300,height:"auto",modal:true,collapsible:false,minimizable:false,maximizable:false,resizable:false,onClose:function(){
@@ -6556,9 +6556,9 @@ function _467(_468){
 var opts=$.data(_468,"datagrid").options;
 var dc=$.data(_468,"datagrid").dc;
 var wrap=$.data(_468,"datagrid").panel;
-//update-begin--Author:xuelin  Date:20170613 for：TASK #2100 【列表样式美化】【样式专题】Jeecg平台任务 --2右边分页滚动条细点--------------------
+
 var _469=wrap.width()+5;
-//update-end--Author:xuelin  Date:20170613 for：TASK #2100 【列表样式美化】【样式专题】Jeecg平台任务 --2右边分页滚动条细点----------------------
+
 var _46a=wrap.height();
 var view=dc.view;
 var _46b=dc.view1;
@@ -8294,10 +8294,10 @@ return;
 }
 var _5f5=["<table class=\"datagrid-btable\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tbody>"];
 for(var i=0;i<rows.length;i++){
-//update-begin--Author:xuelin  Date:20170613 for：TASK #2100 【列表样式美化】【样式专题】Jeecg平台任务 ---3列表行间隔颜色去掉--------------------
+
 //var cls=(i%2&&opts.striped)?"class=\"datagrid-row datagrid-row-alt\"":"class=\"datagrid-row\"";
 var cls="class=\"datagrid-row\"";
-//update-end--Author:xuelin  Date:20170613 for：TASK #2100 【列表样式美化】【样式专题】Jeecg平台任务 ---3列表行间隔颜色去掉----------------------
+
 var _5f6=opts.rowStyler?opts.rowStyler.call(_5f0,i,rows[i]):"";
 var _5f7=_5f6?"style=\""+_5f6+"\"":"";
 var _5f8=_5f3.rowIdPrefix+"-"+(_5f2?1:2)+"-"+i;
@@ -11389,8 +11389,6 @@ return _85f;
 }};
 })(jQuery);
 
-//update-begin--Author:xuelin  Date:20171228 for：TASK #2462 【bug】Easyui Datagrid rownumbers行号四位、五位显示不完全的解决办法(引)
-//update-begin--Author:xuelin  Date:20170613 for：TASK #2109 【分页样式】页数多，遮挡问题--------------------
 /*$.extend($.fn.datagrid.methods, { 
      fixRownumber : function (jq) { 
          return jq.each(function () { 
@@ -11418,5 +11416,3 @@ return _85f;
          }); 
      } 
  }); */
-//update-end--Author:xuelin  Date:20170613 for：TASK #2109 【分页样式】页数多，遮挡问题----------------------
-//update-end--Author:xuelin  Date:20171228 for：TASK #2462 【bug】Easyui Datagrid rownumbers行号四位、五位显示不完全的解决办法(引)

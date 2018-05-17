@@ -92,10 +92,10 @@ public class ExcelTempletController extends BaseController {
 	 */
 	@SuppressWarnings("all")
 	@RequestMapping(params = "exportXls")
-	//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1906 【online excel】Online excel 导出功能改进
+
 	public String exportXls(HttpServletRequest request, ModelMap modelMap,
 							HttpServletResponse response, String field, DataGrid dataGrid,String id) {//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1906 【online excel】Online excel 导出功能改进
-		//update-end--Author:dangzhenghui  Date:20170429 for：TASK #1906 【online excel】Online excel 导出功能改进
+
 
 		String codedFileName = "文件";
 		String sheetName = "导出信息";
@@ -114,7 +114,6 @@ public class ExcelTempletController extends BaseController {
 			}
 			//--author：zhoujf---start------date:20170207--------for:online表单物理表查询数据异常处理
 			configId = configId.split("__")[0];
-			//--author：zhoujf---end------date:20170207--------for:online表单物理表查询数据异常处理
 			List<Map<String, Object>> result = cgTableService.querySingle(configId, field.toString(), params, null, null, 1, 99999);
 
 			//表单列集合
@@ -147,20 +146,20 @@ public class ExcelTempletController extends BaseController {
 					}
 				}
 			}
-			//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1906 【online excel】Online excel 导出功能改进
+
 			List<Map<String, Object>> nresult=new ArrayList<Map<String, Object>>();
 			if (StringUtil.isNotEmpty(id)){
 				for(Map map:result){
-					//update-begin--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 					if(id.contains(map.get("id").toString())){
 						nresult.add(map);
 					}
-					//update-end--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 				}
 			}else {
 				nresult.addAll(result);
 			}
-			//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1906 【online excel】Online excel 导出功能改进
+
 			modelMap.put(MapExcelConstants.ENTITY_LIST, entityList);
 			modelMap.put(MapExcelConstants.MAP_LIST, nresult);
 			modelMap.put(MapExcelConstants.FILE_NAME, codedFileName);
@@ -312,10 +311,7 @@ public class ExcelTempletController extends BaseController {
 					} else {
 						//--author：zhoujf---start------date:20170207--------for:online表单物理表查询数据异常处理
 						configId = configId.split("__")[0];
-						//--author：zhoujf---end------date:20170207--------for:online表单物理表查询数据异常处理
-						//update-begin--Author:xuelin  Date:20171203 for：TASK #2098 【excel问题】 Online 一对多导入失败--------------------
-						//update-begin--Author:xuelin  Date:20171101 for：TASK #2401 【bug】excel一对多导入外键逻辑问题
-						//update-begin--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 //						String mainId = "";
 						Object mainId = "";
 						for (Map<String, Object> map : listDate) {
@@ -333,21 +329,21 @@ public class ExcelTempletController extends BaseController {
 									mainData.put(key.replace("$mainTable$", ""), map.get(key));
 								}
 							}
-							//update-begin--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug
+
 //							map.put("$mainTable$id", mainId);//为子表准备
 							if (isMainData) {
-								//update-begin-author:taoYan date:20180207 for:online excel导入处理数据字典---
+
 								//处理字典项
 								dealDicForImport(mainData, lists);
-								//update-end-author:taoYan date:20180207 for:online excel导入处理数据字典---
+
 								mainData.put("id", mainId);//主表数据
 								dataBaseService.insertTable(configId, mainData);
 								mainId =  mainData.get("id");
 							}
 							map.put("$mainTable$id", mainId);//为子表准备
-							//update-end--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug
+
 						}
-						//update-end--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 						//导入子表数据，如果有
 						for (String subConfigId: subTabList) {
 							Map<String, Object> subConfigs = configService.queryConfigs(subConfigId, jversion);
@@ -376,20 +372,18 @@ public class ExcelTempletController extends BaseController {
 								}
 								//设置子表记录ID
 								if (isSubData) {
-									//update-begin-author:taoYan date:20180207 for:online excel导入处理数据字典---
+
 									//处理字典项
 									dealDicForImport(subData, subLists);
-									//update-end-author:taoYan date:20180207 for:online excel导入处理数据字典---
-									//update-begin--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 //									subData.put("id", UUIDGenerator.generate());
 									subData.put("id", getPkValue(subConfigId));
-									//update-end--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 									dataBaseService.insertTable(subConfigId, subData);
 								}
 							}
 						}
-						//update-end--Author:xuelin  Date:20171101 for：TASK #2401 【bug】excel一对多导入外键逻辑问题
-						//update-end--Author:xuelin  Date:20171203 for：TASK #2098 【excel问题】 Online 一对多导入失败--------------------
+
 						message = "文件导入成功！";
 					}
 				} catch (Exception e) {
@@ -405,8 +399,7 @@ public class ExcelTempletController extends BaseController {
 		j.setMsg(message);
 		return j;
 	}
-	
-	//update-begin--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 	/**
 	 * 根据主键策略获取实际插入的主键值
 	 * @param tableName 表单名称
@@ -461,7 +454,7 @@ public class ExcelTempletController extends BaseController {
 		}
 		return pkValue;
 	}
-	//update-end--Author:zhoujf  Date:20180402 for：TASK #2464 【bug】excel功能bug(Id非UUID的报错问题)
+
 
 	/**
 	 * 返回模版文件的版本号
@@ -525,9 +518,9 @@ public class ExcelTempletController extends BaseController {
 						String value = String.valueOf(r.get(bean.getFieldName()));
 						for (DictEntity dictEntity : dicDataList) {
 							if (value.equalsIgnoreCase(dictEntity.getTypecode())) {
-								//------------------update-begin------for:-国际化处理-----------------------author:zhagndaihao------------
+
 								r.put(bean.getFieldName(), MutiLangUtil.getLang(dictEntity.getTypename()));
-								//------------------update-end-----for:-国际化处理----------------------------author:zhagndaihao---------
+
 							}
 						}
 					}
@@ -536,8 +529,6 @@ public class ExcelTempletController extends BaseController {
 		}
 	}
 
-
-	//update-begin-author:taoYan date:20180207 for:online excel导入处理数据字典---
 	/**
 	 * 处理数据字典
 	 * @param result 查询的结果集
@@ -565,7 +556,7 @@ public class ExcelTempletController extends BaseController {
 			}
 		}
 	}
-	//update-end-author:taoYan date:20180207 for:online excel导入处理数据字典---
+
 	
 	
 	private class CgFormExcelHandler extends ExcelDataHandlerDefaultImpl {
@@ -594,7 +585,7 @@ public class ExcelTempletController extends BaseController {
 				map.put(getRealKey(originKey), value.toString());
 			}
 		}
-		//update-begin--Author:xuelin  Date:20171203 for：TASK #2098 【excel问题】 Online 一对多导入失败--------------------
+
 		private String getRealKey(String originKey) {
 			if (fieldMap.containsKey(originKey)) {
 				//主表字段
@@ -603,7 +594,7 @@ public class ExcelTempletController extends BaseController {
 			//子表字段
 			return "$subTable$"+originKey;
 		}
-		//update-end--Author:xuelin  Date:20171203 for：TASK #2098 【excel问题】 Online 一对多导入失败--------------------
+
 
 	}
 }

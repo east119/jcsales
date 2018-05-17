@@ -24,9 +24,7 @@
 	   <c:if test="${tsLog.operatetype==6}"><t:mutiLang langKey="common.upload"/></c:if>
 	   <c:if test="${tsLog.operatetype==7}"><t:mutiLang langKey="common.other"/></c:if>
 	</div>
-		<%--update-begin--Author:dangzhenghui  Date:20170624 for：TASK #2178 【日志表单效果】日志查看表单-----------------%>
 		<div class="form"><label class="form"> <t:mutiLang langKey="log.content"/>: </label><textarea style="width: 100% ;background-color:#f4f4f4" rows="6" >${tsLog.logcontent }</textarea> </div>
-			<%--update-end--Author:dangzhenghui  Date:20170624 for：TASK #2178 【日志表单效果】日志查看表单-----------------%>
 		<div class="form"><label class="form"> <%-- <t:mutiLang langKey="common.loglevel"/> --%>日志等级: </label>
 	   <!-- 以后再统一由数据字典维护  fangwenrong-->
 	   <c:if test="${tsLog.loglevel==1}">INFO</c:if>

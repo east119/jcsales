@@ -43,9 +43,9 @@
 			if($('#'+gname).datagrid('validateRow', i)){
 				$('#'+gname).datagrid('endEdit', i);
 			}else{
-				//update-begin--Author:LiShaoQing  Date:20170803  for: 增加友好提示
+
 				tip("请输入有效的内容!");
-				//update-end--Author:LiShaoQing  Date:20170803  for: 增加友好提示
+
 				return false;
 			}
 		}

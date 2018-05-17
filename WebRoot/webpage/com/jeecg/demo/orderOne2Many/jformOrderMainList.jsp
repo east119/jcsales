@@ -2,7 +2,6 @@
 <%@include file="/context/mytags.jsp"%>
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
 <div class="easyui-layout" fit="true">
-<!-- update-begin-author:taoYan date:20171030 for:多个datagrid叠在一起demo -->
    <div region="center" style="padding:0px;border:0px;overflow-x:hidden;">
    <iframe id="mainList" src="${webRoot}/jformOrderMainController.do?mainlist" frameborder="0" height="49%" width="100%"></iframe>
    <div id="accDiv" class="easyui-accordion" style="padding-right:15px;overflow-x:hidden;box-sizing: border-box;">
@@ -14,17 +13,16 @@
 		</div>
   </div>
   </div>
-<!-- update-end-author:taoYan date:20171030 for:多个datagrid叠在一起demo -->
 </div>
 <script type="text/javascript">
 	function getCustomerList(id){
 		$("#customerList")[0].contentWindow.getCustomerList(id);
 	}
-//update-begin-author:taoYan date:20171030 for:多个datagrid叠在一起demo
+
 	$(function(){
 		var abc = parseInt(document.body.clientWidth)-17;
 		$("#accDiv").css("width", abc);
 	});
-//update-end-author:taoYan date:20171030 for:多个datagrid叠在一起demo
+
 	
 </script>

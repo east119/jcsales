@@ -29,7 +29,7 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 
 	
 	public String getMatchClassTypeByDataType(String dataType,int digits) {
-		//update-begin--Author:scott  Date:20180227 for：oracle针对blob\text\nvarchar2逻辑处理--------------------
+
 		String result ="";
 		if (dataType.equalsIgnoreCase("varchar2")) {
 			result="string";
@@ -52,7 +52,7 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 		}else if (dataType.equalsIgnoreCase("clob")) {
 			result="text";
 		}
-		//update-begin--Author:scott  Date:20180227 for：oracle针对blob\text\nvarchar2逻辑处理--------------------
+
 		return result;
 	}
 
@@ -94,7 +94,7 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 		if (!datacolumnMeta.getIsNullable().equals(cgformcolumnMeta.getIsNullable())) {
 			isnull=(cgformcolumnMeta.getIsNullable().equals("Y")?"NULL":"NOT NULL");
 		}
-		//update-begin--Author:scott  Date:20180227 for：oracle针对blob\text\nvarchar2逻辑处理--------------------
+
 		if(cgformcolumnMeta.getColunmType().equalsIgnoreCase("string")){
 				result = cgformcolumnMeta.getColumnName()+" varchar2("+cgformcolumnMeta.getColumnSize()+")"+isnull;
 			
@@ -113,7 +113,7 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 		}else if(cgformcolumnMeta.getColunmType().equalsIgnoreCase("text")){ 
 			result = cgformcolumnMeta.getColumnName()+" CLOB "+isnull;
 		}
-		//update-end--Author:scott  Date:20180227 for：oracle针对blob\text\nvarchar2逻辑处理--------------------
+
 		result += (StringUtils.isNotEmpty(cgformcolumnMeta.getFieldDefault())?" DEFAULT "+cgformcolumnMeta.getFieldDefault():" ");
 		result += isnull;
 		return result;

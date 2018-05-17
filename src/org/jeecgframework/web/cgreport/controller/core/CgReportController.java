@@ -73,10 +73,10 @@ public class CgReportController extends BaseController {
 		FreemarkerHelper viewEngine = new FreemarkerHelper();
 		//step.3 组合模板+数据参数，进行页面展现
 		loadVars(cgReportMap,request);
-//      update-start--Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		//step.4 页面css js引用
 		cgReportMap.put(CgReportConstant.CONFIG_IFRAME, getHtmlHead(request));
-//      update-end----Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		String html = viewEngine.parseTemplate("/org/jeecgframework/web/cgreport/engine/core/cgreportlist.ftl", cgReportMap);
 		PrintWriter writer = null;
 		try {
@@ -101,7 +101,7 @@ public class CgReportController extends BaseController {
 		HttpSession session = ContextHolderUtils.getSession();
 		String lang = (String)session.getAttribute("lang");
 		StringBuilder sb= new StringBuilder("");
-		//update-begin--Author:zhoujf  Date:20170608 for：TASK #2093 【online报表样式】查询条件有问题，样式
+
 		SysThemesEnum sysThemesEnum = SysThemesUtil.getSysTheme(request);
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/jquery/jquery-1.8.3.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/dataformat.js\"></script>");
@@ -119,10 +119,9 @@ public class CgReportController extends BaseController {
 		sb.append(SysThemesUtil.getBootstrapTabTheme(sysThemesEnum));
 		sb.append(SysThemesUtil.getValidformStyleTheme(sysThemesEnum));
 		sb.append(SysThemesUtil.getValidformTablefrom(sysThemesEnum));
-		//update-end--Author:zhoujf  Date:20170608 for：TASK #2093 【online报表样式】查询条件有问题，样式
-		//update--begin--author:zhangjiaqiang date:20170315 for:修订layer对话框风格
+
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/layer/layer.js\"></script>");
-		//update--end--author:zhangjiaqiang date:20170315 for:修订layer对话框风格
+
 		sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/easyuiextend.js\"></script>");
 		return sb.toString();
@@ -149,10 +148,10 @@ public class CgReportController extends BaseController {
 		FreemarkerHelper viewEngine = new FreemarkerHelper();
 		//step.3 组合模板+数据参数，进行页面展现
 		loadVars(cgReportMap,request);
-//      update-start--Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		//step.4 页面css js引用
 		cgReportMap.put(CgReportConstant.CONFIG_IFRAME, getHtmlHead(request));
-//      update-end----Author:zhoujf  Date:20150605 for：页面css js引用 多风格切换
+
 		String html = viewEngine.parseTemplate("/org/jeecgframework/web/cgreport/engine/core/cgreportlistpopup.ftl", cgReportMap);
 		PrintWriter writer = null;
 		try {
@@ -224,7 +223,7 @@ public class CgReportController extends BaseController {
 				//不需要处理字典
 				continue;
 			}else{
-				//update-begin--Author:Yandong Date:20180416 for：TASK #2624 【论坛问题】动态报表 导出excle 数据没有使用字典名称，而是字典编码
+
 //				List<Map<String, Object>> dicDatas = queryDic(dict_code);
 				List<TSType> dicDatas = ResourceUtil.allTypes.get(dict_code.toLowerCase());
 				for(Map r:result){
@@ -237,7 +236,7 @@ public class CgReportController extends BaseController {
 						}
 					}
 				}
-				//update-end--Author:Yandong Date:20180416 for：TASK #2624 【论坛问题】动态报表 导出excle 数据没有使用字典名称，而是字典编码
+
 			}
 		}
 	}
@@ -321,15 +320,15 @@ public class CgReportController extends BaseController {
 		//step.4 进行查询返回结果
 		int p = page==null?1:Integer.parseInt(page);
 		int r = rows==null?99999:Integer.parseInt(rows);
-        //update-begin--Author:张忠亮  Date:20150608 for：多数据源支持
+
         String dbKey=(String)configM.get("db_source");
         List<Map<String, Object>> result=null;
         Long size=0l;
         if(StringUtils.isNotBlank(dbKey)){
             result= DynamicDBUtil.findList(dbKey,SqlUtil.jeecgCreatePageSql(dbKey,querySql,queryparams,p,r));
-            //update-begin--Author:zhoujf  Date:20180330 for：TASK #2585 【问题确认】online报表问题确认 其它数据源的时候，传进来的查询条件参数不会进行拼接
+
             Map map=(Map)DynamicDBUtil.findOne(dbKey,SqlUtil.getCountSql(querySql,queryparams));
-            //update-end--Author:zhoujf  Date:20180330 for：TASK #2585 【问题确认】online报表问题确认 其它数据源的时候，传进来的查询条件参数不会进行拼接
+
             if(map.get("COUNT(*)") instanceof BigDecimal){
             	BigDecimal count = (BigDecimal)map.get("COUNT(*)");
             	size = count.longValue();
@@ -340,7 +339,7 @@ public class CgReportController extends BaseController {
             result= cgReportService.queryByCgReportSql(querySql, queryparams, p, r);
             size = cgReportService.countQueryByCgReportSql(querySql, queryparams);
         }
-        //update-end--Author:张忠亮  Date:20150608 for：多数据源支持
+
 		dealDic(result,items);
 		dealReplace(result,items);
 		response.setContentType("application/json");
@@ -378,7 +377,7 @@ public class CgReportController extends BaseController {
 		}catch (Exception e) {
 			e.printStackTrace();
 			String errorInfo = "解析失败!<br><br>失败原因：";
-			//update-start--Author: jg_huangxg  Date:20151210 for：修改提示内容
+
 			//无法直接捕捉到:java.net.ConnectException异常
 			int i = e.getMessage().indexOf("Connection refused: connect");
 			
@@ -387,7 +386,7 @@ public class CgReportController extends BaseController {
 			}else{
 				errorInfo += "SQL语法错误.";
 			}
-			//update-end--Author: jg_huangxg  Date:20151210 for：修改提示内容
+
 			reJson.put("status", "error");
 			reJson.put("datas", errorInfo);
 			return reJson;

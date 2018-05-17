@@ -11,10 +11,9 @@ public interface JeecgDemoServiceI extends CommonService{
  	public Serializable save(JeecgDemoEntity entity) throws Exception;
  	
  	public void saveOrUpdate(JeecgDemoEntity entity) throws Exception;
-// add-begin--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo-------------------- 
- 	public void jdbcBatchSave() throws Exception;
+	public void jdbcBatchSave() throws Exception;
  	
 	public void jdbcProcedure() throws Exception;
-// add-end--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo---------------------- 
+
 
 }

@@ -4,9 +4,7 @@
 <html>
 <head>
 <title>uitags</title>
-<!-- update-begin--Author:gj_shaojc  Date:20180322 for：TASK #2561 【表单验证】my97时间控件时间验证问题  -->
 <t:base type="jquery,easyui,tools,autocomplete,DatePicker"></t:base>
-<!-- update-end--Author:gj_shaojc  Date:20180322 for：TASK #2561 【表单验证】my97时间控件时间验证问题  -->
 <SCRIPT type="text/javascript">
         function parse(data){
             	var parsed = [];
@@ -96,14 +94,12 @@
 			<input type="text" name="time" id="time" class="easyui-datetimebox"> 
 			<span class="Validform_checktip"></span>
 		</div> 
-		<!-- update-begin--Author:gj_shaojc  Date:20180322 for：TASK #2561 【表单验证】my97时间控件时间验证问题  -->
 		<div class="form">
 			<label class="Validform_label"> 时间： </label> 
 			<input id="d12" type="text" datatype="*" errormsg="该字段不为空"/>
 			<img onclick="WdatePicker({el:'d12'})" src="plug-in/easyui/themes/black/images/datebox_arrow.png" style="opacity: 0.6;height:17px;width:17px;" align="absmiddle">
 			<span class="Validform_checktip"></span>
 		</div> 
-		<!-- update-end--Author:gj_shaojc  Date:20180322 for：TASK #2561 【表单验证】my97时间控件时间验证问题  -->
 		<div style="text-align:center"><input class="btn" type="submit" value="提交" style="height:30px;width:100px !important;border-radius:5px"></div>
 		
 	</fieldset>

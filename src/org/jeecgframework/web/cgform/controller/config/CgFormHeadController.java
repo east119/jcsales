@@ -101,8 +101,6 @@ public class CgFormHeadController extends BaseController {
 		return new ModelAndView("jeecg/cgform/config/cgformSynChoice");
 	}
 
-	//update-begin--Author:luobaoli  Date:20150705 for：取消title参数，修改"配置地址"生成的URL为REST风格
-	//update-begin--Author: jg_huangxg  Date:20150806 for：恢复title参数，修改"配置地址"生成的URL为 .do风格
 	@RequestMapping(params = "popmenulink")
 	public ModelAndView popmenulink(ModelMap modelMap,
                                     @RequestParam String url,
@@ -111,8 +109,7 @@ public class CgFormHeadController extends BaseController {
         modelMap.put("url",url);
 		return new ModelAndView("jeecg/cgform/config/popmenulink");
 	}
-	//update-end--Author: jg_huangxg  Date:20150806 for：恢复title参数，修改"配置地址"生成的URL为 .do风格
-	//update-end--Author:luobaoli  Date:20150705 for：取消title参数，修改"配置地址"生成的URL为REST风格
+
 	/**
 	 * easyui AJAX请求数据
 	 * 
@@ -128,25 +125,22 @@ public class CgFormHeadController extends BaseController {
 			DataGrid dataGrid) {
 		CriteriaQuery cq = new CriteriaQuery(CgFormHeadEntity.class,
 				dataGrid);
-		//update-start--Author:luobaoli  Date:20150607 for：添加表单查询过滤条件
+
 		String jformCategory = request.getParameter("jformCategory");
 		if(StringUtil.isNotEmpty(jformCategory)){
 			cq.eq("jformCategory", jformCategory);
 			//cq.add();
 		}
-		//update-start--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置   添加表单查询过滤条件,只查询物理表
+
 		cq.isNull("physiceId");
 		cq.add();
-		//update-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置   添加表单查询过滤条件,只查询物理表
-		//update-end--Author:luobaoli  Date:20150607 for：添加表单查询过滤条件
+
 		
 		// 查询条件组装器
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq,
 				cgFormHead);
 		this.cgFormFieldService.getDataGridReturn(cq, true);
-		
-		//update-begin-author:taoyan Date:20170321 for:TASK #1788 【online功能】没有配置表的时候，该按钮隐藏
-		//update-begin--Author:xuelin  Date:20170601 for：TASK #1913 【性能优化】online表单访问慢，优化--------------------
+
 		List<CgFormHeadEntity> list = dataGrid.getResults();
 		Map<String,Map<String,Object>> extMap = new HashMap<String, Map<String,Object>>();		
 		List<Map<String,Object>> pzlist = this.cgFormFieldService.getPeizhiCountByIds(list);
@@ -165,10 +159,10 @@ public class CgFormHeadController extends BaseController {
 			 	extMap.put(temp.getId(), m); 
 			}       
 		}
-		//update-end--Author:xuelin  Date:20170601 for：TASK #1913 【性能优化】online表单访问慢，优化----------------------
+
 		
 		TagUtil.datagrid(response, dataGrid, extMap);
-		//update-end-author:taoyan Date:20170321 for:TASK #1788 【online功能】没有配置表的时候，该按钮隐藏
+
 	}
 
 	/**
@@ -228,11 +222,11 @@ public class CgFormHeadController extends BaseController {
 		cgFormField = systemService.getEntity(CgFormFieldEntity.class,
 				cgFormField.getId());
 		String message = cgFormField.getFieldName()+"删除成功";
-		//update-begin--Author:Yandong  Date:20180402 for：TASK #2603 【bug】Online 删除字段怎么没有提示同步数据库-----
+
 		CgFormHeadEntity table = cgFormField.getTable();
 		table.setIsDbSynch("N");
 		this.cgFormFieldService.updateEntitie(table);
-		//update-end--Author:Yandong  Date:20180402 for：TASK #2603 【bug】Online 删除字段怎么没有提示同步数据库-----
+
 		cgFormFieldService.delete(cgFormField);
 		systemService.addLog(message, Globals.Log_Type_DEL,
 				Globals.Log_Leavel_INFO);
@@ -254,8 +248,7 @@ public class CgFormHeadController extends BaseController {
 		String message;
 		AjaxJson j = new AjaxJson();
 		cgFormHead = systemService.getEntity(CgFormHeadEntity.class,cgFormHead.getId());
-		
-		//update-start--Author:scott  Date:20160815 for：安全控制，判断不在online管理中表单不允许操作----
+
 		logger.info("---同步数据库 ---doDbSynch-----> TableName:"+cgFormHead.getTableName()+" ---修改时间 :"+cgFormHead.getUpdateDate()+" ----创建时间:"+cgFormHead.getCreateDate() +"---请求IP ---+"+oConvertUtils.getIpAddrByRequest(request));
 		//安全控制，判断不在online管理中表单不允许操作
 		String sql = "select count(*) from cgform_head where table_name = '"+cgFormHead.getTableName()+"'";
@@ -267,21 +260,18 @@ public class CgFormHeadController extends BaseController {
 			return j;
 		}
 		TSUser currentUser = ResourceUtil.getSessionUser();
-        //update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
-        if("0".equals(currentUser.getDevFlag())){
+       if("0".equals(currentUser.getDevFlag())){
             message = "同步失败，您不是开发人员无授权访问！";
             logger.info(message+" ----- 请求IP ---+"+IpUtil.getIpAddr(request));
             j.setMsg(message);
             return j;
         }
-        //update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
-        //TODO 校验登录用户是否拥有开发权限
-		//update-end--Author:scott  Date:20160815 for：安全控制，判断不在online管理中表单不允许操作-----
+       //TODO 校验登录用户是否拥有开发权限
+
 		
 		//同步数据库
 		try {
-			
-			//update-begin--Author:qinfeng  Date:20180118 for：Sqlserver2008删除表，库锁死问题处理--------------------
+
 			if("force".equals(synMethod)){
 				DbTableHandleI dbTableHandle = DbTableUtil.getTableHandle(systemService.getSession());
 				if(dbTableHandle instanceof TableSQLServerHandleImpl){
@@ -289,13 +279,13 @@ public class CgFormHeadController extends BaseController {
 					systemService.executeSql(dropsql); 
 				}
 			}
-			//update-begin--Author:qinfeng  Date:20180118 for：Sqlserver2008删除表，库锁死问题处理--------------------
+
 			
 			boolean bl = cgFormFieldService.dbSynch(cgFormHead,synMethod);
 			if(bl){
 				//追加主表的附表串
 				cgFormFieldService.appendSubTableStr4Main(cgFormHead);
-				//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				//判断表单下是否有配置表
 				List<CgFormHeadEntity> list = cgFormFieldService.findByProperty(CgFormHeadEntity.class, "physiceId", cgFormHead.getId());
 				if(list!=null&&list.size()>0){
@@ -303,7 +293,7 @@ public class CgFormHeadController extends BaseController {
 				}else{
 					message = "同步成功";
 				}
-				//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				j.setMsg(message);
 				logger.info("["+IpUtil.getIpAddr(request)+"][online表单配置同步数据库]"+message+"表名："+cgFormHead.getTableName());
 			}else{
@@ -331,9 +321,9 @@ public class CgFormHeadController extends BaseController {
 	public AjaxJson save(CgFormHeadEntity cgFormHead,
 			HttpServletRequest request) {
 		String message = "";
-		//update-begin--Author:张忠亮  Date:20151121 for：清除缓存
+
 		templetContext.clearCache();
-		//update-end--Author:张忠亮  Date:20151121 for：清除缓存
+
 		AjaxJson j = new AjaxJson();
 		CgFormHeadEntity oldTable =cgFormFieldService.getEntity(CgFormHeadEntity.class, cgFormHead.getId());
 		cgFormFieldService.removeSubTableStr4Main(oldTable);
@@ -352,8 +342,7 @@ public class CgFormHeadController extends BaseController {
 			}
 		}
 		*/
-		
-		//update-begin--author:scott--------date:20171130----------for：系统表安全机制加强-----------------
+
 		/**
 		 * 判断表名在库中是否存在，防止创建重名表，冲掉原有系统表
 		 */
@@ -366,7 +355,7 @@ public class CgFormHeadController extends BaseController {
 				return j;
 			}
 		}
-		//update-end--author:scott--------date:20171130----------for：系统表安全机制加强-----------------
+
 		
 		//step.2 判定表格是否存在
 		StringBuffer msg = new StringBuffer();
@@ -384,26 +373,23 @@ public class CgFormHeadController extends BaseController {
 					cgFormFieldEntity.setFieldName(cgFormFieldEntity.getFieldName().toLowerCase());
 					cgFormFieldEntity.setOldFieldName(cgFormFieldEntity.getFieldName());
 				}
-				//update-begin--Author: jg_huangxg  Date: 20160924 for：TASK #1356 【bug】online配置字段，字段存在空格，报错
+
 				if (StringUtil.isNotEmpty(cgFormFieldEntity.getFieldName()))
 					cgFormFieldEntity.setFieldName(cgFormFieldEntity.getFieldName().trim());
-				//update-end--Author: jg_huangxg  Date: 20160924 for：TASK #1356 【bug】online配置字段，字段存在空格，报错
+
 			}
-			//update-begin--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 			boolean isChange = cgFormIndexService.updateIndexes(cgFormHead);
-			//update-end--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
-			
-			//update-begin--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 			//isChange 索引是否更新
 			cgFormFieldService.updateTable(table,null,isChange);
-			//update-end--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 			cgFormFieldService.appendSubTableStr4Main(table);
 			cgFormFieldService.sortSubTableStr(table);
-			
-			//add-begin--Author:gengjiajia  Date:20160808 for：TASK #1214 【新功能】online表单一个表，支持多个配置
+
 			/**同步配置表*/
 			syncTable(table);
-			//add-end--Author:gengjiajia  Date:20160808 for：TASK #1214 【新功能】online表单一个表，支持多个配置
+
 			
 			systemService.addLog(message, Globals.Log_Type_UPDATE,
 					Globals.Log_Leavel_INFO);
@@ -414,16 +400,15 @@ public class CgFormHeadController extends BaseController {
 					cgFormFieldEntity.setFieldName(cgFormFieldEntity.getFieldName().toLowerCase());
 					cgFormFieldEntity.setOldFieldName(cgFormFieldEntity.getFieldName());
 				}
-				//update-begin--Author: jg_huangxg  Date: 20160924 for：TASK #1356 【bug】online配置字段，字段存在空格，报错
+
 				if (StringUtil.isNotEmpty(cgFormFieldEntity.getFieldName()))
 					cgFormFieldEntity.setFieldName(cgFormFieldEntity.getFieldName().trim());
-				//update-end--Author: jg_huangxg  Date: 20160924 for：TASK #1356 【bug】online配置字段，字段存在空格，报错
+
 			}
 			cgFormFieldService.saveTable(cgFormHead);
-			
-			//update-begin--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 			cgFormIndexService.updateIndexes(cgFormHead);
-			//update-end--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 			systemService.addLog(message, Globals.Log_Type_INSERT,
 					Globals.Log_Leavel_INFO);
 		}
@@ -431,7 +416,7 @@ public class CgFormHeadController extends BaseController {
 		j.setMsg(message);
 		return j;
 	}
-	//add-begin--Author:gengjiajia  Date:20160808 for：TASK #1214 【新功能】online表单一个表，支持多个配置 配置表同步物理表
+
 	
 	
 	/**
@@ -459,10 +444,10 @@ public class CgFormHeadController extends BaseController {
 						field.setFieldName(column.getFieldName());
 						field.setFieldValidType(column.getFieldValidType());
 						field.setLength(column.getLength());
-						//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 						field.setMainField(null);
 						field.setMainTable(null);
-						//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 						field.setOldFieldName(column.getOldFieldName());
 						field.setOrderNum(column.getOrderNum());
 						field.setPointLength(column.getPointLength());
@@ -495,10 +480,10 @@ public class CgFormHeadController extends BaseController {
 									field.setFieldName(column.getFieldName());
 									field.setFieldValidType(column.getFieldValidType());
 									field.setLength(column.getLength());
-									//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 									field.setMainField(null);
 									field.setMainTable(null);
-									//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 									field.setOldFieldName(column.getOldFieldName());
 									field.setOrderNum(column.getOrderNum());
 									field.setPointLength(column.getPointLength());
@@ -527,10 +512,10 @@ public class CgFormHeadController extends BaseController {
 									field.setFieldName(cgFormFieldEntity.getFieldName());
 									field.setFieldValidType(cgFormFieldEntity.getFieldValidType());
 									field.setLength(cgFormFieldEntity.getLength());
-									//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 									field.setMainField(null);
 									field.setMainTable(null);
-									//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 									field.setOldFieldName(cgFormFieldEntity.getOldFieldName());
 									field.setOrderNum(cgFormFieldEntity.getOrderNum());
 									field.setPointLength(cgFormFieldEntity.getPointLength());
@@ -561,10 +546,10 @@ public class CgFormHeadController extends BaseController {
 							field.setFieldName(cgFormFieldEntity.getFieldName());
 							field.setFieldValidType(cgFormFieldEntity.getFieldValidType());
 							field.setLength(cgFormFieldEntity.getLength());
-							//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 							field.setMainField(null);
 							field.setMainTable(null);
-							//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 							field.setOldFieldName(cgFormFieldEntity.getOldFieldName());
 							field.setOrderNum(cgFormFieldEntity.getOrderNum());
 							field.setPointLength(cgFormFieldEntity.getPointLength());
@@ -587,7 +572,7 @@ public class CgFormHeadController extends BaseController {
 			}
 		}
 	}
-	//add-end--Author:gengjiajia  Date:20160808 for：TASK #1214 【新功能】online表单一个表，支持多个配置,配置表同步物理表
+
 	
 	/**
 	 * 设置OrderNum
@@ -648,10 +633,10 @@ public class CgFormHeadController extends BaseController {
 			//cgFormHead.setTableName(cgFormHead.getTableName().replace(CgAutoListConstant.jform_, ""));
 			req.setAttribute("cgFormHeadPage", cgFormHead);
 		}
-		//update-start--Author:luobaoli  Date:20150607 for：增加表单分类列表
+
 		List<TSType> typeList = ResourceUtil.allTypes.get(MutiLangUtil.getLang("bdfl"));
 		req.setAttribute("typeList", typeList);
-		//update-end--Author:luobaoli  Date:20150607 for：增加表单分类列表
+
 		return new ModelAndView("jeecg/cgform/config/cgFormHead");
 	}
 	/**
@@ -706,13 +691,12 @@ public class CgFormHeadController extends BaseController {
 		columnList.add(initCgFormFieldEntityString("update_name","更新人名称"));
 		columnList.add(initCgFormFieldEntityString("update_by", "更新人登录名称"));
 		columnList.add(initCgFormFieldEntityTime("update_date", "更新日期"));
-		//update-begin--Author:张忠亮  Date:20150613 for：新增默认字段
+
 		columnList.add(initCgFormFieldEntityString("sys_org_code","所属部门"));
 		columnList.add(initCgFormFieldEntityString("sys_company_code", "所属公司"));
-		//update-end--Author:张忠亮  Date:20150613 for：新增默认字段
-		//update-begin--Author:zhoujf  Date:20160115 for：新增流程状态默认字段
+
 		columnList.add(initCgFormFieldEntityBpmStatus());
-		//update-end--Author:zhoujf  Date:20160115 for：新增流程状态默认字段
+
 		return columnList;
 	}
 	/**
@@ -807,10 +791,10 @@ public class CgFormHeadController extends BaseController {
 	public AjaxJson checkIsExit(String name,
 			HttpServletRequest req) {
 		AjaxJson j = new AjaxJson();
-		//update-start--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置  还原真实表名
+
 		//判断，如果是带有V字符的,截取获取真实表名
 		name = PublicUtil.replaceTableName(name);
-		//update-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置  还原真实表名
+
 		j.setSuccess(cgFormFieldService.judgeTableIsExit(name));
 		return j;
 	}
@@ -962,7 +946,6 @@ public class CgFormHeadController extends BaseController {
 					fieldEntity.setShowType("text");
 					fieldEntity.setOldFieldName(field.getFieldName());
 					fieldEntity.setQueryMode("single");
-					//--author：zhoujf---end------date:20170207--------for:online表单  配置表 导入字段 默认值处理
 					list.add(fieldEntity);
 					saveList.add(fieldEntity);
 				}
@@ -1008,8 +991,7 @@ public class CgFormHeadController extends BaseController {
         request.setAttribute("headId", id);
 		return "jeecg/cgform/config/cgformColUpload";
 	}
-	
-	//add-begin--Author:gengjiajia  Date:20160804 for： online表单复制功能,一个物理表表配置多个配置表
+
 	/**
 	 * 复制物理表生成配置表
 	 * copyOnline
@@ -1033,14 +1015,14 @@ public class CgFormHeadController extends BaseController {
 				cgFormHead.setQuerymode(physicsTable.getQuerymode());
 				cgFormHead.setIsCheckbox(physicsTable.getIsCheckbox());
 				cgFormHead.setIsPagination(physicsTable.getIsPagination());
-				//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setJformType(1);//配置表统一为单表
-				//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setJformCategory(physicsTable.getJformCategory());
 				cgFormHead.setRelationType(physicsTable.getRelationType());
-				//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setSubTableStr(null);
-				//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setPhysiceId(physicsTable.getId());
 				cgFormHead.setTabOrder(physicsTable.getTabOrder());
 				cgFormHead.setTableVersion(version+1);
@@ -1067,10 +1049,10 @@ public class CgFormHeadController extends BaseController {
 					field.setFieldName(f.getFieldName());
 					field.setFieldValidType(f.getFieldValidType());
 					field.setLength(f.getLength());
-					//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 					field.setMainField(null);//默认为单表
 					field.setMainTable(null);//默认为单表
-					//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 					field.setOldFieldName(f.getOldFieldName());
 					field.setOrderNum(f.getOrderNum());
 					field.setPointLength(f.getPointLength());
@@ -1101,14 +1083,14 @@ public class CgFormHeadController extends BaseController {
 				cgFormHead.setQuerymode(physicsTable.getQuerymode());
 				cgFormHead.setIsCheckbox(physicsTable.getIsCheckbox());
 				cgFormHead.setIsPagination(physicsTable.getIsPagination());
-				//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setJformType(1);//配置表统一为单表
-				//update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setJformCategory(physicsTable.getJformCategory());
 				cgFormHead.setRelationType(physicsTable.getRelationType());
-				//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setSubTableStr(null);
-				//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 				cgFormHead.setPhysiceId(physicsTable.getId());
 				cgFormHead.setTabOrder(physicsTable.getTabOrder());
 				cgFormHead.setTableVersion(0);
@@ -1135,10 +1117,10 @@ public class CgFormHeadController extends BaseController {
 					field.setFieldName(f.getFieldName());
 					field.setFieldValidType(f.getFieldValidType());
 					field.setLength(f.getLength());
-					//update-start--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 					field.setMainField(null);
 					field.setMainTable(null);
-					///update-end--Author:gengjiajia  Date:20160815 for：TASK #1284 【一表多配置】主表，附表类型，复制表单时，统一改为单表
+
 					field.setOldFieldName(f.getOldFieldName());
 					field.setOrderNum(f.getOrderNum());
 					field.setPointLength(f.getPointLength());
@@ -1213,5 +1195,5 @@ public class CgFormHeadController extends BaseController {
 		}
 		return j;
 	}
-	//add-end--Author:gengjiajia  Date:20160804 for： online表单复制功能,一个物理表表配置多个配置表
+
 }

@@ -12,6 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.jeecgframework.core.annotation.Ehcache;
+import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
+import org.jeecgframework.core.constant.Globals;
+import org.jeecgframework.core.util.ContextHolderUtils;
+import org.jeecgframework.core.util.MyBeanUtils;
+import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.web.cgform.common.CgAutoListConstant;
 import org.jeecgframework.web.cgform.dao.config.CgFormFieldDao;
@@ -30,21 +38,10 @@ import org.jeecgframework.web.cgform.service.impl.config.util.DbTableUtil;
 import org.jeecgframework.web.cgform.service.impl.config.util.ExtendJsonConvert;
 import org.jeecgframework.web.cgform.util.PublicUtil;
 import org.jeecgframework.web.system.pojo.base.TSOperation;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.jeecgframework.core.annotation.Ehcache;
-import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
-import org.jeecgframework.core.constant.Globals;
-import org.jeecgframework.core.util.ContextHolderUtils;
-import org.jeecgframework.core.util.MyBeanUtils;
-import org.jeecgframework.core.util.StringUtil;
-import org.jeecgframework.core.util.oConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.SessionFactoryUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.sun.star.uno.RuntimeException;
 
 @Service("cgFormFieldService")
 @Transactional
@@ -79,9 +76,9 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 			}
 			column.setTable(t);
 			// 设置checkbox的值
-			//update--begin--author:zhangjiaqiang date:20170417 for:增加校验必填处理
+
 			PublicUtil.judgeCheckboxValue(column,"isNull,isShow,isShowList,isQuery,isKey,fieldMustInput");
-			//update--end--author:zhangjiaqiang date:20170417 for:增加校验必填处理
+
 			if (oConvertUtils.isEmpty(column.getId())) {
 				databaseFieldIsChange = true;
 				this.save(column);
@@ -99,9 +96,9 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 				this.saveOrUpdate(c);
 			}
 		}
-		//update-begin--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 		t.setIsDbSynch(isChange ? "N" : t.getIsDbSynch());
-		//update-end--Author:王琨  Date:20160611 for：TASK #1090 【online】online表单缺少索引配置
+
 		t.setIsDbSynch(databaseFieldIsChange ? "N" : t.getIsDbSynch());
 		
 		//表单配置修改，版本号未升级
@@ -146,10 +143,10 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 		CgFormFieldEntity column;
 		for (int i = 0; i < cgFormHead.getColumns().size(); i++) {
 			column = cgFormHead.getColumns().get(i);
-			//update--begin--author:zhangjiaqiang date:20170417 for:增加校验必填处理
+
 			PublicUtil.judgeCheckboxValue(column,
 					"isNull,isShow,isShowList,isQuery,isKey,fieldMustInput");
-			//update--end--author:zhangjiaqiang date:20170417 for:增加校验必填处理
+
 			column.setTable(cgFormHead);
 			this.save(column);
 		}
@@ -167,10 +164,10 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 		CgFormFieldEntity column;
 		for (int i = 0; i < cgFormHead.getColumns().size(); i++) {
 			column = cgFormHead.getColumns().get(i);
-			//update--begin--author:zhangjiaqiang date:20170417 for:增加校验必填处理
+
 			PublicUtil.judgeCheckboxValue(column,
 					"isNull,isShow,isShowList,isQuery,isKey,fieldMustInput");
-			//update--end--author:zhangjiaqiang date:20170417 for:增加校验必填处理
+
 			column.setTable(cgFormHead);
 			this.save(column);
 		}
@@ -376,11 +373,11 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 	
 	public List<Map<String, Object>> getSubTableData(String mainTableName,
 			String subTableName, Object mainTableId) {
-		//update-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置  还原真实表名
+
 		mainTableName = PublicUtil.replaceTableName(mainTableName);
 		subTableName = PublicUtil.replaceTableName(subTableName);
 		//data.put("tableName", tableName);
-		//update-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置  还原真实表名
+
 		
 		StringBuilder sql1 = new StringBuilder("");
 		sql1.append("select f.* from cgform_field f ,cgform_head h");
@@ -428,7 +425,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 						.valueOf(mainE.getSubTableStr() == null ? "" : mainE
 								.getSubTableStr());
 				// step.5 判断是否已经存在于附表串
-				//update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2590 【online表单】主子表关联问题--------------------
+
 				if(StringUtils.isNotBlank(subTableStr)){
 					String[] str=subTableStr.split(",");
 					if(!oConvertUtils.isIn(thisSubTable, str)){
@@ -448,7 +445,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 			}
 		}
  		return true;
- 		//update-end--Author:gj_shaojc  Date:20180327 for：TASK #2590 【online表单】主子表关联问题--------------------
+
 	}
 
 	
@@ -474,7 +471,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 								.getSubTableStr());
 				// step.5 判断是否已经存在于附表串
 				if (subTableStr.contains(thisSubTable)) {
-					//update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2590 【online表单】主子表关联问题--------------------
+
 					String[] str=subTableStr.split(",");
 					for(int i=0;i<str.length;i++){
 						if(str[i].equals(thisSubTable)){
@@ -488,14 +485,13 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 							name.append(",");
 						}
 					}
-					//update-begin--Author:gj_shaojc  Date:20180327 for：TASK #2590 【online表单】主子表关联问题(修改报错)---------
+
 					if(name.length()!=0){
 						subTableStr=name.substring(0, name.length()-1);
 					}else{
 						subTableStr=name.toString();
 					}
-					//update-end--Author:gj_shaojc  Date:20180327 for：TASK #2590 【online表单】主子表关联问题(修改报错)--------
-					//update-end--Author:gj_shaojc  Date:20180327 for：TASK #2590 【online表单】主子表关联问题--------------------
+
 					mainE.setSubTableStr(subTableStr);
 					logger.info("--主表" + mainE.getTableName() + "的附表串："
 							+ mainE.getSubTableStr());
@@ -584,7 +580,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 	public Map<String, Object> getFtlFormConfig(String tableName, String version) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		Map<String, Object> field = new HashMap<String, Object>();
-		//update-begin--Author:zhoujf  Date:20170331 for：TASK #1787 【功能改造-重要】online表单页面控件权限 一对多页面
+
 		//处理一遍权限问题
 		Set<String> operationCodes = (Set<String>) ContextHolderUtils.getRequest().getAttribute(Globals.OPERATIONCODES);
 		Map<String,TSOperation> operationCodesMap = new HashMap<String, TSOperation>();
@@ -597,7 +593,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 				}
 			}
 		}
-		//update-end--Author:zhoujf  Date:20170331 for：TASK #1787 【功能改造-重要】online表单页面控件权限 一对多页面
+
 		CgFormHeadEntity head = this.getCgFormHeadByTableName(tableName,
 				version);
 		data.put("head", head);
@@ -606,7 +602,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 			String subTableStr = head.getSubTableStr();
 			if (StringUtils.isNotEmpty(subTableStr)) {
 				String[] subTables = subTableStr.split(",");
-				//update-begin--Author:zhoujf  Date:20170331 for：TASK #1787 【功能改造-重要】online表单页面控件权限 一对多页面
+
 				List<Map<String, Object>> subTalbeFieldFilterAuthList = new ArrayList<Map<String, Object>>();
 				List<Map<String, Object>> subTalbeFieldList = new ArrayList<Map<String, Object>>();
 				List<Map<String, Object>> subTalbeHiddenFieldList = new ArrayList<Map<String, Object>>();
@@ -622,7 +618,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 					subtableVo.setHead(subhead);
 					subtableVo.setFieldList(subTalbeFieldFilterAuthList);
 					subtableVo.setHiddenFieldList(subTalbeHiddenFieldList);
-					//update-end--Author:zhoujf  Date:20170331 for：TASK #1787 【功能改造-重要】online表单页面控件权限 一对多页面
+
 					//--author：luobaoli---------date:20150613--------for: 将表单子表中extend_json属性json样式转为普通html样式
 					ExtendJsonConvert.json2HtmlForList(subTalbeFieldList, "extend_json");
 					//--author：luobaoli---------date:20150613--------for: 将表单子表中extend_json属性json样式转为普通html样式
@@ -632,24 +628,24 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 		}
 		// 装载附表表单配置
 		data.put("field", field);
-		//update-begin--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置  还原真实表名
+
 		String tablename = PublicUtil.replaceTableName(tableName);
 		data.put("tableName", tablename);
 		//data.put("tableName", tableName);
-		//update-end--Author:gengjiajia  Date:20160809 for：TASK #1214 online表单一个表，支持多个配置  还原真实表名
+
 		List<Map<String, Object>> fieldList = null;
 		if (head.getJformType() == CgAutoListConstant.JFORM_TYPE_MAIN_TALBE) {
 			// 查询主表或单表表单配置
 			fieldList = this.getCgFormFieldByTableName(tableName);
 		} else {
-//update-begin--Author:zhoujf---------date:20170208--------for:修正模板激活状态下，online风格模板报错的问题
+
 //			Map<String, Object> cgformFtlEntity = cgformFtlService
 //					.getCgformFtlByTableName(tableName);
 //			if (cgformFtlEntity == null) {
 				// 查询主表或单表表单配置
 				fieldList = this.getCgFormFieldByTableName(tableName);
 //			}
-//update-begin--Author:zhoujf---------date:20170208--------for:修正模板激活状态下，online风格模板报错的问题
+
 		}
 		// 隐藏字段 剔除id
 		List<Map<String, Object>> hiddenFieldList = getCgFormHiddenFieldByTableName(tableName);
@@ -689,8 +685,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 		data.put("js_plug_in", jsCode);
 		return data;
 	}
-	
-	//update-begin--Author:zhoujf  Date:20170331 for：TASK #1787 【功能改造-重要】online表单页面控件权限 一对多页面
+
 	private List<Map<String, Object>> getFieldListFilterAuth(String tableName,List<Map<String, Object>> subTalbeFieldList,Map<String,TSOperation> operationCodesMap) {
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
 		for(Map<String, Object> map :subTalbeFieldList){
@@ -724,7 +719,7 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 		}
 		return list;
 	}
-	//update-end--Author:zhoujf  Date:20170331 for：TASK #1787 【功能改造-重要】online表单页面控件权限 一对多页面
+
 
 	/**
 	 * 根据tableName 获取表单配置 根据版本号缓存
@@ -791,27 +786,24 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 		return result;
 	}
 
-	//add-begin--Author:taoyan  Date:20170321 for：TASK #1788 【online功能】没有配置表的时候，该按钮隐藏(增加查询根据physiceId)-----
 	@Override
 	public int getByphysiceId(String id) {
 		return cgFormFieldDao.getByphysiceId(id);
 	}
-	//add-end--Author:taoyan  Date:20170321 for：TASK #1788 【online功能】没有配置表的时候，该按钮隐藏(增加查询根据physiceId)-----
-	
-	//add-begin--Author:xuelin  Date:20170601 for：TASK #1913 【性能优化】online表单访问慢，优化--------------------	
+
 	@Override
 	public List<Map<String,Object>> getPeizhiCountByIds(List<CgFormHeadEntity> list) {
 		StringBuffer ids = new StringBuffer("");
 		for(CgFormHeadEntity temp:list){
 		        ids.append(",'"+temp.getId()+"'");		        
 		}
-		//update-begin--Author:xuelin  Date:20170716 for：TASK #2211 【bug】online表单管理，分类多次点击后，数据过滤失败-------------------
+
 		//该分类无数据
 		if (StringUtils.isBlank(ids.toString())) {
 			return new ArrayList<Map<String,Object>>();
 		}
-		//update-end--Author:xuelin  Date:20170716 for：TASK #2211 【bug】online表单管理，分类多次点击后，数据过滤失败----------------------		
+
 		return cgFormFieldDao.getPeizhiCountByIds(ids.toString().replaceFirst(",", ""));
 	}
-	//add-end--Author:xuelin  Date:20170601 for：TASK #1913 【性能优化】online表单访问慢，优化----------------------
+
 }

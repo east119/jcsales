@@ -24,10 +24,10 @@ public class DataGridDelOptTag extends TagSupport {
 	private String operationCode;//按钮的操作Code
 	private String langArg;
 	private String urlStyle;//样式
-	//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 	private String urlclass;//按钮样式
 	private String urlfont;//按钮图标
-	//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 	
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
@@ -68,7 +68,7 @@ public class DataGridDelOptTag extends TagSupport {
 	public String getUrlStyle() {
 		return urlStyle;
 	}
-	//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 		public String getUrlclass() {
 			return urlclass;
 		}
@@ -81,6 +81,6 @@ public class DataGridDelOptTag extends TagSupport {
 		public void setUrlfont(String urlfont) {
 			this.urlfont = urlfont;
 		}
-		//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 		
 }

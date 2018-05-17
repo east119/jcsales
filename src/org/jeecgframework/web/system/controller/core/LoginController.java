@@ -88,7 +88,7 @@ public class LoginController extends BaseController{
 
 		this.userService = userService;
 	}
-	//update--begin--author:zhangjiaqiang date:20170929 for:TASK #2341 【新功能】邮件找回密码的功能，向用户邮箱发一个修改密码的链接，自助修改密码
+
 	/**
 	 * 跳转到密码重置界面
 	 * @param key
@@ -229,7 +229,7 @@ public class LoginController extends BaseController{
 		}
 		return ajaxJson;
 	}
-	//update--begin--author:zhangjiaqiang date:20170929 for:TASK #2341 【新功能】邮件找回密码的功能，向用户邮箱发一个修改密码的链接，自助修改密码
+
 	@RequestMapping(params = "goPwdInit")
 	public String goPwdInit() {
 		return "login/pwd_init";
@@ -252,13 +252,13 @@ public class LoginController extends BaseController{
 		if (req.getParameter("langCode")!=null) {
 			req.getSession().setAttribute("lang", req.getParameter("langCode"));
 		}
-		//update-begin--Author:zhoujf  Date:20170602 for：单点登录（返回链接）
+
 		//单点登录（返回链接）
 		String returnURL = req.getParameter("ReturnURL");
 		if(StringUtils.isNotEmpty(returnURL)){
 			req.getSession().setAttribute("ReturnURL", returnURL);
 		}
-		//update-end--Author:zhoujf  Date:20170602 for：单点登录（返回链接）
+
 		
 		//验证码
 		String randCode = req.getParameter("randCode");
@@ -268,12 +268,12 @@ public class LoginController extends BaseController{
 		} else if (!randCode.equalsIgnoreCase(String.valueOf(session.getAttribute("randCode")))) {
 			j.setMsg(mutiLangService.getLang("common.verifycode.error"));
 			j.setSuccess(false);
-			//update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
+
 		} else if (isInBlackList(IpUtil.getIpAddr(req))){
 			j.setMsg(mutiLangService.getLang("common.blacklist.error"));
 			j.setSuccess(false);
 		}
-		//update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
+
 		else {
 			//用户登录验证逻辑
 			TSUser u = userService.checkUserExits(user);
@@ -306,20 +306,20 @@ public class LoginController extends BaseController{
 					saveLoginSuccessInfo(req, u, orgId);
 				}
 			} else {
-//		      update-start--Author:chenjin  Date:20160708 for：改为提示 “用户锁定”
+
 				j.setMsg(mutiLangService.getLang("common.lock.user"));
-//			  update-end--Author:chenjin  Date:20160708 for：改为提示 “用户锁定”
+
 				j.setSuccess(false);
 			}
 		}
 		return j;
 	}
-	//update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
+
 	private boolean isInBlackList(String ip){
 		Long orgNum =systemService.getCountForJdbc("select count(*) from t_s_black_list where ip =  '" + ip + "'");
 		return orgNum!=0?true:false;
 	}
-	//update-begin--Author:dangzhenghui  Date:20170518 for：TASK #1997 【重要】JEECG安全机制加强--------------------
+
 	/**
 	 * 变更在线用户组织
 	 * 
@@ -356,14 +356,12 @@ public class LoginController extends BaseController{
         user.setCurrentDepart(currentDepart);
 
         HttpSession session = ContextHolderUtils.getSession();
-        //update-begin--update---author:scott-----------date:20151218-------for:解决分布式登录问题----------
-		//update-begin--update---author:dangzhenghui-----------date:20170429-------for:修正添加用户部门----------
+
 		user.setDepartid(orgId);
-		//update-begin--update---author:dangzhenghui-----------date:20170429-------for:修正添加用户部门----------
+
 		session.setAttribute(ResourceUtil.LOCAL_CLINET_USER, user);
-        //update-end--author:scott-----------date:20151218-------for:解决分布式登录问题---------------------
-        message = mutiLangService.getLang("common.user") + ": " + user.getUserName() + "["+ currentDepart.getDepartname() + "]" + mutiLangService.getLang("common.login.success");
-        //update--begin--author:zhangjiaqiang date:20170626 for:修订ie列表操作按钮的样式
+       message = mutiLangService.getLang("common.user") + ": " + user.getUserName() + "["+ currentDepart.getDepartname() + "]" + mutiLangService.getLang("common.login.success");
+
         String browserType = "";
         Cookie[] cookies = req.getCookies();
         for (int i = 0; i < cookies.length; i++) {
@@ -373,8 +371,7 @@ public class LoginController extends BaseController{
 			}
 		}
         session.setAttribute("brower_type", browserType);
-      //update--end--author:zhangjiaqiang date:20170626 for:修订ie列表操作按钮的样式
-      //update-start-Author:jg_renjie  Date:20151220 for：TASK #804 【基础权限】切换用户，用户分拥有不同的权限，切换用户权限错误问题
+
         //当前session为空 或者 当前session的用户信息与刚输入的用户信息一致时，则更新Client信息
         Client clientOld = ClientManager.getInstance().getClient(session.getId());
 		if(clientOld == null || clientOld.getUser() ==null ||user.getUserName().equals(clientOld.getUser().getUserName())){
@@ -391,13 +388,13 @@ public class LoginController extends BaseController{
 			session.setAttribute("randCode",req.getParameter("randCode"));//保存验证码
 			checkuser(user,req);
 		}
-		//update-end-Author:jg_renjie  Date:20151220 for：TASK #804 【基础权限】切换用户，用户分拥有不同的权限，切换用户权限错误问题
+
         
         
         // 添加登陆日志
         systemService.addLog(message, Globals.Log_Type_LOGIN, Globals.Log_Leavel_INFO);
     }
-//    update-end-Author:zhangguoming  Date:20140825 for：记录用户登录的相关信息
+
 
     /**
 	 * 用户登录
@@ -422,28 +419,24 @@ public class LoginController extends BaseController{
             modelMap.put("roleName", roles.length()>3?roles.substring(0,3)+"...":roles);
             modelMap.put("userName", user.getUserName().length()>5?user.getUserName().substring(0, 5)+"...":user.getUserName());
             modelMap.put("portrait", user.getPortrait());
-            // update-start-Author:zhangguoming  Date:20140914 for：获取当前登录用户的组织机构
+
             modelMap.put("currentOrgName", ClientManager.getInstance().getClient().getUser().getCurrentDepart().getDepartname());
-            // update-end-Author:zhangguoming  Date:20140914 for：获取当前登录用户的组织机构
+
 			
 			SysThemesEnum sysTheme = SysThemesUtil.getSysTheme(request);
 			if("fineui".equals(sysTheme.getStyle())|| "ace".equals(sysTheme.getStyle())||"diy".equals(sysTheme.getStyle())||"acele".equals(sysTheme.getStyle())||"hplus".equals(sysTheme.getStyle())){
 				request.setAttribute("menuMap", getFunctionMap(user));
 			}
-			//update-start--Author:zhoujf Date:20150610 for:ace addOneTab无效问题
+
 			Cookie cookie = new Cookie("JEECGINDEXSTYLE", sysTheme.getStyle());
 			//设置cookie有效期为一个月
 			cookie.setMaxAge(3600*24*30);
 			response.addCookie(cookie);
-			//update-end--Author:zhoujf Date:20150610 for:ace addOneTab无效问题
-			
-			//update-start--Author: jg_huangxg Date:20160330 for: zIndex索引问题
+
 			Cookie zIndexCookie = new Cookie("ZINDEXNUMBER", "1990");
 			zIndexCookie.setMaxAge(3600*24);//一天
 			response.addCookie(zIndexCookie);
-			//update-end--Author: jg_huangxg Date:20160330 for: zIndex索引问题
-			
-			//update-start--Author:zhoujf Date:20170602 for:单点登录
+
 			/*
 			 * 单点登录 - 登录需要跳转登录前页面，自己处理 ReturnURL 使用 
 			 * HttpUtil.decodeURL(xx) 解码后重定向
@@ -470,16 +463,16 @@ public class LoginController extends BaseController{
 				}
 				return null;
 			}
-			//update-end--Author:zhoujf Date:20170602 for:单点登录
+
 			return sysTheme.getIndexPath();
 		} else {
-			//update-start--Author:zhoujf Date:20170602 for:单点登录
+
 			//单点登录 - 返回链接
 			String returnURL = (String)request.getSession().getAttribute("ReturnURL");
 			if(StringUtils.isNotEmpty(returnURL)){
 				request.setAttribute("ReturnURL", returnURL);
 			}
-			//update-end--Author:zhoujf Date:20170602 for:单点登录
+
 			return "login/login";
 		}
 
@@ -495,13 +488,13 @@ public class LoginController extends BaseController{
 	public ModelAndView logout(HttpServletRequest request) {
 		HttpSession session = ContextHolderUtils.getSession();
 		TSUser user = ResourceUtil.getSessionUser();
-		//update-begin--author: scott  Date: 20170307 for： 退出空指针问题--
+
 		try {
 			systemService.addLog("用户" + user!=null?user.getUserName():"" + "已退出",Globals.Log_Type_EXIT, Globals.Log_Leavel_INFO);
 		} catch (Exception e) {
 			LogUtil.error(e.toString());
 		}
-		//update-begin--author: scott  Date: 20170307 for： 退出空指针问题--
+
 		ClientManager.getInstance().removeClinet(session.getId());
 		session.invalidate();
 		ModelAndView modelAndView = new ModelAndView(new RedirectView("loginController.do?login"));
@@ -544,12 +537,12 @@ public class LoginController extends BaseController{
 			if (loginActionlist.size() > 0) {
 				Collection<TSFunction> allFunctions = loginActionlist.values();
 				for (TSFunction function : allFunctions) {
-				   //update-begin--Author:anchao  Date:20140913 for：菜单过滤--------------------
+
 		            if(function.getFunctionType().intValue()==Globals.Function_TYPE_FROM.intValue()){
 						//如果为表单或者弹出 不显示在系统菜单里面
 						continue;
 					}
-		          //update-end--Author:anchao  Date:20140913 for：菜单过滤--------------------
+
 					if (!functionMap.containsKey(function.getFunctionLevel() + 0)) {
 						functionMap.put(function.getFunctionLevel() + 0,
 								new ArrayList<TSFunction>());
@@ -559,27 +552,26 @@ public class LoginController extends BaseController{
 				// 菜单栏排序
 				Collection<List<TSFunction>> c = functionMap.values();
 				for (List<TSFunction> list : c) {
-					//update-begin--Author:Yandong  Date:20171227 for：TASK #2463 【bug】菜单维护，添加三级子菜单的时候，二级父级菜单的URL丢了
+
 					for (TSFunction function : list) {
 						//如果有子级菜单 则地址设为空
 						if(function.hasSubFunction(functionMap))function.setFunctionUrl("");
 					}
-					//update-end--Author:Yandong  Date:20171227 for：TASK #2463 【bug】菜单维护，添加三级子菜单的时候，二级父级菜单的URL丢了
+
 					Collections.sort(list, new NumberComparator());
 				}
 			}
 			client.setFunctionMap(functionMap);
-			//update-begin--Author:scott  Date:20160530 for：清空降低缓存占用
+
 			//清空变量，降低内存使用
 			loginActionlist.clear();
-			//update-begin--Author:scott  Date:20160530 for：清空降低缓存占用
+
 			return functionMap;
 		}else{
 			return client.getFunctionMap();
 		}
 	}
 
-	// update-begin--Author:gj_shaojc  Date:20180306 for：[TASK #2515] 【新功能】首页搜索没有用，可以做成SAP 事务代码的形式 菜单模糊搜索吧 
 	/**
 	 * 首页菜单搜索框自动补全
 	 */
@@ -656,7 +648,7 @@ public class LoginController extends BaseController{
 		}
 		
 	}
-	// update-end--Author:gj_shaojc  Date:20180306 for：[TASK #2515] 【新功能】首页搜索没有用，可以做成SAP 事务代码的形式 菜单模糊搜索吧 	
+
 	
 	/**
 	 * 获取用户菜单列表
@@ -667,11 +659,11 @@ public class LoginController extends BaseController{
 	private Map<String, TSFunction> getUserFunction(TSUser user) {
 		HttpSession session = ContextHolderUtils.getSession();
 		Client client = ClientManager.getInstance().getClient(session.getId());
-        //update-start--Author:JueYue  Date:2014-5-28 for:风格切换,菜单懒加载失效的问题
+
 		if (client.getFunctions() == null || client.getFunctions().size() == 0) {
-            //update-end--Author:JueYue  Date:2014-5-28 for:风格切换,菜单懒加载失效的问题
+
 			Map<String, TSFunction> loginActionlist = new HashMap<String, TSFunction>();
-//          update-begin--Author:jg_longjb龙金波  Date:20150313 for：优化查询效率，直接用hql减少hibernate产生的sql条数
+
 			 /*String hql="from TSFunction t where t.id in  (select d.TSFunction.id from TSRoleFunction d where d.TSRole.id in(select t.TSRole.id from TSRoleUser t where t.TSUser.id ='"+
 	           user.getId()+"' ))";
 	           String hql2="from TSFunction t where t.id in  ( select b.tsRole.id from TSRoleOrg b where b.tsDepart.id in(select a.tsDepart.id from TSUserOrg a where a.tsUser.id='"+
@@ -686,14 +678,13 @@ public class LoginController extends BaseController{
 	           for(TSFunction function:list2){
 	              loginActionlist.put(function.getId(),function);
 	           }*/
-//          update-begin--Author:jg_gudongli辜栋利  Date:20150516 for：优化用户权限查询效率，hql全索引，去重，为了延迟加载使用exists
+
 	           StringBuilder hqlsb1=new StringBuilder("select distinct f from TSFunction f,TSRoleFunction rf,TSRoleUser ru  ").append("where ru.TSRole.id=rf.TSRole.id and rf.TSFunction.id=f.id and ru.TSUser.id=? ");
-	           //-------author: zhoujf---start---date:20160923----for:组织机构角色赋权不起作用问题
+
 	           StringBuilder hqlsb2=new StringBuilder("select distinct c from TSFunction c,TSRoleFunction rf,TSRoleOrg b,TSUserOrg a ")
 	           							.append("where a.tsDepart.id=b.tsDepart.id and b.tsRole.id=rf.TSRole.id and rf.TSFunction.id=c.id and a.tsUser.id=?");
-	           //-------author: zhoujf---end---date:20160923----for:组织机构角色赋权不起作用问题
 	           //TODO hql执行效率慢 为耗时最多地方
-	           //-------author: zhangliang---start---date:20170725----for:TASK #2116 【性能问题】优化登录逻辑
+
 	           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	           log.info("================================开始时间:"+sdf.format(new Date())+"==============================");
 	           long start = System.currentTimeMillis();
@@ -702,7 +693,6 @@ public class LoginController extends BaseController{
 	           long end = System.currentTimeMillis();
 	           log.info("================================结束时间:"+sdf.format(new Date())+"==============================");
 	           log.info("================================耗时:"+(end-start)+"ms==============================");
-	           //-------author: zhangliang---end---date:20170725----for:TASK #2116 【性能问题】优化登录逻辑
 	           for(TSFunction function:list1){
 		              loginActionlist.put(function.getId(),function);
 		       }
@@ -710,16 +700,15 @@ public class LoginController extends BaseController{
 		              loginActionlist.put(function.getId(),function);
 		       }
             client.setFunctions(loginActionlist);
-          //update-begin--Author:scott  Date:20160530 for：清空降低缓存占用
+
             //清空变量，降低内存使用
             list2.clear();
             list1.clear();
-          //update-end--Author:scott  Date:20160530 for：清空降低缓存占用
+
 		}
 		return client.getFunctions();
 	}
 
-//    update-begin--Author:zhangguoming  Date:20140821 for：抽取方法，获取角色下的权限列表
     /**
      * 根据 角色实体 组装 用户权限列表
      * @param loginActionlist 登录用户的权限列表
@@ -730,16 +719,14 @@ public class LoginController extends BaseController{
         List<TSRoleFunction> roleFunctionList = systemService.findByProperty(TSRoleFunction.class, "TSRole.id", role.getId());
         for (TSRoleFunction roleFunction : roleFunctionList) {
             TSFunction function = roleFunction.getTSFunction();
-          //update-begin--Author:anchao  Date:20140822 for：[bugfree号]字段级权限（表单，列表）--------------------
-            if(function.getFunctionType().intValue()==Globals.Function_TYPE_FROM.intValue()){
+           if(function.getFunctionType().intValue()==Globals.Function_TYPE_FROM.intValue()){
 				//如果为表单或者弹出 不显示在系统菜单里面
 				continue;
 			}
-          //update-end--Author:anchao  Date:20140822 for：[bugfree号]字段级权限（表单，列表）--------------------
-            loginActionlist.put(function.getId(), function);
+           loginActionlist.put(function.getId(), function);
         }
     }
-//    update-end--Author:zhangguoming  Date:20140821 for：抽取方法，获取角色下的权限列表
+
 
     /**
 	 * 首页跳转
@@ -748,8 +735,7 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(params = "home")
 	public ModelAndView home(HttpServletRequest request) {
-		
-	 //update-start--Author:jg_renjie  Date:20160315 for：配合首页改造，控制不同风格时是否引入js/css文件
+
 		SysThemesEnum sysTheme = SysThemesUtil.getSysTheme(request);
 		//ACE ACE2 DIY时需要在home.jsp头部引入依赖的js及css文件
 		if("ace".equals(sysTheme.getStyle())||"diy".equals(sysTheme.getStyle())||"acele".equals(sysTheme.getStyle())){
@@ -757,7 +743,7 @@ public class LoginController extends BaseController{
 		} else {//default及shortcut不需要引入依赖文件，所有需要屏蔽
 			request.setAttribute("show", "0");
 		}
-	 //update-end--Author:jg_renjie  Date:20160315 for：配合首页改造，控制不同风格时是否引入js/css文件
+
 		return new ModelAndView("main/home");
 	}
 	
@@ -768,8 +754,7 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(params = "acehome")
 	public ModelAndView acehome(HttpServletRequest request) {
-		
-	 //update-start--Author:jg_renjie  Date:20160315 for：配合首页改造，控制不同风格时是否引入js/css文件
+
 		SysThemesEnum sysTheme = SysThemesUtil.getSysTheme(request);
 		//ACE ACE2 DIY时需要在home.jsp头部引入依赖的js及css文件
 		if("ace".equals(sysTheme.getStyle())||"diy".equals(sysTheme.getStyle())||"acele".equals(sysTheme.getStyle())){
@@ -777,7 +762,7 @@ public class LoginController extends BaseController{
 		} else {//default及shortcut不需要引入依赖文件，所有需要屏蔽
 			request.setAttribute("show", "0");
 		}
-	 //update-end--Author:jg_renjie  Date:20160315 for：配合首页改造，控制不同风格时是否引入js/css文件
+
 		return new ModelAndView("main/acehome");
 	}
 	/**
@@ -787,7 +772,7 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(params = "hplushome")
 	public ModelAndView hplushome(HttpServletRequest request) {
-		//update-start--Author:wangkun  Date:20160423 for：配合首页改造
+
 		SysThemesEnum sysTheme = SysThemesUtil.getSysTheme(request);
 		//ACE ACE2 DIY时需要在home.jsp头部引入依赖的js及css文件
 		/*if("ace".equals(sysTheme.getStyle())||"diy".equals(sysTheme.getStyle())||"acele".equals(sysTheme.getStyle())){
@@ -795,11 +780,10 @@ public class LoginController extends BaseController{
 		} else {//default及shortcut不需要引入依赖文件，所有需要屏蔽
 			request.setAttribute("show", "0");
 		}*/
-		//update-end--Author:wangkun  Date:20160423 for：配合首页改造
+
 		return new ModelAndView("main/hplushome");
 	}
-	
-	//update-begin-author:Yandong date:20171228 for:fineuiHome页面添加---
+
 	/**
 	 * fineUI首页跳转
 	 *
@@ -809,7 +793,7 @@ public class LoginController extends BaseController{
 	public ModelAndView fineuiHome(HttpServletRequest request) {
 		return new ModelAndView("main/fineui_home");
 	}
-	//update-begin-author:Yandong date:20171228 for:fineuiHome页面添加---
+
 	/**
 	 * 无权限页面提示跳转
 	 * 
@@ -873,18 +857,17 @@ public class LoginController extends BaseController{
 	public String getPrimaryMenu() {
 		List<TSFunction> primaryMenu = getFunctionMap(ResourceUtil.getSessionUser()).get(0);
         String floor = "";
-//        update-start--Author:zhangguoming  Date:20140923 for：用户没有任何权限，首页没有退出按钮的bug
+
         if (primaryMenu == null) {
             return floor;
         }
-//        update-end--Author:zhangguoming  Date:20140923 for：用户没有任何权限，首页没有退出按钮的bug
+
         for (TSFunction function : primaryMenu) {
             if(function.getFunctionLevel() == 0) {
             	String lang_key = function.getFunctionName();
             	String lang_context = mutiLangService.getLang(lang_key);
             	lang_context=lang_context.trim();
-//              update-start--Author:huangzq  Date:20160113 for：:TASK#858::【系统功能】logo替换
-//              update-start--Author:zhoujf  Date:20170208 for：菜单IE8兼容性
+
             	if("业务申请".equals(lang_context)){
 
                 	String ss = "<div style='width:67px;position: absolute;top:39px;text-align:center;color:#909090;font-size:13px;'><span style='letter-spacing:-1px;'>"+ lang_context +"</span></div>";
@@ -948,10 +931,10 @@ public class LoginController extends BaseController{
                             + " <img class='imag2' src='plug-in/login/images/default_up.png' style='display: none;' />"
                             +"</li> ";
                 }
-//              update-end--Author:zhoujf  Date:20170208 for：菜单IE8兼容性
+
             }
         }
-//      update-end--Author:huangzq  Date:20160114 for：:TASK#858::【系统功能】logo替换
+
 		return floor;
 	}
 

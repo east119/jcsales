@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
-<!-- update-begin-author:taoYan date:20170814 for:行编辑ie8兼容问题 -->
 <t:base type="jquery-webos,easyui,tools,DatePicker,autocomplete"></t:base>
-<!-- update-end-author:taoYan date:20170814 for:行编辑ie8兼容问题 -->
 <div class="easyui-layout" fit="true">
   <div region="center" style="padding:0px;border:0px">
   <t:datagrid name="jeecgrowList"  checkbox="true" pagination="true" fitColumns="true" 
@@ -69,9 +67,9 @@
 			if($('#'+gname).datagrid('validateRow', i)){
 				$('#'+gname).datagrid('endEdit', i);
 			}else{
-				//update-begin--Author:LiShaoQing  Date:20170803  for: 增加友好提示
+
 				tip("请选择必填项(带有红色三角形状的字段)!");
-				//update-end--Author:LiShaoQing  Date:20170803  for: 增加友好提示
+
 				return false;
 			}
 		}
@@ -89,7 +87,7 @@
 			$('#'+gname).datagrid('beginEdit', index);
 		}
 	}
-	//update-begin--Author:张忠亮  Date:20150709 for：修正 取消编辑后再次点击录入不进入编辑状态
+
 	//取消编辑
 	function reject(title,addurl,gname){
 		$('#'+gname).datagrid('clearChecked');

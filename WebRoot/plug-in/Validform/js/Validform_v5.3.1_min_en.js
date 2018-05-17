@@ -1266,7 +1266,7 @@
 		if ($("#Validform_msg").length !== 0) {
 			return false;
 		}
-		//update-begin--Author:xuelin  Date:201708010 for：TASK #2271 【提示框样式】切换方案有问题--------------------
+
 		msgobj = $(
 				'<div id="Validform_msg"><div class="Validform_title">' + tipmsg.tit + '<a class="Validform_close" href="javascript:void(0);">&chi;</a></div><div class="Validform_info"></div><div class="iframe"><iframe frameborder="0" scrolling="no" height="100%" width="100%"></iframe></div></div>')
 				.appendTo("body");
@@ -1280,7 +1280,7 @@
 		}).focus(function() {
 			this.blur();
 		});	
-		//update-end--Author:xuelin  Date:201708010 for：TASK #2271 【提示框样式】切换方案有问题-----------------------
+
 		$(window).bind("scroll resize", function() {
 			!msghidden && setCenter(msgobj, 400);
 		});

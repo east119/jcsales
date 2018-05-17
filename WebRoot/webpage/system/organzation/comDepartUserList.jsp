@@ -85,17 +85,11 @@ function mysubmit(userId) {
 		<t:dgCol title="common.real.name" field="realName" query="true" width="100"></t:dgCol>
 		<t:dgCol title="common.status" sortable="true" width="100" field="status" replace="common.active_1,common.inactive_0,super.admin_-1"></t:dgCol>
 		<t:dgCol title="common.operation" field="opt" width="120"></t:dgCol>
-		<!-- 	//update-begin--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 		<t:dgDelOpt title="common.delete" url="organzationController.do?delUserOrg&userid={id}&departid=${departid }" urlclass="ace_button"  urlfont="fa-trash-o"/>
 		<t:dgFunOpt funname="setUsersCompanyPosition(id)" title="分配职务" urlclass="ace_button"  urlfont="fa-user"></t:dgFunOpt>
-		<!-- 	//update-end--Author:zhangjq  Date:20160904 for：1332 【系统图标统一调整】讲{系统管理模块}{在线开发}的链接按钮，改成ace风格 -->
 		<t:dgToolBar title="common.add.param" langArg="common.user" icon="icon-add" url="userController.do?addorupdateMyOrgUser&departid=${departid}" funname="add"></t:dgToolBar>
 		<t:dgToolBar title="common.edit.param" langArg="common.user" icon="icon-edit" url="userController.do?addorupdateMyOrgUser&departid=${departid}" funname="update"></t:dgToolBar>
-	    <%--update-start--Author:zhangguoming  Date:20140826 for：添加有客户--%>
-	    <!-- update-begin--Author:LiShaoQing Date:20171211 for:修改标题"添加已有客户"为"添加已有用户" -->
 		<t:dgToolBar title="添加已有用户" icon="icon-add" url="organzationController.do?goAddUserToOrg&orgId=${departid}" funname="add" width="650"></t:dgToolBar>
-		<!-- update-end--Author:LiShaoQing Date:20171211 for:修改标题"添加已有客户"为"添加已有用户" -->
-	    <%--update-end--Author:zhangguoming  Date:20140826 for：添加有客户--%>
 	</t:datagrid>
  </div>
 </div>

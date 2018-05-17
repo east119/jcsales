@@ -11,7 +11,7 @@
 </div>
 <script type="text/javascript">
 	function dataEditor(title, url, id, a, b) {
-		//update-begin--Author:LiShaoQing Date:20170809 for[TASK #2262]点击生成表单禁用标签
+
 		var formOnclick= $('#generateForm').attr("onclick");
 		$('#generateForm').removeAttr('onclick');
 		var ids = [];
@@ -25,7 +25,7 @@
 						cache : false,
 						success : function(data) {
 							$('#generateForm').attr("onclick",formOnclick);
-		//update-end--Author:LiShaoQing Date:20170809 for[TASK #2262]点击生成表单禁用标签
+
 							var c = $.parseJSON(data);
 							var d = "";
 							var e = "";

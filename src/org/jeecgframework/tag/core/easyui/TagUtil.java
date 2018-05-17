@@ -3,11 +3,13 @@ package org.jeecgframework.tag.core.easyui;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.fop.layout.Page;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -75,7 +77,7 @@ public class TagUtil {
 		}
 		value = reflectHelper.getMethodValue(fieldName)==null?"":reflectHelper.getMethodValue(fieldName);
 		if (value !=""&&value != null && (FiledName.indexOf("_") != -1||FiledName.indexOf(".") != -1)) {
-//            update-start--Author:zhangguoming  Date:20140827 for：功能增强，添加处理对象中List<Object>属性字段的解析
+
             if(value instanceof List) {
                 Object tempValue = "";
                 for (Object listValue : (List)value) {
@@ -85,10 +87,10 @@ public class TagUtil {
             } else {
                 value = fieldNametoValues(childFieldName, value);
             }
-//            update-end--Author:zhangguoming  Date:20140827 for：功能增强，添加处理对象中List<Object>属性字段的解析
+
 		}
 		if(value != "" && value != null) {
-//          update-begin--Author:jb_longjb 龙金波  Date:20150313 for：处理json中可能包含的特殊字符，防止页面加载出错
+
 			value = converunicode(value.toString());
 		}
 		return value;
@@ -98,7 +100,7 @@ public class TagUtil {
         for (int i=0; i<jsonValue.length(); i++) {
         char c = jsonValue.charAt(i);  
           switch (c){
-//        update-begin--Author:zhoujf  Date:20150615 for：菜单图片不显示的问题
+
 //         case '\"':      
 //                 sb.append("\\\"");      
 //                 break;      
@@ -111,7 +113,7 @@ public class TagUtil {
 //             case '/':      
 //                 sb.append("\\/");      
 //                 break;   
-//               update-end--Author:zhoujf  Date:20150615 for：菜单图片不显示的问题
+
              case '\b':      
                  sb.append("\\b");      
                  break;      
@@ -133,7 +135,7 @@ public class TagUtil {
          }    
         return sb.toString();   
 }
-//  update-end--Author:jb_longjb 龙金波  Date:20150313 for：处理json中可能包含的特殊字符，防止页面加载出错
+
 
 	/**
 	 * 对象转数组
@@ -162,7 +164,7 @@ public class TagUtil {
 	private static String listtojson(String[] fields, int total, List<?> list, String[] footers, String dataStyle, int pageSize) throws Exception {
 		//Object[] values = new Object[fields.length];
 		StringBuffer jsonTemp = new StringBuffer();
-		//update--begin--author:zhangjiaqiang date:20170413 for:支持jqgrid列表 json格式
+
 		if("jqgrid".equals(dataStyle)){
 			int totalPage = total % pageSize > 0 ? total / pageSize + 1 : total / pageSize;
 			if(totalPage == 0) totalPage = 1;
@@ -171,23 +173,20 @@ public class TagUtil {
 			jsonTemp.append("{\"total\":" + total );
 		}
 		jsonTemp.append(",\"rows\":[");
-		//update--end--author:zhangjiaqiang date:20170413 for:支持jqgrid列表 json格式
+
 		int i;
 		String fieldName;
-		
-		//update--begin--author:scott date:20170918 for:list为null问题处理-------
+
 		if(list==null){
 			list = new ArrayList();
 		}
-		//update--end--author:scott date:20170918 for:list为null问题处理-------
+
 		
 		for (int j = 0; j < list.size(); ++j) {
-			//update-begin--Author:zhoujf  Date:20170323 for：TASK #1774 【bug】树列表，下一级没了，图标是文件夹的问题，应该是节点(优化)
-			//update-begin--Author:zhoujf  Date:20170315 for：TASK #1774 【bug】树列表，下一级没了，图标是文件夹的问题，应该是节点
+
 			//jsonTemp.append("{");
 			jsonTemp.append("{\"state\":\"closed\",");
-			//update-end--Author:zhoujf  Date:20170315 for：TASK #1774 【bug】树列表，下一级没了，图标是文件夹的问题，应该是节点
-			//update-end--Author:zhoujf  Date:20170323 for：TASK #1774 【bug】树列表，下一级没了，图标是文件夹的问题，应该是节点(优化)
+
 			Object fieldValue = null;
 			for (i = 0; i < fields.length; ++i) {
 				fieldName = fields[i].toString();
@@ -196,9 +195,9 @@ public class TagUtil {
 				else {
 					fieldValue = fieldNametoValues(fieldName, list.get(j));
 				}
-				//update-begin--Author:zhoujf  Date:20170315 for：对象为null时返回空串而不是“null”
+
 				jsonTemp.append("\"" + fieldName + "\"" + ":\"" + getStringValue(fieldValue).replace("\"", "\\\"") + "\"");
-				//update-end--Author:zhoujf  Date:20170315 for：对象为null时返回空串而不是“null”
+
 				if (i != fields.length - 1) {
 					jsonTemp.append(",");
 				}
@@ -235,13 +234,12 @@ public class TagUtil {
 		jsonTemp.append("}");
 		return jsonTemp.toString();
 	}
-	
-	//update-begin--Author:zhoujf  Date:20170315 for：对象为null时返回空串而不是“null”
+
 	//为空时返回空串
 	private static String getStringValue(Object obj){
 		return (obj == null) ? "" : obj.toString();
 	}
-	//update-end--Author:zhoujf  Date:20170315 for：对象为null时返回空串而不是“null”
+
 	
 	/**
 	 * 计算指定列的合计
@@ -343,13 +341,13 @@ public class TagUtil {
 	private static JSONObject getJson(DataGrid dg) {
 		JSONObject jObject = null;
 		try {
-			//update--begin--author:zhangjiaqiang date:20170413 for:支持jqgrid列表 json格式
+
 			if(!StringUtil.isEmpty(dg.getFooter())){
 				jObject = JSONObject.parseObject(listtojson(dg.getField().split(","), dg.getTotal(), dg.getResults(),dg.getFooter().split(","),dg.getDataStyle(),dg.getRows()));
 			}else{
 				jObject = JSONObject.parseObject(listtojson(dg.getField().split(","), dg.getTotal(), dg.getResults(),null,dg.getDataStyle(),dg.getRows()));
 			}
-			//update--end--author:zhangjiaqiang date:20170413 for:支持jqgrid列表 json格式
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -490,13 +488,13 @@ public class TagUtil {
 		}finally{
 			try {
 				pw.close();
-				//update-begin--Author:scott  Date:20160530 for：清空降低缓存占用
+
 				object.clear();
 				object = null;
 				dg.clear();
 				dg = null;
 				System.gc();
-				//update-end--Author:scott  Date:20160530 for：清空降低缓存占用
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -524,14 +522,13 @@ public class TagUtil {
 		}finally{
 			try {
 				pw.close();
-				//update-begin--Author:scott  Date:20160530 for：清空降低缓存占用
+
 				object.clear();
-				//update-end--Author:scott  Date:20160530 for：清空降低缓存占用
-				//update-begin--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 				dg.clear();
 				dg = null;
 				System.gc();
-				//update-end--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -564,15 +561,14 @@ public class TagUtil {
 		}finally{
 			try {
 				pw.close();
-				//update-begin--Author:scott  Date:20160530 for：清空降低缓存占用
+
 				object.clear();
-				//update-begin--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
+
 				dg.clear();
 				dg = null;
 				System.gc();
 				extMap = null;
-				//update-end--Author:scott  Date:20170830 for：TASK #1756 【性能优化】分页查询存在写法问题，性能 CriteriaQuery cq 清空---
-				//update-begin--Author:scott  Date:20160530 for：清空降低缓存占用
+
 			} catch (Exception e2) {
 				// TODO: handle exception
 			}
@@ -710,8 +706,7 @@ public class TagUtil {
 		param += "'\"+index+\"'";// 传出行索引号参数
 		return param;
 	}
-	
-	//update-begin--Author:luobaoli  Date:20150711 for：新增方法，将存储过程返回的数据解析为json格式
+
 	public static String getJson(List fields,List datas){
 		if(datas!=null && datas.size()>0){
 			StringBuffer sb = new StringBuffer();
@@ -731,7 +726,7 @@ public class TagUtil {
 			return "{\"total\":\"0\",\"rows\":[]}";
 		}
 	}
-	//update-begin--Author:luobaoli  Date:20150711 for：新增方法，将存储过程返回的数据解析为json格式
+
 
 	public static String getJsonByMap(List fields,List<Map<String,Object>> datas){
 		if(datas!=null && datas.size()>0){

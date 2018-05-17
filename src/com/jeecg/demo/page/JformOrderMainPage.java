@@ -128,9 +128,9 @@ public class JformOrderMainPage implements java.io.Serializable {
 	}
 
 	/**保存-JformOrderMain子表*/
-	//update-begin--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
+
     @ExcelCollection(name="订单客户信息")
-    //update-end--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
+
 	private List<JformOrderCustomerEntity> jformOrderCustomerList = new ArrayList<JformOrderCustomerEntity>();
 		public List<JformOrderCustomerEntity> getJformOrderCustomerList() {
 		return jformOrderCustomerList;
@@ -139,9 +139,9 @@ public class JformOrderMainPage implements java.io.Serializable {
 		this.jformOrderCustomerList = jformOrderCustomerList;
 		}
 	/**保存-JformOrderMain子表*/
-	//update-begin--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果	
+
     @ExcelCollection(name="订单机票信息")
-    //update-end--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
+
 	private List<JformOrderTicketEntity> jformOrderTicketList = new ArrayList<JformOrderTicketEntity>();
 		public List<JformOrderTicketEntity> getJformOrderTicketList() {
 		return jformOrderTicketList;

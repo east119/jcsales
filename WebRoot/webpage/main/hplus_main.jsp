@@ -20,16 +20,16 @@
     <meta name="description" content="JEECG 企业级快速开发平台，她采用强大代码生成，在线开发能力">
 
     <link rel="shortcut icon" href="images/favicon.ico">
-    <link href="plug-in-ui/hplus/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
-    <link href="plug-in-ui/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="plug-in/hplus/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="plug-in/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
     <link rel="stylesheet" href="plug-in/ace/assets/css/font-awesome.min.css" />
     <!--[if IE 7]>
     <link rel="stylesheet" href="plug-in/ace/assets/css/font-awesome-ie7.min.css" />
     <![endif]-->
     <!-- Sweet Alert -->
-    <link href="plug-in-ui/hplus/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <link href="plug-in-ui/hplus/css/animate.css" rel="stylesheet">
-    <link href="plug-in-ui/hplus/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="plug-in/hplus/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <link href="plug-in/hplus/css/animate.css" rel="stylesheet">
+    <link href="plug-in/hplus/css/style.css?v=4.1.0" rel="stylesheet">
     <!--右键菜单-->
     <link href="plug-in/hplus/smartMenu.css" rel="stylesheet">
 </head>
@@ -44,7 +44,6 @@
             <ul class="nav" id="side-menu">
                 <li class="nav-header">
                     <div class="dropdown profile-element">
-                        <%--dangzhenghui begin 20170502 for 增加添加头像功能--%>
                                 <span><img alt="image" width="180" height="61" src="plug-in/login/images/jeecg-aceplus.png" /></span>
                             <%--dangzhenghui end 20170502 for 增加添加头像功能--%>
                             <%--//update-start--Author: chenj Date:20160726 for: TASK #1207 [改造]h+风格下，去掉logo下面的内容，迁移位置到右上角，主题位置
@@ -94,7 +93,6 @@
                 
                 
                 <ul class="nav navbar-top-links navbar-right">
-                <!-- update-start--Author: chenj Date:20160812 for: TASK #1269 【ace h+】风格无用的右上角功能隐藏，暂时注释掉 -->
                    <%--  <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                             <i class="fa fa-envelope"></i> <span class="label label-warning">0</span>
@@ -142,9 +140,6 @@
                             </li>
                         </ul>
                     </li> --%>
-                    <!-- update-end--Author: chenj Date:20160812 for: TASK #1269 【ace h+】风格无用的右上角功能隐藏，暂时注释掉 -->
-                    
-                    <!-- //update-start--Author: chenj Date:20160726 for: TASK #1207 [改造]h+风格下，去掉logo下面的内容，迁移位置到右上角，主题位置 -->
                     
                     <li class="dropdown" onfocus="bindFrameClick()">
                     	<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -163,14 +158,11 @@
                             <li><a href="javascript:toSwagger()">Swagger接口</a></li>
                             <li><a href="javascript:clearLocalstorage()"><t:mutiLang langKey="common.clear.localstorage"/></a></li>
                             <li><a href="javascript:toJeecgYun()">云应用中心</a></li>
-                            <!-- update-start--Author: chenj Date:20160812 for: TASK #1269 【ace h+】风格无用的右上角功能隐藏，暂时注释掉 -->
                             <!-- <li><a href="http://yun.jeecg.org" target="_blank">云应用中心</li> -->
                            <!--  <li class="divider"></li>
                             <li><a href="javascript:logout()">注销</a></li> -->
-                            <!-- update-end--Author: chenj Date:20160812 for: TASK #1269 【ace h+】风格无用的右上角功能隐藏，暂时注释掉 -->
                         </ul>
                     </li>
-                    <!-- //update-end--Author: chenj Date:20160726 for: TASK #1207 [改造]h+风格下，去掉logo下面的内容，迁移位置到右上角，主题位置 -->
                     
                      
                     <li class="dropdown hidden-xs">
@@ -178,11 +170,9 @@
                             <i class="fa fa-tasks"></i> 主题
                         </a>
                     </li>
-                   <!-- //update-begin--Author: chenj Date:20160729 for: TASK #1207 [改造]h+风格下，修改 退出 按钮的位置 -->
                       <li class="dropdown">
                      <a href="javascript:logout()" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
                      </li>
-                     <!-- //update-end--Author: chenj Date:20160729 for: TASK #1207 [改造]h+风格下，修改 退出 按钮的位置 -->
                 </ul>
             </nav>
         </div>
@@ -214,7 +204,6 @@
             <a href="javascript:logout()" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
              -->
         </div>
-        <!-- update-begin--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板  -->
         <style type="text/css">  
 		<!--  
 		.proccess{display:none;background-color:#f2f2f2;border:0px solid;border-color:#009900;height:100%;line-height:600px;width:100%;text-align:center;margin:100;position:absolute;top:0;left:0;}  
@@ -225,13 +214,10 @@
             <div class="proccess" id="panelloadingDiv"><b>&nbsp;</b></div> 
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="loginController.do?hplushome" frameborder="0" data-id="loginController.do?hplushome" seamless></iframe>
         </div>
-        <!-- update-end--Author:zhoujf  Date:20170710 for：TASK #2003 【UI改进】列表加载慢的时候会出现白板  -->
-        <!-- update-begin--Author:xuelin  Date:20170611 for：TASK #2100 【列表样式美化】【样式专题】Jeecg平台任务 --1下面这条线，变明朗点--------------------  -->
         <div class="footer" style="border-top:none;">
             <div class="pull-right">&copy; <t:mutiLang langKey="system.version.number"/> <a href="http://www.jeecg.org/" target="_blank">jeecg</a>
             </div>
         </div>        
-		<!-- update-end--Author:xuelin  Date:20170611 for：TASK #2100 【列表样式美化】【样式专题】Jeecg平台任务 --1下面这条线，变明朗点----------------------  -->
     </div>
     <!--右侧部分结束-->
     <!--右侧边栏开始-->
@@ -460,24 +446,23 @@
     </div>--%>
     <!--mini聊天窗口结束-->
 </div>
-
 <!-- 全局js -->
-<script src="plug-in-ui/hplus/js/jquery.min.js?v=2.1.4"></script>
-<script src="plug-in-ui/hplus/js/bootstrap.min.js?v=3.3.6"></script>
-<script src="plug-in-ui/hplus/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="plug-in-ui/hplus/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="plug-in-ui/hplus/js/plugins/layer/layer.min.js"></script>
+<script src="plug-in/hplus/js/jquery.min.js?v=2.1.4"></script>
+<script src="plug-in/hplus/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="plug-in/hplus/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="plug-in/hplus/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="plug-in/hplus/js/plugins/layer/layer.min.js"></script>
 
 <!-- 自定义js -->
-<script src="plug-in-ui/hplus/js/hplus.js?v=4.1.0"></script>
+<script src="plug-in/hplus/js/hplus.js?v=4.1.0"></script>
 <!--右键菜单-->
 <script type="text/javascript" src="plug-in/hplus/jquery-smartMenu.js"></script>
 <script type="text/javascript" src="plug-in/hplus/contabs.js"></script>
 <t:base type="tools"></t:base>
 <!-- 第三方插件 -->
-<script src="plug-in-ui/hplus/js/plugins/pace/pace.min.js"></script>
+<script src="plug-in/hplus/js/plugins/pace/pace.min.js"></script>
 <!-- Sweet alert -->
-<script src="plug-in-ui/hplus/js/plugins/sweetalert/sweetalert.min.js"></script>
+<script src="plug-in/hplus/js/plugins/sweetalert/sweetalert.min.js"></script>
 <script src="plug-in/jquery-plugs/storage/jquery.storageapi.min.js"></script>
 
 <!-- 弹出TAB -->
@@ -677,7 +662,7 @@
             }
         });
     }
-    //update-begin--Author:xuelin  Date:20170328 for：[#1820]顶部个人信息弹出层不回缩现象--------------------
+
     //个人信息弹出层回缩
     function frameBodyClick(){ 
 		$(".count-info").attr("aria-expanded","false").parent().removeClass("open");
@@ -686,7 +671,7 @@
     function bindFrameClick(){
     	$(".J_iframe").contents().find("body").attr("onclick", "parent.frameBodyClick()"); 
     }
-    //update-end--Author:xuelin  Date:20170328 for：[#1820]顶部个人信息弹出层不回缩现象----------------------
+
 </script>
 </body>
 

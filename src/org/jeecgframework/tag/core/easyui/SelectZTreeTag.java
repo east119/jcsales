@@ -24,12 +24,12 @@ public class SelectZTreeTag extends TagSupport {
 	private String url;
 	private String windowWidth; //窗口宽度
 	private String windowHeight; //窗口高度
-	//update-begin-Author:LiShaoQing Date:20180411 for:TASK #2628 【功能升级】增加个属性可以配置，是否选择父自动选择子---
+
 	private boolean selectCascadeParent = false;	//勾选时选择父节点
 	private boolean selectCascadeChildren = false;	//勾选时选择子节点
 	private boolean cancelCascadeParent = false;	//取消勾选时选择父节点
 	private boolean cancelCascadeChildren = false;	//取消勾选时选择子节点
-	//update-end-Author:LiShaoQing Date:20180411 for:TASK #2628 【功能升级】增加个属性可以配置，是否选择父自动选择子---
+
 	public String getUrl() {
 		return url;
 	}
@@ -136,7 +136,7 @@ public class SelectZTreeTag extends TagSupport {
 		sb.append("<link rel=\"stylesheet\" href=\"plug-in/ztree/css/zTreeStyle.css\" type=\"text/css\"></link>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/ztree/js/jquery.ztree.core-3.5.min.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/ztree/js/jquery.ztree.excheck-3.5.min.js\"></script>");
-		//update-begin author:taoYan date:20170802 for:id选择器未加#，不知道以前怎么在谷歌下好使的----
+
 		sb.append("<script type=\"text/javascript\">"
 		+"function beforeClick(treeId, treeNode) {"
 		+ "   var zTree = $.fn.zTree.getZTreeObj('treeDemo');"
@@ -175,7 +175,7 @@ public class SelectZTreeTag extends TagSupport {
 		+ "}, "
 		+ "		check: {"
 		+ "			enable: true,");
-		//update-begin-Author:LiShaoQing Date:20180411 for:TASK #2628 【功能升级】增加个属性可以配置，是否选择父自动选择子---
+
 		sb.append("chkboxType: {'Y':'");
 		if(selectCascadeParent) {
 			sb.append("p");
@@ -191,7 +191,7 @@ public class SelectZTreeTag extends TagSupport {
 			sb.append("s");
 		}
 		sb.append("'}");
-		//update-end-Author:LiShaoQing Date:20180411 for:TASK #2628 【功能升级】增加个属性可以配置，是否选择父自动选择子---
+
 		sb.append("},"
 		+ "		view: {"
 		+ "			dblClickExpand: false"
@@ -219,7 +219,7 @@ public class SelectZTreeTag extends TagSupport {
 		+ "		);"
 		+ "});"
 		+ "</script>");
-		//update-end author:taoYan date:20170802 for:id选择器未加#，不知道以前怎么在谷歌下好使的----
+
 		sb.append("		   <input id=\""+id+"\" name=\""+id+"\"  type=\"text\" readonly value=\"\" style=\"width:"+windowWidth+";height:"+windowHeight+"\" class=\"form-control\" onclick=\"showMenu();\" />");
 		sb.append("<div id=\"menuContent\" class=\"menuContent\" style=\"display:none; position: absolute;\" >");
 		sb.append("		<ul id=\"treeDemo\" class=\"ztree\" style=\"margin-top:0; width:100%;background-color:#f9f9f9\"></ul>");

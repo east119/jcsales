@@ -50,13 +50,11 @@ public class FormHtmlUtil {
     private static String getTextAreaFormHtml(
 			CgFormFieldEntity cgFormFieldEntity) {
     	StringBuilder html = new StringBuilder("");
-    	//update-begin--Author:zhoujf  Date:20151218 for：online表单模板textarea优化--------------------
-    	 html.append("<textarea rows=\"6\" ");
+   	 html.append("<textarea rows=\"6\" ");
     	 if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
        	  	html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
          }
-    	//update-end--Author:zhoujf  Date:20151218 for：online表单模板textarea优化--------------------
-    	 html.append("id=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
+   	 html.append("id=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
          html.append("name=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
          if("Y".equals(cgFormFieldEntity.getIsNull())){
        	  html.append("ignore=\"ignore\" ");
@@ -167,9 +165,9 @@ public class FormHtmlUtil {
           }else{
         	 
     	      StringBuilder html = new StringBuilder("");
-    	      //update-start--Author: jg_huangxg  Date:20160816 for：TASK #1266 【平台升级】word布局自定义模板，多选checkbox的时候，编辑的时候没有赋值
+
     	      html.append("<#assign checkboxstr>\\${").append(cgFormFieldEntity.getFieldName()).append("?if_exists?html}</#assign>");
-    	      //update-end--Author: jg_huangxg  Date:20160816 for：TASK #1266 【平台升级】word布局自定义模板，多选checkbox的时候，编辑的时候没有赋值
+
     	      html.append("<#assign checkboxlist=checkboxstr?split(\",\")> ");
     	      html.append("<@DictData name=\""+cgFormFieldEntity.getDictField()+"\"");
       	      if(!StringUtil.isEmpty(cgFormFieldEntity.getDictTable())){
@@ -286,10 +284,9 @@ public class FormHtmlUtil {
 	private static String getFileFormHtml(CgFormFieldEntity cgFormFieldEntity){
     	StringBuilder html = new StringBuilder("");
 
-    	//update-start--Author: jg_huangxg  Date:20160816 for：TASK #1267 【平台升级】word布局自定义模板，上传组件，多文件上传功能
 //    	html.append("<link rel=\"stylesheet\" href=\"plug-in/uploadify/css/uploadify.css\" type=\"text/css\"></link>");
 //    	html.append("<script type=\"text/javascript\" src=\"plug-in/uploadify/jquery.uploadify-3.1.js\"></script>");
-    	//update-start--Author: zhoujf  Date:20170524 for：TASK #2014 【online表单】online表单 模板配置 basePath问题 word模板文件上传问题
+
     	html.append("<table>");
     	html.append("<#list filesList as fileB>");
     	html.append("<tr style=\"height:34px;\">");
@@ -305,9 +302,9 @@ public class FormHtmlUtil {
     	html.append("\\$(function(){\\$('#").append(cgFormFieldEntity.getFieldName()).append("').uploadify(");
     	html.append("{buttonText:'添加文件',auto:false,progressData:'speed',multi:true,height:25,overrideEvents:['onDialogClose'],fileTypeDesc:'文件格式:',");
     	html.append("queueID:'filediv_").append(cgFormFieldEntity.getFieldName()).append("',");
-    	//update-begin----author:scott -- date:20170317 -- for:配置rar或者zip的时候,点击上传按钮之后要过10多秒才弹出文件选择框，采用方案不做上传类型限制--
+
     	//html.append("fileTypeExts:'*.rar;*.zip;*.doc;*.docx;*.txt;*.ppt;*.xls;*.xlsx;*.html;*.htm;*.pdf;*.jpg;*.gif;*.png',");
-    	//update-end----author:scott -- date:20170317 -- for:配置rar或者zip的时候,点击上传按钮之后要过10多秒才弹出文件选择框，采用方案不做上传类型限制--
+
     	html.append("fileSizeLimit:'15MB',swf:'\\${basePath}/plug-in/uploadify/uploadify.swf',");
     	html.append("uploader:'\\${basePath}/cgUploadController.do?saveFiles&jsessionid='+\\$(\"#sessionUID\").val()+'',");
     	html.append("onUploadStart : function(file) { ");
@@ -328,8 +325,7 @@ public class FormHtmlUtil {
     	html.append("function cancel() {\\$('#").append(cgFormFieldEntity.getFieldName()).append("').uploadify('cancel', '\\*');}");
 //    	html.append("var neibuClickFlag = false;function neibuClick() {neibuClickFlag = true;\\$('#btn_sub').trigger('click');}");
     	html.append("</script>");
-    	//update-end--Author: zhoujf  Date:20170524 for：TASK #2014 【online表单】online表单 模板配置 basePath问题 word模板文件上传问题
-    	//update-end--Author: jg_huangxg  Date:20160816 for：TASK #1267 【平台升级】word布局自定义模板，上传组件，多文件上传功能
+
       	return html.toString();
     }
     
@@ -347,9 +343,9 @@ public class FormHtmlUtil {
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
       html.append("value=\"\\${").append(cgFormFieldEntity.getFieldName()).append("?if_exists?html}\" ");
-      //-- update-begin--Author:zhoujf  Date:20180409 for：TASK #2627 【online表单】online表单 表单模板 popup控件回填问题--
+
       html.append("onclick=\"popupClick(this,'"+cgFormFieldEntity.getDictText()+"','"+cgFormFieldEntity.getDictField()+"','"+cgFormFieldEntity.getDictTable()+"');\" ");
-      //-- update-end--Author:zhoujf  Date:20180409 for：TASK #2627 【online表单】online表单 表单模板 popup控件回填问题--
+
       if("Y".equals(cgFormFieldEntity.getIsNull())){
     	  html.append("ignore=\"ignore\" ");
       }

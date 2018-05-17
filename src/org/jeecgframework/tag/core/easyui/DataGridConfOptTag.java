@@ -21,19 +21,19 @@ public class DataGridConfOptTag extends TagSupport {
 	private String exp;//判断链接是否显示的表达式
 	private String operationCode;//按钮的操作Code
 	private String urlStyle;//样式
-	//update-begin--Author:zhangjq  Date:20160904 for：[1343号]【UI标签】t:dgConfOpt扩展ace样式属性
+
 	private String urlclass;//自定义按钮样式
 	private String urlfont;//自定义按钮图标样式
-	//update-end--Author:zhangjq  Date:20160904 for：[1343号]【UI标签】t:dgConfOpt扩展ace样式属性
+
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
 	}
 	public int doEndTag() throws JspTagException {
 		Tag t = findAncestorWithClass(this, DataGridTag.class);
 		DataGridTag parent = (DataGridTag) t;
-		//update-begin--Author:zhangjq  Date:20160904 for：[1343号]【UI标签】t:dgConfOpt扩展ace样式属性
+
 		parent.setConfUrl(url,MutiLangUtil.getLang(title),MutiLangUtil.getLang(message),exp,operationCode,urlStyle,urlclass,urlfont);
-		//update-end--Author:zhangjq  Date:20160904 for：[1343号]【UI标签】t:dgConfOpt扩展ace样式属性
+
 		return EVAL_PAGE;
 	}
 	public void setExp(String exp) {
@@ -57,7 +57,7 @@ public class DataGridConfOptTag extends TagSupport {
 	public String getUrlStyle() {
 		return urlStyle;
 	}
-	//update-begin--Author:zhangjq  Date:20160904 for：[1343号]【UI标签】t:dgConfOpt扩展ace样式属性
+
 	public String getUrlclass() {
 		return urlclass;
 	}
@@ -70,6 +70,6 @@ public class DataGridConfOptTag extends TagSupport {
 	public void setUrlfont(String urlfont) {
 		this.urlfont = urlfont;
 	}
-	//update-end--Author:zhangjq  Date:20160904 for：[1343号]【UI标签】t:dgConfOpt扩展ace样式属性
+
 	
 }

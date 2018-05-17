@@ -91,8 +91,7 @@ public class CgformTemplateServiceImpl extends CommonServiceImpl implements Cgfo
 
 	@Override
 	public List<CgformTemplateEntity> getTemplateListByType(String type) {
-		//update--begin--author:zhoujf date:20170320 for:TASK 1796【online】online改造模板，不区分一对多和单表的，固化模板文件名字，不需要复杂配置
-		//update--begin--author:zhangjiaqiang date:20170305 for:TASK #1749 【新功能】自定义样式表加个字段 【是否激活】
+
 		String hql =  "";
 		if("1".equals(type)){
 			hql = "from CgformTemplateEntity where templateType in ('1','3') and status = 1";
@@ -103,7 +102,6 @@ public class CgformTemplateServiceImpl extends CommonServiceImpl implements Cgfo
 		}else{
 			return null;
 		}
-		//update--end--author:zhangjiaqiang date:20170305 for:TASK #1749 【新功能】自定义样式表加个字段 【是否激活】
-		//update--end--author:zhoujf date:20170320 for:TASK 1796【online】online改造模板，不区分一对多和单表的，固化模板文件名字，不需要复杂配置
+
 	}
 }

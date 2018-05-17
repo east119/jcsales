@@ -25,7 +25,7 @@ public class ContextHolderUtils {
 		return request;
 
 	}
-	//update--begin--author:zhangjiaqiang date:20170719 for:修订firefox当中SWFUpload上传session丢失问题
+
 	/**
 	 * SpringMvc下获取session
 	 * 
@@ -61,5 +61,5 @@ public class ContextHolderUtils {
 			sessionMap.remove(sessionId);
 		}
 	}
-	//update--end--author:zhangjiaqiang date:20170719 for:修订firefox当中SWFUpload上传session丢失问题
+
 }

@@ -3,10 +3,8 @@
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
 <div class="easyui-layout" fit="true" id="lywidth_demo">
   <div region="center" style="padding:0px;border:0px">
-  <!-- update-begin author:xuelin date:20171116 for:TASK #2404 【平台UI改造】UI样式改造点  5.参考fineui，做下字段过滤功能效果 -->
   <t:datagrid name="jformOrderMainList" checkbox="false" fitColumns="true" title="订单主信息" actionUrl="jformOrderMainController.do?datagrid" 
   		idField="id" fit="true" collapsible="true" queryMode="group" superQuery="true" filter="true">
-  <!-- update-end author:xuelin date:20171116 for:TASK #2404 【平台UI改造】UI样式改造点  5.参考fineui，做下字段过滤功能效果 -->
    <t:dgCol title="主键"  field="id" hidden="true" queryMode="single" width="120"></t:dgCol>
    <t:dgCol title="订单号"  field="orderCode"  queryMode="single" query="true"  width="120"></t:dgCol>
    <t:dgCol title="订单日期"  field="orderDate" formatter="yyyy-MM-dd" queryMode="single" query="true" width="120"></t:dgCol>
@@ -25,10 +23,10 @@
  </div>
  <script type="text/javascript">
 $(document).ready(function (){
-//update-begin-author:taoYan date:20171031 for:防止滚动条挤压页面---
+
 	var abc = $("#lywidth_demo").width()+17;
 	$("#lywidth_demo").css("min-width", abc).css("padding-right","17px").css("box-sizing","border-box");
-//update-end-author:taoYan date:20171031 for:防止滚动条挤压页面---
+
 	$("#jformOrderMainList").datagrid({
 		onClickRow: function (index, row) {
 			getCustomerList(row.id);

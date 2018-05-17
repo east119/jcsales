@@ -101,14 +101,14 @@ public class TreeGridModel implements java.io.Serializable {
     public void setFieldMap(Map<String, Object> fieldMap) {
         this.fieldMap = fieldMap;
     }
-    //        update-begin--Author:chenj  Date:20160722 for：添加菜单图标样式
+
 	public String getIconStyle() {
 		return iconStyle;
 	}
 	public void setIconStyle(String iconStyle) {
 		this.iconStyle = iconStyle;
 	}
-    //        update-end--Author:chenj  Date:20160722 for：添加菜单图标样式
+
     
     
     

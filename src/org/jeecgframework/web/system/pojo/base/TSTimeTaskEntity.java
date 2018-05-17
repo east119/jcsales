@@ -48,7 +48,7 @@ public class TSTimeTaskEntity implements java.io.Serializable {
 	private java.lang.String updateBy;
 	/**修改人名称*/
 	private java.lang.String updateName;
-	//update-begin--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置-------------------
+
 	/**任务类名**/
 	private java.lang.String className;
 	/**运行任务的服务器IP**/
@@ -82,7 +82,7 @@ public class TSTimeTaskEntity implements java.io.Serializable {
 	public void setClassName(java.lang.String className) {
 		this.className = className;
 	}
-	//update-end--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置----------------------
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  id

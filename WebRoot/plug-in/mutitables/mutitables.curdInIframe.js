@@ -43,15 +43,22 @@
 		var methods = {
 			test:function(a){console.log(123+a);},
 			//激活tab加载子表数据
-			initListByMain:function (id){
-				var tempv = $("#"+options.name+"ListMainId").val();
-				if(tempv==id){
-					return false;
+			initListByMain:function (id,isDel){
+				if(!isDel){
+					var tempv = $("#"+options.name+"ListMainId").val();
+					if(tempv==id){
+						return false;
+					}
+					$("#"+options.name+"ListMainId").val(id);
+					
+					$(dgthis).datagrid('load',{
+						mainId : id
+					});
+				}else{
+					$(dgthis).datagrid('load',{
+						mainId : id
+					});
 				}
-				$("#"+options.name+"ListMainId").val(id);
-				$(dgthis).datagrid('load',{
-					mainId : id
-				});
 			},
 			//增FORM
 			addForm:function(){

@@ -31,10 +31,9 @@ public class UserSelectTag extends TagSupport {
 	private String inputWidth; 				//输入框宽度
 	private String windowWidth; 			//弹出窗口宽度
 	private String windowHeight; 			//弹出窗口高度
-	
-	//update-begin-author:taoyan date:20170814 for:自定义回调函数--
+
 	private String callback;//自定义回掉函数
-	//update-end-author:taoyan date:20170814 for:自定义回掉函数--
+
 	
     public String getUserIdsDefalutVal() {
 		return userIdsDefalutVal;
@@ -105,7 +104,7 @@ public class UserSelectTag extends TagSupport {
 	public void setUserNamesDefalutVal(String userNamesDefalutVal) {
 		this.userNamesDefalutVal = userNamesDefalutVal;
 	}
-	//update-begin-author:taoyan date:20170814 for:自定义回调函数--
+
 	public String getCallback() {
 		if(oConvertUtils.isEmpty(callback)){
 			callback = "callbackUserSelect";
@@ -115,7 +114,7 @@ public class UserSelectTag extends TagSupport {
 	public void setCallback(String callback) {
 		this.callback = callback;
 	}
-	//update-end-author:taoyan date:20170814 for:自定义回调函数--
+
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
 	}
@@ -182,14 +181,14 @@ public class UserSelectTag extends TagSupport {
 		
 		sb.append("<script type=\"text/javascript\">");
 		sb.append("function openUserSelect() {");
-		//update--begin--author:zhangjiaqiang date:20170527 for:TASK #1866 【bug】Online 弹出popup获取遮挡，原因获取getCookie不是一个源头
+
 		sb.append("    $.dialog({content: 'url:userController.do?userSelect', zIndex: getzIndex(), title: '" + title + "', lock: true, width: '" + windowWidth + "', height: '" + windowHeight + "', opacity: 0.4, button: [");
-		//update-begin-author:taoyan date:20170814 for:支持自定义回调函数--
+
 		sb.append("       {name: '" + commonConfirm + "', callback: "+getCallback()+", focus: true},");
-		//update-end-author:taoyan date:20170814 for:支持自定义回调函数--
+
 		sb.append("       {name: '" + commonCancel + "', callback: function (){}}");
 		sb.append("   ]});");
-		//update--begin--author:zhangjiaqiang date:20170527 for:TASK #1866 【bug】Online 弹出popup获取遮挡，原因获取getCookie不是一个源头
+
 		sb.append("}");
 		
 		sb.append("function callbackUserSelect() {");

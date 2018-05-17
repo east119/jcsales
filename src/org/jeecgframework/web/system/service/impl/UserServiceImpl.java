@@ -33,16 +33,19 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Service("userService")
-@Transactional
 public class UserServiceImpl extends CommonServiceImpl implements UserService {
 
+	@Transactional(readOnly = true)
 	public TSUser checkUserExits(TSUser user){
 		return this.commonDao.getUserByUserIdAndUserNameExits(user);
 	}
 	
+	@Transactional(readOnly = true)
 	public TSUser checkUserExits(String username,String password){
 		return this.commonDao.findUserByAccountAndPassword(username,password);
 	}
+	
+	@Transactional(readOnly = true)
 	public String getUserRole(TSUser user){
 		return this.commonDao.getUserRole(user);
 	}
@@ -51,6 +54,7 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
 			this.commonDao.pwdInit(user,newPwd);
 	}
 	
+	@Transactional(readOnly = true)
 	public int getUsersOfThisRole(String id) {
 		Criteria criteria = getSession().createCriteria(TSRoleUser.class);
 		criteria.add(Restrictions.eq("TSRole.id", id));
@@ -114,7 +118,6 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
 		commonDao.save(log);
 	}
 
-	//update--begin-- author:Yandong -- date:20180115-- for:TASK #2494 【改造】Jeecg 代码事务不严谨，control的逻辑改到service里面---
 	@Override
 	public void saveOrUpdate(TSUser user, String[] orgIds, String[] roleIds) {
 		if(StringUtil.isNotEmpty(user.getId())){
@@ -171,5 +174,5 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
 			}
 		}
 	}
-	//update--end-- author:Yandong -- date:20180115-- for:TASK #2494 【改造】Jeecg 代码事务不严谨，control的逻辑改到service里面---
+
 }

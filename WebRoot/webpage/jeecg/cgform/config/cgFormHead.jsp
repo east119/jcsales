@@ -172,9 +172,7 @@ String langurl = basePath + "/plug-in/mutiLang/" + lang +".js";
         <table id="tab_div_database" class="table-list">
         </table>
         <br><br><br>
-		  <%--//update-end--Author:zhangdaihao  Date:20170309 for：TASK #1754 【bug】online编辑的时候，树类型的时候，最后一行没显示出来--%>
 		  <div  style="height: 43px"></div>
-		  <%--//update-end--Author:zhangdaihao  Date:20170309 for：TASK #1754 【bug】online编辑的时候，树类型的时候，最后一行没显示出来--%>
       </div>
     </div>
     <div title='<t:mutiLang langKey="page.property"/>' style="overflow: hidden;">
@@ -352,7 +350,6 @@ function getShowType(obj){
 }
 //add-end--Author:jg_renjie Date:20160301 for：TASK #1019 【平台bug】ONLINE百度编辑器控件样式不好。
 
-// update--begin--author:Yandong Date:20180226 for:TASK #2513 【bug】代码生成器，新添加的online唯一校验生成代码问题--
 function chooseOnly(obj){
 	if($(obj).val() == 'only'){
 		var name=$(obj).attr("name");
@@ -363,7 +360,7 @@ function chooseOnly(obj){
 		}
 	}
 }
-// update--end--author:Yandong Date:20180226 for:TASK #2513 【bug】代码生成器，新添加的online唯一校验生成代码问题--
+
 
 function selectField(select){
 	var selected = select.val().split(",");

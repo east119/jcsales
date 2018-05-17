@@ -20,17 +20,17 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @Entity
 @Table(name = "t_s_role")
 public class TSRole extends IdEntity implements java.io.Serializable {
-	//update-begin--Author:dangzhenghui  Date:20170430 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能--------------------
+
 	@Excel(name = "角色名称",width = 20)
 	private String roleName;//角色名称
 	@Excel(name = "角色编码",width = 20)
-	//update-end--Author:dangzhenghui  Date:20170430 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能--------------------
+
 	private String roleCode;//角色编码
-	//update-begin-Author:LiShaoQing Date:20171204 for:部门管理员组设置新增两个字段------
+
 	@Excel(name="部门权限组ID")
 	private String departAgId;//组织机构ID
 	private String roleType;  //角色类型1部门角色/0系统角色
-	//update-end-Author:LiShaoQing Date:20171204 for:部门管理员组设置新增两个字段------
+
 	/**创建时间*/
 	private java.util.Date createDate;
 	/**创建人ID*/

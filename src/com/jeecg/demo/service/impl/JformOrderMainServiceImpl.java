@@ -73,10 +73,10 @@ public class JformOrderMainServiceImpl extends CommonServiceImpl implements Jfor
 	    String hql0 = "from JformOrderCustomerEntity where 1 = 1 AND fK_ID = ? ";
 	    List<JformOrderCustomerEntity> jformOrderCustomerOldList = this.findHql(hql0,id0);
 		//2.筛选更新明细数据-JformOrderMain子表
-	    //update-begin--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
+
 	    //TODO author：XueLin  for: 客户数据全删完size == 0
 		if(jformOrderCustomerList != null){// && jformOrderCustomerList.size() > 0 
-		//update-end--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
+
 			for(JformOrderCustomerEntity oldE : jformOrderCustomerOldList){
 				boolean isUpdate = false;
 				for(JformOrderCustomerEntity sendE : jformOrderCustomerList){
@@ -112,10 +112,10 @@ public class JformOrderMainServiceImpl extends CommonServiceImpl implements Jfor
 	    String hql1 = "from JformOrderTicketEntity where 1 = 1 AND fCK_ID = ? ";
 	    List<JformOrderTicketEntity> jformOrderTicketOldList = this.findHql(hql1,id1);
 		//2.筛选更新明细数据-JformOrderMain子表
-	    //update-begin--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
+
 	    //TODO author：XueLin  for: 机票信息全删完 size == 0
 		if(jformOrderTicketList != null){// && jformOrderTicketList.size() > 0 
-		//update-end--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
+
 			for(JformOrderTicketEntity oldE : jformOrderTicketOldList){
 				boolean isUpdate = false;
 				for(JformOrderTicketEntity sendE : jformOrderTicketList){

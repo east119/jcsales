@@ -46,9 +46,9 @@ public class MutiLangTag extends TagSupport {
 	}
 
 	public String end() {
-		//update-begin--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 		MutiLangServiceI mutiLangService = ApplicationContextUtil.getContext().getBean(MutiLangServiceI.class);	
-		//update-end--author:scott Date:20170219 for:class声明类，减少内存占用写法修改------
+
 		String lang_context = mutiLangService.getLang(langKey, langArg);
 		return lang_context;
 	}

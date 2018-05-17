@@ -1,7 +1,7 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <script type="text/javascript">
-//update-begin--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树--------------------	
+
 	var setting = {
 		check: {
 			enable: true
@@ -148,7 +148,7 @@
 		zTree.setting.check.chkboxType = type;
 		$("#typeMode").val(typeMode % 2 + 1);			
 	}
-// update-end--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树----------------------	
+
 	$('#selecrAllBtn').linkbutton({});
 	$('#resetBtn').linkbutton({});
 	$('#changeBtn').linkbutton({});

@@ -33,7 +33,7 @@ public class IpUtil {
 		}
 		return ip;
 	}
-	//update-begin--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置-------------------
+
    /**
 	* 获取本地IP列表（针对多网卡情况）
 	*
@@ -64,5 +64,5 @@ public class IpUtil {
        }
        return ipList;
 	}
-	//update-end--Author:xuelin  Date:20170820 for：TASK #1742 【新功能】定时任务配置----------------------
+
 }

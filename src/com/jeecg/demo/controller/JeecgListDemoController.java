@@ -42,11 +42,11 @@ import org.jeecgframework.core.util.JeecgDataAutorUtils;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.core.util.StringUtil;
+import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.jwt.util.GsonUtil;
 import org.jeecgframework.jwt.util.ResponseMessage;
 import org.jeecgframework.jwt.util.Result;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
-import org.jeecgframework.p3.core.util.oConvertUtils;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
@@ -109,20 +109,18 @@ public class JeecgListDemoController extends BaseController {
 	private JeecgDemoServiceI jeecgDemoService;
 	@Autowired
 	private SystemService systemService;
-	
-	//add-begin--Author:Yandong Date:20180322 for:Angular jeecgDEMO-----
+
 	@Autowired
 	private Validator validator;
-	//add-end--Author:Yandong Date:20180322 for:Angular jeecgDEMO-----
+
 	
 	@Autowired
 	private JeecgMinidaoDao jeecgMinidaoDao;
 
-	//update-begin--Author:weict  Date:20170513 for：TASK #1964 【例子】报表例子不对
     private static final String BROSWER_COUNT_ANALYSIS = "broswer.count.analysis";
     @Autowired
     private MutiLangServiceI mutiLangService;
-	//update-end--Author:weict  Date:20170513 for：TASK #1964 【例子】报表例子不对
+
 	
 	/**
 	 * 采用minidao查询数据
@@ -151,20 +149,45 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView list(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/jeecgDemoList");
 	}
-	
-	//update--begin--author:Yandong Date:20180413 for:TASK #1848 【新功能】目前jeecg 采用easyui列表加载慢，用vue实现一个列表demo
+
 	@RequestMapping(params = "vueList")
 	public ModelAndView vueList(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/vueList");
 	}
-	//update--end--author:Yandong Date:20180413 for:TASK #1848 【新功能】目前jeecg 采用easyui列表加载慢，用vue实现一个列表demo
-	
-	//update--begin--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
+	@RequestMapping(params = "vueNewList")
+	public ModelAndView vueNewList(HttpServletRequest request) {
+		return new ModelAndView("com/jeecg/demo/vueNewList");
+	}
+
+	@RequestMapping(params = "vueBootstrapTableList")
+	public ModelAndView vueBootstrapTableList(HttpServletRequest request) {
+		return new ModelAndView("com/jeecg/demo/vueBootstrapTableList");
+	}
+	@RequestMapping(params = "vueBootstrapTableAdd")
+	public ModelAndView vueBootstrapTableAdd(HttpServletRequest request) {
+		return new ModelAndView("com/jeecg/demo/vueBootstrapTableAdd");
+	}
+	@RequestMapping(params = "vueBootstrapTableEdit")
+	public ModelAndView vueBootstrapTableEdit(HttpServletRequest request) {
+		return new ModelAndView("com/jeecg/demo/vueBootstrapTableEdit");
+	}
+	@RequestMapping(params = "vueBootstrapTableGet")
+	@ResponseBody
+	public AjaxJson vueBootstrapTableGet(String id,HttpServletRequest request) {
+		AjaxJson json=new AjaxJson();
+		if(org.apache.commons.lang.StringUtils.isNotBlank(id)) {
+			JeecgDemoEntity t = jeecgDemoService.get(JeecgDemoEntity.class, id);
+			json.setObj(t);
+		}
+		json.setMsg("查询成功！");
+		return json;
+	}
+
 	@RequestMapping(params = "multiHeaList")
 	public ModelAndView multiHeaList(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/jeecgDemoList-multihead");
 	}
-	//update--begin--author:zhangjiaqiang Date:20170815 for:TASK #2273 【demo】datagrid 多表头demo
+
 	/**
 	 * 自定义查询条件
 	 */
@@ -172,8 +195,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView mysearchListDemo(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/taglist_mysearch");
 	}
-	
-	//add--begin--author:guoxianhui Date:20171128 for:TASK #2422 【DEMO】DEMO示例，自定义查询示例效果
+
 	/**
 	 * 自定义查询条件二
 	 */
@@ -181,9 +203,8 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView mysearchListDemo2(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/taglist_mysearch2");
 	}
-	//add--end--author:guoxianhui Date:20171128 for:TASK #2422 【DEMO】DEMO示例，自定义查询示例效果
-	
-	//update-begin--Author:weict  Date:20170513 for：TASK #1964 【例子】报表例子不对
+
+
 	/**
 	 * 综合报表 页面跳转
 	 * 
@@ -193,8 +214,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView broswerStatisticTabs(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/reportDemo");
 	}
-	
-	//update-begin--Author:LiShaoQing Date:20170915 for：TASK #2340 【demo】Jeecg动态组查询
+
 	/**
 	 * 多条件动态查询Demo
 	 * @param request
@@ -204,9 +224,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView querysBuilder(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/querysBuilderDemo");
 	}
-	//update-end--Author:LiShaoQing Date:20170915 for：TASK #2340 【demo】Jeecg动态组查询
-	
-	//update-begin--Author:LiShaoQing Date:20170915 for：TASK #2340 【demo】Jeecg动态组查询弹出界面
+
 	/**
 	 * 多条件动态查询弹框式选择
 	 * @param request
@@ -216,10 +234,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView goFormQuerysBuilder(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/form_querysBuilder");
 	}
-	//update-end--Author:LiShaoQing Date:20170915 for：TASK #2340 【demo】Jeecg动态组查询弹出界面
-	
-	
-	//update-begin--Author:gj_shaojc Date:20180305 for：TASK #2535 【开发】ECharts集成demo 
+
 	/**
 	 * 仪表图
 	 * @param request
@@ -447,7 +462,7 @@ public class JeecgListDemoController extends BaseController {
 		
 		return option;
 	}
-	//update-end--Author:gj_shaojc Date:20180305 for：TASK #2535 【开发】ECharts集成demo 
+
 	
 	/**
 	 * 综合报表 datagrid
@@ -590,10 +605,7 @@ public class JeecgListDemoController extends BaseController {
 			}
 		}
 	}
-	
-	
-	
-	//update-end--Author:weict  Date:20170513 for：TASK #1964 【例子】报表例子不对
+
 	
 	
 	
@@ -604,14 +616,13 @@ public class JeecgListDemoController extends BaseController {
 		 * 例如数据库表字段：{USER_NAME}
 		 * 转化实体对应字段：{userName}
 		 */
-		//update-begin--Author:dangzhenghui  Date:20170510 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
-		//update-begin--Author:zhangliang  Date:20170706 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
+
 		String authSql = JeecgDataAutorUtils.loadDataSearchConditonSQLString();
 		MiniDaoPage<JeecgDemoEntity> list = jeecgMinidaoDao.getAllEntities(jeecgDemo, dataGrid.getPage(), dataGrid.getRows(),authSql);
-		//update-begin--Author:zhangliang Date:20170706 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
+
 		dataGrid.setTotal(list.getTotal());
 		dataGrid.setResults(list.getResults());
-		//update-end--Author:dangzhenghui  Date:20170510 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
+
 		String total_salary = String.valueOf(jeecgMinidaoDao.getSumSalary());
 		/*
 		 * 说明：格式为 字段名:值(可选，不写该值时为分页数据的合计) 多个合计 以 , 分割
@@ -683,9 +694,7 @@ public class JeecgListDemoController extends BaseController {
 		return new ModelAndView("com/jeecg/demo/jeecgDemo-check");
 		
 	}
-	
-	
-	//update-begin--Author:LiShaoQing Date:20170915 for：TASK #2340 【demo】动态组查询Demo
+
 	/**
 	 * 自定义查询
 	 * @param request
@@ -696,7 +705,7 @@ public class JeecgListDemoController extends BaseController {
 		return new ModelAndView("com/jeecg/demo/superQueryDemo");
 		
 	}
-	//update-end--Author:LiShaoQing Date:20170915 for：TASK #2340 【demo】动态组查询Demo
+
 	
 	@RequestMapping(params = "doCheck")
 	@ResponseBody
@@ -1064,7 +1073,7 @@ public class JeecgListDemoController extends BaseController {
 		req.setAttribute("logs",arr);
 		return new ModelAndView("com/jeecg/demo/logrp-chart");
 	}
- // add-begin--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo-------------------- 
+
 	/**
 	 * 批量添加
 	 * @param request
@@ -1112,16 +1121,12 @@ public class JeecgListDemoController extends BaseController {
 		j.setMsg(message);
 		return j;
 	}
-// add-end--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo----------------------
-	
-	//add-begin--Author:LiShaoQing Date:20180126 for:echarts DEMO-----
+
 	@RequestMapping(params = "echartDemo")
 	public ModelAndView echartDemo(HttpServletRequest req) {
 		return new ModelAndView("com/jeecg/demo/echartsDemo");
 	}
-	//add-end--Author:LiShaoQing Date:20180126 for:echarts DEMO-----
-	
-	//add-begin--Author:Yandong Date:20180322 for:Angular jeecgDEMO-----
+
 	@RequestMapping(value="/list",method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value="jeecgDemo列表信息",produces="application/json",httpMethod="GET")
@@ -1235,5 +1240,129 @@ public class JeecgListDemoController extends BaseController {
 
 		return Result.success();
 	}
-	//add-end--Author:Yandong Date:20180322 for:Angular DEMO-----
+
+	/**
+	 * jeecgDemo-bootstrap-list
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(params = "bootTableDemo")
+	public ModelAndView bootTableDemo(HttpServletRequest request) {
+		return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-list");
+	}
+	
+	/**
+	 * jeecgDemo-bootstrap编辑页面跳转
+	 * 
+	 * @return
+	 */
+	@RequestMapping(params = "goBootStrapTableUpdate")
+	public ModelAndView goBootStrapTableUpdate(JeecgDemoEntity jeecgDemo, HttpServletRequest req) {
+		if (StringUtil.isNotEmpty(jeecgDemo.getId())) {
+			jeecgDemo = jeecgDemoService.getEntity(JeecgDemoEntity.class, jeecgDemo.getId());
+			req.setAttribute("jeecgDemoPage", jeecgDemo);
+		}
+		return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-update");
+	}
+	
+	/**
+	 * jeecgDemo-bootstrap新增页面跳转
+	 * 
+	 * @return
+	 */
+	@RequestMapping(params = "goBootStrapTableAdd")
+	public ModelAndView goBootStrapTableAdd(JeecgDemoEntity jeecgDemo, HttpServletRequest req) {
+		if (StringUtil.isNotEmpty(jeecgDemo.getId())) {
+			jeecgDemo = jeecgDemoService.getEntity(JeecgDemoEntity.class, jeecgDemo.getId());
+			req.setAttribute("jeecgDemoPage", jeecgDemo);
+		}
+		return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-add");
+	}
+
+		/**
+		 * list
+		 * @param request
+		 * @return
+		 */
+		@RequestMapping(params = "natureAceTableDemo")
+		public ModelAndView natureAceTableDemo(HttpServletRequest request) {
+			return new ModelAndView("com/jeecg/demo/jeecgDemo-nature-ace-list");
+		}
+		
+		/**
+		 * 编辑页面跳转
+		 * @return
+		 */
+		@RequestMapping(params = "goNatureAceTableUpdate")
+		public ModelAndView goNatureAceTableUpdate(JeecgDemoEntity jeecgDemo, HttpServletRequest req) {
+			if (StringUtil.isNotEmpty(jeecgDemo.getId())) {
+				jeecgDemo = jeecgDemoService.getEntity(JeecgDemoEntity.class, jeecgDemo.getId());
+				req.setAttribute("jeecgDemoPage", jeecgDemo);
+			}
+			return new ModelAndView("com/jeecg/demo/jeecgDemo-nature-ace-update");
+		}
+		
+		/**
+		 * 新增页面跳转
+		 * @return
+		 */
+		@RequestMapping(params = "goNatureAceTableAdd")
+		public ModelAndView goNatureAceTableAdd(JeecgDemoEntity jeecgDemo, HttpServletRequest req) {
+			if (StringUtil.isNotEmpty(jeecgDemo.getId())) {
+				jeecgDemo = jeecgDemoService.getEntity(JeecgDemoEntity.class, jeecgDemo.getId());
+				req.setAttribute("jeecgDemoPage", jeecgDemo);
+			}
+			return new ModelAndView("com/jeecg/demo/jeecgDemo-nature-ace-add");
+		}
+
+
+		/**
+		 * jeecgDemo-bootstrap-list-tag
+		 * @param request
+		 * @return
+		 */
+		@RequestMapping(params = "bootstrapTableTagDemo")
+		public ModelAndView bootstrapTableTagDemo(HttpServletRequest request) {
+			return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-list-tag");
+		}
+
+		/**
+		 * jeecgDemo-bootstrap-list-tag
+		 * @param request
+		 * @return
+		 */
+		@RequestMapping(params = "bootstrapTableTagDemo2")
+		public ModelAndView bootstrapTableTagDemo2(HttpServletRequest request) {
+			return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-list-tag2");
+		}
+		
+		/**
+		 * jeecgDemo-bootstrap编辑页面跳转
+		 * 
+		 * @return
+		 */
+		@RequestMapping(params = "goBootStrapTableUpdate2")
+		public ModelAndView goBootStrapTableUpdate2(JeecgDemoEntity jeecgDemo, HttpServletRequest req) {
+			if (StringUtil.isNotEmpty(jeecgDemo.getId())) {
+				jeecgDemo = jeecgDemoService.getEntity(JeecgDemoEntity.class, jeecgDemo.getId());
+				req.setAttribute("jeecgDemoPage", jeecgDemo);
+			}
+			return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-update2");
+		}
+		
+		/**
+		 * jeecgDemo-bootstrap新增页面跳转
+		 * 
+		 * @return
+		 */
+		@RequestMapping(params = "goBootStrapTableAdd2")
+		public ModelAndView goBootStrapTableAdd2(JeecgDemoEntity jeecgDemo, HttpServletRequest req) {
+			if (StringUtil.isNotEmpty(jeecgDemo.getId())) {
+				jeecgDemo = jeecgDemoService.getEntity(JeecgDemoEntity.class, jeecgDemo.getId());
+				req.setAttribute("jeecgDemoPage", jeecgDemo);
+			}
+			return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-add2");
+		}
+
+		
 }

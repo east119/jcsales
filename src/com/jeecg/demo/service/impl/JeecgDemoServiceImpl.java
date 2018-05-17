@@ -29,11 +29,10 @@ import com.jeecg.demo.service.JeecgDemoServiceI;
 @Transactional
 public class JeecgDemoServiceImpl extends CommonServiceImpl implements JeecgDemoServiceI {
 	private static final Logger logger = Logger.getLogger(JeecgDemoServiceImpl.class);
-	
-// add-begin--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo-------------------- 
+
 	@Autowired
 	private JdbcDao jdbcDao;
-// add-end--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo---------------------- 
+
 
 
  	public void delete(JeecgDemoEntity entity) throws Exception{
@@ -65,8 +64,7 @@ public class JeecgDemoServiceImpl extends CommonServiceImpl implements JeecgDemo
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	/**
 	 * 更新操作增强业务
 	 * @param t
@@ -77,8 +75,7 @@ public class JeecgDemoServiceImpl extends CommonServiceImpl implements JeecgDemo
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	/**
 	 * 删除操作增强业务
 	 * @param id
@@ -89,8 +86,7 @@ public class JeecgDemoServiceImpl extends CommonServiceImpl implements JeecgDemo
 	 	//-----------------sql增强 end------------------------------
 	 	
 	 	//-----------------java增强 start---------------------------
-	 	//-----------------java增强 end-----------------------------
- 	}
+	}
  	
  	private Map<String,Object> populationMap(JeecgDemoEntity t){
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -165,9 +161,7 @@ public class JeecgDemoServiceImpl extends CommonServiceImpl implements JeecgDemo
 			} 
 		}
  	}
-
-// add-begin--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo-------------------- 
- 	/**
+	/**
  	 * JDBC批量添加
  	 */
 	@Override
@@ -210,7 +204,7 @@ public class JeecgDemoServiceImpl extends CommonServiceImpl implements JeecgDemo
 		logger.info("-------执行存储过程--sql ----"+ sql);
 	    jdbcDao.execute(sql);
 	}
-// add-end--Author:weict  Date:20170609 for：TASK #2087 【demo】springjdbc demo---------------------- 
+
 
 
 }

@@ -8,7 +8,7 @@
 <body>
 <div id="main" ></div>
     <script type="text/javascript">
-  //-- update-begin--Author:gj_shaojc  Date:20180308 for：TASK #2535 【开发】ECharts集成demo 参考链接做（修改echarts大小为自适应）----
+
     var echartsWarp= document.getElementById('main');     
     var resizeWorldMapContainer = function () {//用于使chart自适应高度和宽度,通过窗体高宽计算容器高宽  
         echartsWarp.style.width = window.innerWidth-20+'px';  
@@ -16,7 +16,7 @@
     };        
     resizeWorldMapContainer ();//设置容器高宽  
     var myChart = echarts.init(echartsWarp);
-  //-- update-end--Author:gj_shaojc  Date:20180308 for：TASK #2535 【开发】ECharts集成demo 参考链接做（修改echarts大小为自适应）----
+
     option = {
     			"title": {
     				"x": "center",

@@ -97,12 +97,12 @@ public class CgUploadController extends BaseController {
 		uploadFile.setByteField(null);//不存二进制内容
 		cgUploadEntity = systemService.uploadFile(uploadFile);
 		logger.info("--cgUploadController--saveFiles--上传文件----数据库保存转换成功-----");
-		//update--begin--author:zhangjiaqiang date:20170531 for:修订文件保存数据库的路径
+
 		String realPath = cgUploadEntity.getRealpath();
 		realPath = realPath.replace(File.separator, "/");
 		cgUploadService.writeBack(id, tableName, cgField, fileKey, realPath);
 		logger.info("--cgUploadController--saveFiles--上传文件----回写业务数据表字段文件路径-----");
-		//update--end--author:zhangjiaqiang date:20170531 for:修订文件保存数据库的路径
+
 		attributes.put("url", realPath);
 		attributes.put("name", cgUploadEntity.getAttachmenttitle());
 		attributes.put("fileKey", cgUploadEntity.getId());
@@ -126,7 +126,7 @@ public class CgUploadController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		String id  = request.getParameter("id");
 		CgUploadEntity file = systemService.getEntity(CgUploadEntity.class, id);
-		//update--begin--author:zhangjiaqiang date:20170608 for:删除资源目录当中的文件信息的时候，同时删除数据信息
+
 		String sql  = "select " + file.getCgformField() + " from " + file.getCgformName() + " where id = '" + file.getCgformId() + "'";
 		List<Object> cgformFieldResult = systemService.findListbySql(sql);
 		if(cgformFieldResult != null && !cgformFieldResult.isEmpty() && cgformFieldResult.get(0) != null){
@@ -156,7 +156,7 @@ public class CgUploadController extends BaseController {
 				cgUploadService.writeBack(file.getCgformId(), file.getCgformName(), file.getCgformField(), file.getId(), "");
 			}
 		}
-		//update--end--author:zhangjiaqiang date:20170608 for:删除资源目录当中的文件信息的时候，同时删除数据信息
+
 		message = "" + file.getAttachmenttitle() + "被删除成功";
 		cgUploadService.deleteFile(file);
 		systemService.addLog(message, Globals.Log_Type_DEL,Globals.Log_Leavel_INFO);
@@ -164,8 +164,7 @@ public class CgUploadController extends BaseController {
 		j.setMsg(message);
 		return j;
 	}
-	
-	//update--begin--author:zhangjiaqiang date:20170606 for:添加一种增加文件上传的方式，采用attachment的保存处理
+
 	/**
 	 * 自动上传保存附件资源的方式
 	 * @return
@@ -203,10 +202,10 @@ public class CgUploadController extends BaseController {
 					attachment.setCreatedate(new Timestamp(new Date().getTime()));
 					attachment.setExtend(extend);
 					attachment.setRealpath(path + myfilename);
-					//update--begin--author:zhangjiaqiang date:@0170703 for:增加转换swf功能
+
 					attachment.setSwfpath( path + FileUtils.getFilePrefix(myfilename) + ".swf");
 					SwfToolsUtil.convert2SWF(savePath);
-					//update--end--author:zhangjiaqiang date:@0170703 for:增加转换swf功能
+
 					systemService.save(attachment);
 					attributes.put("url", path + myfilename);
 					attributes.put("name", fileName);
@@ -275,7 +274,6 @@ public class CgUploadController extends BaseController {
         hexString = hexString.substring(hexString.length() -2);  
         return hexString;
 	}
-	
-	//update--end--author:zhangjiaqiang date:20170606 for:添加一种增加文件上传的方式，采用attachment的保存处理
+
 	
 }

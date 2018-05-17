@@ -19,14 +19,14 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class TSBaseUser extends IdEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能
+
 	@Excel(name = "用户名",width = 15)
 	private String userName;// 用户名
 	@Excel(name = "真实姓名",width = 15)
 	private String realName;// 真实姓名
 	private String browser;// 用户使用浏览器类型
 	@Excel(name = "角色编码(多个角色编码用逗号分隔，非必填)",width =50)
-	//update-begin--Author:dangzhenghui  Date:20170429 for：TASK #1905 【excel导出格式】Excel 导出格式美化，设置宽度， 用户、角色、组织机构导出功能
+
 	private String userKey;// 用户验证唯一标示
 	private String password;//用户密码
 	private Short activitiSync;//是否同步工作流引擎
@@ -36,10 +36,9 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
 	private Short deleteFlag;// 状态: 0:不删除  1：删除
 	
 	private byte[] signature;// 签名文件
-	
-	//update-begin--Author:Yandong  Date:20171229 for：集成接口权限--------------------
+
 	private String userNameEn;//英文名
-	//update-end--Author:Yandong  Date:20171229 for：集成接口权限--------------------
+
 	
 	@Excel(name = "组织机构编码(多个组织机构编码用逗号分隔，非必填)",width = 50)
 	private String departid;
@@ -51,11 +50,11 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
 	public String getDepartid(){
 		return departid;
 	}
-//    update-start--Author:zhangguoming  Date:20140825 for：添加非表字段currentDepart 和 添加userOrgList属性
+
     //	private TSDepart TSDepart = new TSDepart();// 部门
     private List<TSUserOrg> userOrgList = new ArrayList<TSUserOrg>();
 	private TSDepart currentDepart = new TSDepart();// 当前部门
-//    update-end--Author:zhangguoming  Date:20140825 for：添加非表字段currentDepart 和 添加userOrgList属性
+
 
 	@Column(name = "signature",length=3000)
 	public byte[] getSignature() {
@@ -118,7 +117,7 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
 //	public void setTSDepart(TSDepart TSDepart) {
 //		this.TSDepart = TSDepart;
 //	}
-	@Column(name = "username", nullable = false, length = 10)
+	@Column(name = "username", nullable = false)
 	public String getUserName() {
 		return this.userName;
 	}
@@ -135,7 +134,6 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
 		this.realName = realName;
 	}
 
-//    update-start--Author:zhangguoming  Date:20140825 for：添加非表字段currentDepart 和 添加userOrgList属性
     @Transient
     public TSDepart getCurrentDepart() {
         return currentDepart;
@@ -154,9 +152,7 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
     public void setUserOrgList(List<TSUserOrg> userOrgList) {
         this.userOrgList = userOrgList;
     }
-//    update-end--Author:zhangguoming  Date:20140825 for：添加非表字段currentDepart 和 添加userOrgList属性
-    
-//	update-start--Author: jg_huangxg  Date:20160528 for: 【删除用户】删除用户，改成逻辑删除
+
 	public void setDeleteFlag(Short deleteFlag) {
 		this.deleteFlag = deleteFlag;
 	}
@@ -165,7 +161,7 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
 	public Short getDeleteFlag() {
 		return deleteFlag;
 	}
-//	update-end--Author: jg_huangxg  Date:20160528 for: 【删除用户】删除用户，改成逻辑删除
+
 	
 	@Column(name = "user_name_en")
 	public String getUserNameEn() {

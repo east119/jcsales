@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
-<!-- update-begin--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树   新增 引入ztree插件包-------------------- -->
 <t:base type="jquery,easyui,tools,DatePicker,ztree"></t:base>
-<!-- update-end--Author:xuelin  Date:20170331 for：[#1714]【功能】角色分配菜单权限的时候，权限树采用ztree重写，不再采用easyui的树    新增引入ztree插件包---------------------- -->	
 <div class="easyui-layout" fit="true">
 <div region="center" style="padding:0px;border:0px">
  <t:datagrid name="roleList" title="接口角色列表" actionUrl="interroleController.do?roleGrid" fitColumns="true"  idField="id" sortName="id" sortOrder="desc" queryMode="group"   >
@@ -43,7 +41,7 @@ function setfunbyrole(id,roleName) {
 	//$('#function-panel').panel("refresh" );
 	
 }
-//update-start--Author:gaofeng Date:20140822 for：查看角色的所有用户信息
+
 function userListbyrole(id,roleName) {
 	$("#function-panel").panel(
 		{

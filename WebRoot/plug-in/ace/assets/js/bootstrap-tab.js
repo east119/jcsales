@@ -9,10 +9,10 @@ var addTabs = function (options) {
     //如果TAB不存在，创建一个新的TAB
     if (!$("#" + id)[0]) {
         //固定TAB中IFRAME高度
-        //update-begin--Author:dangzhenghui  Date:20170614 for：ace自适应高度--------------------
+
         mainHeight = screen.height;
         mainHeight = mainHeight*0.72;//Ace 右侧高度默认
-        //update-end--Author:dangzhenghui  Date:20170614 for：ace自适应高度--------------------
+
         //
         //创建新TAB的title
         title = '<li role="presentation" id="tab_' + id + '"><a href="#' + id + '" aria-controls="' + id + '" role="tab" data-toggle="tab">' + options.title;

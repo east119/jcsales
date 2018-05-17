@@ -3,9 +3,7 @@ package com.jeecg.demo.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.jeecg.chat.entity.ChatMessageHistory;
 import org.jeecgframework.minidao.annotation.*;
-
 import com.jeecg.demo.entity.JeecgDemoEntity;
 import com.jeecg.demo.entity.JeecgLogReport;
 import org.jeecgframework.minidao.pojo.MiniDaoPage;
@@ -24,12 +22,9 @@ public interface JeecgMinidaoDao {
  	@Sql("select ID,NAME,PID from t_s_region order by name_en")
     List<Map<String, String>> getAllRegions();
 
-	//update-begin--Author:dangzhenghui  Date:20170510 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
-	//update-begin--Author:zhangliang  Date:20170706 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
  	@ResultType(JeecgDemoEntity.class)
 	public MiniDaoPage<JeecgDemoEntity> getAllEntities(@Param("jeecgDemo") JeecgDemoEntity jeecgDemo, @Param("page")  int page, @Param("rows") int rows,@Param("authSql") String authSql);
- 	//update-end--Author:zhangliang  Date:20170706 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
-	//update-begin--Author:dangzhenghui  Date:20170510 for：TASK #1945 【demo错误】minidao例子，通过条件查询，后台报错
+
 	@Sql("SELECT count(*) FROM jeecg_demo")
 	Integer getCount();
 

@@ -20,16 +20,14 @@ public class DataGridUrl {
 	private boolean isRadio;//是否是单选框
 	private String onclick;//选项单击事件
 	private String urlStyle;//url样式
-	//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 	private String urlclass;//按钮样式
 	private String urlfont;//按钮图标
-	//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
-	//update--begin--author:zhangjiaqiang date:20170620 for:增加控件ID
+
 	private String id;
-	//update--begin--author:zhangjiaqiang date:20170620 for:增加控件ID
-	//update-begin--Author:yugwu  Date:20170828 for：优化权限控制逻辑处理--------------------
+
 	private String operationCode;//按钮的操作Code
-	//update-end--Author:yugwu  Date:20170828 for：优化权限控制逻辑处理--------------------
+
 	public String getOnclick() {
 		return onclick;
 	}
@@ -142,7 +140,7 @@ public class DataGridUrl {
 	public String getUrlStyle() {
 		return urlStyle;
 	}
-	//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 	public String getUrlclass() {
 		return urlclass;
 	}
@@ -155,7 +153,7 @@ public class DataGridUrl {
 	public void setUrlfont(String urlfont) {
 		this.urlfont = urlfont;
 	}
-	//update-start--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，
+
 
 	public String getId() {
 		return id;

@@ -58,10 +58,10 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 	private AbstractRoutingDataSource dataSource;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-	//update-begin--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
+
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-	//update-end--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
+
 	/**
 	 * 表单添加
 	 * @param tableName 表名
@@ -96,17 +96,17 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 		}
 		String sql = "INSERT INTO " + tableName + " (" + insertKey + ") VALUES (" + insertValue + ")";
 		Object key = null;
-		//update-begin--Author:	jg_huangxg Date: 20150626 for：[bugfree号]删除异常捕获
+
 		key = this.executeSqlReturnKey(sql,data);
-		//update-end--Author: jg_huangxg Date: 20150626 for：[bugfree号]删除异常捕获
+
 		if(key!=null && key instanceof Long){
 			data.put("id", key);
 		}
 		if(cgFormHeadEntity!=null){
 			executeSqlExtend(cgFormHeadEntity.getId(),"add",data);
-			//update-start--Author:luobaoli  Date:20150630 for：    增加add按纽java增强逻辑处理
+
 			executeJavaExtend(cgFormHeadEntity.getId(),"add",data);
-			//update-end--Author:luobaoli  Date:20150630 for：    增加add按纽java增强逻辑处理
+
 		}
 	}
 	/**
@@ -156,11 +156,15 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 							newV = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
 						} else if (dateStr.indexOf(":") > 0 && dateStr.length() == 19) {
 							newV =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
-						//author:scott----start-----date:20170725--------for：SqlServer、oracle时间格式兼容问题----
+
 						}else if (dateStr.indexOf(":") > 0 && dateStr.indexOf(".0") > 0 && dateStr.length()== 21) {
 							newV =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr.substring(0, dateStr.indexOf(".0")));
+
+						}else if(dateStr.indexOf(":") != -1){
+							newV =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateStr);
+						}else{
+							newV =  new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
 						}
-						//author:scott----end-----date:20170725--------for：SqlServer、oracle时间格式兼容问题----
 						
 						/*String dateType = fieldConfig.getShowType();
 						if("datetime".equalsIgnoreCase(dateType)){
@@ -168,7 +172,6 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 						}else if("date".equalsIgnoreCase(dateType)){
 							newV = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(beforeV));
 						}*/
-						//--author：zhoujf---end------date:20170207--------for:日期格式化问题
 						if(data.containsKey(key)){
 							data.put(String.valueOf(key), newV);
 						}
@@ -198,11 +201,11 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 						data.put(String.valueOf(key), newV);
 					}
 				}
-			//update---start--author：JueYue---------date：20140824---------for：默认值无效
+
 			} else if(oConvertUtils.isNotEmpty(fieldConfigs.get(key).getFieldDefault())) {
 				data.remove(key.toString().toLowerCase());
 			}
-			//update---end--author：JueYue---------date：20140824---------for：默认值无效
+
 		}
 		return data;
 	}
@@ -213,7 +216,7 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 	 * @param id 表数据id
 	 * @param data 修改的数据map
 	 */
-	//update-start--Author:luobaoli  Date:20150630 for：   抛出异常到controller中
+
 	public int updateTable(String tableName, Object id, Map<String, Object> data) throws BusinessException {
 		fillUpdateSysVar(tableName,data);
 		dataAdapter(tableName,data);
@@ -241,17 +244,17 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 		int num = this.executeSql(sqlBuffer.toString(), data);
 
 		if(cgFormHeadEntity!=null){
-			//update-begin--Author:likai  Date:20160912 for：[1354 ]测试onlinecoding的sql增强是否存在问题
+
 			data.put("id", id);
-			//update-begin--Author:likai  Date:20160912 for：[1354 ]测试onlinecoding的sql增强是否存在问题
+
 			executeSqlExtend(cgFormHeadEntity.getId(),"update",data);
-			//update-start--Author:luobaoli  Date:20150630 for：   增加update按纽java增强逻辑处理
+
 			executeJavaExtend(cgFormHeadEntity.getId(),"update",data);
-			//update-end--Author:luobaoli  Date:20150630 for：   增加update按纽java增强逻辑处理
+
 		}
 		return num;
 	}
-	//update-end--Author:luobaoli  Date:20150630 for：   抛出异常到controller中
+
 
 	/**
 	 * 查询表单
@@ -277,7 +280,7 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 			//获取sql参数注入参数
 			String sqlPlugin = cgformButtonSqlVo.getCgbSqlStr();
 			if(StringUtils.isNotEmpty(sqlPlugin)){
-				//update-begin--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
+
 				boolean isMiniDao = false;
 				logger.debug("sql plugin -------->"+sqlPlugin);						
 				String sqlPluginTemp = formateSQl(sqlPlugin,  data);
@@ -292,22 +295,21 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 					logger.debug("minidao转换不成功，使用正常sql处理");
 					sqlPlugin = sqlPluginTemp;
 				}
-				//update-end--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
+
 				String [] sqls = sqlPlugin.split(";");
 				for(String sql:sqls){
-					//update-begin--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
+
 					//添加逻辑后，有可能造成sql为空
 					if(sql == null || sql.toLowerCase().trim().equals("")){
 						continue;
 					}
-					//update-end--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
-				//update-start--Author:os-renjie  Date:20160602 for：   TASK #1092 【设计-online】sql增强支持调用存储过程或CURD方法
+
 					/*if(sql.toLowerCase().indexOf(CgAutoListConstant.SQL_INSERT)!=-1
 							||sql.toLowerCase().indexOf(CgAutoListConstant.SQL_UPDATE)!=-1){*/
 					if(true){
-			    //update-end--Author:os-renjie  Date:20160602 for：   TASK #1092 【设计-online】sql增强支持调用存储过程或CURD方法
+
 						//执行sql
-						//update-begin--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
+
 						int num = 0;
 						if(isMiniDao){
 							try {
@@ -318,7 +320,7 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 						}else{
 							num = this.executeSql(sql);
 						}
-						//update-end--Author:yugwu  Date:20170808 for:TASK #1826 【改造】online表单，sql增强支持minidao语法----
+
 						if(num>0){
 							logger.debug("sql plugin --execute success------>"+sql);
 						}else{
@@ -358,10 +360,10 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 			sql = sql.replace("#{UUID}", UUIDGenerator.generate());
 		}
 		for (String key : params.keySet()) {
-            //update-begin--Author:JueYue  Date:20140425 for：String不能强转
+
 //          sql = sql.replace("${" + key + "}", "'"+String.valueOf(params.get(key))+"'");
 			sql = sql.replace("#{" + key + "}",String.valueOf(params.get(key)));
-          //update-end--Author:JueYue  Date:20140425 for：String不能强转
+
 		}
 		return sql;
 	}
@@ -498,9 +500,9 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 		Map<Object,Map<String, Object>> dataMap = new HashMap<Object, Map<String,Object>>();
 		if(subTableDataList!=null){
 			for(Map<String,Object> map:subTableDataList){
-				//update-begin--Author:zhoujf  Date:20180329 for：TASK #2584 【问题确认】online 论坛问题确认主键策略为NATIVE 再次编辑附表数据会被删除
+
 				dataMap.put(map.get("id").toString(), map);
-				//update-end--Author:zhoujf  Date:20180329 for：TASK #2584 【问题确认】online 论坛问题确认主键策略为NATIVE 再次编辑附表数据会被删除
+
 			}
 		}
 		return dataMap;
@@ -577,11 +579,11 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 	 * @param data
 	 */
 	private void fillUpdateSysVar(String tableName,Map<String, Object> data) {
-		//update-begin--Author:dangzhenghui  Date:20170402 for：对外接口改造 对外api没有session 判断session是否存在
+
 		if (ResourceUtil.getSessionUser()==null){
 			return;
 		}
-		//update-end--Author:dangzhenghui  Date:20170402 for：对外接口改造 对外api没有session 判断session是否存在
+
 		//--author：zhoujf---start------date:20170207--------for:online表单 更新时基本字段没有初始化数据
 		//--author：zhoujf---start------date:20170207--------for:更新时间格式统一为yyyy-MM-dd HH:mm:ss
 		if(data.containsKey(DataBaseConstant.UPDATE_DATE_TABLE)
@@ -592,7 +594,6 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 				||getAllFieldByTableName(tableName).containsKey(DataBaseConstant.CREATE_DATE_TABLE)){
 			data.put(DataBaseConstant.UPDATE_TIME_TABLE, DateUtils.formatDateTime());
 		}
-		//--author：zhoujf---end------date:20170207--------for:更新时间格式统一为yyyy-MM-dd HH:mm:ss
 		if(data.containsKey(DataBaseConstant.UPDATE_BY_TABLE)
 				||getAllFieldByTableName(tableName).containsKey(DataBaseConstant.CREATE_DATE_TABLE)){
 			data.put(DataBaseConstant.UPDATE_BY_TABLE, ResourceUtil.getUserSystemData(DataBaseConstant.SYS_USER_CODE));
@@ -601,7 +602,6 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 				||getAllFieldByTableName(tableName).containsKey(DataBaseConstant.CREATE_DATE_TABLE)){
 			data.put(DataBaseConstant.UPDATE_NAME_TABLE, ResourceUtil.getUserSystemData(DataBaseConstant.SYS_USER_NAME));
 		}
-		//--author：zhoujf---end------date:20170207--------for:online表单 更新时基本字段没有初始化数据
 	}
 
 	/**
@@ -609,11 +609,11 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 	 * @param data
 	 */
 	private void fillInsertSysVar(String tableName,Map<String, Object> data) {
-		//update-begin--Author:dangzhenghui  Date:20170402 for：对外接口改造 对外api没有session 判断session是否存在
+
 		if (ResourceUtil.getSessionUser()==null){
 			return;
 		}
-		//update-end--Author:dangzhenghui  Date:20170402 for：对外接口改造 对外api没有session 判断session是否存在
+
 		//--author：zhoujf---start------date:20170207--------for:online表单 Excel数据导入时基本字段没有初始化数据
 		//--author：zhoujf---start------date:20170207--------for:创建时间格式统一为yyyy-MM-dd HH:mm:ss
 		if(data.containsKey(DataBaseConstant.CREATE_DATE_TABLE)
@@ -624,7 +624,6 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 				||getAllFieldByTableName(tableName).containsKey(DataBaseConstant.CREATE_TIME_TABLE)){
 			data.put(DataBaseConstant.CREATE_TIME_TABLE, DateUtils.formatDateTime());
 		}
-		//--author：zhoujf---end------date:20170207--------for:创建时间格式统一为yyyy-MM-dd HH:mm:ss
 		if(data.containsKey(DataBaseConstant.CREATE_BY_TABLE)
 				||getAllFieldByTableName(tableName).containsKey(DataBaseConstant.CREATE_BY_TABLE)){
 			data.put(DataBaseConstant.CREATE_BY_TABLE, ResourceUtil.getUserSystemData(DataBaseConstant.SYS_USER_CODE));
@@ -645,14 +644,10 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 				||getAllFieldByTableName(tableName).containsKey(DataBaseConstant.SYS_USER_CODE_TABLE)){
 			data.put(DataBaseConstant.SYS_USER_CODE_TABLE, ResourceUtil.getUserSystemData(DataBaseConstant.SYS_USER_CODE));
 		}
-		//--author：scott---begin------date:20170725--------for: 流程状态赋予默认值----------
 		if(data.containsKey(DataBaseConstant.BPM_STATUS_TABLE)
 				||getAllFieldByTableName(tableName).containsKey(DataBaseConstant.BPM_STATUS_TABLE)){
 			data.put(DataBaseConstant.BPM_STATUS_TABLE, ResourceUtil.getUserSystemData(DataBaseConstant.BPM_STATUS_TABLE));
 		}
-		//--author：scott---end------date:20170725--------for:流程状态赋予默认值----------
-		
-		//--author：zhoujf---end------date:20170207--------for:online表单 Excel数据导入时基本字段没有初始化数据
 	}
 	
 	/**
@@ -702,8 +697,7 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 		}
 		return flag;
 	}
-	
-	//update-start--Author:luobaoli  Date:20150630 for： 增加JAVA业务增强功能
+
 	/**
 	 * 执行JAVA增强实现类
 	 */
@@ -713,7 +707,7 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 		if(cgformEnhanceJavaEntity!=null){
 			String cgJavaType = cgformEnhanceJavaEntity.getCgJavaType();
 			String cgJavaValue = cgformEnhanceJavaEntity.getCgJavaValue();
-			//update-start--Author:luobaoli  Date:20150701 for： 允许springKey或者javaClass为空
+
 			if(StringUtil.isNotEmpty(cgJavaValue)){
 				Object obj = null;
 				try {
@@ -724,11 +718,11 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 						obj = ApplicationContextUtil.getContext().getBean(cgJavaValue);
 					}
 					if(obj instanceof CgformEnhanceJavaInter){
-						//update-begin--author:zhoujf  date:20170307 for：java 增强扩展tableName字段
+
 						CgFormHeadEntity head = this.get(CgFormHeadEntity.class, formId);
 						CgformEnhanceJavaInter javaInter = (CgformEnhanceJavaInter) obj;
 						javaInter.execute(head.getTableName(),data);
-						//update-end--author:zhoujf  date:20170307 for：java 增强扩展tableName字段
+
 					}
 				} catch (Exception e) {
 					logger.error(e.getMessage());
@@ -736,7 +730,7 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 					throw new BusinessException("执行JAVA增强出现异常！");
 				} 
 			}
-			//update-end--Author:luobaoli  Date:20150701 for： 允许springKey或者javaClass为空
+
 		}
 	}
 	
@@ -745,19 +739,16 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 		hql.append(" from CgformEnhanceJavaEntity t");
 		hql.append(" where t.formId='").append(formId).append("'");
 		hql.append(" and  t.buttonCode ='").append(buttonCode).append("'");
-		//update-begin--author:scott  date:20170408 for：java增强设置有效无效状态---------
+
 		hql.append(" and  t.activeStatus ='1'");
-		//update-end--author:scott  date:20170408 for：java增强设置有效无效状态---------
+
 		List<CgformEnhanceJavaEntity> list = this.findHql(hql.toString());
 		if(list!=null&&list.size()>0){
 			return list.get(0);
 		}
 		return null;
 	}
-	//update-end--Author:luobaoli  Date:20150630 for：  增加JAVA业务增强功能
-	
-	
-	//update-start--Author:zhoujf  Date:20160714 for：online代码生成器查询所有按钮的JAVA增强功能
+
 	public List<CgformEnhanceJavaEntity> getCgformEnhanceJavaEntityByFormId( String formId) {
 		StringBuilder hql = new StringBuilder("");
 		hql.append(" from CgformEnhanceJavaEntity t");
@@ -765,6 +756,6 @@ public class DataBaseServiceImpl extends CommonServiceImpl implements DataBaseSe
 		List<CgformEnhanceJavaEntity> list = this.findHql(hql.toString());
 		return list;
 	}
-	//update-end--Author:zhoujf  Date:20160714 for：online代码生成器查询所有按钮的JAVA增强功能
+
 }
 

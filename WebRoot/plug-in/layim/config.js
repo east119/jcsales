@@ -7,15 +7,14 @@ var id = "";
 jQuery.post("chat/imController.do?getUserid", {
 
 }, function (text) {
-	//update-begin--author:scott---- Date:20171226------ for:在线聊天接受不到信息-------------
+
     id = text;//text.substring(1,text.length-1);
-    //update-end--author:scott---- Date:20171226------ for:在线聊天接受不到信息-------------
+
 });
 if(!/^http(s*):\/\//.test(location.href)){
     alert('请部署到localhost上查看该演示');
 }
 
-//update-begin--author:dangzhenghui Date:20170620 for:TASK #2160 【兼容】在线聊天插件，判断IE不支持websocet给try掉，不集成插件功能
 if (typeof WebSocket != 'undefined') {
 layui.use('layim', function(layim){
 //      //建立WebSocket通讯
@@ -40,7 +39,6 @@ layui.use('layim', function(layim){
             ,data: {}
         }
 
-      //update-begin--author:zhangjiaqiang Date:20161031 for:在线聊天（图片、文件、聊天记录）功能的实现
         ,uploadImage: {
             url: 'chat/imController.do?uploadImage' //（返回的数据格式见下文）
             ,type: 'post' //默认post
@@ -61,7 +59,7 @@ layui.use('layim', function(layim){
         ,isVideo:true
         ,isgroup: true //是否开启群组
         ,chatLog: 'chat/chatMessageHistory.do?from='+id //聊天记录地址
-		//update-end--author:zhangjiaqiang Date:20161031 for:在线聊天（图片、文件、聊天记录）功能的实现
+
         
         ,find: './demo/find.html'
         ,copyright: true //是否授权
@@ -151,14 +149,12 @@ layui.use('layim', function(layim){
 
 });
 }
-//update-end--author:dangzhenghui Date:20170620 for:TASK #2160 【兼容】在线聊天插件，判断IE不支持websocet给try掉，不集成插件功能
+
 //layim聊天组件end
 
-//update--begin--author:zhangjiaqiang Date:20180205 for:右键关闭聊天小窗口
 window.oncontextmenu=function(e){
 //取消默认的浏览器自带右键 很重要！！
     e.preventDefault();
 
     $('.layui-layim-min').css("display","none");
 }
-//update--end--author:zhangjiaqiang Date:20180205 for:右键关闭聊天小窗口

@@ -28,10 +28,10 @@ public class GraphReportServiceImpl extends CommonServiceImpl implements
 	private Logger log = Logger.getLogger(GraphReportServiceImpl.class);
 	@Autowired
 	private JdbcDao jdbcDao;
-	//update-begin-----author:scott-----------date:20160817-------for:注释掉无用代码----------
+
 //	@Autowired
 //	private CgReportDao cgReportDao;
-	//update-end-----author:scott-----------date:20160817-------for:注释掉无用代码----------
+
 	
 	
 	public Map<String, Object> queryCgReportConfig(String reportId) {
@@ -42,8 +42,7 @@ public class GraphReportServiceImpl extends CommonServiceImpl implements
 		cgReportM.put(CgReportConstant.ITEMS, itemsM);
 		return cgReportM;
 	}
-	
-	 //update-begin-----author:scott-----------date:20160817-------for:注释掉无用代码----------
+
 //	public Map<String,Object> queryCgReportMainConfig(String reportId){
 ////		String sql = JeecgSqlUtil.getMethodSql(JeecgSqlUtil.getMethodUrl());
 ////		Map<String,Object> parameters = new LinkedHashMap<String,Object>();
@@ -63,7 +62,7 @@ public class GraphReportServiceImpl extends CommonServiceImpl implements
 //		//采用MiniDao实现方式
 //		return cgReportDao.queryCgReportItems(reportId);
 //	}
-	 //update-end-----author:scott-----------date:20160817-------for:注释掉无用代码----------
+
 	
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> queryByCgReportSql(String sql, Map params,

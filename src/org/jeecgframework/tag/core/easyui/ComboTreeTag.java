@@ -21,9 +21,9 @@ public class ComboTreeTag extends TagSupport {
 	protected String width;// 宽度
 	protected String value;// 控件值
 	private boolean multiple=false;//是否多选
-	//update-begin--Author:gj_shaojc  Date:20180408 for：TASK #2613 【UI标签】combotree 控制选子选项，父级不被选中-----
+
 	private boolean onlyLeafCheck=false;//是否只选择子节点(默认为false)
-	//update-end--Author:gj_shaojc  Date:20180408 for：TASK #2613 【UI标签】combotree 控制选子选项，父级不被选中-----
+
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
 	}
@@ -54,12 +54,11 @@ public class ComboTreeTag extends TagSupport {
 				+ "url :\'"+url+"\'," 
 				+ "width :\'"+width+"\'," 
 				+ "multiple:"+multiple+","
-				//update-begin--Author:gj_shaojc  Date:20180408 for：TASK #2613 【UI标签】combotree 控制选子选项，父级不被选中-----
+
 				+"onlyLeafCheck:"+onlyLeafCheck+","
-				//update-end--Author:gj_shaojc  Date:20180408 for：TASK #2613 【UI标签】combotree 控制选子选项，父级不被选中-----
-				//update-begin--Author:gj_shaojc  Date:20180404 for：TASK #2597 【UI标签】combotree 问题----------
+
 				+"onLoadSuccess:function(){$(\'#"+id+"\').combotree('tree').tree('expandAll')}"
-				//update-end--Author:gj_shaojc  Date:20180404 for：TASK #2597 【UI标签】combotree 问题----------
+
 				+ "});		" 
 				+ "});	" 
 				+ "</script>");
@@ -94,9 +93,9 @@ public class ComboTreeTag extends TagSupport {
 	public void setMultiple(boolean multiple) {
 		this.multiple = multiple;
 	}
-	//update-begin--Author:gj_shaojc  Date:20180408 for：TASK #2613 【UI标签】combotree 控制选子选项，父级不被选中-----
+
 	public void setOnlyLeafCheck(boolean onlyLeafCheck) {
 		this.onlyLeafCheck = onlyLeafCheck;
 	}
-	//update-end--Author:gj_shaojc  Date:20180408 for：TASK #2613 【UI标签】combotree 控制选子选项，父级不被选中-----
+
 }

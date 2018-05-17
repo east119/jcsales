@@ -12,9 +12,9 @@ import java.util.Map;
 @Service("cgformJavaInterDemo")
 public class CgformJavaInterDemo implements CgformEnhanceJavaInter {
     @Override
-  //update-begin--author:zhoujf  date:20170307 for：java 增强扩展tableName字段
+
     public void execute(String tableName,Map map) throws BusinessException {
     	LogUtil.info("============调用[java增强]成功!========tableName:"+tableName+"===map==="+map);
     }
-  //update-end--author:zhoujf  date:20170307 for：java 增强扩展tableName字段
+
 }

@@ -33,7 +33,7 @@ public class AuthFilterTag extends TagSupport{
 	
 	public int doEndTag() throws JspException {
 		JspWriter out = null;
-		//update-begin--Author:scott  Date:20170330 for：重构页面智能权限控制JS生成方法--------------------
+
 		try {
 			out = this.pageContext.getOut();
 			systemService = ApplicationContextUtil.getContext().getBean(SystemService.class);
@@ -51,7 +51,7 @@ public class AuthFilterTag extends TagSupport{
 			}
 		}
 		return EVAL_PAGE;
-		//update-end--Author:scott  Date:20170330 for：重构页面智能权限控制JS生成方法--------------------
+
 	}
 	
 	public String getName() {

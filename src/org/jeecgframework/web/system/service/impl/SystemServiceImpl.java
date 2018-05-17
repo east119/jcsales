@@ -42,15 +42,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service("systemService")
-@Transactional
 public class SystemServiceImpl extends CommonServiceImpl implements SystemService {
 	@Autowired
 	private JeecgDictDao jeecgDictDao;
 
+	@Transactional(readOnly = true)
 	public TSUser checkUserExits(TSUser user) throws Exception {
 		return this.commonDao.getUserByUserIdAndUserNameExits(user);
 	}
 
+	@Transactional(readOnly = true)
 	public List<DictEntity> queryDict(String dicTable, String dicCode,String dicText){
 		List<DictEntity> dictList = null;
 		//step.1 如果没有字典表则使用系统字典表
@@ -76,9 +77,9 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		log.setLogcontent(logcontent);
 		log.setLoglevel(loglevel);
 		log.setOperatetype(operatetype);
-		//update-start--Author:scott  Date:20170518 for：登录系统记录IP不准确----
+
 		log.setNote(IpUtil.getIpAddr(request));
-		//update-end--Author:scott  Date:20170518 for：登录系统记录IP不准确----
+
 		log.setBroswer(broswer);
 		/*start dangzhenghui 201703016TASK #1784 【online bug】Online 表单保存的时候，报错*/
 		log.setOperatetime(new Date());
@@ -91,7 +92,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			log.setUsername(u.getUserName());
 			log.setRealname(u.getRealName());
 		}
-		//update-end--Author:chenqian 201708031TASK #2317 【改造】系统日志表，增加两个字段，避免关联查询 [操作人账号] [操作人名字]----
+
 		commonDao.save(log);
 	}
 
@@ -102,6 +103,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * @param typename
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	public TSType getType(String typecode, String typename, TSTypegroup tsTypegroup) {
 		//TSType actType = commonDao.findUniqueByProperty(TSType.class, "typecode", typecode,tsTypegroup.getId());
 		List<TSType> ls = commonDao.findHql("from TSType where typecode = ? and typegroupid = ?",typecode,tsTypegroup.getId());
@@ -126,6 +128,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * @param typename
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	public TSTypegroup getTypeGroup(String typegroupcode, String typgroupename) {
 		TSTypegroup tsTypegroup = commonDao.findUniqueByProperty(TSTypegroup.class, "typegroupcode", typegroupcode);
 		if (tsTypegroup == null) {
@@ -137,13 +140,14 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		return tsTypegroup;
 	}
 
-
+	@Transactional(readOnly = true)
 	public TSTypegroup getTypeGroupByCode(String typegroupCode) {
 		TSTypegroup tsTypegroup = commonDao.findUniqueByProperty(TSTypegroup.class, "typegroupcode", typegroupCode);
 		return tsTypegroup;
 	}
 
 
+	@Transactional(readOnly = true)
 	public void initAllTypeGroups() {
 		List<TSTypegroup> typeGroups = this.commonDao.loadAll(TSTypegroup.class);
 		for (TSTypegroup tsTypegroup : typeGroups) {
@@ -153,7 +157,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		}
 	}
 
-
+	@Transactional(readOnly = true)
 	public void refleshTypesCach(TSType type) {
 		TSTypegroup tsTypegroup = type.getTSTypegroup();
 		TSTypegroup typeGroupEntity = this.commonDao.get(TSTypegroup.class, tsTypegroup.getId());
@@ -161,7 +165,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		ResourceUtil.allTypes.put(typeGroupEntity.getTypegroupcode().toLowerCase(), types);
 	}
 
-
+	@Transactional(readOnly = true)
 	public void refleshTypeGroupCach() {
 		ResourceUtil.allTypeGroups.clear();
 		List<TSTypegroup> typeGroups = this.commonDao.loadAll(TSTypegroup.class);
@@ -169,11 +173,11 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			ResourceUtil.allTypeGroups.put(tsTypegroup.getTypegroupcode().toLowerCase(), tsTypegroup);
 		}
 	}
-	
-	//add--begin--author:guoxianhui Date:20171128 for:TASK #2427 【新功能】字典增加一个刷新缓存功能
+
 	/**
 	 * 刷新字典分组缓存&字典缓存
 	 */
+	@Transactional(readOnly = true)
 	public void refreshTypeGroupAndTypes() {
 		ResourceUtil.allTypeGroups.clear();
 		List<TSTypegroup> typeGroups = this.commonDao.loadAll(TSTypegroup.class);
@@ -183,7 +187,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			ResourceUtil.allTypes.put(tsTypegroup.getTypegroupcode().toLowerCase(), types);
 		}
 	}
-	//add--end--author:guoxianhui Date:20171128 for:TASK #2427 【新功能】字典增加一个刷新缓存功能
+
 
 
 	/**
@@ -192,6 +196,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * @param functionId
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	public Set<String> getOperationCodesByRoleIdAndFunctionId(String roleId, String functionId) {
 		Set<String> operationCodes = new HashSet<String>();
 		TSRole role = commonDao.get(TSRole.class, roleId);
@@ -219,6 +224,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * @param functionId 菜单ID
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	public Set<String> getOperationCodesByUserIdAndFunctionId(String userId, String functionId) {
 		Set<String> operationCodes = new HashSet<String>();
 		List<TSRoleUser> rUsers = findByProperty(TSRoleUser.class, "TSUser.id", userId);
@@ -241,14 +247,14 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		}
 		return operationCodes;
 	}
-	
-	//update-begin-author:taoYan date:20170814 for:获取按钮权限--剔除勾选的--
+
 	/**
 	 * 【规则： 查询未授权的页面控件权限（button、表单控件）】
 	 *  @param userId 用户ID
 	 *  @param functionId 菜单ID
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public List<TSOperation> getOperationsByUserIdAndFunctionId(TSUser currLoginUser, String functionId) {
 		String hql="FROM TSOperation where functionid = '"+functionId+"'";
 		List<TSOperation> operations = findHql(hql);
@@ -281,20 +287,18 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		}
 		return operations;
 	}
-	//update-end-author:taoYan date:20170814 for:获取按钮权限--剔除勾选的--
 
-
-	//update-begin--Author:scott  Date:20170330 for：重构页面智能权限控制JS生成方法--------------------
 	/**
 	 * 获取页面控件权限控制的
 	 * JS片段
 	 * @param out
 	 */
+	@Transactional(readOnly = true)
 	public String getAuthFilterJS() {
 		StringBuilder out = new StringBuilder();
 		out.append("<script type=\"text/javascript\">");
 		out.append("$(document).ready(function(){");
-		//update-begin--Author:anchao  Date:20140822 for：[bugfree号]字段级权限（表单，列表）--------------------
+
 		if(ResourceUtil.getSessionUser().getUserName().equals("admin")|| !Globals.BUTTON_AUTHORITY_CHECK){
 			return "";
 		}else{
@@ -321,13 +325,14 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			}
 			
 		}
-		//update-end--Author:anchao  Date:20140822 for：[bugfree号]字段级权限（表单，列表）--------------------
+
 		out.append("});");
 		out.append("</script>");
 		return out.toString();
 	}
-	//update-begin--Author:scott  Date:20170330 for：重构页面智能权限控制JS生成方法--------------------
+
 	
+	@Transactional(readOnly = true)
 	public void flushRoleFunciton(String id, TSFunction newFunction) {
 		TSFunction functionEntity = this.getEntity(TSFunction.class, id);
 		if (functionEntity.getTSIcon() == null || !StringUtil.isNotEmpty(functionEntity.getTSIcon().getId())) {
@@ -345,14 +350,15 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			}
 		}
 	}
-
+	
+	@Transactional(readOnly = true)
     public String generateOrgCode(String id, String pid) {
-//        update-start--Author:zhangguoming  Date:20140901 for：修改编码长度的定义
+
         int orgCodeLength = 2; // 默认编码长度
         if ("3".equals(ResourceUtil.getOrgCodeLengthType())) { // 类型2-编码长度为3，如001
             orgCodeLength = 3;
         }
-//        update-end--Author:zhangguoming  Date:20140901 for：修改编码长度的定义
+
 
         String  newOrgCode = "";
         if(!StringUtils.hasText(pid)) { // 第一级编码
@@ -383,6 +389,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
         return newOrgCode;
     }
 
+	@Transactional(readOnly = true)
 	public Set<String> getOperationCodesByRoleIdAndruleDataId(String roleId,
 			String functionId) {
 		Set<String> operationCodes = new HashSet<String>();
@@ -404,6 +411,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		return operationCodes;
 	}
 
+	@Transactional(readOnly = true)
 	public Set<String> getOperationCodesByUserIdAndDataId(TSUser currLoginUser,
 			String functionId) {
 		// TODO Auto-generated method stub
@@ -432,6 +440,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * 加载所有图标
 	 * @return
 	 */
+	@Transactional(readOnly = true)
 	public  void initAllTSIcons() {
 		List<TSIcon> list = this.loadAll(TSIcon.class);
 		for (TSIcon tsIcon : list) {
@@ -442,14 +451,14 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * 更新图标
 	 * @param icon
 	 */
-	public  void upTSIcons(TSIcon icon) {
+	public void upTSIcons(TSIcon icon) {
 		ResourceUtil.allTSIcons.put(icon.getId(), icon);
 	}
 	/**
 	 * 更新图标
 	 * @param icon
 	 */
-	public  void delTSIcons(TSIcon icon) {
+	public void delTSIcons(TSIcon icon) {
 		ResourceUtil.allTSIcons.remove(icon.getId());
 	}
 
@@ -471,8 +480,6 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		commonDao.save(tsDatalogEntity);
 	}
 
-	//update-begin--Author: LiShaoQing Date:20170831 for：授权组页面操作权限
-	//update-begin--Author: LiShaoQing Date:20171226 for:根据Value判断菜单,查询不同数据展示
 	/**
 	 * 获取二级管理员页面控件权限授权配置【二级管理员后台权限配置功能】
 	 * @param groupId 部门角色组ID
@@ -481,6 +488,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * @return
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Set<String> getDepartAuthGroupOperationSet(String groupId,String functionId,String type) {
 		Set<String> operationCodes = new HashSet<String>();
 		TSDepartAuthGroupEntity functionGroup = null;
@@ -528,6 +536,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	 * @return
 	 */
 	@Override
+	@Transactional(readOnly = true)
 	public Set<String> getDepartAuthGroupDataRuleSet(String groupId, String functionId,String type) {
 		Set<String> dataRuleCodes = new HashSet<String>();
 		TSDepartAuthGroupEntity functionGroup = null;
@@ -566,6 +575,5 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		}
 		return dataRuleCodes;
 	}
-	//update-end--Author: LiShaoQing Date:20171226 for:根据Value判断菜单,查询不同数据展示
-	//update-end--Author: LiShaoQing Date:20170831 for：授权组页面操作权限
+
 }

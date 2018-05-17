@@ -62,9 +62,7 @@
                 <!--update-begin--Author:zhangliang  Date:20170628 for：TASK #2116 【性能问题】优化登录逻辑---------------------->
                 <form id="loinForm" class="form-horizontal"    method="post">
                 <!--update-end--Author:zhangliang  Date:20170628 for：TASK #2116 【性能问题】优化登录逻辑---------------------->
-                <!-- add-begin--Author:zhoujf  Date:20170602 for:单点登录 -->
                 <input type="hidden" id="ReturnURL"  name="ReturnURL" value="${ReturnURL }"/>
-                <!-- add-end--Author:zhoujf  Date:20170602 for:单点登录 -->
                 <div class="widget-main">
                  <div class="alert alert-warning alert-dismissible" role="alert" id="errMsgContiner">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -77,9 +75,7 @@
                   <div class="space-6"></div>
                       <label class="block clearfix">
 								<span class="block input-icon input-icon-right">
-								<!-- update-start--Author:yugwu  Date:20170901 for:TASK #2324 【改进】登录记住用户名不起作用---- -->
 									<input type="text"  name="userName" iscookie="true" class="form-control" placeholder="请输入用户名"  id="userName" value="admin"/>
-								<!-- update-end--Author:yugwu  Date:20170901 for:TASK #2324 【改进】登录记住用户名不起作用---- -->
 									<i class="ace-icon fa fa-user"></i>
 								</span>
                       </label>
@@ -126,7 +122,7 @@
                 </form>
               </div>
             </div>
-            <div class="center"><h4 class="blue" id="id-company-text">&copy; JEECG版权所有 v_3.7.3</h4></div>
+            <div class="center"><h4 class="blue" id="id-company-text">&copy; JEECG版权所有 v_3.7.5</h4></div>
             <div class="navbar-fixed-top align-right">
               <br />
               &nbsp;
@@ -156,9 +152,7 @@
 <script type="text/javascript" src="plug-in/mutiLang/zh-cn.js"></script>
 <script type="text/javascript" src="plug-in/login/js/jquery.tipsy.js"></script>
 <script type="text/javascript" src="plug-in/login/js/iphone.check.js"></script>
-<!-- add-begin--Author:gengjiajia  Date:20160727 for:TASK #1217 【IE兼容】jeecg h+首页兼容性问题,不兼容的浏览器直接切换套shortcut风格 -->
 <script type="text/javascript" src="plug-in/login/js/login.js"></script>
-<!-- add-end--Author:gengjiajia  Date:20160727 for:TASK #1217 【IE兼容】jeecg h+首页兼容性问题,不兼容的浏览器直接切换套shortcut风格 -->
 <script type="text/javascript">
 	$(function(){
 		optErrMsg();
@@ -172,9 +166,9 @@
    //输入验证码，回车登录
   $(document).keydown(function(e){
   	if(e.keyCode == 13) {
-  	//update-begin--Author:weict  Date:20170512 for：TASK #1958 【bug】jeecg 登录bug--------------------
+
       setTimeout("$('#but_login').click()","100");
-  	//update-end--Author:weict  Date:20170512 for：TASK #1958 【bug】jeecg 登录bug----------------------
+
   	}
   });
 
@@ -207,10 +201,10 @@
   //登录处理函数
   function newLogin(orgId) {
     setCookie();
-    //update-begin--Author:zhangliang  Date:20170628 for：TASK #2116 【性能问题】优化登录逻辑
+
     var actionurl="loginController.do?login";//提交路径
     var checkurl="loginController.do?checkuser";//验证路径
-    //update-end--Author:zhangliang  Date:20170628 for：TASK #2116 【性能问题】优化登录逻辑
+
     var formData = new Object();
     var data=$(":input").each(function() {
       formData[this.name] =$("#"+this.name ).val();
@@ -255,7 +249,7 @@
                 callback : function() {
                   iframe = this.iframe.contentWindow;
                   var orgId = $('#orgId', iframe.document).val();
-                  //update-begin---author:scott---date:20160529--for：变更采用ajax方式提高效率----
+
                   formData['orgId'] = orgId ? orgId : "";
                   $.ajax({
               		async : false,
@@ -269,7 +263,7 @@
               			window.location.href = actionurl;
               		}
                   });
-                  //update-begin---author:scott---date:20160529--for：变更采用ajax方式提高效率----
+
                   this.close();
                   return false;
                 }
@@ -283,10 +277,10 @@
           }
        } else {
 			showErrorMsg(d.msg);
-		    //update-begin--Author:xuelin  Date:20170328 for：[#1822]【体验问题】登录页面，当密码或验证错误的时候 让这验证码自动刷新-------------------- 
+
 		  	if(d.msg === "用户名或密码错误" || d.msg === "验证码错误")
 		  		reloadRandCodeImage();
-		    //update-end--Author:xuelin  Date:20170328 for：[#1822]【体验问题】登录页面，当密码或验证错误的时候 让这验证码自动刷新---------------------- 	
+
         }
       }
     });
@@ -332,9 +326,9 @@ function reloadRandCodeImage() {
 //设置cookie
   function setCookie()
   {
-	//update-start--Author:yugwu  Date:20170901 for:TASK #2324 【改进】登录记住用户名不起作用----
+
   	if ($('#on_off').attr("checked")) {
-	//update-end--Author:yugwu  Date:20170901 for:TASK #2324 【改进】登录记住用户名不起作用----
+
   		$("input[iscookie='true']").each(function() {
   			$.cookie(this.name, $("#"+this.name).val(), "/",24);
   			$.cookie("COOKIE_NAME","true", "/",24);

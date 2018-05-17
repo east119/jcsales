@@ -85,7 +85,6 @@
 		</tr>
 		<tr>
 			<td align="right"><label class="Validform_label"><t:mutiLang langKey="common.description"/>:</label></td>
-			<%--update-begin--Author:dangzhenghui  Date:20170316 for：TASK #1795 【页面校验】体验修改--%>
 
 
 			<td class="value" colspan="5"><textarea rows="3" cols="150" id="content" name="content" ></textarea> <span class="Validform_checktip"></span></td>
@@ -103,9 +102,7 @@
         </tr>
         <!--update-end--Author:huangzq  Date:20151129 for：[753]【在线报表】扩展增加俩字段，非必填-->   
 	</table>	
-	<!-- update-begin--Author:xuelin  Date:20170620 for：TASK #2132 【浏览器兼容问题】IE8(兼容模式)下自定义报表，列出不来---------------------- -->
 	<div style="width: auto; "><%-- 增加一个div，用于调节页面大小，否则默认太小 --%>	
-	<!-- update-end--Author:xuelin  Date:20170620 for：TASK #2132 【浏览器兼容问题】IE8(兼容模式)下自定义报表，列出不来---------------------- -->
 	<div style="width: 800px; height: 1px;"></div>
 	
 	<t:tabs id="ttp" iframe="false" tabPosition="top" fit="false"><t:tab href="cgreportConfigHeadController.do?cgreportConfigParamList&id=${cgreportConfigHeadPage.id}" icon="icon-search" title="报表参数" id="cgreportConfigParam"></t:tab></t:tabs>				

@@ -73,7 +73,6 @@ public class CgFormHeadPojo implements java.io.Serializable {
 	private Integer tableVersion;
 	/**物理表id*/
 	private String physiceId;
-	//--author：zhoujf---end------date:20170207--------for:online表单 表单导出字段不全
 	
 	/**
 	 *方法: 取得java.lang.String

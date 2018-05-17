@@ -18,8 +18,6 @@
 		    $("#noticeContent").val(editor.getContent());
 		}
 	}
-  
-  <%-- update-begin--Author:dangzhenghui  --date-- 20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可 --%>
   function dataytpeSelect(name) {
       $("#roleName").removeAttr('datatype');
       $("#roleName_span").hide()
@@ -30,7 +28,6 @@
           $("#"+name+"_span").show()
       }
   }
-  <%-- update-end--Author:dangzhenghui --date-- 20170322  for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可 --%>
 
   </script>
  </head>
@@ -98,7 +95,6 @@
 							授权级别:
 						</label>
 					</td>
-					<%-- update-begin--Author:dangzhenghui  --date-- 20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可 --%>
 					<td class="value">
 					     	  <input type="radio" name="noticeLevel" value="1" datatype="*" checked="checked" onclick="dataytpeSelect()"/>全员
          				&nbsp;&nbsp;<br/><input type="radio" name="noticeLevel" value="2" onclick="dataytpeSelect('roleName')"  />角色授权
@@ -115,7 +111,6 @@
 						<input name="userName" class="inputxt" value="" id="userName" readonly="readonly" />
 						<t:choose hiddenName="userid" hiddenid="id" url="noticeAuthorityUserController.do?selectUser" name="userList"
 								  icon="icon-search" title="common.user.list" textname="userName" isclear="true" isInit="true"></t:choose>
-						<%-- update-end--Author:dangzhenghui  --date-- 20170322 for:TASK #1801 【公告改进】公告的创建维护角色，人员，直接在一个页面即可 --%>					</span>
 						<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">授权级别</label>
 						</td>

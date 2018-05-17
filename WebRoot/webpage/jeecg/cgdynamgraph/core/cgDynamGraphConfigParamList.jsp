@@ -7,7 +7,7 @@
 	$('#delCgreportConfigParamBtn').linkbutton({   
 	    iconCls: 'icon-remove'  
 	}); 
-	//update-begin--author:zhangjiaqiang date:20161212 for:修订移动图标功能添加参数
+
 	$('#addCgreportConfigParamBtn').bind('click', function(){   
  		 var tr =  $("#add_cgDynamGraphConfigParam_table_template tr").clone();
 	 	 $("#add_cgreportConfigParam_table").append(tr);

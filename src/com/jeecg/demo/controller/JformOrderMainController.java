@@ -455,7 +455,7 @@ public class JformOrderMainController extends BaseController {
  	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value="订单列表信息",produces="application/json",httpMethod="GET")
-	//update--begin--author:zhangjiaqiang date:20171031 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
  	public List<JformOrderMainPage> list() {
 		List<JformOrderMainEntity> list= jformOrderMainService.getList(JformOrderMainEntity.class);
     	List<JformOrderMainPage> pageList=new ArrayList<JformOrderMainPage>();
@@ -479,7 +479,7 @@ public class JformOrderMainController extends BaseController {
             }
         }
 		return pageList;
-		//update--end--author:zhangjiaqiang date:20171031 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -490,7 +490,7 @@ public class JformOrderMainController extends BaseController {
 		if (task == null) {
 			return new ResponseEntity(HttpStatus.NOT_FOUND);
 		}
-		//update--begin--author:zhangjiaqiang date:20171102 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
 		JformOrderMainPage page = new JformOrderMainPage();
 		try {
 			MyBeanUtils.copyBeanNotNull2Bean(task, page);
@@ -504,7 +504,7 @@ public class JformOrderMainController extends BaseController {
 			e.printStackTrace();
 		}
 		return new ResponseEntity(page, HttpStatus.OK);
-		//update--end--author:zhangjiaqiang date:20171102 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
 	}
  	
  	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -523,9 +523,9 @@ public class JformOrderMainController extends BaseController {
 		
 		JformOrderMainEntity jformOrderMain = new JformOrderMainEntity();
 		try{
-			//update--begin--author:zhangjiaqiang date:20171102 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
 			MyBeanUtils.copyBeanNotNull2Bean(jformOrderMainPage,jformOrderMain);
-			//update--end--author:zhangjiaqiang date:20171102 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
 		}catch(Exception e){
             logger.info(e.getMessage());
         }
@@ -556,9 +556,9 @@ public class JformOrderMainController extends BaseController {
 		
 		JformOrderMainEntity jformOrderMain = new JformOrderMainEntity();
 		try{
-			//update--begin--author:zhangjiaqiang date:20171102 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
 			MyBeanUtils.copyBeanNotNull2Bean(jformOrderMainPage,jformOrderMain);
-			//update--end--author:zhangjiaqiang date:20171102 for:TASK #2400 【功能不足】一对多，restful接口不足，目前只返回主表的数据，应该把主子表的数据一起返回
+
 		}catch(Exception e){
             logger.info(e.getMessage());
         }
@@ -601,222 +601,7 @@ public class JformOrderMainController extends BaseController {
 		j.setObj(files);
 		return j;
 	}
-	
-	//update-begin--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
-	/**
-	 * 主菜单URL跳转（主导航，功能模块入口）
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(params = "orderList")
-	public ModelAndView orderList(HttpServletRequest request) {
-		return new ModelAndView("com/jeecg/demo/orderDemo/jform-order-list");
-	}
-	
-	/**
-	 * 添加订单URL跳转
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(params = "goAddOrder")
-	public ModelAndView addOrder(HttpServletRequest request) {
-		return new ModelAndView("com/jeecg/demo/orderDemo/jform-order-add");
-	}
-	
-	/**
-	 * 编辑订单URL跳转
-	 * @param jformOrderMain
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(params = "goEditOrder")
-	public ModelAndView editOrder(JformOrderMainEntity jformOrderMain,HttpServletRequest request) {
-		if (StringUtil.isNotEmpty(jformOrderMain.getId())) {
-			//获取参数
-			String fkId = jformOrderMain.getId();			
-			jformOrderMain = jformOrderMainService.getEntity(JformOrderMainEntity.class, fkId);
-			request.setAttribute("order", jformOrderMain);	    	
-		}
-		return new ModelAndView("com/jeecg/demo/orderDemo/jform-order-edit");
-	}
-	
-	
-	/**
-	 * 获取客户列表数据，适用于订单编辑页面（全部数据，无分页）
-	 * @param jformOrderCustomerEntity
-	 * @param req
-	 * @return
-	 */
-	@ResponseBody 
-	@RequestMapping(params = "customerList")
-	public JSONObject customerList(JformOrderCustomerEntity jformOrderCustomerEntity) {
-		String id0 = jformOrderCustomerEntity.getFkId();
-	    String hql0 = "from JformOrderCustomerEntity where 1 = 1 AND fK_ID = ? ";
-	    return dataFactory(hql0,id0,jformOrderCustomerEntity);
-	}
-	/**
-	 * 获取机票列表数据，适用于订单编辑页面（全部数据，无分页）
-	 * @param jformOrderTicketEntity
-	 * @param req
-	 * @return
-	 */
-	@ResponseBody 
-	@RequestMapping(params = "ticketList")
-	public JSONObject ticketList(JformOrderTicketEntity jformOrderTicketEntity) {
-		String id1 = jformOrderTicketEntity.getFckId();
-		String hql1 = "from JformOrderTicketEntity where 1 = 1 AND fCK_ID = ? ";
-	    return dataFactory(hql1,id1,jformOrderTicketEntity);
-	}
-	
-	
-	/**
-	 * 订单列表 （带分页）
-	 * @param jformOrderMain
-	 * @param request
-	 * @param dataGrid
-	 * @return
-	 */
-	@ResponseBody 
-	@RequestMapping(params = "orderDataGrid")
-	public JSONObject fgrid(JformOrderMainEntity jformOrderMain,HttpServletRequest request, DataGrid dataGrid) {	
-		return dataFatory(JformOrderMainEntity.class, jformOrderMain, request, dataGrid);
-	}
-	
-	/**
-	 * 客户列表 （带分页）
-	 * @param jformCustomer
-	 * @param request
-	 * @param dataGrid
-	 * @return
-	 */
-	@ResponseBody 
-	@RequestMapping(params = "customerDataGrid")
-	public JSONObject customerFGrid(JformOrderCustomerEntity jformCustomer,HttpServletRequest request, DataGrid dataGrid) {
-		JSONObject jo = null; 
-		if(jformCustomer.getFkId() == null || "".equals(jformCustomer.getFkId())){
 
-		}else{
-			jo = dataFatory(JformOrderCustomerEntity.class, jformCustomer, request, dataGrid);
-		}
-		return jo;		
-	}
-	
-	/**
-	 * FineUI 数据封装，适用于订单列表（带分页）
-	 * @param clazz
-	 * @param object
-	 * @param request
-	 * @param response
-	 * @param dataGrid
-	 * @return
-	 * 		json格式列表数据
-	 */
-	public JSONObject dataFatory(Class<?> clazz,Object object,HttpServletRequest request, DataGrid dataGrid){
-		String pageIndex = request.getParameter("pageIndex");
-		if (StringUtil.isNotEmpty(pageIndex)) {
-			dataGrid.setPage(Integer.valueOf(pageIndex)+1);
-		}
-		String pageSize = request.getParameter("pageSize");
-		if (StringUtil.isNotEmpty(pageSize)) {
-			dataGrid.setRows(Integer.valueOf(pageSize));
-		}
-		String databaseSorting = request.getParameter("databaseSorting");
-		if (null != databaseSorting && Boolean.valueOf(databaseSorting)) {
-			String sortField = request.getParameter("sortField");
-			if (StringUtil.isNotEmpty(sortField)) {
-				dataGrid.setField(sortField);
-			}			
-			String sortDirection = request.getParameter("sortDirection");
-			if (StringUtil.isNotEmpty(sortDirection)) {
-				dataGrid.setSort(sortDirection);
-			}
-		}		
-		
-		CriteriaQuery cq = new CriteriaQuery(clazz, dataGrid);
-		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, object);
-		JSONObject jo = null;
-		try{
-			//自定义追加查询条件     
-			cq.add();
-			this.jformOrderMainService.getDataGridReturn(cq, true);	 
-			String[] fieldNames = ReflectHelper.getFiledName(object);  
-			jo = new JSONObject();
-			jo.put("recordCount", dataGrid.getTotal());
-			jo.put("fields", fieldNames);
-			List<String[]> data = new ArrayList<String[]>(); 
-			for(Object entity:dataGrid.getResults()){
-				String[] values = new String[fieldNames.length];
-				for(int i=0;i<fieldNames.length;i++){  
-			       Object o = ReflectHelper.getFieldValueByName(fieldNames[i], entity);  
-			       values[i] = o == null ? "" : o.toString();
-			    }
-				data.add(values);
-			}
-			jo.put("data", data);
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return jo;
-	}
-	
-	/**
-	 * FineUI 数据封装，适用于订单编辑页面（无分页）
-	 * @param hql
-	 * @param id
-	 * @param object
-	 * @return
-	 * 		json格式列表数据
-	 */
-	public JSONObject dataFactory(String hql,Object id,Object object){		
-		JSONObject jo = null;
-		try{
-	    	List<T> ticketList = systemService.findHql(hql,id);
-	    	String[] fieldNames = ReflectHelper.getFiledName(object); 
-			jo = new JSONObject();
-			jo.put("recordCount", ticketList.size());
-			jo.put("fields", fieldNames);
-			List<String[]> data = new ArrayList<String[]>(); 
-			for(Object entity: ticketList){
-				String[] values = new String[fieldNames.length];
-				for(int i=0;i<fieldNames.length;i++){  
-			       Object o = ReflectHelper.getFieldValueByName(fieldNames[i], entity);  
-			       values[i] = o == null ? "" : o.toString();
-			    }
-				data.add(values);
-			}
-			jo.put("data", data);	
-			//System.out.println(JSON.toJSONString(jo,true));		    	
-		}catch(Exception e){
-			logger.info(e.getMessage());
-		}
-		return jo;		
-	}
-	
-	/**
-	 * 批量更新客户信息
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(params = "doUpdateCustomer")
-	public AjaxJson doUpdateCustomer(JformOrderMainEntity jformOrderMain,JformOrderMainPage jformOrderMainPage, HttpServletRequest request) {
-		List<JformOrderCustomerEntity> jformOrderCustomerList =  jformOrderMainPage.getJformOrderCustomerList();
-		AjaxJson j = new AjaxJson();
-		String message = "更新成功";
-		try{
-			jformOrderMainService.updateCustomers(jformOrderCustomerList);
-			systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
-		}catch(Exception e){
-			e.printStackTrace();
-			j.setSuccess(false);
-			message = "更新失败";
-			throw new BusinessException(e.getMessage());
-		}
-		j.setMsg(message);
-		return j;
-	}
-	//update-end--Author:XueLin  Date:20171030 for：[#2391] 【功能demo】一对多的效果demo，主子表效果
-	
-	//update-begin--Author:taoYan  Date:20171031 for：TASK #2388 【demo】做个demo，一个页面有多个 datagrid 叠在一起
 	/**
 	 * 行编辑保存操作
 	 * @param page
@@ -939,9 +724,9 @@ public class JformOrderMainController extends BaseController {
 				map = new HashMap<String,Object>();
 				map.put("id", depart.getId());
 				map.put("name", depart.getDepartname());
-				//update-begin-Author:LiShaoQing Date:20170829 for:添加编码在前台获取
+
 				map.put("code",depart.getOrgCode());
-				//update-end-Author:LiShaoQing Date:20170829 for:添加编码在前台获取
+
 				TSDepart pdepart = depart.getTSPDepart();
 				if(pdepart!=null){
 					map.put("pId", pdepart.getId());
@@ -980,5 +765,5 @@ public class JformOrderMainController extends BaseController {
 			upwardQueryParents(dataMap, dateList, pid_next);
 		}
 	}
-	//update-end--Author:taoYan  Date:20171031 for：TASK #2388 【demo】做个demo，一个页面有多个 datagrid 叠在一起
+
 }

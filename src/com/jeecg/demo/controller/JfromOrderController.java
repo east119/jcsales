@@ -28,9 +28,9 @@ import org.jeecgframework.core.util.ExceptionUtil;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.core.util.StringUtil;
+import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.jwt.util.ResponseMessage;
 import org.jeecgframework.jwt.util.Result;
-import org.jeecgframework.p3.core.util.oConvertUtils;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
@@ -109,12 +109,12 @@ public class JfromOrderController extends BaseController {
 		//查询条件组装器
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, jfromOrder);
 		try{
-			//update-begin-Author:LiShaoQing -- date:20171229 for:高级查询构造器,代码实现,传DataGrid返回SQL语句执行in查询---
+
 			String sql = SuperQueryUtil.getComplxSuperQuerySQL(request);
 			if(oConvertUtils.isNotEmpty(sql)) {
 				cq.add(Restrictions.sqlRestriction(" id in ("+sql+")"));
 			}
-			//update-end-Author:LiShaoQing -- date:20171229 for:高级查询构造器,代码实现,传DataGrid返回SQL语句执行in查询---
+
 		//自定义追加查询条件
 		}catch (Exception e) {
 			e.printStackTrace();
