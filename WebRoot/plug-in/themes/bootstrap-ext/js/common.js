@@ -2,8 +2,14 @@
 	function validationMessage(obj, Validatemsg) {
 	    try {
 	        removeMessage(obj);
+
+	        var objOffset= obj.offset();
+	        if(obj.is(":hidden")){
+	        	objOffset = obj.parent().offset();
+	        }
 	        obj.focus();
-	        var $poptip_error = $('<div class="poptip"><span class="poptip-arrow poptip-arrow-top"><em>◆</em></span>' + Validatemsg + '</div>').css("left", obj.offset().left + 'px').css("top", obj.offset().top + obj.parent().height() + 5 + 'px')
+	        var $poptip_error = $('<div class="poptip"><span class="poptip-arrow poptip-arrow-top"><em>◆</em></span>' + Validatemsg + '</div>').css("left",objOffset.left + 'px').css("top", objOffset.top + obj.parent().height() + 5 + 'px')
+
 	        $('body').append($poptip_error);
 	        if (obj.hasClass('form-control') || obj.hasClass('ui-select')) {
 	            obj.parent().addClass('has-error');

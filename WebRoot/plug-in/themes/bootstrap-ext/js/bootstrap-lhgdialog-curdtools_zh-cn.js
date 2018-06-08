@@ -1638,8 +1638,6 @@ function moveTipImg(){
 		
 	}
 }
-
-//<!-- update-begin-author:zhangjiaqiang date:20170815 for:TASK #2274 【online】Online 表单支持树控件 -->
 function treeFormater(value,row,index){
 	return getTreeResult(value);
 }

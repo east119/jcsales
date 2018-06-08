@@ -33,11 +33,12 @@ public class WebUploaderTag extends TagSupport {
 	private String buttonText;//控件按钮显示文本
 	private String extensions;//允许的文件后缀，不带点，多个用逗号分割
 	private String extendParams;//类似css写法 这是文件上传时候需要传递的参数
-	private String dataType;//只要该属性有值,均视之为不为空
+	private String datatype;//只要该属性有值,均视之为不为空
 	private String nullMsg;//空的时候的提示信息,默认会根据当前控件的类型提示,文件类则提示“请选择文件”;图片类则提示“请选择图片”.
 	private String readOnly="false";//保留字段
 	private String bizType;//业务类型,根据该类型确定上传路径
 	private boolean displayTxt=true;//是否显示上传列表[默认显示]true显示false隐藏
+	private boolean outJs = false;//是否在外部引入了js和css
 	//private static String imgexts="gif,jpg,jpeg,bmp,png";
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
@@ -69,10 +70,18 @@ public class WebUploaderTag extends TagSupport {
 	public void end(StringBuffer sb) {
 		String btnCss=getButtonStyle();//获取按钮样式
 		//typeResetByext(this.extensions);//根据上传文件的后缀重置type
-		sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"plug-in/webuploader/custom.css\"></link>");
-		sb.append("<script type=\"text/javascript\" src=\"plug-in/webuploader/webuploader.min.js\"></script>");
-		sb.append("<div id='"+name+"uploader' class='wu-example'><div id='"+name+"thelist' class='uploader-list'></div><div class='btns'><div id='"+name+"picker'>"+getButtonText()+"</div>");
-		sb.append("</div></div>");
+		if(!outJs){
+			sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"plug-in/webuploader/custom.css\"></link>");
+			sb.append("<script type=\"text/javascript\" src=\"plug-in/webuploader/webuploader.min.js\"></script>");
+		}
+		sb.append("<div id='"+name+"uploader' class='wu-example'>");
+		String showthelist = name+"thelist";
+		if("file".equals(type) && oConvertUtils.isNotEmpty(showImgDiv)){
+			showthelist=showImgDiv;
+		}else{
+			sb.append("<div id='"+showthelist+"' class='uploader-list'></div>");
+		}
+		sb.append("<div class='btns'><div id='"+name+"picker'>"+getButtonText()+"</div></div></div>");
 		if("image".equals(type)&&oConvertUtils.isEmpty(showImgDiv)){
 			showImgDiv="tempdiv_"+name;
 			sb.append("<div id='"+showImgDiv+"'></div>");
@@ -80,7 +89,7 @@ public class WebUploaderTag extends TagSupport {
 			//不要在sb中拼写<%=basePath%>,传到前台直接乱码 
 			sb.append("<script type=\"text/javascript\">Array.prototype.removeItem = function(val){var index = this.indexOf(val);if (index > -1) {this.splice(index, 1);}};"
 					+ "var exsitPathArr_"+name+" =new Array();"
-					+"$(function() { var state = 'pending';var $list=$('#"+ name +"thelist');"
+					+"$(function() { var state = 'pending';var $list=$('#"+ showthelist +"');"
 					+"var uploader = WebUploader.create({"
 					+"swf: 'plug-in/webuploader/Uploader.swf',"
 					+"server :\'"+url+"\',"//getUrl()
@@ -141,8 +150,8 @@ public class WebUploaderTag extends TagSupport {
 			//获取文件名
 			sb.append("\r\nvar mygetFileName=function(filepath){if(filepath.lastIndexOf('\\\\')>0){return filepath.substring(filepath.lastIndexOf('\\\\')+1);\r\n}else if(filepath.lastIndexOf('/')>0){return filepath.substring(filepath.lastIndexOf('/')+1);}else{return filepath;}}");
 			//如果dataType有值
-			if(oConvertUtils.isNotEmpty(dataType)){
-				sb.append("\r\n$('#"+name+"uploader').find('div.btns').append('<input nullMsg=\""+getNullMsg()+"\" dataType=\"*\" type=\"hidden\" id= \""+name+"dataTypeInp\" />');");
+			if(oConvertUtils.isNotEmpty(datatype)){
+				sb.append("\r\n$('#"+name+"uploader').find('div.btns').append('<input nullMsg=\""+getNullMsg()+"\" datatype=\"*\" type=\"hidden\" id= \""+name+"dataTypeInp\" />');");
 			}
 			sb.append("\r\nvar reset_"+name+"_dataTypeInpVal=function(addOrdel){var obj = $(\"#" + name + "dataTypeInp\");if(obj.length>0){var objval=obj.val()||'';\r\nif (addOrdel == 1) {if(objval==''){obj.val('1');}else{obj.val(objval.toString()+(parseInt(objval.length)+1));}}else{if(objval.length <=1){obj.val('');}else{obj.val(objval.substr(0,objval.length-1));\r\n}\r\n}obj.blur();}}");
 			//设置默认值
@@ -178,7 +187,7 @@ public class WebUploaderTag extends TagSupport {
 						sb.append("if("+name+"_oneLimit>=1){return false;}else{"+name+"_oneLimit++;};");
 					}
 					//文件类型，先隐藏列表区之前的图片
-					sb.append("var currLi=$('#"+name+"thelist>table').find('tr.item:last');if(currLi.length>0){currLi.addClass('wait-remove');var abcfile=currLi[0].id;if(abcfile.indexOf('id')==0){}else{abcfile=abcfile.substring("+name.length()+");uploader.removeFile(abcfile)}}});");
+					sb.append("var currLi=$('#"+showthelist+">table').find('tr.item:last');if(currLi.length>0){currLi.addClass('wait-remove');var abcfile=currLi[0].id;if(abcfile.indexOf('id')==0){}else{abcfile=abcfile.substring("+name.length()+");uploader.removeFile(abcfile)}}});");
 				}
 			}
 
@@ -202,7 +211,7 @@ public class WebUploaderTag extends TagSupport {
 				if("image".equals(type)){
 					sb.append("$('#"+showImgDiv+">ul').find('li.wait-remove').find('.titledel').click()");
 				}else{
-					sb.append("$('#"+name+"thelist>table').find('tr.wait-remove').find('.del').click()");
+					sb.append("$('#"+showthelist+">table').find('tr.wait-remove').find('.del').click()");
 				}
 			}
 			sb.append("}else{updatetdState(file.id,'上传出错'+response.msg);}});\r\n");
@@ -363,11 +372,11 @@ public class WebUploaderTag extends TagSupport {
 	public void setExtensions(String extensions) {
 		this.extensions = extensions;
 	}
-	public String getDataType() {
-		return dataType;
+	public String getDatatype() {
+		return datatype;
 	}
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
+	public void setDatatype(String datatype) {
+		this.datatype = datatype;
 	}
 	public String getNullMsg() {
 		if(oConvertUtils.isEmpty(nullMsg)){
@@ -389,6 +398,12 @@ public class WebUploaderTag extends TagSupport {
 	}
 	public void setDisplayTxt(boolean displayTxt) {
 		this.displayTxt = displayTxt;
+	}
+	public boolean isOutJs() {
+		return outJs;
+	}
+	public void setOutJs(boolean outJs) {
+		this.outJs = outJs;
 	}
 	//根据上传文件的后缀重置type
 	/*private void typeResetByext(String ext){

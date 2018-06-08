@@ -5,7 +5,7 @@
   <div region="center" style="padding:0px;border:0px">
   <t:datagrid name="jeecgMinidaoList" checkbox="true" pagination="true" fitColumns="false" title="用户Demo列表，采用minidao查询数据" actionUrl="jeecgListDemoController.do?minidaoDatagrid" idField="id" fit="true" queryMode="group">
     <t:dgCol title="id"  field="id"   hidden="true"   queryMode="group"  width="120"></t:dgCol>
-    <t:dgCol title="名称"  field="name" query="true" autocomplete="true"   width="120"></t:dgCol>
+    <t:dgCol title="名称"  field="name" query="true"   width="120"></t:dgCol>
     <t:dgCol title="年龄"  extend="{style:'width:50px;color:red'}" editor="numberbox" field="age"  query="true" width="120"></t:dgCol>
     <t:dgCol title="生日"  field="birthday" formatter="yyyy-MM-dd"   queryMode="group"  width="120"></t:dgCol>
     <t:dgCol title="部门"  field="depId" query="true" queryMode="single" dictionary="t_s_depart,id,departname"  width="120"></t:dgCol>
