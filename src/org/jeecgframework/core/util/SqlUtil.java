@@ -128,7 +128,7 @@ public class SqlUtil {
         sqlParam[0] = sql;
         sqlParam[1] = beginNum+"";
         sqlParam[2] = rows+"";
-        DynamicDataSourceEntity dynamicSourceEntity = ResourceUtil.dynamicDataSourceMap.get(dbKey);
+        DynamicDataSourceEntity dynamicSourceEntity = ResourceUtil.getCacheDynamicDataSourceEntity(dbKey);
         String databaseType = dynamicSourceEntity.getDbType();
         if(DATABSE_TYPE_MYSQL.equalsIgnoreCase(databaseType)){
             sql = MessageFormat.format(MYSQL_SQL, sqlParam);

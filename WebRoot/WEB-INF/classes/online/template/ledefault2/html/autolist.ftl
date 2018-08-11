@@ -4,7 +4,7 @@ ${config_iframe}
 /**
 *表单的高度,表单的宽度
 **/
-var ${config_id}Fw = 700,${config_id}Fh = 400;
+<#if tableType=="2">var ${config_id}Fw = 950,${config_id}Fh = 450;<#else>var ${config_id}Fw = 700,${config_id}Fh = 400;</#if>
 
 $(function(){
 	$.get("cgFormHeadController.do?checkIsExit&checkIsTableCreate&name=${config_id}",
@@ -138,12 +138,12 @@ function createDataGrid${config_id}(){
 						<#-- //update-end--Author:zhangdaihao  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->
 						</#if>
 						<#list config_buttons as x>
-						<#--update-begin--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
-							<#if x['exp'] != '' ||x['exp'] !=null>
-								if(<@exp exp="${ x['exp']}" data="rec" />){
-						 	 </#if>
-						 <#--update-end--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 							<#if x['buttonStyle'] == 'link' && x['buttonStatus']=='1' && config_noliststr?index_of("${x['buttonCode']}")==-1>
+								<#--update-begin--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
+									<#if x['exp'] != '' ||x['exp'] !=null>
+										if(<@exp exp="${ x['exp']}" data="rec" />){
+								 	 </#if>
+								<#--update-end--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 								<#-- //update-begin--Author:zhangdaihao  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->
 								href+="<a style='margin-left:5px;' href='javascript:void(0)' class='ace_button' buttonCode='${x['buttonCode']}' formId ='${x['formId']}' ";
 								<#if x['optType'] == 'action'>
@@ -168,12 +168,12 @@ function createDataGrid${config_id}(){
 									href+="<i class='fa fa-wrench'></i>${x['buttonName']}</a>";
 								</#if>
 								<#-- //update-begin--Author:zhangdaihao  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->
+								<#--update-begin--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
+									<#if x['exp'] != '' ||x['exp'] !=null>
+										}
+								 	 </#if>
+								 <#--update-end--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 							</#if>
-							<#--update-begin--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
-							<#if x['exp'] != '' ||x['exp'] !=null>
-								}
-						 	 </#if>
-						 <#--update-end--Author:gj_shaojc  Date:20180606 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 						</#list>
 						return href;
 						}

@@ -21,32 +21,7 @@
   <title>${ftl_description}</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="online/template/ledefault/css/vendor.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/bootstrap-theme.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/bootstrap.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/app.css">
-  
-  <link rel="stylesheet" href="plug-in/Validform/css/metrole/style.css" type="text/css"/>
-  <link rel="stylesheet" href="plug-in/Validform/css/metrole/tablefrom.css" type="text/css"/>
-  <script type="text/javascript" src="plug-in/jquery/jquery-1.8.3.js"></script>
-  <script type="text/javascript" src="plug-in/tools/dataformat.js"></script>
-  <script type="text/javascript" src="plug-in/easyui/jquery.easyui.min.1.3.2.js"></script>
-  <script type="text/javascript" src="plug-in/easyui/locale/zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/tools/syUtil.js"></script>
-  <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>
-  <script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js"></script>
-  <script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/tools/easyuiextend.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
-  <#if callbackFlag == true>
-		<link rel="stylesheet" href="plug-in/uploadify/css/uploadify.css" type="text/css" />
-		<script type="text/javascript" src="plug-in/uploadify/jquery.uploadify-3.1.js"></script>
-  </#if>
-  <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.config.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.all.min.js"></script>
+  <t:base type="jquery,aceform,DatePicker,validform,ueditor<#if callbackFlag == true>,uploadify</#if>"></t:base>
   <style>
 .tab-wrapper .nav-tabs > li.active > a, .tab-wrapper .nav-tabs > li.active > a:hover, .tab-wrapper .nav-tabs > li.active > a:focus {
     color: #8f0911;
@@ -367,8 +342,10 @@
 														<input type="hidden" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" name="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" />
 														<#-- update--begin--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
 													  <#-- update--begin--author:zhangjiaqiang date:20170614 for:修订上传附件按钮的大小 -->
-														<input class="btn btn-sm btn-success" style="margin-left:10px;" type="button" value="上传附件"
+													   <#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+														<input class="btn btn-sm btn-success" style="margin-left:10px;" type="button" value="上传附件" name="${sub.entityName?uncap_first}List[#index#].imgBtn"
 																	onclick="commonUpload(commonUploadDefaultCallBack,'${sub.entityName?uncap_first}List\\[#index#\\]\\.${po.fieldName}')"/>
+														<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 														<a  target="_blank" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}_href"></a>
 														<#-- update--end--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
 														<#-- update--begin--author:zhangjiaqiang date:20170614 for:修订上传附件按钮的大小 -->
@@ -428,8 +405,10 @@
 														<input type="hidden" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" name="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" />
 														<#-- update--begin--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
 													  <#-- update--begin--author:zhangjiaqiang date:20170614 for:修订上传附件按钮的大小 -->
-														<input class="btn btn-sm btn-success" style="margin-left:10px;" type="button" value="上传附件"
+														<#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+														<input class="btn btn-sm btn-success" style="margin-left:10px;" type="button" value="上传附件" name="${sub.entityName?uncap_first}List[#index#].imgBtn"
 																	onclick="commonUpload(commonUploadDefaultCallBack,'${sub.entityName?uncap_first}List\\[#index#\\]\\.${po.fieldName}')"/>
+														<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 														<a  target="_blank" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}_href"></a>
 														<#-- update--end--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
 														<#-- update--begin--author:zhangjiaqiang date:20170614 for:修订上传附件按钮的大小 -->

@@ -34,6 +34,9 @@ public class GenerateEntity implements java.io.Serializable{
 	private Integer fieldRowNum;// 一行放几个字段
 	private String projectPath;//工程路径
 	private String packageStyle;//代码包风格
+
+	private String supportRestful;//是否生成Restful相关代码：1是 0否
+
 	/*
 	 * --------------智能表单配置
 	 */
@@ -194,6 +197,14 @@ public class GenerateEntity implements java.io.Serializable{
 
 	public void setButtonJavaMap(Map<String, CgformEnhanceJavaEntity> buttonJavaMap) {
 		this.buttonJavaMap = buttonJavaMap;
+	}
+	
+	public String getSupportRestful() {
+		return supportRestful;
+	}
+
+	public void setSupportRestful(String supportRestful) {
+		this.supportRestful = supportRestful;
 	}
 
 	/**

@@ -31,6 +31,7 @@ import org.jeecgframework.web.system.pojo.base.TSFunction;
 import org.jeecgframework.web.system.pojo.base.TSIcon;
 import org.jeecgframework.web.system.pojo.base.TSOperation;
 import org.jeecgframework.web.system.pojo.base.TSRoleFunction;
+import org.jeecgframework.web.system.service.FunctionService;
 import org.jeecgframework.web.system.service.SystemService;
 import org.jeecgframework.web.system.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,12 +51,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/functionController")
 public class FunctionController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
 	private static final Logger logger = Logger.getLogger(FunctionController.class);
+	
 	private UserService userService;
 	private SystemService systemService;
+	@Autowired
+	private FunctionService functionService;
 
 	@Autowired
 	public void setSystemService(SystemService systemService) {
@@ -150,74 +151,8 @@ public class FunctionController extends BaseController {
 	@RequestMapping(params = "del")
 	@ResponseBody
 	public AjaxJson del(TSFunction function, HttpServletRequest request) {
-		String message = null;
-		AjaxJson j = new AjaxJson();
-		function = systemService.getEntity(TSFunction.class, function.getId());
-		message = MutiLangUtil.paramDelSuccess("common.menu");
-
-//		systemService
-//				.updateBySqlString("delete from t_s_role_function where functionid='"
-//						+ function.getId() + "'");
-		systemService.executeSql("delete from t_s_role_function where functionid=?", function.getId());
-
-		TSFunction parent = function.getTSFunction();
-		try{
-
-			List<TSFunction> listFunction = function.getTSFunctions();
-			if(listFunction!=null&&listFunction.size()>0){
-				message="菜单【"+function.getFunctionName()+"】存在下级菜单，不能删除";
-				j.setMsg(message);
-				j.setSuccess(false);
-				return j;
-			}
-			List<TSOperation> op = systemService.findHql("from TSOperation where TSFunction.id = ?", function.getId());
-			if(op!=null&&op.size()>0){
-				message="菜单【"+function.getFunctionName()+"】有设置页面权限，不能删除";
-				j.setMsg(message);
-				j.setSuccess(false);
-				return j;
-			}
-
-			List<TSDataRule> tsdr=systemService.findByProperty(TSDataRule.class,"TSFunction",function);
-			if(tsdr!=null&&tsdr.size()>0){
-				message="菜单【"+function.getFunctionName()+"】存在数据规则，不能删除";
-				j.setMsg(message);
-				j.setSuccess(false);
-				return j;
-			}
-
-			if(parent != null){
-				parent.getTSFunctions().remove(function);
-			}
-			systemService.delete(function);
-		}catch (Exception e){
-			if(parent != null){
-				parent.getTSFunctions().add(function);
-			}
-
-			e.printStackTrace();
-			message=MutiLangUtil.getLang("common.menu.del.fail");
-		}
-
-		systemService.addLog(message, Globals.Log_Type_DEL,
-				Globals.Log_Leavel_INFO);
-
-		// // 删除权限时先删除权限与角色之间关联表信息
-		// List<TSRoleFunction> roleFunctions =
-		// systemService.findByProperty(TSRoleFunction.class, "TSFunction.id",
-		// function.getId());
-		//
-		// if (roleFunctions.size() > 0) {
-		// j.setMsg("菜单已分配无法删除");
-		//
-		// }
-		// else {
-		// userService.delete(function);
-		// systemService.addLog(message, Globals.Log_Type_DEL,
-		// Globals.Log_Leavel_INFO);
-		// }
-
-		j.setMsg(message);
+		AjaxJson j = functionService.delFunction(function.getId());
+		systemService.addLog(j.getMsg(), Globals.Log_Type_DEL,Globals.Log_Leavel_INFO);
 		return j;
 	}
 
@@ -288,7 +223,6 @@ public class FunctionController extends BaseController {
 	public AjaxJson saveFunction(TSFunction function, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		// ----------------------------------------------------------------
 		function.setFunctionUrl(function.getFunctionUrl().trim());
 		String functionOrder = function.getFunctionOrder();
 		if (StringUtils.isEmpty(functionOrder)) {
@@ -302,7 +236,6 @@ public class FunctionController extends BaseController {
 		}
 		if (StringUtil.isNotEmpty(function.getId())) {
 			message = MutiLangUtil.paramUpdSuccess("common.menu");
-
 			TSFunction t = systemService.getEntity(TSFunction.class,function.getId());
 			try {
 				MyBeanUtils.copyBeanNotNull2Bean(function, t);
@@ -315,17 +248,13 @@ public class FunctionController extends BaseController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			systemService.addLog(message, Globals.Log_Type_UPDATE,Globals.Log_Leavel_INFO);
 
 			List<TSFunction> subFunction = systemService.findByProperty(TSFunction.class, "TSFunction.id", function.getId());
 			updateSubFunction(subFunction,function);
 
-			// ----------------------------------------------------------------
 
 			systemService.flushRoleFunciton(function.getId(), function);
-
-			// ----------------------------------------------------------------
 
 		} else {
 			if (function.getFunctionLevel().equals(Globals.Function_Leave_ONE)) {
@@ -608,7 +537,6 @@ public class FunctionController extends BaseController {
 			menuListMap = menuListMap + "很遗憾，在系统中没有检索到与“" + name + "”相关的信息！";
 		}
 		// menuListMap = menuListMap + "</div>";
-		//System.out.println("-------------------------------" + menuListMap);
 		req.setAttribute("menuListMap", menuListMap);
 		return new ModelAndView("system/function/menuAppList");
 	}

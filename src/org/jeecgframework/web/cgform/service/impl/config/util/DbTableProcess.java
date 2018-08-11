@@ -368,7 +368,11 @@ public class DbTableProcess {
 			try{
 				Double.valueOf(text);
 			}catch(Exception e){
-				text = "'"+text+"'";
+
+				if(!( text.startsWith("\'") && text.endsWith("\'") )){
+					text = "'"+text+"'";
+				}
+
 			}
 		}
 		return text;

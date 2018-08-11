@@ -13,7 +13,7 @@
 			 	 return false;
 		    });  
 			$('#delBtn_JformOrderTicket2').bind('click', function(){   
-		       $("#add_jformOrderTicket2_table").find("input:checked").parent().parent().remove();   
+		       $("#add_jformOrderTicket2_table").find("input[name$='ck']:checked").parent().parent().remove();   
 		        resetTrNum('add_jformOrderTicket2_table');
 		        return false;
 		    });
@@ -56,10 +56,10 @@
 					<div name="xh"></div>
 				</td>
 				  	<td>
-							<input name="jformOrderTicket2List[0].ticketCode" maxlength="100" type="text" class="form-control"  style="width:120px;"  datatype="*"  ignore="checked" />
+						<input name="jformOrderTicket2List[0].ticketCode" maxlength="100" type="text" class="form-control"  style="width:120px;"  datatype="*"  ignore="checked" />
 					</td>
 				  	<td>
-							   <input name="jformOrderTicket2List[0].tickectDate" maxlength="10" type="text"  class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  style="background: url('plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;width:120px;"  datatype="*"  ignore="checked" />
+						<input name="jformOrderTicket2List[0].tickectDate" maxlength="10" type="text"  class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  style="background: url('plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;width:120px;"  datatype="*"  ignore="checked" />
 					</td>
    			</tr>
 	</c:if>
@@ -80,7 +80,7 @@
 					  	<input name="jformOrderTicket2List[${stuts.index }].ticketCode" maxlength="100" type="text" class="form-control"  style="width:120px;"  datatype="*"  ignore="checked"  value="${poVal.ticketCode }"/>
 				   </td>
 				   <td>
-					      	<input name="jformOrderTicket2List[${stuts.index }].tickectDate" maxlength="10" type="text"  class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  style="background: url('plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;width:120px;"  datatype="*"  ignore="checked"  value="<fmt:formatDate value='${poVal.tickectDate}' type="date" pattern="yyyy-MM-dd hh:mm:ss"/>"/>
+					    <input name="jformOrderTicket2List[${stuts.index }].tickectDate" maxlength="10" type="text"  class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"  style="background: url('plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;width:120px;"  datatype="*"  ignore="checked"  value="<fmt:formatDate value='${poVal.tickectDate}' type="date" pattern="yyyy-MM-dd hh:mm:ss"/>"/>
 					    	
 				   </td>
    			</tr>

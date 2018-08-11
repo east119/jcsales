@@ -365,7 +365,7 @@ public class CommonServiceImpl implements CommonService {
 	 * 构建树形数据表
 	 */
 	@Transactional(readOnly = true)
-	public List<TreeGrid> treegrid(List all, TreeGridModel treeGridModel) {
+	public List<TreeGrid> treegrid(List<?> all, TreeGridModel treeGridModel) {
 		return commonDao.treegrid(all, treeGridModel);
 	}
 
@@ -435,12 +435,10 @@ public class CommonServiceImpl implements CommonService {
 	public Long getCountForJdbc(String sql) {
 		return commonDao.getCountForJdbc(sql);
 	}
-
 	@Transactional(readOnly = true)
 	public Long getCountForJdbcParam(String sql, Object... objs) {
 		return commonDao.getCountForJdbcParam(sql,objs);
 	}
-
 
 	
 	public <T> void batchSave(List<T> entitys) {

@@ -111,7 +111,7 @@ public class MutiLangUtil {
 	 * @return 如果存在则返回true，否则false
 	 */
 	public static boolean existLangKey(String lang_key){
-		String langContext = ResourceUtil.mutiLangMap.get(lang_key + "_" + "zh-cn");
+		String langContext = ResourceUtil.getMutiLan(lang_key + "_" + "zh-cn");
 		if(oConvertUtils.isNotEmpty(langContext))
 		{
 			return true;
@@ -127,7 +127,7 @@ public class MutiLangUtil {
 	 * @return 如果存在则返回true，否则false
 	 */
 	public static boolean existLangKey(String lang_key,String langCode){	
-		String langContext = ResourceUtil.mutiLangMap.get(lang_key + "_" + langCode);
+		String langContext = ResourceUtil.getMutiLan(lang_key + "_" + langCode);
 		if(oConvertUtils.isNotEmpty(langContext))
 		{
 			return true;
@@ -184,9 +184,9 @@ public class MutiLangUtil {
 			language = (String)request.getSession().getAttribute("lang");
 		}
 		
-		String langContext = ResourceUtil.mutiLangMap.get(langKey + "_" + language);
+		String langContext = ResourceUtil.getMutiLan(langKey + "_" + language);
 		if(StringUtil.isEmpty(langContext)){
-			langContext = ResourceUtil.mutiLangMap.get("common.notfind.langkey" + "_" + language);
+			langContext = ResourceUtil.getMutiLan("common.notfind.langkey" + "_" + language);
 			if("null".equals(langContext)||langContext==null ||langKey.startsWith("?")){
 				langContext = "";
 			}

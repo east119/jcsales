@@ -14,7 +14,7 @@
 	 	 return false;
     });  
 	$('#delJformOrderTicketBtn').bind('click', function(){   
-      	$("#add_jformOrderTicket_table").find("input:checked").parent().parent().remove();   
+      	$("#add_jformOrderTicket_table").find("input[name$='ck']:checked").parent().parent().remove();   
         resetTrNum('add_jformOrderTicket_table'); 
         return false;
     }); 

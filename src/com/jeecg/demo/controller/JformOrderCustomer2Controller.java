@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.exception.BusinessException;
@@ -32,6 +32,8 @@ import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.web.system.service.SystemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,6 +52,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.alibaba.fastjson.JSONArray;
 import com.jeecg.demo.entity.JformOrderCustomer2Entity;
+import com.jeecg.demo.page.JformOrderMain2Page;
 import com.jeecg.demo.service.JformOrderMain2ServiceI;
 
 import io.swagger.annotations.Api;
@@ -68,10 +71,7 @@ import io.swagger.annotations.ApiParam;
 @RequestMapping("/jformOrderCustomer2Controller")
 @Api(value="JformOrderCustomer2",description="订单客户信息",tags="jformOrderCustomer2Controller")
 public class JformOrderCustomer2Controller extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(JformOrderCustomer2Controller.class);
+	private static final Logger logger = LoggerFactory.getLogger(JformOrderCustomer2Controller.class);
 
 	@Autowired
 	private JformOrderMain2ServiceI jformOrderMain2Service;
@@ -344,6 +344,46 @@ public class JformOrderCustomer2Controller extends BaseController {
 		return j;
 	}
 	
+	
+	/**
+	 * 行编辑保存
+	 * @param page
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping(params = "saveRows")
+	@ResponseBody
+	public AjaxJson saveRows(JformOrderMain2Page page,HttpServletRequest req){
+		String message = "操作成功！";
+		List<JformOrderCustomer2Entity> lists=page.getJformOrderCustomer2List();
+		AjaxJson j = new AjaxJson();
+		String mainId = req.getParameter("mainId");
+		if(CollectionUtils.isNotEmpty(lists)){
+			for(JformOrderCustomer2Entity temp:lists){
+				if (StringUtil.isNotEmpty(temp.getId())) {
+					JformOrderCustomer2Entity t =this.systemService.get(JformOrderCustomer2Entity.class, temp.getId());
+					try {
+						MyBeanUtils.copyBeanNotNull2Bean(temp, t);
+						systemService.saveOrUpdate(t);
+						systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else {
+					try {
+						//temp.setDelFlag(0);若有则需要加
+						temp.setFkId(mainId);
+						systemService.save(temp);
+						systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return j;
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value="订单客户信息列表信息",produces="application/json",httpMethod="GET")
@@ -409,7 +449,7 @@ public class JformOrderCustomer2Controller extends BaseController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value="删除订单客户信息")
 	public ResponseMessage<?> delete(@ApiParam(name="id",value="ID",required=true)@PathVariable("id") String id) {
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");

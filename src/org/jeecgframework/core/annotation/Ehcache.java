@@ -22,6 +22,6 @@ public @interface Ehcache {
 	boolean addOrdel() default true;
 	
 	//临时缓存还是永久缓存，默认为缓存缓存
-	//TODO 暂时只支持临时缓存，未实现永久缓存
+	//TODO 默认临时缓存，不支持永久缓存(可根据实际情况拓展)
 	boolean eternal() default true;
 }

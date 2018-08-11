@@ -9,12 +9,12 @@ import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.json.AjaxJson;
 import org.jeecgframework.core.common.model.json.DataGrid;
 import org.jeecgframework.core.constant.Globals;
-import org.jeecgframework.core.util.EhcacheUtil;
 import org.jeecgframework.core.util.MutiLangUtil;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.web.system.pojo.base.MutiLangEntity;
+import org.jeecgframework.web.system.service.CacheServiceI;
 import org.jeecgframework.web.system.service.MutiLangServiceI;
 import org.jeecgframework.web.system.service.SystemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,15 +35,14 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/mutiLangController")
 public class MutiLangController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
 	private static final Logger logger = Logger.getLogger(MutiLangController.class);
 
 	@Autowired
 	private MutiLangServiceI mutiLangService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private CacheServiceI cacheService;
 
 	/**
 	 * 多语言列表 页面跳转
@@ -163,9 +162,7 @@ public class MutiLangController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		try {
 			mutiLangService.refleshMutiLangCach();
-
-			EhcacheUtil.clean();
-
+			cacheService.clean();
 			message = mutiLangService.getLang("common.refresh.success");
 		} catch (Exception e) {
 			message = mutiLangService.getLang("common.refresh.fail");

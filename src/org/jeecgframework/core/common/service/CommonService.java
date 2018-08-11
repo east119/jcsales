@@ -268,7 +268,7 @@ public interface CommonService {
 	 * @param treeGridModel
 	 * @return
 	 */
-	public List<TreeGrid> treegrid(List all, TreeGridModel treeGridModel);
+	public List<TreeGrid> treegrid(List<?> all, TreeGridModel treeGridModel);
 
 	/**
 	 * 获取自动完成列表

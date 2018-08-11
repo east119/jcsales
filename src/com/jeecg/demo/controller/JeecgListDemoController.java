@@ -2,6 +2,7 @@ package com.jeecg.demo.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import net.sf.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -29,7 +30,6 @@ import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fop.svg.PDFTranscoder;
-import org.apache.log4j.Logger;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.dao.jdbc.JdbcDao;
@@ -57,6 +57,7 @@ import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.tag.vo.datatable.SortDirection;
+import org.jeecgframework.web.system.controller.core.LoginController;
 import org.jeecgframework.web.system.enums.InterfaceEnum;
 import org.jeecgframework.web.system.pojo.base.InterfaceRuleDto;
 import org.jeecgframework.web.system.pojo.base.TSDepart;
@@ -64,6 +65,8 @@ import org.jeecgframework.web.system.pojo.base.TSLog;
 import org.jeecgframework.web.system.service.MutiLangServiceI;
 import org.jeecgframework.web.system.service.SystemService;
 import org.jeecgframework.web.system.util.InterfaceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -98,27 +101,23 @@ import com.jeecg.demo.service.JeecgDemoServiceI;
 @RequestMapping("/jeecgListDemoController")
 @Api(value="JeecgDemo",description="Angular JeecgDemo接口",tags="AngularJeecgDemoAPI")
 public class JeecgListDemoController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(JeecgListDemoController.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(JeecgListDemoController.class);
+	//【例子】报表例子
+    private static final String BROSWER_COUNT_ANALYSIS = "broswer.count.analysis";
+    
 	@Autowired
 	private JeecgDemoServiceI jeecgDemoService;
 	@Autowired
 	private SystemService systemService;
-
+	
 	@Autowired
 	private Validator validator;
-
 	
 	@Autowired
 	private JeecgMinidaoDao jeecgMinidaoDao;
 
-    private static final String BROSWER_COUNT_ANALYSIS = "broswer.count.analysis";
     @Autowired
     private MutiLangServiceI mutiLangService;
-
 	
 	/**
 	 * 采用minidao查询数据
@@ -147,7 +146,10 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView list(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/jeecgDemoList");
 	}
-
+	
+	/**
+	 * vue 列表
+	 */
 	@RequestMapping(params = "vueList")
 	public ModelAndView vueList(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/vueList");
@@ -156,7 +158,10 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView vueNewList(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/vueNewList");
 	}
-
+	
+	/**
+	 * vueBootstrapTable 列表
+	 */
 	@RequestMapping(params = "vueBootstrapTableList")
 	public ModelAndView vueBootstrapTableList(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/vueBootstrapTableList");
@@ -169,6 +174,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView vueBootstrapTableEdit(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/vueBootstrapTableEdit");
 	}
+	
 	@RequestMapping(params = "vueBootstrapTableGet")
 	@ResponseBody
 	public AjaxJson vueBootstrapTableGet(String id,HttpServletRequest request) {
@@ -180,12 +186,17 @@ public class JeecgListDemoController extends BaseController {
 		json.setMsg("查询成功！");
 		return json;
 	}
-
+	
+	/**
+	 * 多表头列表
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(params = "multiHeaList")
 	public ModelAndView multiHeaList(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/jeecgDemoList-multihead");
 	}
-
+	
 	/**
 	 * 自定义查询条件
 	 */
@@ -193,7 +204,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView mysearchListDemo(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/taglist_mysearch");
 	}
-
+	
 	/**
 	 * 自定义查询条件二
 	 */
@@ -201,8 +212,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView mysearchListDemo2(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/taglist_mysearch2");
 	}
-
-
+	
 	/**
 	 * 综合报表 页面跳转
 	 * 
@@ -212,7 +222,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView broswerStatisticTabs(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/reportDemo");
 	}
-
+	
 	/**
 	 * 多条件动态查询Demo
 	 * @param request
@@ -222,7 +232,7 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView querysBuilder(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/querysBuilderDemo");
 	}
-
+	
 	/**
 	 * 多条件动态查询弹框式选择
 	 * @param request
@@ -232,7 +242,8 @@ public class JeecgListDemoController extends BaseController {
 	public ModelAndView goFormQuerysBuilder(HttpServletRequest request) {
 		return new ModelAndView("com/jeecg/demo/form_querysBuilder");
 	}
-
+	
+	
 	/**
 	 * 仪表图
 	 * @param request
@@ -615,9 +626,11 @@ public class JeecgListDemoController extends BaseController {
 		
 		//step.1 获取数据权限SQL片段
 		String authSql = JeecgDataAutorUtils.loadDataSearchConditonSQLString();
-		
+
+		//设置排序字段
 		//step.2 将权限SQL片段注入到业务SQL中
-		MiniDaoPage<JeecgDemoEntity> list = jeecgMinidaoDao.getAllEntities(jeecgDemo, dataGrid.getPage(), dataGrid.getRows(),authSql);
+		MiniDaoPage<JeecgDemoEntity> list = jeecgMinidaoDao.getAllEntities(jeecgDemo, dataGrid.getPage(), dataGrid.getRows(),dataGrid.getSort(),dataGrid.getOrder(),authSql);
+
 		dataGrid.setTotal(list.getTotal());
 		dataGrid.setResults(list.getResults());
 		
@@ -640,11 +653,6 @@ public class JeecgListDemoController extends BaseController {
 	@RequestMapping(params = "datagrid")
 	public void datagrid(JeecgDemoEntity jeecgDemo,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
 		CriteriaQuery cq = new CriteriaQuery(JeecgDemoEntity.class, dataGrid);
-		if(oConvertUtils.isNotEmpty(dataGrid.getSqlbuilder())) {
-			if(dataGrid.getSqlbuilder().indexOf("≤") > 0) {
-				dataGrid.setSqlbuilder(dataGrid.getSqlbuilder().replace("≤", "<="));
-			}
-		}
 		//查询条件组装器
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, jeecgDemo, request.getParameterMap());
 		try{
@@ -690,7 +698,8 @@ public class JeecgListDemoController extends BaseController {
 		return new ModelAndView("com/jeecg/demo/jeecgDemo-check");
 		
 	}
-
+	
+	
 	/**
 	 * 自定义查询
 	 * @param request
@@ -1035,7 +1044,7 @@ public class JeecgListDemoController extends BaseController {
         	try {
 				cq.ge("operatetime", DateUtils.parseDate(operatetime_begin, "yyyy-MM-dd hh:mm:ss"));
 			} catch (ParseException e) {
-				logger.error(e);
+				logger.error(e.toString());
 			}
         	cq.add();
         }
@@ -1043,7 +1052,7 @@ public class JeecgListDemoController extends BaseController {
         	try {
 				cq.le("operatetime", DateUtils.parseDate(operatetime_end, "yyyy-MM-dd hh:mm:ss"));
 			} catch (ParseException e) {
-				logger.error(e);
+				logger.error(e.toString());
 			}
         	cq.add();
         }
@@ -1071,7 +1080,7 @@ public class JeecgListDemoController extends BaseController {
 		req.setAttribute("logs",arr);
 		return new ModelAndView("com/jeecg/demo/logrp-chart");
 	}
-
+	
 	/**
 	 * 批量添加
 	 * @param request
@@ -1097,7 +1106,7 @@ public class JeecgListDemoController extends BaseController {
 	}
 	
 	/**
-	 * 调用存储过程
+	 * 调用存储过程 springjdbc demo
 	 * @param request
 	 * @return
 	 * 2017年6月9日--下午4:33:43
@@ -1119,12 +1128,22 @@ public class JeecgListDemoController extends BaseController {
 		j.setMsg(message);
 		return j;
 	}
-
+	
 	@RequestMapping(params = "echartDemo")
 	public ModelAndView echartDemo(HttpServletRequest req) {
 		return new ModelAndView("com/jeecg/demo/echartsDemo");
 	}
-
+	
+	/**
+	 * Angular jeecgDEMO
+	 * @param pageNo
+	 * @param pageSize
+	 * @param entity
+	 * @param request
+	 * @param response
+	 * @param dataGrid
+	 * @return
+	 */
 	@RequestMapping(value="/list",method = RequestMethod.GET)
 	@ResponseBody
 	@ApiOperation(value="jeecgDemo列表信息",produces="application/json",httpMethod="GET")
@@ -1170,7 +1189,7 @@ public class JeecgListDemoController extends BaseController {
 		if(interfaceRuleDto==null){
 			return Result.error("您没有该接口的权限！");
 		}
-		logger.info("create[{}]" + GsonUtil.toJson(jeecgDemo));
+		logger.info("create[{}]" , GsonUtil.toJson(jeecgDemo));
 		
 		//调用JSR303 Bean Validator进行校验，如果出错返回含400错误码及json格式的错误信息.
 		Set<ConstraintViolation<JeecgDemoEntity>> failures = validator.validate(jeecgDemo);
@@ -1197,7 +1216,7 @@ public class JeecgListDemoController extends BaseController {
 		if(interfaceRuleDto==null){
 			return Result.error("您没有该接口的权限！");
 		}
-		logger.info("update[{}]" + GsonUtil.toJson(jeecgDemo));
+		logger.info("update[{}]" , GsonUtil.toJson(jeecgDemo));
 		//调用JSR303 Bean Validator进行校验，如果出错返回含400错误码及json格式的错误信息.
 		Set<ConstraintViolation<JeecgDemoEntity>> failures = validator.validate(jeecgDemo);
 		if (!failures.isEmpty()) {
@@ -1224,7 +1243,7 @@ public class JeecgListDemoController extends BaseController {
 		if(interfaceRuleDto==null){
 			return Result.error("您没有该接口的权限！");
 		}
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");
@@ -1238,7 +1257,7 @@ public class JeecgListDemoController extends BaseController {
 
 		return Result.success();
 	}
-
+	
 	/**
 	 * jeecgDemo-bootstrap-list
 	 * @param request
@@ -1276,7 +1295,7 @@ public class JeecgListDemoController extends BaseController {
 		}
 		return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-add");
 	}
-
+	
 		/**
 		 * list
 		 * @param request
@@ -1312,10 +1331,9 @@ public class JeecgListDemoController extends BaseController {
 			}
 			return new ModelAndView("com/jeecg/demo/jeecgDemo-nature-ace-add");
 		}
-
-
+		
 		/**
-		 * jeecgDemo-bootstrap-list-tag
+		 * 数据表格操作按钮折叠起来的例子
 		 * @param request
 		 * @return
 		 */
@@ -1323,7 +1341,7 @@ public class JeecgListDemoController extends BaseController {
 		public ModelAndView bootstrapTableTagDemo(HttpServletRequest request) {
 			return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-list-tag");
 		}
-
+		
 		/**
 		 * jeecgDemo-bootstrap-list-tag
 		 * @param request
@@ -1361,11 +1379,52 @@ public class JeecgListDemoController extends BaseController {
 			}
 			return new ModelAndView("com/jeecg/demo/jeecgDemo-bootstrap-add2");
 		}
-
+		
+		/**
+		 * Boostrap页面布局，嵌套报表
+		 * @param request
+		 * @return
+		 */
 		@RequestMapping(params = "bootStrapEchartsDemo")
 		public ModelAndView bootStrapEchartsDemo(HttpServletRequest request) {
 			return new ModelAndView("com/jeecg/demo/echartsDemo/bootstrap-echarts");
 		}
-
 		
+		/**
+		 * 数据表格操作按钮折叠起来的例子
+		 * @return
+		 */
+		@RequestMapping(params = "collapseDemo")
+		public ModelAndView collapseDemo() {
+			return new ModelAndView("com/jeecg/demo/jeecgDemoList-collapse");
+		}
+
+		/**
+		 * bootstrap-suggest-plugin demo
+		 * @param request
+		 * @return
+		 */
+		@RequestMapping(params = "suggest")
+		public ModelAndView suggest(HttpServletRequest request) {
+			return new ModelAndView("com/jeecg/demo/suggest");
+		}
+		@RequestMapping(value = "loadSuggestData")
+		@ResponseBody
+		public Object loadSuggestData(String keyword,HttpServletRequest request) {
+			String sql = "select a.username,a.realname,IFNULL(c.departname,'火星人') as depart from t_s_base_user a left join t_s_user_org b on b.user_id  = a.ID left join t_s_depart c on c.id = b.org_id "
+					+ "";//TODO keyword 没用到 
+			JSONObject object = new JSONObject();
+			object.put("message", "");
+			try {
+				List<Map<String,Object>> data = this.systemService.findForJdbc(sql);
+				net.sf.json.JSONArray array = net.sf.json.JSONArray.fromObject(data);
+				object.put("value", array);
+				object.put("code", 200);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			object.put("redirect", "");
+			return object;
+		}
+
 }

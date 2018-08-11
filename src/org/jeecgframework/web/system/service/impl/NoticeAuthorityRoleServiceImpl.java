@@ -1,12 +1,21 @@
 package org.jeecgframework.web.system.service.impl;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import org.jeecgframework.core.common.exception.BusinessException;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
 import org.jeecgframework.web.system.pojo.base.TSNoticeAuthorityRole;
+import org.jeecgframework.web.system.pojo.base.TSNoticeReadUser;
+import org.jeecgframework.web.system.pojo.base.TSRoleUser;
 import org.jeecgframework.web.system.service.NoticeAuthorityRoleServiceI;
+import org.jeecgframework.web.system.service.SystemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class NoticeAuthorityRoleServiceImpl extends CommonServiceImpl implements NoticeAuthorityRoleServiceI {
 
+	@Autowired
+	private SystemService systemService;
+	
+	private ExecutorService executor = Executors.newCachedThreadPool();
 	
  	public <T> void delete(T entity) {
  		super.delete(entity);
@@ -87,5 +100,89 @@ public class NoticeAuthorityRoleServiceImpl extends CommonServiceImpl implements
 		}else{
 			return true;
 		}
+	}
+
+	@Override
+	public void saveTSNoticeAuthorityRole(
+			TSNoticeAuthorityRole noticeAuthorityRole) {
+			if(this.checkAuthorityRole(noticeAuthorityRole.getNoticeId(), noticeAuthorityRole.getRole().getId())){
+				throw new BusinessException("该角色已授权，请勿重复操作。");
+			}else{
+				final String noticeId = noticeAuthorityRole.getNoticeId();
+				final String roleId = noticeAuthorityRole.getRole().getId();
+				executor.execute(new Runnable() {
+	
+					@Override
+					public void run() {
+						String hql = "from TSRoleUser roleUser where roleUser.TSRole.id = ?";
+						List<TSRoleUser> roleUserList = systemService.findHql(hql,roleId);
+						for (TSRoleUser roleUser : roleUserList) {
+							String userId = roleUser.getTSUser().getId();
+							String noticeReadHql = "from TSNoticeReadUser where noticeId = ? and userId = ?";
+							List<TSNoticeReadUser> noticeReadList = systemService.findHql(noticeReadHql,noticeId,userId);
+							if(noticeReadList == null || noticeReadList.isEmpty()){
+								//未授权过的消息，添加授权记录
+								TSNoticeReadUser noticeRead = new TSNoticeReadUser();
+								noticeRead.setNoticeId(noticeId);
+								noticeRead.setUserId(userId);
+								noticeRead.setCreateTime(new Date());
+								systemService.save(noticeRead);
+							}else if(noticeReadList.size() > 0){
+								for (TSNoticeReadUser readUser : noticeReadList) {
+									if(readUser.getDelFlag() == 1){
+										readUser.setDelFlag(0);
+										systemService.updateEntitie(readUser);
+									}
+								}
+							}
+						}
+						roleUserList.clear();
+					}
+				});
+				this.save(noticeAuthorityRole);
+		}
+	}
+
+	@Override
+	public void doDelTSNoticeAuthorityRole(
+			TSNoticeAuthorityRole noticeAuthorityRole) {
+		noticeAuthorityRole = systemService.getEntity(TSNoticeAuthorityRole.class, noticeAuthorityRole.getId());
+		final String noticeId = noticeAuthorityRole.getNoticeId();
+		final String roleId = noticeAuthorityRole.getRole().getId();
+		executor.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				String hql = "from TSRoleUser roleUser where roleUser.TSRole.id = ?";
+				List<TSRoleUser> roleUserList = systemService.findHql(hql,roleId);
+				List<TSNoticeReadUser> deleteList = new ArrayList<TSNoticeReadUser>();
+				List<TSNoticeReadUser> updateList = new ArrayList<TSNoticeReadUser>();
+				for (TSRoleUser roleUser : roleUserList) {
+					String userId = roleUser.getTSUser().getId();
+					String noticeReadHql = "from TSNoticeReadUser where noticeId = ? and userId = ?";
+					List<TSNoticeReadUser> noticeReadList = systemService.findHql(noticeReadHql,noticeId,userId);
+					if(noticeReadList != null && noticeReadList.size() > 0){
+						for (TSNoticeReadUser readUser : noticeReadList) {
+							if(readUser.getIsRead() == 1){
+								readUser.setDelFlag(1);
+								updateList.add(readUser);
+							}else if(readUser.getIsRead() == 0){
+								deleteList.add(readUser);
+							}
+						}
+					}
+				}
+				for (TSNoticeReadUser tsNoticeReadUser : updateList) {
+					systemService.updateEntitie(tsNoticeReadUser);
+				}
+				for (TSNoticeReadUser readUser : deleteList) {
+					systemService.delete(readUser);
+				}
+				updateList.clear();
+				deleteList.clear();
+				roleUserList.clear();
+			}
+		});
+		this.delete(noticeAuthorityRole);
 	}
 }

@@ -23,32 +23,12 @@
   <title>${ftl_description}</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="online/template/ledefault/css/vendor.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/bootstrap-theme.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/bootstrap.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/app.css">
-
-  <link rel="stylesheet" href="plug-in/Validform/css/metrole/style.css" type="text/css"/>
-  <link rel="stylesheet" href="plug-in/Validform/css/metrole/tablefrom.css" type="text/css"/>
-  <script type="text/javascript" src="plug-in/jquery/jquery-1.8.3.js"></script>
-  <script type="text/javascript" src="plug-in/tools/dataformat.js"></script>
-  <script type="text/javascript" src="plug-in/easyui/jquery.easyui.min.1.3.2.js"></script>
-  <script type="text/javascript" src="plug-in/easyui/locale/zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/tools/syUtil.js"></script>
-  <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>
-  <script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js"></script>
-  <script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/tools/easyuiextend.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
-    <#if callbackFlag == true>
-		<link rel="stylesheet" href="plug-in/uploadify/css/uploadify.css" type="text/css" />
-		<script type="text/javascript" src="plug-in/uploadify/jquery.uploadify-3.1.js"></script>
+  <t:base type="jquery,aceform,DatePicker,validform,ueditor<#if callbackFlag == true>,uploadify</#if>"></t:base>
+  <#-- update-end-author:taoyan date:20180705 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了-->
+  <#if callbackFlag == true>
+  <style>.con-wrapper .show-grid > div,.con-wrapper .row > div{border-left:none;}</style>
   </#if>
-  <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.config.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.all.min.js"></script>
+  <#-- update-end-author:taoyan date:20180705 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了-->
 </head>
 
 
@@ -145,7 +125,7 @@
 			          </div>
 			          <#-- update--begin--author:Yandong date:20180320 for:TASK #2574 【代码生成器】代码生成效果有问题 2. 有附件的，应该弹窗宽一些  -->
 			          <#if po.showType=='file' || po.showType == 'image'>
-			          		<div class="col-xs-9">
+			          		<div class="col-xs-3">
 			          <#else>
 			          		<div class="col-xs-3">
 			          </#if>
@@ -466,8 +446,10 @@
 												<input type="hidden" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" name="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" />
 											  <#-- update--begin--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
 											    <#-- update--begin--author:zhangjiaqiang date:20170614 for:修订上传附件按钮的大小 -->
-											   <input class="btn btn-sm btn-success" style="margin-left:10px;" type="button" value="上传附件"
+											    <#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+											   <input class="btn btn-sm btn-success" style="margin-left:10px;" type="button" value="上传附件"  name="${sub.entityName?uncap_first}List[#index#].imgBtn"
 															onclick="commonUpload(commonUploadDefaultCallBack,'${sub.entityName?uncap_first}List\\[#index#\\]\\.${po.fieldName}')"/>
+											    <#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 							       				<#-- update--begin--author:zhangjiaqiang date:20170614 for:修订上传附件按钮的大小 -->
 							       				<a  target="_blank" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}_href"></a>
 							       				<#-- update--end--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
@@ -512,19 +494,23 @@
 	  				if(title.length > 15){
 	  					title = title.substring(0,12) + "...";
 	  				}
-	  				var td_title = $("<td>" + title + "</td>");
+	  				var td_title = $("<td title='"+ file.title+"'>" + title + "</td>");
 	  				<#-- update--end--author:zhangjiaqiang date:20170614 for:文件名称太长显示问题 -->
 	  		  		<#-- update--begin--author:zhangjiaqiang date:20170607 for:增加按钮之间的间隔 -->
 	  		  		var td_download = $("<td><a style=\"margin-left:10px;\" href=\"commonController.do?viewFile&fileid=" + file.fileKey + "&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity\" title=\"下载\">下载</a></td>")
 	  		  		var td_view = $("<td><a style=\"margin-left:10px;\" href=\"javascript:void(0);\" onclick=\"openwindow('预览','commonController.do?openViewFile&fileid=" + file.fileKey + "&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity','fList',700,500)\">预览</a></td>");
-	  		  		var td_del = $("<td><a style=\"margin-left:10px;\" href=\"javascript:void(0)\" class=\"jeecgDetail\" onclick=\"del('cgUploadController.do?delFile&id=" + file.fileKey + "',this)\">删除</a></td>");
 	  		  		<#-- update--end--author:zhangjiaqiang date:20170607 for:增加按钮之间的间隔 -->
 	  		  		
 	  		  		tr.appendTo(table);
 	  		  		td_title.appendTo(tr);
 	  		  		td_download.appendTo(tr);
 	  		  		td_view.appendTo(tr);
-	  		  		td_del.appendTo(tr);
+	  		  		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2969 【代码生成器--贾乾坤】代码生成器模板测试 -->
+		  		  		if(location.href.indexOf("load=detail")==-1){
+			  		  		var td_del = $("<td><a style=\"margin-left:10px;\" href=\"javascript:void(0)\" class=\"jeecgDetail\" onclick=\"del('cgUploadController.do?delFile&id=" + file.fileKey + "',this)\">删除</a></td>");
+			  		  		td_del.appendTo(tr);
+		  		  		}
+	  		  		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2969 【代码生成器--贾乾坤】代码生成器模板测试 -->
 	  			 });
 	  		   }
 	  		});

@@ -15,7 +15,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.core.common.controller.BaseController;
@@ -31,12 +30,15 @@ import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.jwt.util.ResponseMessage;
 import org.jeecgframework.jwt.util.Result;
+import org.jeecgframework.jwt.web.TokenController;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.web.system.service.SystemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,6 +60,7 @@ import com.jeecg.demo.entity.JfromOrderEntity;
 import com.jeecg.demo.entity.JfromOrderLineEntity;
 import com.jeecg.demo.page.JfromOrderPage;
 import com.jeecg.demo.service.JfromOrderServiceI;
+
 import org.jeecgframework.web.superquery.util.SuperQueryUtil;
 
 /**   
@@ -72,10 +75,7 @@ import org.jeecgframework.web.superquery.util.SuperQueryUtil;
 @Controller
 @RequestMapping("/jfromOrderController")
 public class JfromOrderController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(JfromOrderController.class);
+	private static final Logger logger = LoggerFactory.getLogger(JfromOrderController.class);
 
 	@Autowired
 	private JfromOrderServiceI jfromOrderService;
@@ -502,7 +502,7 @@ public class JfromOrderController extends BaseController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	//@ApiOperation(value="删除订单列表")
 	public ResponseMessage<?> delete(@ApiParam(name="id",value="ID",required=true)@PathVariable("id") String id) {
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");

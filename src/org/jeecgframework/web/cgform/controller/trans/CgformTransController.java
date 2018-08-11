@@ -119,7 +119,6 @@ public class CgformTransController {
 			GENERATE_FORM_IDS = id;
 		}
 
-		
 		String ids[] = id.split(",");
 		String no = "";
 		String yes = "";
@@ -147,8 +146,12 @@ public class CgformTransController {
 				List<CgFormFieldEntity> columnsList = new ArrayList<CgFormFieldEntity>();
 				for (int k = 0; k < list.size(); k++) {
 					Columnt columnt = list.get(k);
+					logger.info("  columnt : "+ columnt.toString());
 					String fieldName = columnt.getFieldDbName();
 					CgFormFieldEntity cgFormField = new CgFormFieldEntity();
+
+					cgFormField.setOldFieldName(columnt.getFieldDbName().toLowerCase());
+
 					cgFormField.setFieldName(columnt.getFieldDbName()
 							.toLowerCase());
 					if (StringUtil.isNotEmpty(columnt.getFiledComment()))
@@ -160,9 +163,9 @@ public class CgformTransController {
 					cgFormField.setIsShowList("Y");
 					cgFormField.setOrderNum(k + 2);
 					cgFormField.setQueryMode("group");
-					cgFormField.setLength(0);
+					cgFormField.setLength(oConvertUtils.getInt(columnt.getPrecision()));
 					cgFormField.setFieldLength(120);
-					cgFormField.setPointLength(0);
+					cgFormField.setPointLength(oConvertUtils.getInt(columnt.getScale()));
 					cgFormField.setShowType("text");
 					cgFormField.setIsNull(columnt.getNullable());
 					if("id".equalsIgnoreCase(fieldName)){
@@ -189,15 +192,15 @@ public class CgformTransController {
 					} else if ("java.lang.Double".equalsIgnoreCase(columnt.getFieldType())
 							||"java.lang.Float".equalsIgnoreCase(columnt.getFieldType())) {
 						cgFormField.setType(DataBaseConst.DOUBLE);
-					} else if ("java.math.BigDecimal".equalsIgnoreCase(columnt.getFieldType())) {
+					} else if ("java.math.BigDecimal".equalsIgnoreCase(columnt.getFieldType()) || "BigDecimal".equalsIgnoreCase(columnt.getFieldType())) {
 						cgFormField.setType(DataBaseConst.BIGDECIMAL);
-					} else if (columnt.getFieldType().contains("blob")) {
+					} else if ("byte[]".equalsIgnoreCase(columnt.getFieldType()) || columnt.getFieldType().contains("blob")) {
 						cgFormField.setType(DataBaseConst.BLOB);
 						columnt.setCharmaxLength(null);
 					} else {
 						cgFormField.setType(DataBaseConst.STRING);
 					}
-					if (StringUtil.isNotEmpty(columnt.getCharmaxLength())) {
+					if (oConvertUtils.isEmpty(columnt.getPrecision()) && StringUtil.isNotEmpty(columnt.getCharmaxLength())) {
 						if (Long.valueOf(columnt.getCharmaxLength()) >= 3000) {
 							cgFormField.setType(DataBaseConst.TEXT);
 							cgFormField.setShowType(DataBaseConst.TEXTAREA);
@@ -240,6 +243,7 @@ public class CgformTransController {
 		map.put("no", no);
 		map.put("yes", yes);
 		j.setObj(map);
+		GENERATE_FORM_IDS = null;
 		return j;
 	}
 

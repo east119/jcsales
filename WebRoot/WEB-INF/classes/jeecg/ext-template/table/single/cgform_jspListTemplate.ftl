@@ -3,10 +3,17 @@
 <#-- update--begin--author:zhangjiaqiang date:20170531 for:增加列表页面对于图片和文件的判断 -->
 <#include "../../ui/tdgCol.ftl"/>
 <#-- update--end--author:zhangjiaqiang date:20170531 for:增加列表页面对于图片和文件的判断 -->
+<#assign orderByCreateDate = false />
+<#list columns as po>
+	<#if po.fieldName=='createDate'>
+		<#assign orderByCreateDate = true />
+		<#break>
+	</#if>
+</#list>
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
 <div class="easyui-layout" fit="true">
   <div region="center" style="padding:0px;border:0px">
-  <t:datagrid name="${entityName?uncap_first}List"<#if cgformConfig.cgFormHead.isCheckbox == 'Y'> checkbox="true"<#else> checkbox="false"</#if><#if cgformConfig.cgFormHead.isPagination == 'Y'> pagination="true"<#else> pagination="false"</#if><#if cgformConfig.cgFormHead.isTree == 'Y'> treegrid="true" treeField="${cgformConfig.cgFormHead.treeFieldnamePage}"</#if> fitColumns="true" title="${ftl_description}" actionUrl="${entityName?uncap_first}Controller.do?datagrid" idField="id" fit="true" queryMode="group">
+  <t:datagrid name="${entityName?uncap_first}List"<#if cgformConfig.cgFormHead.isCheckbox == 'Y'> checkbox="true"<#else> checkbox="false"</#if><#if cgformConfig.cgFormHead.isPagination == 'Y'> pagination="true"<#else> pagination="false"</#if><#if cgformConfig.cgFormHead.isTree == 'Y'> treegrid="true" treeField="${cgformConfig.cgFormHead.treeFieldnamePage}"</#if> fitColumns="true" title="${ftl_description}" <#if orderByCreateDate == true >sortName="createDate"<#else>sortName="id"</#if> actionUrl="${entityName?uncap_first}Controller.do?datagrid" idField="id" fit="true" queryMode="group">
    <#-- update--begin--author:zhangjiaqiang date:20170531 for:增加图片和文件的列表判断 -->
    <@dgcol columns=columns/>
    <#-- update--begin--author:zhangjiaqiang date:20170531 for:增加图片和文件的列表判断 -->
@@ -15,13 +22,13 @@
    <t:dgDelOpt title="删除" url="${entityName?uncap_first}Controller.do?doDel&id={id}" urlclass="ace_button"  urlfont="fa-trash-o"/>
    <#list buttons as btn>
     <#if btn.buttonStyle =='link' && btn.buttonStatus == '1'>
-    	<t:dgFunOpt funname="do${btn.buttonCode?cap_first}(id)" title="${btn.buttonName}" urlclass="ace_button"
-    	 	<#if  btn.buttonName?index_of("下载") gt -1>
-				urlfont="fa-download"
-			<#else>
-				urlfont="fa-wrench"
-			</#if>
-    	  />
+	<t:dgFunOpt funname="do${btn.buttonCode?cap_first}(id)" title="${btn.buttonName}" urlclass="ace_button"<#rt/>
+<#if  btn.buttonName?index_of("下载") gt -1>
+ urlfont="fa-download"<#rt/>
+<#else>
+ urlfont="fa-wrench"<#rt/>
+</#if>
+ />
   	</#if>
    </#list> 
    <#--//update-end--Author:zhangjiaqiang  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->

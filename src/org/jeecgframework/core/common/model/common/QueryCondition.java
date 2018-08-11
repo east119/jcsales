@@ -4,6 +4,10 @@ import java.util.List;
 import org.jeecgframework.core.util.PropertiesUtil;
 
 public class QueryCondition {
+
+	Integer id;
+	String state;
+
 	String field;
 	String type;
 	String condition;
@@ -47,7 +51,25 @@ public class QueryCondition {
 	public void setRelation(String relation) {
 		this.relation = relation;
 	}
+	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
 	public String toString(){
+
+		if(field == null || "".equals(field)){
+			return "";
+		}
+
 		StringBuffer sb =new StringBuffer();
 		sb.append(this.relation).append(" ");
 		sb.append(this.field).append(" ")

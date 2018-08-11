@@ -42,6 +42,10 @@ public class UploadTag extends JeecgTag {
 
 	private String onUploadStart;//上传开始处理函数
 
+	
+	private String height="18";//自定义上传按钮高度
+	private String width="80";//自定义上传按钮宽度
+	
 	public boolean isOuthtml() {
 		return outhtml;
 	}
@@ -170,7 +174,8 @@ public class UploadTag extends JeecgTag {
 				+"auto:"+auto+","
 				+"progressData:\'speed\'," 
 				+"multi:"+multi+","
-				+"height:25,"
+				+"height:"+height+","
+				+"width:"+width+","
 				+"overrideEvents:[\'onDialogClose\']," 
 				+"fileTypeDesc:\'文件格式:\'," 
 				+"queueID:\'"+queueID+"\',"
@@ -348,7 +353,19 @@ public class UploadTag extends JeecgTag {
 	public void setExtend(String extend) {
 		this.extend = extend;
 	}
-
+	
+	public String getHeight() {
+		return height;
+	}
+	public void setHeight(String height) {
+		this.height = height;
+	}
+	public String getWidth() {
+		return width;
+	}
+	public void setWidth(String width) {
+		this.width = width;
+	}
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -365,11 +382,10 @@ public class UploadTag extends JeecgTag {
 				.append(outhtml).append(", fileSizeLimit=").append(fileSizeLimit)
 				.append(",sysTheme=").append(SysThemesUtil.getSysTheme(ContextHolderUtils.getRequest()).getStyle())
 				.append(",brower_type=").append(ContextHolderUtils.getSession().getAttribute("brower_type"))
+				.append(",height=").append(height)
+				.append(",width=").append(width)
 				.append("]");
 		return builder.toString();
 	}
-
-
-	 
 	
 }

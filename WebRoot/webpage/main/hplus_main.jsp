@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: wangkun
-  Date: 2016/4/23
-  Time: 10:33
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/context/mytags.jsp"%>
 <html>
@@ -45,29 +38,6 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element">
                                 <span><img alt="image" width="180" height="61" src="plug-in/login/images/jeecg-aceplus.png" /></span>
-                            <%--dangzhenghui end 20170502 for 增加添加头像功能--%>
-                            <%--//update-start--Author: chenj Date:20160726 for: TASK #1207 [改造]h+风格下，去掉logo下面的内容，迁移位置到右上角，主题位置
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                                <span class="clear">
-                                <span class="block m-t-xs"><strong class="font-bold">${userName }</strong></span>
-                                <span class="text-muted text-xs block">${roleName }<b class="caret"></b></span>
-                                </span>
-                        </a> 
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li>
-                                <a href="javascript:add('<t:mutiLang langKey="common.change.password"/>','userController.do?changepassword','',550,200)">
-                                    <t:mutiLang langKey="common.change.password"/>
-                                </a>
-                            </li>
-                            <li><a href="javascript:openwindow('<t:mutiLang langKey="common.profile"/>','userController.do?userinfo')"><t:mutiLang langKey="common.profile"/></a></li>
-                            <li><a href="javascript:openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')"><t:mutiLang langKey="common.ssms.getSysInfos"/></a></li>
-                            <li><a href="javascript:add('<t:mutiLang langKey="common.change.style"/>','userController.do?changestyle','',550,250)"><t:mutiLang langKey="common.my.style"/></a></li>
-                            <li><a href="javascript:clearLocalstorage()"><t:mutiLang langKey="common.clear.localstorage"/></a></li>
-                            <li><a href="http://yun.jeecg.org" target="_blank">云应用中心</li>
-                            <li class="divider"></li>
-                            <li><a href="javascript:logout()">注销</a></li>
-                        </ul>
-                         //update-end--Author: chenj Date:20160726 for: TASK #1207 [改造]h+风格下，去掉logo下面的内容，迁移位置到右上角，主题位置 --%>
                     </div>
                     <div class="logo-element">JEECG
                     </div>
@@ -93,54 +63,6 @@
                 
                 
                 <ul class="nav navbar-top-links navbar-right">
-                   <%--  <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <i class="fa fa-envelope"></i> <span class="label label-warning">0</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li>
-                                <a>
-                                    <div>
-                                        <i class="fa fa-envelope fa-fw"></i> 您有0条未读消息
-                                        <span class="pull-right text-muted small">4分钟前</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="text-center link-block">
-                                    <a class="" href="javascript:goAllNotice();">
-                                        <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <i class="fa fa-bell"></i> <span class="label label-primary">0</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <li>
-                                <a>
-                                    <div>
-                                        <i class="fa fa-envelope fa-fw"></i> 您有0条未读消息
-                                        <span class="pull-right text-muted small">4分钟前</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="text-center link-block">
-                                    <a class="" href="javascript:goAllMessage();">
-                                        <strong>查看所有 </strong>
-                                        <i class="fa fa-angle-right"></i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li> --%>
-                    
                     <li class="dropdown" onfocus="bindFrameClick()">
                     	<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <span ><strong class="font-bold">${userName }</strong></span>
@@ -153,21 +75,18 @@
                                 </a>
                             </li>
                             <li><a href="javascript:openwindow('<t:mutiLang langKey="common.profile"/>','userController.do?userinfo')"><t:mutiLang langKey="common.profile"/></a></li>
-                            <li><a href="javascript:openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')"><t:mutiLang langKey="common.ssms.getSysInfos"/></a></li>
+                           <%--  <li><a href="javascript:openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')"><t:mutiLang langKey="common.ssms.getSysInfos"/></a></li> --%>
                             <li><a href="javascript:add('<t:mutiLang langKey="common.change.style"/>','userController.do?changestyle','',550,250)"><t:mutiLang langKey="common.my.style"/></a></li>
-                            <li><a href="javascript:toSwagger()">Swagger接口</a></li>
                             <li><a href="javascript:clearLocalstorage()"><t:mutiLang langKey="common.clear.localstorage"/></a></li>
-                            <li><a href="javascript:toJeecgYun()">云应用中心</a></li>
-                            <!-- <li><a href="http://yun.jeecg.org" target="_blank">云应用中心</li> -->
-                           <!--  <li class="divider"></li>
-                            <li><a href="javascript:logout()">注销</a></li> -->
+                            <li><a href="javascript:toSwagger()">Swagger接口</a></li>
+                           <%-- <li><a href="javascript:toJeecgYun()">云应用中心</a></li>--%>
                         </ul>
                     </li>
                     
                      
                     <li class="dropdown hidden-xs">
                         <a class="right-sidebar-toggle" aria-expanded="false">
-                            <i class="fa fa-tasks"></i> 主题
+                            <i class="fa fa-tasks"></i> 通知
                         </a>
                     </li>
                       <li class="dropdown">
@@ -200,9 +119,6 @@
                 </ul>
             </div>
             
-            <!-- 
-            <a href="javascript:logout()" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
-             -->
         </div>
         <style type="text/css">  
 		<!--  
@@ -276,7 +192,7 @@
                         </div>
                         <div class="setings-item">
                                 <span>
-                        固定宽度
+                        	固定宽度
                     </span>
 
                             <div class="switch">
@@ -293,21 +209,21 @@
                         <div class="setings-item default-skin nb">
                                 <span class="skin-name ">
                          <a href="#" class="s-skin-0">
-                             默认皮肤
+                             	默认皮肤
                          </a>
                     </span>
                         </div>
                         <div class="setings-item blue-skin nb">
                                 <span class="skin-name ">
                         <a href="#" class="s-skin-1">
-                            蓝色主题
+                            	蓝色主题
                         </a>
                     </span>
                         </div>
                         <div class="setings-item yellow-skin nb">
                                 <span class="skin-name ">
                         <a href="#" class="s-skin-3">
-                            黄色/紫色主题
+                           	 黄色/紫色主题
                         </a>
                     </span>
                         </div>
@@ -315,7 +231,7 @@
                 </div>
                 <div id="tab-2" class="tab-pane">
                     <div class="sidebar-title">
-                        <h3> <i class="fa fa-comments-o"></i> 最新通知<small id="messageCount"><i class="fa fa-tim"></i> 您当前有0条未读通知</small></h3>
+                        <h3> <i class="fa fa-comments-o"></i> 系统消息 <small id="messageCount"><i class="fa fa-tim"></i> 您当前有0条未读通知</small></h3>
                     </div>
                     <ul class="sidebar-list">
                         <li id="messageContent">
@@ -324,7 +240,7 @@
 
                         <li>
                             <a href="javascript:goAllMessage();" id="messageFooter">
-                                查看全部
+                              	  查看全部
                                 <i class="icon-arrow-right"></i>
                             </a>
                         </li>
@@ -341,7 +257,7 @@
                         </li>
                         <li>
                             <a href="javascript:goAllNotice();" id="noticeFooter">
-                                查看所有公告
+                                	查看所有公告
                                 <i class="icon-arrow-right"></i>
                             </a>
                         </li>
@@ -351,100 +267,6 @@
 
         </div>
     </div>
-    <!--右侧边栏结束-->
-    <!--mini聊天窗口开始-->
-    <%--<div class="small-chat-box fadeInRight animated">
-
-        <div class="heading" draggable="true">
-            <small class="chat-date pull-right">
-                2015.9.1
-            </small> 与 Beau-zihan 聊天中
-        </div>
-
-        <div class="content">
-
-            <div class="left">
-                <div class="author-name">
-                    Beau-zihan <small class="chat-date">
-                    10:02
-                </small>
-                </div>
-                <div class="chat-message active">
-                    你好
-                </div>
-
-            </div>
-            <div class="right">
-                <div class="author-name">
-                    游客
-                    <small class="chat-date">
-                        11:24
-                    </small>
-                </div>
-                <div class="chat-message">
-                    你好，请问H+有帮助文档吗？
-                </div>
-            </div>
-            <div class="left">
-                <div class="author-name">
-                    Beau-zihan
-                    <small class="chat-date">
-                        08:45
-                    </small>
-                </div>
-                <div class="chat-message active">
-                    有，购买的H+源码包中有帮助文档，位于docs文件夹下
-                </div>
-            </div>
-            <div class="right">
-                <div class="author-name">
-                    游客
-                    <small class="chat-date">
-                        11:24
-                    </small>
-                </div>
-                <div class="chat-message">
-                    那除了帮助文档还提供什么样的服务？
-                </div>
-            </div>
-            <div class="left">
-                <div class="author-name">
-                    Beau-zihan
-                    <small class="chat-date">
-                        08:45
-                    </small>
-                </div>
-                <div class="chat-message active">
-                    1.所有源码(未压缩、带注释版本)；
-                    <br> 2.说明文档；
-                    <br> 3.终身免费升级服务；
-                    <br> 4.必要的技术支持；
-                    <br> 5.付费二次开发服务；
-                    <br> 6.授权许可；
-                    <br> ……
-                    <br>
-                </div>
-            </div>
-
-
-        </div>
-        <div class="form-chat">
-            <div class="input-group input-group-sm">
-                <input type="text" class="form-control"> <span class="input-group-btn"> <button
-                    class="btn btn-primary" type="button">发送
-            </button> </span>
-            </div>
-        </div>
-
-    </div>--%>
-    <%--<div id="small-chat">
-        <span class="badge badge-warning pull-right">5</span>
-        <a class="open-small-chat">
-            <i class="fa fa-comments"></i>
-
-        </a>
-    </div>--%>
-    <!--mini聊天窗口结束-->
 </div>
 <!-- 全局js -->
 <script src="plug-in/hplus/js/jquery.min.js?v=2.1.4"></script>
@@ -458,6 +280,7 @@
 <!--右键菜单-->
 <script type="text/javascript" src="plug-in/hplus/jquery-smartMenu.js"></script>
 <script type="text/javascript" src="plug-in/hplus/contabs.js"></script>
+<script type="text/javascript" src="plug-in/jquery-plugs/i18n/jquery.i18n.properties.js"></script>
 <t:base type="tools"></t:base>
 <!-- 第三方插件 -->
 <script src="plug-in/hplus/js/plugins/pace/pace.min.js"></script>
@@ -470,30 +293,9 @@
 <!-- 在线聊天 -->
 <%@include file="/context/layui.jsp"%>
 <script>
+	//初始化国际化配置
+	initI18nConfig();
     function logout(){
-        /*bootbox.confirm("<t:mutiLang langKey="common.exit.confirm"/>", function(result) {
-            if(result)
-                location.href="loginController.do?logout";
-        });*/
-        /*swal({
-            title: "您确定要注销吗？",
-            text: "注销后需要重新登录！",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "确定",
-            cancelButtonText: "取消",
-            closeOnConfirm: false,
-            closeOnCancel: true
-        },
-        function (isConfirm) {
-            if (isConfirm) {
-                //swal("注销成功！", "您已经成功注销。", "success");
-                location.href="loginController.do?logout";
-            } else {
-                return false;
-            }
-        });*/
         layer.confirm('您确定要注销吗？', {
             btn: ['确定','取消'], //按钮
             shade: false //不显示遮罩
@@ -519,7 +321,14 @@
     }
 
     $(document).ready(function(){
-        //加载公告
+
+    	loadNotice();
+    	loadSms();
+
+    });
+    
+    function loadNotice(){
+    	 //加载公告
         var url = "noticeController.do?getNoticeList";
         jQuery.ajax({
             url:url,
@@ -561,9 +370,10 @@
                 }
             }
         });
-
-
-        //加载消息
+    }
+    
+    function loadSms(){
+    	//加载消息
         var url = "tSSmsController.do?getMessageList";
         $.ajax({
             url:url,
@@ -591,11 +401,10 @@
                     if(messageList.length > 0){
                         for(var i=0;i<messageList.length;i++){
                             messageContent +="<li><a href='javascript:goMessage(&quot;"+messageList[i].id+"&quot;)' class='clearfix'>";
-                            messageContent +="<img src='plug-in/ace/avatars/avatar3.png' class='msg-photo' alt='Alex’s Avatar' />";
-                            messageContent +="<span class='msg-body'><span class='msg-title'>";
-                            messageContent +="<span class='blue'>"+messageList[i].esSender+":</span>";
+                            messageContent +="<i class='btn btn-xs btn-primary fa fa-user'></i>";
+                            messageContent +="<span class='msg-body'><span class='msg-title'> ";
                             messageContent += messageList[i].esTitle + "</span>";
-                            messageContent +="<span class='msg-time'><i class='ace-icon fa fa-clock-o'></i><span>"+messageList[i].esSendtimeTxt+"</span></span>";
+                            messageContent +=" <span class='blue'>From:"+messageList[i].esSender+"</span>";
                             messageContent +="</span></a><input id='"+messageList[i].id+"_title' type='hidden' value='"+messageList[i].esTitle+"'>";
                             messageContent +="<input id='"+messageList[i].id+"_status' type='hidden' value='"+messageList[i].esStatus+"'>";
                             messageContent +="<input id='"+messageList[i].id+"_content' type='hidden' value='"+messageList[i].esContent+"'></li>";
@@ -609,8 +418,7 @@
                 }
             }
         });
-
-    });
+    }
 
     function goAllNotice(){
         var addurl = "noticeController.do?noticeList";
@@ -620,28 +428,18 @@
     function goNotice(id){
         var addurl = "noticeController.do?goNotice&id="+id;
         createdetailwindow("通知公告详情", addurl, 750, 600);
+        loadNotice();
     }
 
     function goAllMessage(){
-        var addurl = "tSSmsController.do?getSysInfos";
+        var addurl = "tSSmsController.do?goMySmsList";
         createdetailwindow("通知", addurl, 800, 400);
     }
 
     function goMessage(id){
-        var title = $("#"+id+"_title").val();
-        var content = $("#"+id+"_content").val();
-        $("#msgId").val(id);
-        $("#msgTitle").html(title);
-        $("#msgContent").html(content);
-        var status = $("#"+id+"_status").val();
-        if(status==1){
-            $("#msgStatus").html("未读");
-        }else{
-            $("#msgStatus").html("已读");
-        }
-
-        $('.theme-popover-mask').fadeIn(100);
-        $('.theme-popover').slideDown(200);
+    	var addurl = "tSSmsController.do?goSmsDetail&id="+id;
+		createdetailwindow("通知详情", addurl, 750, 600);
+		loadSms();
     }
 
     function readMessage(){
@@ -662,7 +460,6 @@
             }
         });
     }
-
     //个人信息弹出层回缩
     function frameBodyClick(){ 
 		$(".count-info").attr("aria-expanded","false").parent().removeClass("open");
@@ -672,7 +469,37 @@
     	$(".J_iframe").contents().find("body").attr("onclick", "parent.frameBodyClick()"); 
     }
 
+    /**
+     * i18n国际化配置
+     */
+    function initI18nConfig() {
+    	var i18n_browser_Lang = getCookie("i18n_browser_Lang");
+    	if(i18n_browser_Lang == 'zh-cn'){
+    		i18n_browser_Lang = 'zh';
+    	}
+//    	console.log(i18n_browser_Lang);
+        $.i18n.properties({
+            name:'jeecgs',    		//属性文件名     命名格式： 文件名_国家代号.properties
+            path:'plug-in/i18n/',   //注意这里路径是你属性文件的所在文件夹
+            mode:'map',
+            language:i18n_browser_Lang,//这就是国家代号 name+language刚好组成属性文件名：strings+zh -> strings_zh.properties
+            callback:function(){
+           	
+            }
+        });
+    }
 </script>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?098e6e84ab585bf0c2e6853604192b8b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 </body>
 
 </html>

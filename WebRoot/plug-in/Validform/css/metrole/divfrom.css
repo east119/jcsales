@@ -187,7 +187,9 @@ span.error{
 }
 
 #steps form select{
-      background: #ffffff;
+	/*update-begin--Author:scott  Date:20180627 for：自定义下拉右侧背景图标--- */
+    background-color: #ffffff;
+    /*update-end--Author:scott  Date:20180627 for：自定义下拉右侧背景图标--- */
     border: 1px solid #ddd;
     -moz-border-radius: 2px;
     -webkit-border-radius: 2px;
@@ -198,6 +200,9 @@ span.error{
     */
     width: 157px;
     float:left;
+    /*update-begin--Author:scott  Date:20180628 for：div表单自定义下拉高度--- */
+    height: 28px;
+    /*update-end--Author:scott  Date:20180628 for：div表单自定义下拉高度--- */
 }
 #steps form input:focus{
     -moz-box-shadow:0px 0px 3px #aaa;

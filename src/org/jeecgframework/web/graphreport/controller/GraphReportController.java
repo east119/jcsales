@@ -111,6 +111,7 @@ public class GraphReportController extends BaseController {
 		sb.append(SysThemesUtil.getReportTheme(sysThemesEnum));
 		sb.append(SysThemesUtil.getCommonTheme(sysThemesEnum));
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/jquery/jquery-1.8.3.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/dataformat.js\"></script>");
 		sb.append(SysThemesUtil.getEasyUiTheme(sysThemesEnum));
 		sb.append("<link rel=\"stylesheet\" href=\"plug-in/easyui/themes/icon.css\" type=\"text/css\"></link>");
@@ -123,7 +124,7 @@ public class GraphReportController extends BaseController {
 
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/layer/layer.js\"></script>");
 
-		sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
+		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/easyuiextend.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/easyui/extends/datagrid-scrollview.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/My97DatePicker/WdatePicker.js\"></script>");
@@ -242,16 +243,21 @@ public class GraphReportController extends BaseController {
 			Map configM = (Map) cgReportMap.get(CgReportConstant.MAIN);
 			String querySql = (String) configM.get("CGR_SQL");
 			List<Map<String,Object>> items = (List<Map<String, Object>>) cgReportMap.get(CgReportConstant.ITEMS);
-			Map queryparams =  new LinkedHashMap<String,Object>();
+			//页面参数查询字段（占位符的条件语句）
+			Map pageSearchFields =  new LinkedHashMap<String,Object>();
+
+			//获取查询条件数据
+			Map<String,Object> paramData = new HashMap<String, Object>();
 			for(Map<String,Object> item:items){
 				String isQuery = (String) item.get(CgReportConstant.ITEM_ISQUERY);
 				if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(isQuery)){
 					//step.3 装载查询条件
-					CgReportQueryParamUtil.loadQueryParams(request, item, queryparams);
+					CgReportQueryParamUtil.loadQueryParams(request, item, pageSearchFields,paramData);
 				}
 			}
 			//step.4 进行查询返回结果
-			List<Map<String, Object>> result= graphReportService.queryByCgReportSql(querySql, queryparams, -1, -1);
+			List<Map<String, Object>> result= graphReportService.queryByCgReportSql(querySql, pageSearchFields,paramData, -1, -1);
+
 			cgReportService.dealDic(result,items);
 			cgReportService.dealReplace(result,items);
 			
@@ -311,19 +317,22 @@ public class GraphReportController extends BaseController {
 		Map configM = (Map) cgReportMap.get(CgReportConstant.MAIN);
 		String querySql = (String) configM.get(CgReportConstant.CONFIG_SQL);
 		List<Map<String,Object>> items = (List<Map<String, Object>>) cgReportMap.get(CgReportConstant.ITEMS);
-		Map queryparams =  new LinkedHashMap<String,Object>();
+		//页面参数查询字段（占位符的条件语句）
+		Map pageSearchFields =  new LinkedHashMap<String,Object>();
+		//获取查询条件数据
+		Map<String,Object> paramData = new HashMap<String, Object>();
 		for(Map<String,Object> item:items){
 			String isQuery = (String) item.get(CgReportConstant.ITEM_ISQUERY);
 			if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(isQuery)){
 				//step.3 装载查询条件
-				CgReportQueryParamUtil.loadQueryParams(request, item, queryparams);
+				CgReportQueryParamUtil.loadQueryParams(request, item, pageSearchFields,paramData);
 			}
 		}
 		//step.4 进行查询返回结果
 		int p = page==null?1:Integer.parseInt(page);
 		int r = rows==null?99999:Integer.parseInt(rows);
-		List<Map<String, Object>> result= graphReportService.queryByCgReportSql(querySql, queryparams, p, r);
-		long size = graphReportService.countQueryByCgReportSql(querySql, queryparams);
+		List<Map<String, Object>> result= graphReportService.queryByCgReportSql(querySql, pageSearchFields, paramData, p, r);
+		long size = graphReportService.countQueryByCgReportSql(querySql, pageSearchFields);
 		cgReportService.dealDic(result,items);
 		cgReportService.dealReplace(result,items);
 		response.setContentType("application/json");

@@ -1001,18 +1001,15 @@ public class ListtoMenu {
 		String name = getMutiLang(function.getFunctionName()) ;
 		menuString.append("<li> <a class=\"J_menuItem\" href=\"").append(function.getFunctionUrl()).append("\">");
 		if(!function.hasSubFunction(map)){
-
 			if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 				menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 			}
 			menuString.append("<span class=\"menu-text\">");
 			menuString.append(name);
 			menuString.append("</span>");
-
 			menuString.append("</a>");
 			menuString.append("</li>");
 		}else {
-
 			if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 				menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 			}else{
@@ -1021,7 +1018,6 @@ public class ListtoMenu {
 			menuString.append("<span class=\"menu-text\">");
 			menuString.append(name);
 			menuString.append("</span>");
-
 			menuString.append("<span class=\"fa arrow\">");
 			menuString.append("</span>");
 			menuString.append("</a>");
@@ -1096,18 +1092,15 @@ public class ListtoMenu {
 			String name = getMutiLang(function.getFunctionName()) ;
 			menuString.append("<li> <a class=\"F_menuItem\" href=\"").append(function.getFunctionUrl()).append("\">");
 			if(!function.hasSubFunction(map)){
-
 				if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 					menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 				}
 				menuString.append("<span>");
 				menuString.append(name);
 				menuString.append("</span>");
-
 				menuString.append("</a>");
 				menuString.append("</li>");
 			}else {
-
 				if(function.getFunctionIconStyle()!=null&&!function.getFunctionIconStyle().trim().equals("")){
 					menuString.append("<i class=\"fa "+function.getFunctionIconStyle()+"\"></i>");
 				}else{
@@ -1116,7 +1109,6 @@ public class ListtoMenu {
 				menuString.append("<span>");
 				menuString.append(name);
 				menuString.append("</span>");
-
 				menuString.append("<i class=\"icon-font icon-right\"></i>");
 				menuString.append("</a>");
 				menuString.append("<ul class=\"menu-item-child\" >");

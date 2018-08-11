@@ -1,12 +1,13 @@
 package org.jeecgframework.core.extend.swftools;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 import org.artofsolving.jodconverter.OfficeDocumentConverter;
 import org.artofsolving.jodconverter.office.DefaultOfficeManagerConfiguration;
 import org.artofsolving.jodconverter.office.OfficeManager;
 import org.jeecgframework.core.util.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -16,6 +17,7 @@ import org.jeecgframework.core.util.FileUtils;
  * 
  */
 public class OpenOfficePDFConverter implements PDFConverter {
+	private static final Logger log = LoggerFactory.getLogger(OpenOfficePDFConverter.class);
 
 	private static OfficeManager officeManager;
 	/** OpenOffice安装根目录 */
@@ -23,44 +25,21 @@ public class OpenOfficePDFConverter implements PDFConverter {
 	private static int[] port = { 8100 };
 
 	public void convert2PDF(String inputFile, String pdfFile, String extend) {
-
-//		if (extend.equals("txt")) {
-//
-//			String odtFile = FileUtils.getFilePrefix(inputFile) + ".odt";
-//			if (new File(odtFile).exists()) {
-//				org.jeecgframework.core.util.LogUtil.info("odt文件已存在！");
-//				inputFile = odtFile;
-//			} else {
-//				try {
-//					FileUtils.copyFile(inputFile, odtFile);
-//					inputFile = odtFile;
-//				} catch (FileNotFoundException e) {
-//					org.jeecgframework.core.util.LogUtil.info("Odt文档不存在！");
-//					e.printStackTrace();
-//				}
-//			}
-//
-//		}
-
-		
 		startService();
-		//pdfFile = pdfFile.replaceAll(" ", "").replaceAll("　", "");
-		 org.jeecgframework.core.util.LogUtil.info("进行文档转换转换:" + inputFile + " --> " + pdfFile);
-		OfficeDocumentConverter converter = new OfficeDocumentConverter(
-				officeManager);
+		 log.info("进行文档转换转换:" + inputFile + " --> " + pdfFile);
+		OfficeDocumentConverter converter = new OfficeDocumentConverter(officeManager);
 		try {
 			converter.convert(new File(inputFile), new File(pdfFile));
 		} catch (Exception e) {
-			// TODO: handle exception
-			org.jeecgframework.core.util.LogUtil.info(e.getMessage());
+			e.printStackTrace();
+			log.info(e.getMessage());
 		}
 		
 		stopService();
-	    org.jeecgframework.core.util.LogUtil.info("进行文档转换转换---- 结束----");
+	    log.info("进行文档转换转换---- 结束----");
 	}
 
 	public void convert2PDF(String inputFile, String extend) {
-		//inputFile = inputFile.replaceAll(" ", "").replaceAll("　", "");
 		String pdfFile = FileUtils.getFilePrefix2(inputFile) + ".pdf";
 		convert2PDF(inputFile, pdfFile, extend);
 
@@ -80,17 +59,17 @@ public class OpenOfficePDFConverter implements PDFConverter {
 
 			officeManager = configuration.buildOfficeManager();
 			officeManager.start(); // 启动服务
-			org.jeecgframework.core.util.LogUtil.info("office转换服务启动成功!");
+			log.info("office转换服务启动成功!");
 		} catch (Exception ce) {
-			org.jeecgframework.core.util.LogUtil.info("office转换服务启动失败!详细信息:" + ce);
+			log.info("office转换服务启动失败!详细信息:" + ce);
 		}
 	}
 
 	public static void stopService() {
-		org.jeecgframework.core.util.LogUtil.info("关闭office转换服务....");
+		log.info("关闭office转换服务....");
 		if (officeManager != null) {
 			officeManager.stop();
 		}
-		org.jeecgframework.core.util.LogUtil.info("关闭office转换成功!");
+		log.info("关闭office转换成功!");
 	}
 }

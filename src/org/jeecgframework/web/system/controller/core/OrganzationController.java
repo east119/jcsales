@@ -1103,7 +1103,7 @@ public class OrganzationController extends BaseController {
 			String id = request.getParameter("id");
 			String name = request.getParameter("name");
 			String level = request.getParameter("level");
-			logger.info("------id----"+id+"----name----"+name+"----level-----"+level);
+			logger.debug("------id----"+id+"----name----"+name+"----level-----"+level);
 		    //如果id不为空，则查询当前节点子节点
 			if(StringUtils.isNotEmpty(id)){
 				String hql = "from TSDepart t where t.TSPDepart.id = ? order by t.departOrder";

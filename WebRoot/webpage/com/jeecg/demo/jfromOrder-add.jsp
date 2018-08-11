@@ -48,7 +48,9 @@
 				<label class="Validform_label">收货人:</label>
 			</td>
 			<td class="value">
-		     	 <input id="receiverName" name="receiverName" type="text" style="width: 150px" class="inputxt"  ignore="ignore" />
+			<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
+		     	 <input id="receiverName" name="receiverName" type="text" style="width: 150px" class="inputxt"  datatype="*"/>
+			<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
 				<span class="Validform_checktip"></span>
 				<label class="Validform_label" style="display: none;">收货人</label>
 			</td>
@@ -56,7 +58,9 @@
 				<label class="Validform_label">联系电话:</label>
 			</td>
 			<td class="value">
-		     	 <input id="receiverMobile" name="receiverMobile" type="text" style="width: 150px" class="inputxt"  ignore="ignore" />
+			<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
+		     	 <input id="receiverMobile" name="receiverMobile" type="text" style="width: 150px" class="inputxt"  datatype="m" />
+			<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
 				<span class="Validform_checktip"></span>
 				<label class="Validform_label" style="display: none;">联系电话</label>
 			</td>
@@ -66,7 +70,9 @@
 				<label class="Validform_label">收货省:</label>
 			</td>
 			<td class="value">
-		     	 <input id="receiverState" name="receiverState" type="text" style="width: 150px" class="inputxt"  ignore="ignore" />
+			<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
+		     	 <input id="receiverState" name="receiverState" type="text" style="width: 150px" class="inputxt"  datatype="*" />
+			<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
 				<span class="Validform_checktip"></span>
 				<label class="Validform_label" style="display: none;">收货省</label>
 			</td>
@@ -74,7 +80,9 @@
 				<label class="Validform_label">收货市:</label>
 			</td>
 			<td class="value">
-		     	 <input id="receiverCity" name="receiverCity" type="text" style="width: 150px" class="inputxt"  ignore="ignore" />
+			<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
+		     	 <input id="receiverCity" name="receiverCity" type="text" style="width: 150px" class="inputxt"  datatype="*" />
+			<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
 				<span class="Validform_checktip"></span>
 				<label class="Validform_label" style="display: none;">收货市</label>
 			</td>
@@ -84,7 +92,9 @@
 				<label class="Validform_label">收货区:</label>
 			</td>
 			<td class="value">
-		     	 <input id="receiverDistrict" name="receiverDistrict" type="text" style="width: 150px" class="inputxt"  ignore="ignore" />
+			<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
+		     	 <input id="receiverDistrict" name="receiverDistrict" type="text" style="width: 150px" class="inputxt"  datatype="*" />
+			<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
 				<span class="Validform_checktip"></span>
 				<label class="Validform_label" style="display: none;">收货区</label>
 			</td>
@@ -92,7 +102,9 @@
 				<label class="Validform_label">收货地址:</label>
 			</td>
 			<td class="value">
-		     	 <input id="receiverAddress" name="receiverAddress" type="text" style="width: 150px" class="inputxt"  ignore="ignore" />
+			<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
+		     	 <input id="receiverAddress" name="receiverAddress" type="text" style="width: 150px" class="inputxt"  datatype="*" />
+			<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，非空校验-->
 				<span class="Validform_checktip"></span>
 				<label class="Validform_label" style="display: none;">收货地址</label>
 			</td>

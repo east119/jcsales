@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,6 +69,8 @@ public class LoginController extends BaseController{
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	private SystemService systemService;
 	private UserService userService;
+	@Resource
+	private ClientManager clientManager;
 
 	@Autowired
 	private MutiLangServiceI mutiLangService;
@@ -100,13 +103,11 @@ public class LoginController extends BaseController{
 		if (req.getParameter("langCode")!=null) {
 			req.getSession().setAttribute("lang", req.getParameter("langCode"));
 		}
-		//--------------------单点登录----------------------------------------------------
 		//单点登录（返回链接）
 		String returnURL = req.getParameter("ReturnURL");
 		if(StringUtils.isNotEmpty(returnURL)){
 			req.getSession().setAttribute("ReturnURL", returnURL);
 		}
-		//--------------------单点登录----------------------------------------------------
 		
 		//验证码
 		String randCode = req.getParameter("randCode");
@@ -128,13 +129,29 @@ public class LoginController extends BaseController{
 			TSUser u = userService.checkUserExits(user);
 			if (u == null) {
 				u = userService.findUniqueByProperty(TSUser.class, "email", user.getUserName());
-				if(u == null || u.getPassword().equals(PasswordUtil.encrypt(u.getUserName(), u.getPassword(), PasswordUtil.getStaticSalt()))){
+
+				if(u == null || !u.getPassword().equals(PasswordUtil.encrypt(u.getUserName(),user.getPassword(), PasswordUtil.getStaticSalt()))){
+
 					j.setMsg(mutiLangService.getLang("common.username.or.password.error"));
 					j.setSuccess(false);
 					return j;
 				}
 			}
 			if (u != null && u.getStatus() != 0) {
+
+				if(u.getDeleteFlag()==1){
+					j.setMsg(mutiLangService.getLang("common.username.or.password.error"));
+					j.setSuccess(false);
+					return j;
+				}
+
+				if("2".equals(u.getUserType())){
+					j.setMsg(mutiLangService.getLang("common.user.interfaceUser"));
+					j.setSuccess(false);
+					return j;
+				}
+
+				
 				// 处理用户有多个组织机构的情况，以弹出框的形式让用户选择
 				Map<String, Object> attrMap = new HashMap<String, Object>();
 				j.setAttributes(attrMap);
@@ -197,7 +214,6 @@ public class LoginController extends BaseController{
 	 */
 	@RequestMapping(params = "login")
 	public String login(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response) {
-		System.gc();
 		TSUser user = ResourceUtil.getSessionUser();
 		String roles = "";
 		if (user != null) {
@@ -215,12 +231,18 @@ public class LoginController extends BaseController{
             modelMap.put("userName", user.getUserName().length()>5?user.getUserName().substring(0, 5)+"...":user.getUserName());
             modelMap.put("portrait", user.getPortrait());
             //用户当前登录机构
-            modelMap.put("currentOrgName", ClientManager.getInstance().getClient().getUser().getCurrentDepart().getDepartname());
+            modelMap.put("currentOrgName", clientManager.getClient().getUser().getCurrentDepart().getDepartname());
 			
 			SysThemesEnum sysTheme = SysThemesUtil.getSysTheme(request);
 			if("fineui".equals(sysTheme.getStyle())|| "ace".equals(sysTheme.getStyle())||"diy".equals(sysTheme.getStyle())||"acele".equals(sysTheme.getStyle())||"hplus".equals(sysTheme.getStyle())){
 				request.setAttribute("menuMap", userService.getFunctionMap(user.getId()));
 			}
+			//国际化cookie
+			Cookie i18n_cookie = new Cookie("i18n_browser_Lang", oConvertUtils.getString(request.getSession().getAttribute("lang")));
+			//设置cookie有效期为一个月
+			i18n_cookie.setMaxAge(3600*24*30);
+			response.addCookie(i18n_cookie);
+			
 			//ace addOneTab无效问题
 			Cookie cookie = new Cookie("JEECGINDEXSTYLE", sysTheme.getStyle());
 			//设置cookie有效期为一个月
@@ -229,9 +251,8 @@ public class LoginController extends BaseController{
 			//zIndex索引问题
 			Cookie zIndexCookie = new Cookie("ZINDEXNUMBER", "1990");
 			zIndexCookie.setMaxAge(3600*24);//一天
+			zIndexCookie.setPath("/");
 			response.addCookie(zIndexCookie);
-			
-			//-----------------------单点登录-------------------------------------------------
 			/*
 			 * 单点登录 - 登录需要跳转登录前页面，自己处理 ReturnURL 使用 
 			 * HttpUtil.decodeURL(xx) 解码后重定向
@@ -258,16 +279,13 @@ public class LoginController extends BaseController{
 				}
 				return null;
 			}
-			//------------------------单点登录------------------------------------------------
 			return sysTheme.getIndexPath();
 		} else {
-			//------------------------单点登录------------------------------------------------
 			//单点登录 - 返回链接
 			String returnURL = (String)request.getSession().getAttribute("ReturnURL");
 			if(StringUtils.isNotEmpty(returnURL)){
 				request.setAttribute("ReturnURL", returnURL);
 			}
-			//-----------------------单点登录-------------------------------------------------
 			return "login/login";
 		}
 
@@ -288,9 +306,8 @@ public class LoginController extends BaseController{
 		} catch (Exception e) {
 			LogUtil.error(e.toString());
 		}
-		ClientManager.getInstance().removeClinet(session.getId());
+		clientManager.removeClinet(session.getId());
 		session.invalidate();
-		System.gc();
 		ModelAndView modelAndView = new ModelAndView(new RedirectView("loginController.do?login"));
 		return modelAndView;
 	}
@@ -324,7 +341,7 @@ public class LoginController extends BaseController{
 		String searchVal = request.getParameter("q");
 		//获取到session中的菜单列表
 		HttpSession session = ContextHolderUtils.getSession();
-		Client client = ClientManager.getInstance().getClient(session.getId());
+		Client client = clientManager.getClient(session.getId());
 		//获取到的是一个map集合
 		Map<Integer, List<TSFunction>> map=client.getFunctionMap();
 		//声明list用来存储菜单
@@ -370,7 +387,7 @@ public class LoginController extends BaseController{
 	public String getUrlpage(HttpServletRequest request,HttpServletResponse response) {
 		String urlname = request.getParameter("urlname");
 		HttpSession session = ContextHolderUtils.getSession();
-		Client client = ClientManager.getInstance().getClient(session.getId());
+		Client client = clientManager.getClient(session.getId());
 		Map<Integer, List<TSFunction>> map=client.getFunctionMap();
 		List<TSFunction>autoList = new ArrayList<TSFunction>();
 		for(int t=0;t<map.size();t++){
@@ -449,7 +466,6 @@ public class LoginController extends BaseController{
 	public AjaxJson sendResetPwdMail(String email,HttpServletRequest request){
 		AjaxJson ajaxJson = new AjaxJson();
 		try {
-			//step.1 ------------check重置邮箱是否正确--------------------------
 			if(StringUtils.isEmpty(email)){
 				ajaxJson.setSuccess(false);
 				ajaxJson.setMsg("邮件地址不能为空");
@@ -461,9 +477,6 @@ public class LoginController extends BaseController{
 				ajaxJson.setMsg("用户名对应的用户信息不存在");
 				return ajaxJson;
 			}
-			
-			
-			//step.2 ------------禁止重复进行密码重置--------------------------
 			String hql = "from TSPasswordResetkey bean where bean.username = ? and bean.isReset = 0 order by bean.createDate desc limit 1";
 			List<TSPasswordResetkey> resetKeyList = systemService.findHql(hql,user.getUserName());
 			if(resetKeyList != null && !resetKeyList.isEmpty()){
@@ -476,17 +489,12 @@ public class LoginController extends BaseController{
 					
 				}
 			}
-			
-			//step.3 ------------保存账号密码重置信息--------------------------
 			TSPasswordResetkey passwordResetKey = new TSPasswordResetkey();
 			passwordResetKey.setEmail(email);
 			passwordResetKey.setUsername(user.getUserName());
 			passwordResetKey.setCreateDate(new Date());
 			passwordResetKey.setIsReset(0);
 			userService.save(passwordResetKey);
-			
-			
-			//step.4 ------------调用接口发送邮件--------------------------
 			String content = ResourceUtil.getConfigByName("resetpwd.mail.content");
 			if(content.indexOf("${username}") > -1){
 				content = content.replace("${username}", user.getUserName());

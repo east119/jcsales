@@ -35,6 +35,8 @@ public class TSType extends IdEntity implements java.io.Serializable {
 //	private List<TPProcess> TSProcesses = new ArrayList();
 	private List<TSType> TSTypes =new ArrayList();
 
+	private Integer orderNum;//序号
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "typegroupid")
 	public TSTypegroup getTSTypegroup() {
@@ -100,9 +102,14 @@ public class TSType extends IdEntity implements java.io.Serializable {
 //	public void setTSProcesses(List<TPProcess> TSProcesses) {
 //		this.TSProcesses = TSProcesses;
 //	}
-
-
-
+	
+	@Column(name="order_num",length=3)
+	public Integer getOrderNum() {
+		return orderNum;
+	}
+	public void setOrderNum(Integer orderNum) {
+		this.orderNum = orderNum;
+	}
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "TSType")
 	public List<TSType> getTSTypes() {
 		return this.TSTypes;

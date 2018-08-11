@@ -82,13 +82,12 @@
 					<input name="superQueryFieldList[0].sysCompanyCode" type="hidden"/>
 					<input name="superQueryFieldList[0].mainId" type="hidden"/>
 				  <td align="left">
-					  	<input name="superQueryFieldList[0].seq" maxlength="32" type="text" class="inputxt" datatype="*"  style="width:60px;"    >
+					  	<input name="superQueryFieldList[0].seq" maxlength="32" type="text" class="inputxt" datatype="*"  style="width:60px;" />
 					  <label class="Validform_label" style="display: none;">序号</label>
 					</td>
 				  <td align="left">
-							<%-- <t:dictSelect field="superQueryFieldList[0].tableName" type="list"   typeGroupCode=""  defaultVal="${superQueryFieldPage.tableName}" hasLabel="false"  title="表名"></t:dictSelect> --%>     
-							<select  name="superQueryFieldList[0].tableName" class="fieldTableList4" datatype="*" style="width:180px" >  
-							<option value="">--</option>
+							<select  name="superQueryFieldList[0].tableName" class="fieldTableList4" datatype="*" style="width:180px">  
+							<option value=""></option>
                             </select> 
 					  <label class="Validform_label" style="display: none;">表名</label>
 					</td>
@@ -97,7 +96,7 @@
 					  <label class="Validform_label" style="display: none;">字段名</label>
 					</td>
 				  <td align="left">
-					  	<input name="superQueryFieldList[0].txt" maxlength="32" type="text" class="inputxt"  style="width:120px;"   datatype="*" >
+					  	<input name="superQueryFieldList[0].txt" maxlength="32" type="text" class="inputxt"  style="width:120px;"   datatype="*"/>
 					  <label class="Validform_label" style="display: none;">字段文本</label>
 					</td>
 				  <td align="left">
@@ -109,15 +108,15 @@
 					  <label class="Validform_label" style="display: none;">控件类型</label>
 					</td>
 				  <td align="left">
-					  	<input name="superQueryFieldList[0].dictTable" maxlength="32" type="text" class="inputxt"  style="width:120px;"    >
+					  	<input name="superQueryFieldList[0].dictTable" maxlength="32" type="text" class="inputxt"  style="width:120px;" />
 					  <label class="Validform_label" style="display: none;">字典Table</label>
 					</td>
 				  <td align="left">
-					  	<input name="superQueryFieldList[0].dictCode" maxlength="32" type="text" class="inputxt"  style="width:120px;"   >
+					  	<input name="superQueryFieldList[0].dictCode" maxlength="32" type="text" class="inputxt"  style="width:120px;"/>
 					  <label class="Validform_label" style="display: none;">字典Code</label>
 					</td>
 				  <td align="left">
-					  	<input name="superQueryFieldList[0].dictText" maxlength="32" type="text" class="inputxt"  style="width:120px;"    >
+					  	<input name="superQueryFieldList[0].dictText" maxlength="32" type="text" class="inputxt"  style="width:120px;" />
 					  <label class="Validform_label" style="display: none;">字典Text</label>
 					</td>
    			</tr>
@@ -142,13 +141,12 @@
 					  <label class="Validform_label" style="display: none;">序号</label>
 				   </td>
 				   <td align="left">
-							  <%-- <t:dictSelect field="superQueryFieldList[${stuts.index }].tableName" type="list"   typeGroupCode=""  defaultVal="${poVal.tableName }" hasLabel="false"  title="表名"></t:dictSelect>   --%>     
-							  <select id="fieldTableList[${stuts.index }]"  name="superQueryFieldList[${stuts.index}].tableName" class="fieldTableList4" style="width:180px" >  <!--onclick="sss()"  -->
+							  <select id="fieldTableList[${stuts.index }]"  name="superQueryFieldList[${stuts.index}].tableName" class="fieldTableList4" style="width:180px">
 							  <c:if test="${not empty poVal.tableName}">
 							  	<option>${poVal.tableName}</option> 
 							  </c:if>
 							  <c:if test="${empty poVal.tableName}">
-							  	<option value="">--</option>
+							  	<option value=""></option>
 							  </c:if>
 							  
                             </select> 

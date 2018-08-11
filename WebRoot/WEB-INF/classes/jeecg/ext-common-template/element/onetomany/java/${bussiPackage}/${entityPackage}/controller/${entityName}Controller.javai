@@ -11,7 +11,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +41,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.io.IOException;
 import java.util.Map;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
 <#-- restful 通用方法生成 -->
 import org.apache.commons.lang3.StringUtils;
 import org.jeecgframework.jwt.util.ResponseMessage;
 import org.jeecgframework.jwt.util.Result;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -66,7 +65,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 <#-- swagger api end -->
-
+</#if>
 <#-- 列为文件类型的文件代码生成 -->
 <#assign fileFlag = false />
 <#list columns as filePo>
@@ -91,23 +90,24 @@ import java.util.HashMap;
  * @version V1.0   
  *
  */
+ <#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
  <#-- update--begin--author:zhangjiaqiang date:20171031 for:API 注解 start -->
 @Api(value="${entityName}",description="${ftl_description}",tags="${entityName?uncap_first}Controller")
 <#-- update--end--author:zhangjiaqiang date:20171031 for:API 注解 start -->
+</#if>
 @Controller
 @RequestMapping("/${entityName?uncap_first}Controller")
 public class ${entityName}Controller extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(${entityName}Controller.class);
+	private static final Logger logger = LoggerFactory.getLogger(${entityName}Controller.class);
 
 	@Autowired
 	private ${entityName}ServiceI ${entityName?uncap_first}Service;
 	@Autowired
 	private SystemService systemService;
+	<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
 	@Autowired
 	private Validator validator;
+	</#if>
 	<#-- 列为文件类型的文件代码生成 -->
 	<#if fileFlag==true>
 	@Autowired
@@ -453,6 +453,7 @@ public class ${entityName}Controller extends BaseController {
  	</#if>
  	</#list> 
  	
+ 	<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
  	<#-- update--begin--author:zhangjiaqiang date:20171113 for:restful方法封装 -->
  	<#-- restful 通用方法生成 -->
  	@RequestMapping(method = RequestMethod.GET)
@@ -593,7 +594,7 @@ public class ${entityName}Controller extends BaseController {
 	@ApiOperation(value="删除${ftl_description}")
 	<#-- update--begin--author:zhangjiaqiang date:20171031 for:TASK #2397 【新功能】代码生成器模板修改，追加swagger-ui注解 -->
 	public ResponseMessage<?> delete(@ApiParam(name="id",value="ID",required=true)@PathVariable("id") String id) {
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");
@@ -610,6 +611,7 @@ public class ${entityName}Controller extends BaseController {
 	}
 	<#-- restful 通用方法生成 -->
 	<#-- update--end--author:zhangjiaqiang date:20171113 for:restful方法封装 -->
+	</#if>
 	
 	<#-- 列为文件类型的文件代码生成 -->
 	<#if fileFlag==true>

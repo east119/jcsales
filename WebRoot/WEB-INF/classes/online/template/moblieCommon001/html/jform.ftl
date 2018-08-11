@@ -1,4 +1,5 @@
 <#setting number_format="0.#####################">
+<#include "online/template/ui/tag.ftl"/>
 ﻿<html>
 	<head>
 		<base href="${basePath}/"/>
@@ -9,14 +10,28 @@
 		<title>Jeecg 移动表单</title>
 		<link type="text/css" rel="stylesheet" href="${basePath}/online/template/${this_olstylecode}/css/formviewm.css" />
 		<link type="text/css" rel="stylesheet" href="${basePath}/online/template/${this_olstylecode}/css/theme/default.css" />
+		<link rel="stylesheet" href="${basePath}/plug-in/bootstrap3.3.5/css/bootstrap.min.css">
 		<script type="text/javascript" src="${basePath}/online/template/${this_olstylecode}/js/head.load.min.js"></script>
-		<script type="text/javascript" src="${basePath}/online/template/${this_olstylecode}/js/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/jquery/jquery-1.9.1.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js"></script>
+  		<script type="text/javascript" src="${basePath}/plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="${basePath}/online/template/${this_olstylecode}/js/lang-cn.js"></script>
 		<script type="text/javascript" src="${basePath}/online/template/${this_olstylecode}/js/ajaxfileupload.js"></script>
 		<script type="text/javascript" src="${basePath}/online/template/${this_olstylecode}/js/address-cn.js"></script>
 		<script type="text/javascript" src="${basePath}/online/template/${this_olstylecode}/js/utils.js"></script>
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 		<script type="text/javascript" src="${basePath}/plug-in/My97DatePicker/WdatePicker.js"></script>
+		<link rel="stylesheet" href="${basePath}/plug-in/uploadify/css/uploadify.css" type="text/css"></link>
+  		<script type="text/javascript" src="${basePath}/plug-in/uploadify/jquery.uploadify-3.1.js"></script>
+  		<!-- Validform组件引用 -->
+		<link href="${basePath}/plug-in/themes/bootstrap-ext/css/validform-ext.css" rel="stylesheet" />
+		<script type="text/javascript" src="${basePath}/plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/Validform/js/datatype_zh-cn.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
+		<script src="${basePath}/plug-in/themes/bootstrap-ext/js/common.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/lhgDialog/lhgdialog.min.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/tools/curdtools.js"></script>
 		<style id="__wechat_default_css">
 			::-webkit-scrollbar{
 				width: 10px;
@@ -44,6 +59,9 @@
 			::-webkit-scrollbar-thumb:vertical{
 				background: rgb(191, 191, 191);
 			}
+			.upload_generate {
+				font-size:13px;
+			}
 		</style>
 	</head>
 	<body class="wallpaper wallpaperm">
@@ -52,7 +70,7 @@
 			<h1 id="logo" class="logo"><a></a></h1>
 		</div>
 		<div class="ui-content">
-			<form id="form1" class="form" action="${basePath}/cgFormBuildController.do?saveOrUpdate" name="formobj" method="post">
+			<form id="formobj" class="form" action="${basePath}/cgFormBuildController.do?saveOrUpdate" name="formobj" method="post">
 				<input type="hidden" id="btn_sub" class="btn_sub"/>
 				<input type="hidden" name="tableName" value="${tableName?if_exists?html}" >
 				<input type="hidden" name="id" value="${id?if_exists?html}" >
@@ -78,7 +96,12 @@
 									<#if po.field_must_input??><#if po.field_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != "Y">ignore="checked"<#else>ignore="ignore"</#if>
 									<#-- update--end--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
 										<#if po.field_valid_type?if_exists?html != ''>
-											datatype="${po.field_valid_type?if_exists?html}" 
+											<#if po.field_valid_type=='only'>
+								       		   validType="${tableName},${po.field_name},id"
+								       		   datatype="*"
+								       		<#else>
+							                   datatype="${po.field_valid_type?if_exists?html}"
+							               </#if>
 											<#else>
 												<#if po.type == 'int'>
 													datatype="n" 
@@ -194,26 +217,6 @@
 											</@DictData>
 									</div>
 								</li>
-							<#elseif po.show_type=="textarea">
-								<li id="${po.field_name}" class="clearfix " typ="textarea">
-									<label class="desc">${po.content}: <#if po.is_null != 'Y'><span class="req">*</span></#if></label>
-									<div class="content">
-										<textarea 
-											id="${po.field_name}" ${po.extend_json?if_exists} 
-											placeholder="${po.content}" 
-											class="ui-input-text s detail fld" 
-											name="${po.field_name}"> 
-											<#-- update--begin--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
-									<#if po.field_must_input??><#if po.field_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != "Y">ignore="checked"<#else>ignore="ignore"</#if>
-									<#-- update--end--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
-											<#if po.operationCodesReadOnly?if_exists>readonly = "readonly" </#if>
-											<#if po.field_valid_type?if_exists?html != ''>datatype="${po.field_valid_type?if_exists?html}" 
-												<#else>
-													<#if po.is_null != 'Y'>datatype="*" </#if> 
-											</#if>>${data['${tableName}']['${po.field_name}']?if_exists?html}
-										</textarea>
-									</div>
-								</li>
 							<#elseif po.show_type=='date'>
 								<li id="${po.field_name}" class="clearfix " typ="date" reqd="1">
 									<label class="desc">${po.content}: <#if po.is_null != 'Y'><span class="req">*</span></#if></label>
@@ -221,7 +224,7 @@
 										<input 
 											type="text" 
 											maxlength="256" 
-											class="ui-input-text xl input fld" 
+											class="ui-input-text xl input fld Wdate" 
 											name="${po.field_name}" 
 											id="${po.field_name}" 
 											${po.extend_json?if_exists}
@@ -264,11 +267,38 @@
 										/>
 									</div>
 								</li>
+							<#elseif po.show_type=='file' || po.show_type=='image'>
+								<li class="clearfix " typ="name" reqd="1">
+									<label class="desc">${po.content}:<#if po.is_null != 'Y'><span class="req">*</span></#if></label>
+								</li>
+								<@uploadtag po = po />
+								
 						</#if>
+					</#list>
+					<#list columnsarea as po>
+						<li id="${po.field_name}" class="clearfix " typ="textarea">
+							<label class="desc">${po.content}: <#if po.is_null != 'Y'><span class="req">*</span></#if></label>
+							<div class="content">
+								<textarea 
+									id="${po.field_name}" ${po.extend_json?if_exists} 	
+									class="ui-input-text s detail fld" 
+									name="${po.field_name}"
+									<#-- update--begin--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
+							<#if po.field_must_input??><#if po.field_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != "Y">ignore="checked"<#else>ignore="ignore"</#if>
+							<#-- update--end--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
+									<#if po.operationCodesReadOnly?if_exists>readonly = "readonly" </#if>
+									<#if po.field_valid_type?if_exists?html != ''>datatype="${po.field_valid_type?if_exists?html}" 
+										<#else>
+											<#if po.is_null != 'Y'>datatype="*" </#if> 
+									</#if>>${data['${tableName}']['${po.field_name}']?if_exists?html}</textarea>
+							</div>
+						</li>
 					</#list>
 					<#-- 提交按钮 -->
 					<li>
-						<input id="btnSubmit" type="button" class="btn-submit" value="提交" />
+						<div id = "sub_tr" style="display: none;">
+							<input id="btnSubmit" type="button" onclick="neibuClick();" class="btn-submit" value="提交" />
+						</div>
 					</li>
 					</ul>
 				</form>
@@ -343,44 +373,137 @@
 						});
 					});
 				});
-				
-				$(function() {
-					$("#btnSubmit").click(function(){
-						if(validateForm()){
-							$.post(
-							   '${basePath}/cgFormBuildController.do?saveOrUpdate',
-							   $("#form1").serialize(),
-							   function(data){
-							   	  var d = $.parseJSON(data);
-							   	  if(data.success){
-				            		alert(d.msg);
-				            	  }else{
-				            		alert(d.msg);
-				            	  }
-							   }
-							);
-						}
+
+				 var neibuClickFlag = false;
+				 function neibuClick() {
+			        neibuClickFlag = true;
+			        $('#btn_sub').trigger('click');
+			     }
+			     
+				 function uploadFile(data){
+			        if(!$("input[name='id']").val()){
+			            if(data.obj!=null && data.obj!='undefined'){
+			                $("input[name='id']").val(data.obj.id);
+			            }
+			        }
+			        if($(".uploadify-queue-item").length>0){
+			            upload();
+			        }else{
+			            if (neibuClickFlag){
+			                alert(data.msg);
+			                neibuClickFlag = false;
+			            }else {
+			                var win = frameElement.api.opener;
+			                win.reloadTable();
+			                win.tip(data.msg);
+			                frameElement.api.close();
+			            }
+			        }
+			    }
+			    
+			    function upload() {
+				    <#list columns as po>
+				        <#if po.show_type=='file'>
+				            $('#${po.field_name}').uploadify('upload', '*');
+				        </#if>
+				        <#if po.show_type=='image'>
+				  			$('#${po.field_name}').uploadify('upload', '*');		
+				  		</#if>
+				    </#list>
+			    }
+			    
+			    function del(url,obj){
+					$.dialog.setting.zIndex = getzIndex();
+					$.dialog.confirm("确认删除该条记录?", function(){
+					  	$.ajax({
+							async : false,
+							cache : false,
+							type : 'POST',
+							url : url,// 请求的action路径
+							error : function() {// 请求失败处理函数
+							},
+							success : function(data) {
+								var d = $.parseJSON(data);
+								if (d.success) {
+									var msg = d.msg;
+									tip(msg);
+									$(obj).closest("tr").hide("slow");
+								}
+							}
+						});  
+					}, function(){});
+				}
+		    	
+			    $(function(){
+			    	if(location.href.indexOf("goAddButton.do")!=-1||location.href.indexOf("goUpdateButton.do")!=-1){
+						//其他模式显示提交按钮
+						$("#sub_tr").show();
+					}	
+				    $("#formobj").Validform({
+						tiptype:function(msg,o,cssctl){
+							if(o.type==3){
+								validationMessage(o.obj,msg);
+							}else{
+								removeMessage(o.obj);
+							}
+						},
+						btnSubmit : "#btn_sub",
+						btnReset : "#btn_reset",
+						ajaxPost : true,
+						beforeSubmit : function(curform) {
+						},
+						usePlugin : {
+							passwordstrength : {
+								minLen : 6,
+								maxLen : 18,
+								trigger : function(obj, error) {
+									if (error) {
+										obj.parent().next().find(
+												".Validform_checktip")
+												.show();
+										obj.find(".passwordStrength")
+												.hide();
+									} else {
+										$(".passwordStrength").show();
+										obj.parent().next().find(
+												".Validform_checktip")
+												.hide();
+									}
+								}
+							}
+						},
+						callback : function(data) {
+							if (data.success == true) {
+								uploadFile(data);
+							} else {
+				                if (data.responseText == '' || data.responseText == undefined) {
+				                    $.messager.alert('错误', data.msg);
+				                    $.Hidemsg();
+				                } else {
+				                    try {
+				                        var emsg = data.responseText.substring(data.responseText.indexOf('错误描述'), data.responseText.indexOf('错误信息'));
+				                        $.messager.alert('错误', emsg);
+				                        $.Hidemsg();
+				                    } catch(ex) {
+				                        $.messager.alert('错误', data.responseText + '');
+				                    }
+				                }
+				                return false;
+				            }
+				            if (!neibuClickFlag) {
+				                var win = frameElement.api.opener;
+				                win.reloadTable();
+				            }else{
+				                alert(data.msg);
+			                    neibuClickFlag = false;
+				            }
+							}
+						});
 					});
-				 });
-				 
-				 function validateForm(){
-				 	
-				 	var flag = true;
-				 	$("input[datatype]").each(function(){
-				 	  var value = $(this).val(),$this = $(this);
-				 	  if(value == ''){
-				 		$this.focus();
-				 		var html = $this.parent().prev().html();
-				 		var s = html.indexOf(":");
-				 		var new_html = html.substring(0,s);
-				 		alert($.trim(new_html)+'不能为空!');
-				 		flag = false;
-				 		return false;
-				 	  }
-				 	});
-				 	return flag;
-				 }
 		</script>
 	</div>
 </body>
+<#-- update--begin--author:liushaoqian date:20180713 for:TASK #2961 【online表单--张伟健】测试问题 -->
+<script type="text/javascript">${js_plug_in?if_exists}</script>	
+<#-- update--end--author:liushaoqian date:20180713 for:TASK #2961 【online表单--张伟健】测试问题 -->
 </html>

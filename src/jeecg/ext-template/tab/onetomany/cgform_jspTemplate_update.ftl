@@ -18,6 +18,9 @@ width:auto;
 .conc-wrapper select{
 width:95% !important;
 }
+<#-- update-begin-author:taoyan date:2018704 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了 -->
+.con-wrapper .show-grid > div,.con-wrapper .row.show-grid{border-left:none}
+<#-- update-end-author:taoyan date:2018704 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了 -->
 </style>
 <#-- update--begin--author:zhoujf date:20180410 for:TASK #2630 【代码生成】一对多 多TAB模式生成存在富文本控件时生成代码报错问题 -->
 <#assign ue_widget_count = 0>
@@ -54,11 +57,9 @@ width:95% !important;
 		<div class="col-xs-1 text-center">
 			<b>${po.content}：</b>
 		</div>
-		<#if po.showType=='file' || po.showType == 'image'>
-	    	<div class="col-xs-5">
-	    <#else>
-	    	<div class="col-xs-2">
-	    </#if>
+		<#-- update-begin-author:taoyan date:2018704  若按col-xs-5走 页面会乱 -->
+		<div class="col-xs-2">
+		<#-- update-end-author:taoyan date:2018704  若按col-xs-5走 页面会乱 -->
 			<#if po.showType=='text'>
 				<#-- update--begin--author:zhangjiaqiang Date:20170509 for:修订生成页面乱 -->
 				<#-- update--begin--author:Yandong Date:20180326 for:TASK #2571 【代码生成器bug】[Online开发] 主从表主表生成的代码字段没有长度限制-->

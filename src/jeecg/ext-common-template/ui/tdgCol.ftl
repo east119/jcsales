@@ -1,5 +1,5 @@
 <#-- 表单列表当中每一列的处理 -->
-<#macro dgcol columns noquery = "">
+<#macro dgcol columns style = "">
  <#list columns as po><#rt/>
    <t:dgCol title="${po.content}" <#rt/>
  field="${po.fieldName}" <#rt/>
@@ -14,9 +14,7 @@
  hidden="true" <#rt/>
  <#else><#rt/>
  </#if><#rt/>
- <#-- update-begin-author:taoyan date:20180504 for:船舶一对多风格单个列表用生成查询条件，所以生成代码不需要query=true  -->
- <#if po.isQuery =='Y' && noquery == ""><#rt/>
- <#-- update-end--author:taoyan date:20180504 for:船舶一对多风格单个列表用生成查询条件，所以生成代码不需要query=true  -->
+ <#if po.isQuery =='Y'><#rt/>
  query="true" <#rt/>
  </#if><#rt/>
  <#if po.queryMode =='single'><#rt/>
@@ -39,9 +37,9 @@
 </#if><#rt/>
  </#if><#rt/>
  <#if po.showType?index_of("image") != -1><#rt/>
- image="true" imageSize="50,50" <#rt/>
+ image="true" imageSize="50,50" <#if style == "bt">formatterjs="btListImgFormatter"</#if><#rt/>
  <#elseif po.showType?index_of("file") != -1><#rt/>
- downloadName="附件下载" <#rt/>
+ <#if style == "bt">formatterjs="btListFileFormatter"<#else>downloadName="附件下载"</#if><#rt/>
  <#-- update--begin--author:zhangjiaqiang date:20170815 for:TASK #2274 【online】Online 表单支持树控件 -->
  <#elseif po.showType?index_of("tree") != -1><#rt/>
  formatterjs="treeFormater"<#rt/>

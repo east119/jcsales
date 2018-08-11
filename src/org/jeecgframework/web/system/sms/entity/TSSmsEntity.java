@@ -69,6 +69,8 @@ public class TSSmsEntity implements java.io.Serializable {
 	@Excel(name="备注")
 	private java.lang.String remark;
 	
+	private Integer isRead;//是否已经阅读（默认值未阅读）
+	
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  主键
@@ -312,5 +314,14 @@ public class TSSmsEntity implements java.io.Serializable {
 	 */
 	public void setRemark(java.lang.String remark){
 		this.remark = remark;
+	}
+	
+	@Column(name="is_read",nullable=false)
+	public Integer getIsRead() {
+		return isRead;
+	}
+
+	public void setIsRead(Integer isRead) {
+		this.isRead = isRead;
 	}
 }

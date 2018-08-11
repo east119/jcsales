@@ -1,4 +1,4 @@
-<script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
+<script type="text/javascript" src="plug-in/tools/curdtools.js"></script>
 <style>
 .conditionValue {
 	width:130px;
@@ -7,17 +7,16 @@
 	position: relative;
     bottom: 2px;
 }
-.window{
-	padding :0px;
-	border: 1px solid #7b7b7b4d;
-}
 .layout-body {
 	border-left: 0px;
 	border-right: 0px;
 }
+.window .window-header {
+	border: 1px solid #dddddd !important;
+}
 </style>
 <div style="position: relative; overflow: auto;">
-	<div id="w" class="easyui-window" data-options="closed:true,title:'高级查询构造器'" style="width: 780px; height: 370px; padding: 0px">
+	<div id="w" class="easyui-window" data-options="closed:true,title:'高级查询构造器'" style="padding :0px;border: 1px solid #7b7b7b4d;width: 780px; height: 370px; padding: 0px">
 		<div class="easyui-layout" data-options="fit:true">
 			<div data-options="region:'east',split:false" style="width: 128px;">
 				<div class="easyui-accordion" style="width: 126px; height: 284px;">
@@ -108,7 +107,9 @@
 			<div data-options="region:'south',border:false"
 				style="text-align: right; padding: 5px 0 0;">
 				<a class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript:void(0)" onclick="javascript:mySearch()">OK</a> 
-				<a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="searchReset()">重置</a> 
+				<#-- update-begin-author:jiaqiankun date:20180704 for:TASK #2881 【bug】模板命名和列表命名冲突--- -->
+				<a href="#" class="easyui-linkbutton" iconCls="icon-reload" onclick="superSearchReset()">重置</a> 
+				<#-- update-end-author:jiaqiankun date:20180704 for:TASK #2881 【bug】模板命名和列表命名冲突--- -->
 				<a class="easyui-linkbutton" data-options="iconCls:'icon-save'" href="javascript:void(0)" onclick="saveBySelect()">另存为查询方案</a>
 			</div>
 		</div>
@@ -206,7 +207,9 @@
 			splitArr = dictionary.split(",");
 			var spanVal = $(field).closest("#dsUL>li").find("span.conVal");
 			//splitArr=dictionary 0为表编码,1为查询字段,2为返回字段
-			spanVal.html("<input name=\"cons["+index+"].val\" type=\"text\" class=\"searchbox-inputtext\" onclick=\"popupClick(this,'"+splitArr[1]+"','val','"+splitArr[0]+"')\"/>");
+			//update-begin-author:taoyan date:20180802 for:TASK #3044 【jeecg测试问题-周俊峰】测试问题
+			spanVal.html("<input name=\"cons["+index+"].val\" type=\"text\" class=\"searchbox-inputtext\" onclick=\"popupClick(this,'"+splitArr[2]+"','val','"+splitArr[0]+"')\"/>");
+			//update-end-author:taoyan date:20180802 for:TASK #3044 【jeecg测试问题-周俊峰】测试问题
 			$("input[name='cons["+index+"].val']").css({"background":"url(\"plug-in/diy/icons/search.png\") no-repeat 105px","width":"130px"});
 		}
 		<#--update-end--Author:LiShaoQing  Date:20180110 for：[#2452]【新功能】高级查询，支持popup功能 -->
@@ -247,9 +250,11 @@
 					<#-- update-end-Author:xuelin  Date:20171211 for：TASK #2441 【改造】高级查询目前只支持输入框，不支持下拉和时间控件 -->
 					
 					<#-- update-begin-Author:xuelin  Date:20171221 for：TASK #2399 【bug】高级查询，条件为空的情况下，点击查询报错 -->
+					<#-- update-begin-author:jiaqiankun date:20180704 for:TASK #2881 【bug】高级查询JS错误普遍存在的问题--- -->
 					if(field === '' && condition === '' && cValue === ''){
-						return ture;
+						return true;
 					}
+					<#-- update-end-author:jiaqiankun date:20180704 for:TASK #2881 【bug】高级查询JS错误普遍存在的问题--- -->
 					<#-- update-end-Author:xuelin  Date:20171221 for：TASK #2399 【bug】高级查询，条件为空的情况下，点击查询报错 -->
 					//判断输入的是否为时期格式
 					/*if (CheckDate(cValue)) {
@@ -385,8 +390,9 @@
 		}
 	
 	}
+	<#-- update-begin-author:jiaqiankun date:20180704 for:TASK #2881 【bug】模板命名和列表命名冲突--- -->
 	//重置按钮，清空所有
-	function searchReset() {
+	function superSearchReset() {
 		$("#dsUL").find(".oop:gt(0)").remove();
 		$("#dsLI").find(":input").val("");
 		var spanVal = $("#dsUL>li").find("span.conVal");
@@ -395,6 +401,7 @@
 		${tableName}search();
 		resetTrNum();
 	}
+	<#-- update-end-author:jiaqiankun date:20180704 for:TASK #2881 【bug】模板命名和列表命名冲突--- -->
 	//判断输入的是否为日期格式
 	/*function CheckDate(strInputDate) {
 		if (strInputDate == "")
@@ -518,7 +525,9 @@
 			var splitArr = new Array();
 			splitArr = dictionary.split(",");
 			//splitArr=dictionary 0为表编码,1为查询字段,2为返回字段
-			spanHtml+="<input name=\"cons["+i+"].val\" value='"+v+"' type=\"text\" class=\"searchbox-inputtext\" onclick=\"popupClick(this,'"+splitArr[1]+"','val','"+splitArr[0]+"')\"/>";
+			//update-begin-author:taoyan date:20180802 for:TASK #3044 【jeecg测试问题-周俊峰】测试问题
+			spanHtml+="<input name=\"cons["+i+"].val\" value='"+v+"' type=\"text\" class=\"searchbox-inputtext\" onclick=\"popupClick(this,'"+splitArr[2]+"','val','"+splitArr[0]+"')\"/>";
+			//update-end-author:taoyan date:20180802 for:TASK #3044 【jeecg测试问题-周俊峰】测试问题
 			spanVal.html(spanHtml);
 			$("input[name='cons["+i+"].val']").css({"background":"url(\"plug-in/diy/icons/search.png\") no-repeat 105px","width":"130px"});
 		} else {

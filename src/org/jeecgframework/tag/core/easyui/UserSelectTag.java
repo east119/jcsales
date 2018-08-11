@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  * 
- * 部门选择弹出框
+ * 用户选择弹出组件
  * 
  * @author: wangkun
  * @date： 日期：2015-3-27

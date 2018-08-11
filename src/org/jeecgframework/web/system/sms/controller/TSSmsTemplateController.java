@@ -1,7 +1,11 @@
 package org.jeecgframework.web.system.sms.controller;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.exception.BusinessException;
@@ -9,6 +13,7 @@ import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.json.AjaxJson;
 import org.jeecgframework.core.common.model.json.DataGrid;
 import org.jeecgframework.core.constant.Globals;
+import org.jeecgframework.core.util.JSONHelper;
 import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.tag.core.easyui.TagUtil;
@@ -22,7 +27,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import org.jeecgframework.web.system.sms.entity.TSSmsTemplateEntity;
+import org.jeecgframework.web.system.sms.entity.TSSmsTemplateSqlEntity;
 import org.jeecgframework.web.system.sms.service.TSSmsTemplateServiceI;
+import org.jeecgframework.web.system.sms.util.TuiSongMsgUtil;
 
 
 
@@ -347,6 +354,44 @@ public class TSSmsTemplateController extends BaseController {
 //				}
 //			}
 //		}
+		return j;
+	}
+	
+	/**
+	 * 模板消息推送测试
+	 * @param tSSmsTemplateSql
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(params = "pushTestMsg")
+	@ResponseBody
+	public AjaxJson pushTestMsg(TSSmsTemplateEntity tSSmsTemplate, HttpServletRequest request) {
+		AjaxJson j = new AjaxJson();
+		try {
+			if (StringUtils.isBlank(tSSmsTemplate.getTemplateCode())){
+				j.setSuccess(false);
+				j.setMsg("模板CODE不能为空");
+			}else {
+				tSSmsTemplate = tSSmsTemplateService.findUniqueByProperty(TSSmsTemplateEntity.class, "templateCode", tSSmsTemplate.getTemplateCode());
+				Map<String,Object> data = new HashMap<String,Object>();
+				String json = tSSmsTemplate.getTemplateTestJson();
+				if(StringUtils.isEmpty(json)){
+					j.setSuccess(false);
+					j.setMsg("模板测试json不能为空");
+					return j;
+				}
+				data = JSONHelper.json2Map(json);
+				String r = TuiSongMsgUtil.sendMessage(tSSmsTemplate.getTemplateCode(), data, "系统", "admin");
+				if (!"success".equals(r)){
+					j.setSuccess(false);
+					j.setMsg(r);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			j.setSuccess(false);
+			j.setMsg("模板测试json异常");
+		}
 		return j;
 	}
 }

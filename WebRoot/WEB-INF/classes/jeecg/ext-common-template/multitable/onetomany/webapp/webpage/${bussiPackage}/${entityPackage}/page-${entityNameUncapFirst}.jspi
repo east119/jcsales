@@ -11,24 +11,24 @@
 	<#list pageColumns as po>
 	<#-- 4个字段为一行，2行一个模块 -->
 		<#-- 模块头部开始 -->
-			<#if po_index%8==0>
-			<#assign index_m = po_index>
-			<div class="main-tab">
-				<ul class="tab-info">
-				  <li role="presentation" class="active">
-					<a href="javascript:void(0);"> &nbsp;&nbsp;信息模块${(po_index/8)+1}</a>
-				  </li>
-				</ul>
-				<!-- tab内容 -->
-				<div class="con-wrapper1">
-				  <div class="row form-wrapper">
-			</#if>
-		<#-- 模块头部结束 -->
-		<#-- 行头部开始 -->
-			<#if po_index%4==0>
-			<#assign index_h = po_index>
-			<div class="row show-grid">
-			</#if>
+	<#if po_index%8==0>
+	<#assign index_m = po_index>
+	<div class="main-tab">
+		<ul class="tab-info">
+		  <li role="presentation" class="active">
+			<a href="javascript:void(0);"> &nbsp;&nbsp;信息模块${(po_index/8)+1}</a>
+		  </li>
+		</ul>
+		<!-- tab内容 -->
+		<div class="con-wrapper1">
+		  <div class="row form-wrapper">
+	</#if>
+	<#-- 模块头部结束 -->
+	<#-- 行头部开始 -->
+		<#if po_index%4==0>
+		<#assign index_h = po_index>
+		<div class="row show-grid">
+		</#if>
 		<#-- 行头部结束 -->
 		
 		<#-- 字段内容开始 -->
@@ -36,7 +36,7 @@
 			<b>${po.content}：</b>
 		</div>
 		 <#if po.showType=='file' || po.showType == 'image'>
-         <div class="col-xs-5">
+         <div class="col-xs-2">
          <#else>
          <div class="col-xs-2">
          </#if>
@@ -66,26 +66,26 @@
 		
 		<#-- 模块尾部开始 -->
 			<#if ((po_index+1)%8==0 && (index_m+8)==(po_index+1)) || !po_has_next>
-					</div>
-				</div>
 			</div>
-			</#if>
-		<#-- 模块尾部结束 -->
+		</div>
+	</div>
+	</#if>
+<#-- 模块尾部结束 -->
 	</#list>
 	<#list pageAreatextColumns as po>
-			<#if po_index%2==0>
-			<#assign index_a = po_index>
-			<div class="main-tab">
-				<ul class="tab-info">
-				  <li role="presentation" class="active">
-					<a href="javascript:void(0);"> &nbsp;&nbsp;其他信息${po_index+1}</a>
-				  </li>
-				</ul>
-				<!-- tab内容 -->
-				<div class="con-wrapper1">
-				  <div class="row form-wrapper">
-				  <div class="row show-grid">
-			</#if>
+	<#if po_index%2==0>
+	<#assign index_a = po_index>
+	<div class="main-tab">
+		<ul class="tab-info">
+		  <li role="presentation" class="active">
+			<a href="javascript:void(0);"> &nbsp;&nbsp;其他信息${po_index+1}</a>
+		  </li>
+		</ul>
+		<!-- tab内容 -->
+		<div class="con-wrapper1">
+		  <div class="row form-wrapper">
+		  <div class="row show-grid">
+	</#if>
 		
 		<div class="col-xs-1 text-center">
 			<b>${po.content}：</b>

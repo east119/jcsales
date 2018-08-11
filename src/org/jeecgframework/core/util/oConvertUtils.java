@@ -18,6 +18,8 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 /**
  * 
  * @author  张代浩
@@ -184,6 +186,15 @@ public class oConvertUtils {
 		return (getString(s, ""));
 	}
 
+	/**
+	 * 转义成Unicode编码
+	 * @param s
+	 * @return
+	 */
+	public static String escapeJava(Object s) {
+		return StringEscapeUtils.escapeJava(getString(s));
+	}
+	
 	public static String getString(Object object) {
 		if (isEmpty(object)) {
 			return "";

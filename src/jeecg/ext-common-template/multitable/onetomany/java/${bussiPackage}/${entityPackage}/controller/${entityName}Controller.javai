@@ -12,7 +12,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,23 +98,24 @@ import java.util.HashMap;
  * @version V1.0   
  *
  */
+ <#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
  <#-- update--begin--author:zhangjiaqiang date:20171031 for:API 注解 start -->
 @Api(value="${entityName}",description="${ftl_description}",tags="${entityName?uncap_first}Controller")
 <#-- update--end--author:zhangjiaqiang date:20171031 for:API 注解 start -->
+</#if>
 @Controller
 @RequestMapping("/${entityName?uncap_first}Controller")
 public class ${entityName}Controller extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(${entityName}Controller.class);
+	private static final Logger logger = LoggerFactory.getLogger(${entityName}Controller.class);
 
 	@Autowired
 	private ${entityName}ServiceI ${entityName?uncap_first}Service;
 	@Autowired
 	private SystemService systemService;
+	<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
 	@Autowired
 	private Validator validator;
+	</#if>
 	<#-- 列为文件类型的文件代码生成 -->
 	<#if fileFlag==true>
 	@Autowired
@@ -365,7 +367,9 @@ public class ${entityName}Controller extends BaseController {
 					${entityName}Entity t =this.systemService.get(${entityName}Entity.class, temp.getId());
 					try {
 						MyBeanUtils.copyBeanNotNull2Bean(temp, t);
-						systemService.saveOrUpdate(t);
+						<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2966 【代码生成器--贾乾坤】通用代码生成器“Table风格表单+EasyUI标签列表(ERP上下布局风格)”java增强问题 -->
+						${entityName?uncap_first}Service.update${entityName}Entity(t);
+						<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2966 【代码生成器--贾乾坤】通用代码生成器“Table风格表单+EasyUI标签列表(ERP上下布局风格)”java增强问题 -->
 						systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -373,7 +377,9 @@ public class ${entityName}Controller extends BaseController {
 				} else {
 					try {
 						//temp.setDelFlag(0);若有则需要加
-						systemService.save(temp);
+						<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2966 【代码生成器--贾乾坤】通用代码生成器“Table风格表单+EasyUI标签列表(ERP上下布局风格)”java增强问题 -->
+						${entityName?uncap_first}Service.add${entityName}Entity(temp);
+						<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2966 【代码生成器--贾乾坤】通用代码生成器“Table风格表单+EasyUI标签列表(ERP上下布局风格)”java增强问题 -->
 						systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -585,6 +591,7 @@ public class ${entityName}Controller extends BaseController {
  	</#if>
  	</#list> 
  	
+ 	<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
  	<#-- update--begin--author:zhangjiaqiang date:20171113 for:restful方法封装 -->
  	<#-- restful 通用方法生成 -->
  	@RequestMapping(method = RequestMethod.GET)
@@ -725,7 +732,7 @@ public class ${entityName}Controller extends BaseController {
 	@ApiOperation(value="删除${ftl_description}")
 	<#-- update--begin--author:zhangjiaqiang date:20171031 for:TASK #2397 【新功能】代码生成器模板修改，追加swagger-ui注解 -->
 	public ResponseMessage<?> delete(@ApiParam(name="id",value="ID",required=true)@PathVariable("id") String id) {
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");
@@ -742,6 +749,7 @@ public class ${entityName}Controller extends BaseController {
 	}
 	<#-- restful 通用方法生成 -->
 	<#-- update--end--author:zhangjiaqiang date:20171113 for:restful方法封装 -->
+	</#if>
 	
 	<#-- 列为文件类型的文件代码生成 -->
 	<#if fileFlag==true>

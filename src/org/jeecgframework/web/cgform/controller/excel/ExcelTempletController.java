@@ -251,7 +251,9 @@ public class ExcelTempletController extends BaseController {
 
 							}
 						}
-						resultMap.put(b.getFieldName(), sb.toString().substring(0, sb.toString().length() - 1));
+						if(oConvertUtils.isNotEmpty(sb.toString())){
+							resultMap.put(b.getFieldName(), sb.toString().substring(0, sb.toString().length() - 1));
+						}
 					}
 
 				}
@@ -518,9 +520,7 @@ public class ExcelTempletController extends BaseController {
 						String value = String.valueOf(r.get(bean.getFieldName()));
 						for (DictEntity dictEntity : dicDataList) {
 							if (value.equalsIgnoreCase(dictEntity.getTypecode())) {
-
 								r.put(bean.getFieldName(), MutiLangUtil.getLang(dictEntity.getTypename()));
-
 							}
 						}
 					}
@@ -585,7 +585,6 @@ public class ExcelTempletController extends BaseController {
 				map.put(getRealKey(originKey), value.toString());
 			}
 		}
-
 		private String getRealKey(String originKey) {
 			if (fieldMap.containsKey(originKey)) {
 				//主表字段
@@ -594,7 +593,6 @@ public class ExcelTempletController extends BaseController {
 			//子表字段
 			return "$subTable$"+originKey;
 		}
-
 
 	}
 }

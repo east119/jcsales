@@ -65,10 +65,6 @@
 				</td>
 				<td class="value">
 				  <t:dictSelect field="queryType" type="list" typeGroupCode="sel_type" datatype="*" defaultVal="${superQueryMainPage.queryType}" hasLabel="false" title="查询类型"></t:dictSelect> 
-				<!-- <select name="queryType" datatype="*" title="查询类型" >
-				<option value="Z" selected="selected">主子表</option>
-				<option value="D">单表</option>
-				</select> -->
 						 <span class="Validform_checktip"></span>
 					<label class="Validform_label" style="display: none;">查询类型</label>
 				</td>
@@ -113,7 +109,6 @@
 					<label class="Validform_label" style="display: none;">说明</label></td>
 					
 				<td align="left">
-				<%-- <t:dictSelect field="superQueryTableList[#index#].isMain" type="radio" typeGroupCode="is_main" defaultVal="" hasLabel="false" title="是否是主表"> </t:dictSelect> --%>
 						是 <input class="ismain" name="superQueryTableList[#index#].isMain" type="radio" value="Y" disabled="disabled" />&nbsp;
 						否<input class="ismain" name="superQueryTableList[#index#].isMain" type="radio" value="N" checked="checked" readonly="readonly" />
 					 <label class="Validform_label" style="display: none;">是否是主表</label>
@@ -131,10 +126,9 @@
 				<td align="left"><input name="superQueryFieldList[#index#].seq" maxlength="32" type="text" class="inputxt" style="width: 60px;" ignore="ignore" /> 
 					<label class="Validform_label" style="display: none;">序号</label></td>
 				<td align="left">
-					<%-- <t:dictSelect field="superQueryFieldList[#index#].tableName" type="list"    typeGroupCode=""  defaultVal="" hasLabel="false"  title="表名"></t:dictSelect> --%>
 					<select  name="superQueryFieldList[#index#].tableName" class="fieldTableList4" style="width:180px" datatype="*">
-						<option>--</option>
-				</select>
+						<option value=""></option>
+					</select>
 				 <label class="Validform_label" style="display: none;">表名</label>
 				</td>
 				<td align="left"><input name="superQueryFieldList[#index#].name" maxlength="32" type="text" class="inputxt" style="width: 120px;" ignore="ignore" /> 
@@ -167,7 +161,4 @@
 		</tbody>
 	</table>
 </body>
-<script type="text/javascript">
-
-</script>
 <script  src="webpage/jeecg/superquery/superQueryMain.js"></script>

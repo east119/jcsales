@@ -8,9 +8,12 @@ import org.jeecgframework.core.util.oConvertUtils;
  * @author taoYan
  * @since 2017年12月25日
  */
+//addSingle,editSingle,batchDel,save,reject,template,importe,export,filter
 public enum MenuButtonsEnum {
 	addgroup("addgroup","表单新增&word模式","iframeGoAdd&tempNoDo","fa fa-file-text-o&fa fa-file-word-o&fa fa-plus")
 	,editgroup("editgroup","表单编辑&word模式","iframeGoUpdate&tempNoDo","fa fa-file-text-o&fa fa-file-word-o&fa fa-pencil-square-o")
+	,addSingle("addSingle","新增","iframeGoAdd","fa fa-plus")
+	,editSingle("editSingle","编辑","iframeGoUpdate","fa fa-pencil-square-o")
 	,batchDel("batchDel","批量删除","iframeDeleteAll","fa fa-trash-o")
 	,save("save","保存","iframeGoSaveRow","fa fa-floppy-o")
 	,reject("reject","取消编辑","iframeRejectUpdate","fa fa-reply")

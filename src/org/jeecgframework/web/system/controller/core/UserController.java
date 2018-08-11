@@ -3,11 +3,13 @@ package org.jeecgframework.web.system.controller.core;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,13 +38,13 @@ import org.jeecgframework.core.util.SetListSort;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.core.util.SysThemesUtil;
 import org.jeecgframework.core.util.oConvertUtils;
+import org.jeecgframework.minidao.pojo.MiniDaoPage;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.jeecgframework.tag.core.easyui.TagUtil;
-import org.jeecgframework.tag.vo.datatable.DataTableReturn;
-import org.jeecgframework.tag.vo.datatable.DataTables;
+import org.jeecgframework.web.system.dao.DepartAuthGroupDao;
 import org.jeecgframework.web.system.manager.ClientManager;
 import org.jeecgframework.web.system.pojo.base.InterroleEntity;
 import org.jeecgframework.web.system.pojo.base.InterroleUserEntity;
@@ -74,17 +76,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @Description: TODO(用户管理处理类)
  * @author 张代浩
  */
-//@Scope("prototype")
 @Controller
 @RequestMapping("/userController")
 public class UserController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
 	private static final Logger logger = Logger.getLogger(UserController.class);
 
 	private UserService userService;
 	private SystemService systemService;
+	@Resource
+	private ClientManager clientManager;
+	@Autowired
+	private DepartAuthGroupDao departAuthGroupDao;
 
 	@Autowired
 	public void setSystemService(SystemService systemService) {
@@ -254,7 +256,6 @@ public class UserController extends BaseController {
 		request.setAttribute("user", user);
 		return "system/user/changepassword";
 	}
-
 	@RequestMapping(params = "changeportrait")
 	public String changeportrait(HttpServletRequest request) {
 		TSUser user = ResourceUtil.getSessionUser();
@@ -281,7 +282,6 @@ public class UserController extends BaseController {
 		}
 		return j;
 	}
-
 
 
 	/**
@@ -472,6 +472,50 @@ public class UserController extends BaseController {
 	 * @param response
 	 * @param dataGrid
 	 */
+	@RequestMapping(params = "datagridByOrgCode")
+	public void datagridByOrgCode(TSUser user,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+		Map<String, Map<String, Object>> extMap = new HashMap<String, Map<String, Object>>();
+		String departid = request.getParameter("orgIds");
+		
+		// Minidao查询条件
+		if (oConvertUtils.isNotEmpty(user.getUserName())) {
+			user.setUserName(user.getUserName().replace("*", "%"));
+		}
+		if (oConvertUtils.isNotEmpty(user.getRealName())) {
+			user.setRealName(user.getRealName().replace("*", "%"));
+		}
+
+		//获取公司编码
+		String orgCode = null;
+		if (oConvertUtils.isNotEmpty(departid)) {
+			TSDepart tsdepart = this.systemService.get(TSDepart.class, departid);
+			orgCode = tsdepart.getOrgCode();
+		}
+		
+		//查询机构下用户列表
+		MiniDaoPage<TSUser> list = departAuthGroupDao.getUserByDepartCode(dataGrid.getPage(), dataGrid.getRows(),orgCode , user);
+		dataGrid.setTotal(list.getTotal());
+		dataGrid.setResults(list.getResults());
+
+		//获取用户的部门名称
+		for (TSUser u : list.getResults()) {
+			if (oConvertUtils.isNotEmpty(u.getId())) {
+				List<String> depNames = departAuthGroupDao.getUserDepartNames(u.getId());
+				// 此为针对原来的行数据，拓展的新字段
+				Map<String,Object> m = new HashMap<String,Object>();
+				m.put("orgNames", depNames != null ? depNames.toArray() : null);
+				extMap.put(u.getId(), m);
+			}
+		}
+		TagUtil.datagrid(response, dataGrid, extMap);
+    }
+	
+	/**
+	 * easyuiAJAX用户列表请求数据 
+	 * @param request
+	 * @param response
+	 * @param dataGrid
+	 */
 	@RequestMapping(params = "datagrid")
 	public void datagrid(TSUser user,HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
         CriteriaQuery cq = new CriteriaQuery(TSUser.class, dataGrid);
@@ -481,9 +525,8 @@ public class UserController extends BaseController {
         Short[] userstate = new Short[]{Globals.User_Normal, Globals.User_ADMIN, Globals.User_Forbidden};
         cq.in("status", userstate);
         cq.eq("deleteFlag", Globals.Delete_Normal);
-
-        cq.eq("userType", Globals.USER_TYPE_SYSTEM);
-
+        cq.eq("userType", Globals.USER_TYPE_SYSTEM);//用户列表不显示接口类型的用户
+        
         String orgIds = request.getParameter("orgIds");
         List<String> orgIdList = extractIdListByComma(orgIds);
         // 获取 当前组织机构的用户信息
@@ -496,10 +539,8 @@ public class UserController extends BaseController {
             cq.add(Property.forName("id").in(subCq.getDetachedCriteria()));
         }
 
-
         cq.add();
         this.systemService.getDataGridReturn(cq, true);
-
         List<TSUser> cfeList = new ArrayList<TSUser>();
         for (Object o : dataGrid.getResults()) {
             if (o instanceof TSUser) {
@@ -518,10 +559,9 @@ public class UserController extends BaseController {
                 cfeList.add(cfe);
             }
         }
-
         TagUtil.datagrid(response, dataGrid);
     }
-
+	
 	/**
 	 * 用户删除选择对话框
 	 * 
@@ -848,7 +888,28 @@ public class UserController extends BaseController {
 			req.setAttribute("user", user);
 			idandname(req, user);
 			getOrgInfos(req, user);
+
+		}else{
+			//组织机构关联用户录入
+			String departid = oConvertUtils.getString(req.getParameter("departid"));
+			if(StringUtils.isNotEmpty(departid)){
+				TSDepart depart = systemService.getEntity(TSDepart.class,departid);
+				if(depart!=null){
+					req.setAttribute("orgIds", depart.getId()+",");
+					req.setAttribute("departname", depart.getDepartname()+",");
+				}
+			}
+			//角色管理关联用户录入
+			String roleId = oConvertUtils.getString(req.getParameter("roleId"));
+			if(StringUtils.isNotEmpty(roleId)){
+				TSRole tsRole = systemService.getEntity(TSRole.class,roleId);
+				if(tsRole!=null){
+					req.setAttribute("id", roleId);
+					req.setAttribute("roleName", tsRole.getRoleName());
+				}
+			}
 		}
+
 		req.setAttribute("tsDepart", tsDepart);
         //req.setAttribute("orgIdList", JSON.toJSON(orgIdList));
 
@@ -1139,26 +1200,26 @@ public class UserController extends BaseController {
 		TagUtil.datagrid(response, dataGrid);
 	}
 
-	/**
-	 * 测试
-	 * 
-	 * @param user
-	 * @param req
-	 * @return
-	 */
-	@RequestMapping(params = "test")
-	public void test(HttpServletRequest request, HttpServletResponse response) {
-		String jString = request.getParameter("_dt_json");
-		DataTables dataTables = new DataTables(request);
-		CriteriaQuery cq = new CriteriaQuery(TSUser.class, dataTables);
-		String username = request.getParameter("userName");
-		if (username != null) {
-			cq.like("userName", username);
-			cq.add();
-		}
-		DataTableReturn dataTableReturn = systemService.getDataTableReturn(cq, true);
-		TagUtil.datatable(response, dataTableReturn, "id,userName,mobilePhone,TSDepart_departname");
-	}
+//	/**
+//	 * 测试 【Datatable 数据列表】
+//	 * 
+//	 * @param user
+//	 * @param req
+//	 * @return
+//	 */
+//	@RequestMapping(params = "test")
+//	public void test(HttpServletRequest request, HttpServletResponse response) {
+//		String jString = request.getParameter("_dt_json");
+//		DataTables dataTables = new DataTables(request);
+//		CriteriaQuery cq = new CriteriaQuery(TSUser.class, dataTables);
+//		String username = request.getParameter("userName");
+//		if (username != null) {
+//			cq.like("userName", username);
+//			cq.add();
+//		}
+//		DataTableReturn dataTableReturn = systemService.getDataTableReturn(cq, true);
+//		TagUtil.datatable(response, dataTableReturn, "id,userName,mobilePhone,TSDepart_departname");
+//	}
 
 	/**
 	 * 用户列表页面跳转
@@ -1324,7 +1385,7 @@ public class UserController extends BaseController {
 			}
 
 			try {
-				 ClientManager.getInstance().getClient().getFunctions().clear();
+				clientManager.getClient().getFunctions().clear();
 			} catch (Exception e) {
 			}
 
@@ -1422,7 +1483,6 @@ public class UserController extends BaseController {
 			try {
 				List<TSUser> tsUsers = ExcelImportUtil.importExcel(file.getInputStream(),TSUser.class,params);
 				for (TSUser tsUser : tsUsers) {
-
 					String username = tsUser.getUserName();
 					if(username==null||username.equals("")){
 						j.setMsg("用户名为必填字段，导入失败");

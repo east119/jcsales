@@ -276,6 +276,7 @@ public class OfficeHtmlUtil {
 
 	    	ls_include.append("<base href=\"${basePath}/\" />");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/jquery/jquery-1.8.3.js\"></script>");
+	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/dataformat.js\"></script>");
 	    	ls_include.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"${basePath}/plug-in/accordion/css/accordion.css\"></link>");
 	    	ls_include.append("<link id=\"easyuiTheme\" rel=\"stylesheet\" href=\"${basePath}/plug-in/easyui/themes/default/easyui.css\" type=\"text/css\"></link>");
@@ -288,7 +289,7 @@ public class OfficeHtmlUtil {
 	    	ls_include.append("<link rel=\"stylesheet\" href=\"${basePath}/plug-in/ace/css/font-awesome.css\" type=\"text/css\"></link>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/lhgDialog/lhgdialog.min.js\"></script>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/layer/layer.js\"></script>");
-	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/curdtools_zh-cn.js\"></script>");
+	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/curdtools.js\"></script>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/easyuiextend.js\"></script>");
 	    	ls_include.append("<link id=\"easyuiTheme\" rel=\"stylesheet\" href=\"${basePath}/plug-in/easyui/themes/metrole/main.css\" type=\"text/css\"></link>");
 	    	ls_include.append("<link rel=\"stylesheet\" href=\"${basePath}/plug-in/uploadify/css/uploadify.css\" type=\"text/css\"></link>");
@@ -413,6 +414,7 @@ public class OfficeHtmlUtil {
 			//include
 	    	StringBuilder ls_include = new StringBuilder("");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"plug-in/jquery/jquery-1.8.3.js\"></script>");
+	    	ls_include.append("<script type=\"text/javascript\" src=\"plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"plug-in/tools/dataformat.js\"></script>");
 	    	ls_include.append("<link id=\"easyuiTheme\" rel=\"stylesheet\" href=\"plug-in/easyui/themes/default/easyui.css\" type=\"text/css\"></link>");
 	    	ls_include.append("<link rel=\"stylesheet\" href=\"plug-in/easyui/themes/icon.css\" type=\"text/css\"></link>");
@@ -423,7 +425,7 @@ public class OfficeHtmlUtil {
 	    	ls_include.append("<script type=\"text/javascript\" src=\"plug-in/My97DatePicker/WdatePicker.js\"></script>");
 	    	ls_include.append("<script type=\"text/javascript\" src=\"plug-in/lhgDialog/lhgdialog.min.js\"></script>");
 	    	
-	    	ls_include.append(StringUtil.replace("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
+	    	ls_include.append("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools.js\"></script>");
 	    	
 	    	ls_include.append("<script type=\"text/javascript\" src=\"plug-in/tools/easyuiextend.js\"></script>");
 	    	ls_include.append("<link rel=\"stylesheet\" href=\"plug-in/Validform/css/style.css\" type=\"text/css\"/>");

@@ -217,6 +217,34 @@ public class ComponentTools {
 		return url;
 	}
 	
+	public String getColumnValue(ColumnValue columnValue) {
+		StringBuffer sb = new StringBuffer("");
+		String testString = "";
+		String[] value = columnValue.getValue().split(",");
+		String[] text = columnValue.getText().split(",");
+		sb.append(",formatter:function(value,rec,index){");
+		sb.append("if(value==undefined) return '';");
+		sb.append("var valArray = value.split(',');");
+		sb.append("if(valArray.length > 1){");
+		sb.append("var checkboxValue = '';");
+		sb.append("for(var k=0; k<valArray.length; k++){");
+		for(int j = 0; j < value.length; j++){
+			sb.append("if(valArray[k] == '" + value[j] + "'){ checkboxValue = checkboxValue + \'" + text[j] + "\' + ',';}");
+		}
+		sb.append("}");
+		sb.append("return checkboxValue.substring(0,checkboxValue.length-1);");
+		sb.append("}");
+		sb.append("else{");
+		for (int j = 0; j < value.length; j++) {
+			testString += "if(value=='" + value[j] + "'){return \'" + text[j] + "\';}";
+		}
+		sb.append(testString);
+		sb.append("else{return value;}");
+		sb.append("}");
+		sb.append("}");
+		return sb.toString();
+	}
+	
 	
 	public String getCellStyle(ColumnValue columnValue) {
 		StringBuffer sb = new StringBuffer("");
@@ -241,8 +269,7 @@ public class ComponentTools {
 	}
 	
 	public List<TSType> getDictData(DataGridColumn col){
-		Map<String, List<TSType>> typedatas = ResourceUtil.allTypes;
-		List<TSType> types = typedatas.get(col.getDictionary().toLowerCase());
+		List<TSType> types = ResourceUtil.getCacheTypes(col.getDictionary().toLowerCase());
 		return types;
 	}
 	
@@ -259,4 +286,17 @@ public class ComponentTools {
 		List<Map<String, Object>> list = systemService.findForJdbc(sql);
 		return list;
 	}
+
+	public String getAjaxDict(DataGridColumn col){
+		StringBuffer sb = new StringBuffer("");
+		sb.append(",formatter:function(value,rec,index){");
+		sb.append("var rtn = \"<span name=\\\"ajaxDict\\\" dictionary=\\\""+col.getDictionary()
+				+"\\\" dictCondition=\\\""+(col.getDictCondition()==null?"":col.getDictCondition())
+				+"\\\" popup=\\\""+col.isPopup()
+				+"\\\" value=\\\"\"+value+\"\\\"><img src='plug-in/easyui/themes/icons/loading.gif'/></span>\";");
+		sb.append("return rtn;");
+		sb.append("}");
+		return sb.toString();
+	}
+
 }

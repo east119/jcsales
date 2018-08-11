@@ -92,7 +92,9 @@
 			"s6-18" : /^[\u4E00-\u9FA5\uf900-\ufa2d\w\.\s]{6,18}$/,
 			"p" : /^[0-9]{6}$/,
 			/*update-begin--Author:dangzhenghui  Date:20170627 for：手机支持170号段*/
-            "m":/^13[0-9]{9}$|14[0-9]{9}|15[0-9]{9}$|17[0-9]{9}$|18[0-9]{9}$/,
+			/*update-begin--Author:jiaqiankun  Date:20180712 for：TASK #2946 【常用示例--张伟健】vueBootstrap新增，编辑校验*/
+            "m":/^1[3|4|5|7|8][0-9]\d{8}$/,
+            /*update-end--Author:jiaqiankun  Date:20180712 for：TASK #2946 【常用示例--张伟健】vueBootstrap新增，编辑校验*/
 			/*update-end--Author:dangzhenghui  Date:20170627 for：手机支持170号段*/
 			"e" : /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/,
 			"url" : /^(\w+:\/\/)?\w+(\.\w+)+.*$/,

@@ -20,7 +20,6 @@ import jodd.io.ZipUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.jeecgframework.core.annotation.JAuth;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.exception.BusinessException;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
@@ -111,7 +110,12 @@ public class CgformTemplateController extends BaseController {
 		List<CgformTemplateEntity> dataList=dataGrid.getResults();
 		if(dataList!=null&&dataList.size()>0){
 			for(CgformTemplateEntity entity:dataList){
-				entity.setTemplatePic("cgformTemplateController.do?showPic&code="+entity.getTemplateCode()+"&path="+entity.getTemplatePic());
+				//entity.setTemplatePic("cgformTemplateController.do?showPic&code="+entity.getTemplateCode()+"&path="+entity.getTemplatePic());
+				if(oConvertUtils.isNotEmpty(entity.getTemplatePic())){
+					entity.setTemplatePic("img-online/server/"+entity.getTemplateCode()+"/images/"+entity.getTemplatePic());
+				}else{
+					entity.setTemplatePic("img-online/server/default/images/default.jpg");
+				}
 			}
 		}
 		TagUtil.datagrid(response, dataGrid);
@@ -350,9 +354,7 @@ public class CgformTemplateController extends BaseController {
 		if(StringUtils.isNotBlank(id)) {
 			CgformTemplateEntity entity = cgformTemplateService.getEntity(CgformTemplateEntity.class, id);
 			if (entity != null && entity.getTemplateCode() != null) {
-
 				File dirFile=new File(getUploadBasePath(request)+File.separator+entity.getTemplateCode());
-
 				if(dirFile.exists()&&dirFile.isDirectory()){
 					flag=true;
 				}
@@ -448,9 +450,7 @@ public class CgformTemplateController extends BaseController {
 			tempDir.mkdirs();
 		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
 			MultipartFile file = entity.getValue();
-
 			picTempFile=new File(tempDir.getAbsolutePath(),File.separator+"index_"+request.getSession().getId()+"."+FileUtils.getExtend(file.getOriginalFilename()));
-
 			try{
 				if(picTempFile.exists())
 					org.apache.commons.io.FileUtils.forceDelete(picTempFile);
@@ -485,9 +485,7 @@ public class CgformTemplateController extends BaseController {
 			tempDir.mkdirs();
 		for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
 			MultipartFile file = entity.getValue();
-
 			picTempFile=new File(tempDir.getAbsolutePath(),File.separator+"zip_"+request.getSession().getId()+"."+ FileUtils.getExtend(file.getOriginalFilename()));
-
 			try{
 				if(picTempFile.exists())
 					org.apache.commons.io.FileUtils.forceDelete(picTempFile);
@@ -503,63 +501,68 @@ public class CgformTemplateController extends BaseController {
 		j.setSuccess(true);
 		return j;
 	}
+//	/**
+//	 * 查看图片
+//	 * @param request
+//	 * @param code
+//	 * @param path
+//	 * @param response
+//	 */
+//	@JAuth
+//	@RequestMapping(params = "showPic")
+//	public void showPic(HttpServletRequest request,String code, String path,HttpServletResponse response){
+//		System.out.println("----showPic---");
+//		String defaultPath="default.jpg";
+//		String defaultCode="default/images/";
+//		//无图片情况
 
-	/**
-	 * 查看图片
-	 * @param request
-	 * @param code
-	 * @param path
-	 * @param response
-	 */
-	@JAuth
-	@RequestMapping(params = "showPic")
-	public void showPic(HttpServletRequest request,String code, String path,HttpServletResponse response){
-		String defaultPath="default.jpg";
-		String defaultCode="default/images/";
-		//无图片情况
+//		if(oConvertUtils.isEmpty(path)){
+//			path=defaultPath;
+//			code=defaultCode;
+//		}else{
+//			//临时图片
+//			if(oConvertUtils.isEmpty(code)){
+//				code="temp/";
+//			}else{
+//				code+="/images/";
+//			}
+//		}
 
-		if(oConvertUtils.isEmpty(path)){
-			path=defaultPath;
-			code=defaultCode;
-		}else{
-			//临时图片
-			if(oConvertUtils.isEmpty(code)){
-				code="temp/";
-			}else{
-				code+="/images/";
-			}
-		}
+//		FileInputStream fis = null;
+//		OutputStream out = null;
+//		response.setContentType("image/" + FileUtils.getExtend(path));
+//		//TODO 缓存设置有效时间为一小时，IE有效，chrome无效
+//        response.setHeader("Cache-Control", "max-age=3600, must-revalidate");
+//        
+//		try {
+//			out = response.getOutputStream();
+//			File file = new File(getUploadBasePath(request),code+path);
+//			if(!file.exists()||file.isDirectory()){
+//				file=new File(getUploadBasePath(request),defaultCode+defaultPath);
+//			}
+//			fis = new FileInputStream(file);
+//			byte[] b = new byte[fis.available()];
+//			fis.read(b);
+//			out.write(b);
 
-		FileInputStream fis = null;
-		OutputStream out = null;
-		response.setContentType("image/" + FileUtils.getExtend(path));
-		try {
-			out = response.getOutputStream();
-			File file = new File(getUploadBasePath(request),code+path);
-			if(!file.exists()||file.isDirectory()){
-				file=new File(getUploadBasePath(request),defaultCode+defaultPath);
-			}
-			fis = new FileInputStream(file);
-			byte[] b = new byte[fis.available()];
-			fis.read(b);
-			out.write(b);
+//			//out.flush();
 
-			//out.flush();
-
-		} catch (Exception e) {
-			logger.error(e.toString());
-//			e.printStackTrace();
-		} finally {
-			if (fis != null) {
-				try {
-					fis.close();
-					out.close();
-				} catch (IOException e) {
-					logger.info(e.toString());
-				}
-			}
-		}
-	}
+//		} catch (Exception e) {
+//			logger.error(e.toString());
+////			e.printStackTrace();
+//		} finally {
+//			if (fis != null) {
+//				try {
+//					fis.close();
+//					out.close();
+//				} catch (IOException e) {
+//					logger.info(e.toString());
+//				}
+//			}
+//		}
+//	}
+	
+	
 	//获取上传根路径
 	private String getUploadBasePath(HttpServletRequest request){
 
@@ -571,8 +574,7 @@ public class CgformTemplateController extends BaseController {
         path = path.substring(0,path.indexOf("sysConfig.properties"))+"online/template";
 //		String path= this.getClass().getResource("/").getPath()+"online/template";
 
-       path = path.replaceAll("%20", " ");//解决tomcat安装路径包含空格的问题
-
+        path = path.replaceAll("%20", " ");//解决tomcat安装路径包含空格的问题
 		return path;
 	}
 

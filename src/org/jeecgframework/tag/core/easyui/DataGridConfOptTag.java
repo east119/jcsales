@@ -25,6 +25,8 @@ public class DataGridConfOptTag extends TagSupport {
 	private String urlclass;//自定义按钮样式
 	private String urlfont;//自定义按钮图标样式
 
+	private boolean inGroup;
+
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
 	}
@@ -32,7 +34,7 @@ public class DataGridConfOptTag extends TagSupport {
 		Tag t = findAncestorWithClass(this, DataGridTag.class);
 		DataGridTag parent = (DataGridTag) t;
 
-		parent.setConfUrl(url,MutiLangUtil.getLang(title),MutiLangUtil.getLang(message),exp,operationCode,urlStyle,urlclass,urlfont);
+		parent.setConfUrl(url,MutiLangUtil.getLang(title),MutiLangUtil.getLang(message),exp,operationCode,urlStyle,urlclass,urlfont,inGroup);
 
 		return EVAL_PAGE;
 	}
@@ -71,5 +73,11 @@ public class DataGridConfOptTag extends TagSupport {
 		this.urlfont = urlfont;
 	}
 
-	
+	public boolean isInGroup() {
+		return inGroup;
+	}
+	public void setInGroup(boolean inGroup) {
+		this.inGroup = inGroup;
+	}
+
 }

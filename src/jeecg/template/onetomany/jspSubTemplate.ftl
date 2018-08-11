@@ -13,7 +13,7 @@
 	 	 resetTrNum('add_${entityName?uncap_first}_table');
     });  
 	$('#del${entityName}Btn').bind('click', function(){   
-      	$("#add_${entityName?uncap_first}_table").find("input:checked").parent().parent().remove();   
+      	$("#add_${entityName?uncap_first}_table").find("input[name$='ck']:checked").parent().parent().remove();   
         resetTrNum('add_${entityName?uncap_first}_table'); 
     }); 
     $(document).ready(function(){

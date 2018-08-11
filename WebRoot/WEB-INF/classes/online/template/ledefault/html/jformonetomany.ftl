@@ -1,7 +1,9 @@
     
     
     <!-- tab内容 -->
-    <div class="con-wrapper" id="con-wrapper${sub_index}" style="display: none;">
+    <!-- update-begin-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
+    <div class="con-wrapper" id="con-wrapper${sub_index}" style="display: none;width:100%;overflow-x:auto">
+	    <!-- update-end-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
 	    <!-- <h4>分类标题</h4> -->
 	    <div class="row">
 	      <div class="col-md-12 layout-header">
@@ -36,7 +38,9 @@
 	<div style="margin: 0 15px; background-color: white;">    
 	    <!-- Table -->
       <table id="${sub}_table" class="table table-bordered table-hover" style="margin-bottom: 0;">
-        <thead>
+        <!-- update-begin-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
+        <thead style="background: #fff">
+        <!-- update-end-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
           <tr>
             <th style="white-space:nowrap;width:50px;">序号</th>
             <th style="white-space:nowrap;width:50px;">操作</th>
@@ -45,7 +49,9 @@
 			</#list>
           </tr>
         </thead>
-        <tbody id="add_${sub}_table">
+        <!-- update-begin-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
+        <tbody id="add_${sub}_table" style="background: #fff">
+        <!-- update-end-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
           <#if data['${sub}']?exists&&(data['${sub}']?size>0) >
 								<#list data['${sub}'] as subTableData >
 									<tr>

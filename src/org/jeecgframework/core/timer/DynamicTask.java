@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.Logger;
 import org.jeecgframework.core.constant.Globals;
 import org.jeecgframework.core.util.HttpRequest;
@@ -169,15 +168,9 @@ public class DynamicTask {
 					try {
 						String url = "http://" + task.getRunServer() + "/timeTaskController.do?remoteTask";//spring-mvc.xml
 						String param = "id=" + task.getId() + "&isStart=" + (isStart ? "1" : "0");
-						String jsonstr = HttpRequest.httpPost(url, param, false);
-						if (null != jsonstr && jsonstr.length() > 0) {
-							JSONObject json = (JSONObject) JSONObject.parse(jsonstr);
-							isSuccess = json.getBooleanValue("success");
-						}
-					} catch (ClientProtocolException e) {
-						logger.info("远程主机‘" + task.getRunServer() + "’响应超时");
-						return false;
-					} catch (IOException e) {
+						JSONObject json = HttpRequest.sendPost(url, param);
+						isSuccess = json.getBooleanValue("success");
+					} catch (Exception e) {
 						logger.info("远程主机‘"+task.getRunServer() + "’响应超时");
 						return false;
 					}

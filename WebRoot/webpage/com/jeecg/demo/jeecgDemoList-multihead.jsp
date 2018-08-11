@@ -3,12 +3,12 @@
 <t:base type="jquery,easyui,tools,DatePicker,autocomplete"></t:base>
 <div class="easyui-layout" fit="true">
   <div region="center" style="padding:0px;border:0px">
-  <t:datagrid name="jeecgDemoList" checkbox="true" sortName="birthday,name" pagination="true" fitColumns="true"
-   title="多表头列表" actionUrl="jeecgListDemoController.do?datagrid" idField="id" fit="true" queryMode="group">
+  <t:datagrid name="jeecgDemoList" checkbox="true" sortName="birthday,name" pagination="true" fitColumns="true" title="多表头列表 Demo" 
+  												   actionUrl="jeecgListDemoController.do?datagrid" idField="id" fit="true" queryMode="group">
     <t:dgCol title="id"  field="id"   hidden="true"    width="120"></t:dgCol>
-    <t:dgCol title="列表标签" colspan="10" newColumn="true"></t:dgCol>
-    <t:dgCol title="人员信息" colspan="4"></t:dgCol>
-    <t:dgCol title="部门信息" colspan="2"></t:dgCol>
+    <t:dgCol title="<b>多表头标签列表</b>" colspan="10" newColumn="true"></t:dgCol>
+    <t:dgCol title="<b>人员信息</b>" colspan="4"></t:dgCol>
+    <t:dgCol title="<b>部门信息</b>" colspan="2"></t:dgCol>
     <t:dgCol title="工资"  field="salary" rowspan="2"  width="120"></t:dgCol>
      <t:dgCol title="入职状态"  field="status" rowspan="2"   defaultVal='N'  dictionary="sf_yn" width="80"></t:dgCol>
      <t:dgCol title="创建日期"  field="createDate" rowspan="2" formatter="yyyy-MM-dd"  queryMode="group" editor="datebox" width="120"></t:dgCol>
@@ -29,8 +29,9 @@
   </t:datagrid>
   </div>
  </div>
+ 
  <script type="text/javascript">
- function testReloadPage(){
+	function testReloadPage(){
 		document.location = "http://www.baidu.com"; 
 	}
 	function szqm(id) {
@@ -39,6 +40,5 @@
 	function addNewPage(id){
 		addOneTab("TAB方式添加", "jeecgListDemoController.do?addTab&type=table&id="+id);
 	}
-	
-
  </script>
+ 

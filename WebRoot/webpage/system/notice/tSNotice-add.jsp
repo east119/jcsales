@@ -18,6 +18,7 @@
 		    $("#noticeContent").val(editor.getContent());
 		}
 	}
+  
   function dataytpeSelect(name) {
       $("#roleName").removeAttr('datatype');
       $("#roleName_span").hide()
@@ -55,7 +56,7 @@
 					</td>
 					<td class="value">
 						  	 <input id="noticeContent" name="noticeContent" type="hidden">
-						  	 <script id="content" type="text/plain" style="width:700px;" ></script>
+						  	 <script id="content" type="text/plain" style="width:95%" ></script>
 						  	 <script type="text/javascript">
 						        	var editor = UE.getEditor('content',{
 						        	    toolleipi:true,//是否显示，设计器的 toolbars
@@ -83,8 +84,8 @@
 						</label>
 					</td>
 					<td class="value">
-					     	 <input type="radio" name="noticeType" value="1" datatype="*"  />通知
-         				&nbsp;&nbsp;<input type="radio" name="noticeType" value="2" checked="checked" />公告
+					     	 <!-- <input type="radio" name="noticeType" value="1" datatype="*"  />通知 -->
+         				    <input type="radio" name="noticeType" value="2" checked="checked" />公告
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">通知公告类型</label>
 						</td>
@@ -122,8 +123,7 @@
 						</label>
 					</td>
 					<td class="value">
-							   <input id="noticeTerm" name="noticeTerm" type="text" style="width: 150px" 
-					      						class="Wdate" onClick="WdatePicker()" >    
+							<input id="noticeTerm" name="noticeTerm" type="text" style="width: 150px" class="Wdate" onClick="WdatePicker()" >    
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">阅读期限</label>
 						</td>

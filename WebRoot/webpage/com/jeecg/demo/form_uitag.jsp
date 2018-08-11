@@ -160,4 +160,3 @@
 </t:formvalid>
 </body>
 </html>
-<!-- update-end--Author:yugwu  Date:20170626 for：[TASK #2135]【浏览器兼容问题】IE8下样式乱了-------------------- -->

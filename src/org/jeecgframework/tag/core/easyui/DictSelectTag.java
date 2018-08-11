@@ -135,21 +135,17 @@ public class DictSelectTag extends TagSupport {
 				if (!StringUtils.isBlank(this.id)) {
 					sb.append(" id=\"" + id + "\"");
 				}
-
 				this.datatype(sb);
-
 				sb.append(">");
-
 				select("common.please.select", "", sb);
-
 				for (Map<String, Object> map : list) {
 					select(map.get("text").toString(), map.get("field").toString(), sb);
 				}
 				sb.append("</select>");
 			}
 		} else {
-			TSTypegroup typeGroup = ResourceUtil.allTypeGroups.get(this.typeGroupCode.toLowerCase());
-			List<TSType> types = ResourceUtil.allTypes.get(this.typeGroupCode.toLowerCase());
+			TSTypegroup typeGroup = ResourceUtil.getCacheTypeGroup(this.typeGroupCode.toLowerCase());
+			List<TSType> types = ResourceUtil.getCacheTypes(this.typeGroupCode.toLowerCase());
 			if (hasLabel) {
 				sb.append("<div class=\"" + divClass + "\">");
 				sb.append("<label class=\"" + labelClass + "\" >");
@@ -189,9 +185,7 @@ public class DictSelectTag extends TagSupport {
 					}
 					this.datatype(sb);
 					sb.append(">");
-
 					select("common.please.select", "", sb);
-
 					for (TSType type : types) {
 						select(type.getTypename(), type.getTypecode(), sb);
 					}
@@ -210,6 +204,7 @@ public class DictSelectTag extends TagSupport {
 		Gson gson = new Gson();
 		Map<String, String> mp = gson.fromJson(extendJson, Map.class);
 		StringBuffer sb=new StringBuffer();
+		sb.append(" ");
 		for(Map.Entry<String, String> entry: mp.entrySet()) { 
 			//判断select标签中是否含有style属性
 			if(entry.getKey().equals("style")){

@@ -206,6 +206,5 @@ public class CgFormIndexServiceImpl extends CommonServiceImpl implements CgFormI
 			this.getSession().createSQLQuery(sql).executeUpdate();
 		}
 	}
-
 		
 }

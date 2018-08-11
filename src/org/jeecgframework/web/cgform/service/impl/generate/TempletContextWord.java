@@ -1,31 +1,5 @@
 package org.jeecgframework.web.cgform.service.impl.generate;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateDirectiveModel;
-import freemarker.template.TemplateException;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-
-import org.apache.commons.lang.StringUtils;
-import org.jeecgframework.codegenerate.database.JeecgReadTable;
-import org.jeecgframework.core.online.util.FreemarkerHelper;
-import org.jeecgframework.core.util.PropertiesUtil;
-import org.jeecgframework.core.util.oConvertUtils;
-import org.jeecgframework.web.cgform.common.CgAutoListConstant;
-import org.jeecgframework.web.cgform.entity.config.CgFormHeadEntity;
-import org.jeecgframework.web.cgform.service.build.DataBaseService;
-import org.jeecgframework.web.cgform.service.cgformftl.CgformFtlServiceI;
-import org.jeecgframework.web.cgform.service.config.CgFormFieldServiceI;
-import org.jeecgframework.web.cgform.util.TemplateUtil;
-import org.jeecgframework.web.system.service.SystemService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -36,9 +10,35 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.StringUtils;
+import org.jeecgframework.codegenerate.database.JeecgReadTable;
+import org.jeecgframework.core.util.PropertiesUtil;
+import org.jeecgframework.core.util.oConvertUtils;
+import org.jeecgframework.web.cgform.common.CgAutoListConstant;
+import org.jeecgframework.web.cgform.entity.config.CgFormHeadEntity;
+import org.jeecgframework.web.cgform.service.build.DataBaseService;
+import org.jeecgframework.web.cgform.service.cgformftl.CgformFtlServiceI;
+import org.jeecgframework.web.cgform.service.config.CgFormFieldServiceI;
+import org.jeecgframework.web.cgform.util.TemplateUtil;
+import org.jeecgframework.web.system.service.CacheServiceI;
+import org.jeecgframework.web.system.service.SystemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateDirectiveModel;
+import freemarker.template.TemplateException;
+
 @Component("templetContextWord")
 public class TempletContextWord {
-
+	private static final Logger log = LoggerFactory.getLogger(TempletContextWord.class);
+	
 	@Autowired
 	private CgFormFieldServiceI cgFormFieldService;
 	@Autowired
@@ -54,8 +54,9 @@ public class TempletContextWord {
 	private Map<String, TemplateDirectiveModel> tags;
 	
 	private static final String ENCODING = "UTF-8";
-
-	private static Cache ehCache;//ehcache
+	@Autowired
+	private CacheServiceI cacheService;
+	
 	/**
 	 * 系统模式：
 	 * PUB-生产（使用ehcache）
@@ -65,9 +66,6 @@ public class TempletContextWord {
 	static{
 		PropertiesUtil util = new PropertiesUtil("sysConfig.properties");
 		_sysMode = util.readProperty(CgAutoListConstant.SYS_MODE_KEY);
-		if(CgAutoListConstant.SYS_MODE_PUB.equalsIgnoreCase(_sysMode)){
-			ehCache = CacheManager.getInstance().getCache("dictCache");//永久缓存块
-		}
 	}
 
 	@PostConstruct
@@ -88,22 +86,24 @@ public class TempletContextWord {
 		if (tableName == null) {
 			return null;
 		}
-		String oldTableName = tableName;
 
-        if (ftlVersion != null && ftlVersion.length() > 0) {
-            tableName = tableName + "&ftlVersion=" + ftlVersion;
-        }
+//		String oldTableName = tableName;
+
+//        if (ftlVersion != null && ftlVersion.length() > 0) {
+//            tableName = tableName + "&ftlVersion=" + ftlVersion;
+//        }
 
         try {
-			if(CgAutoListConstant.SYS_MODE_DEV.equalsIgnoreCase(_sysMode)){//开发模式
+//			if(CgAutoListConstant.SYS_MODE_DEV.equalsIgnoreCase(_sysMode)){//开发模式
 				template = freemarker.getTemplate(tableName,freemarker.getLocale(), ENCODING);
-			}else if(CgAutoListConstant.SYS_MODE_PUB.equalsIgnoreCase(_sysMode)){//生产模式（缓存）
-				//获取版本号
-		    	String version = cgFormFieldService.getCgFormVersionByTableName(oldTableName);
-				template = getTemplateFromCache(tableName, ENCODING,version);
-			}else{
-				throw new RuntimeException("sysConfig.properties的freeMarkerMode配置错误：(PUB:生产模式，DEV:开发模式)");
-			}
+//			}else if(CgAutoListConstant.SYS_MODE_PUB.equalsIgnoreCase(_sysMode)){//生产模式（缓存）
+//				//获取版本号
+//		    	String version = cgFormFieldService.getCgFormVersionByTableName(oldTableName);
+//				template = getTemplateFromCache(tableName, ENCODING,version);
+//			}else{
+//				throw new RuntimeException("sysConfig.properties的freeMarkerMode配置错误：(PUB:生产模式，DEV:开发模式)");
+//			}
+
 			return template;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -122,14 +122,15 @@ public class TempletContextWord {
 		Template template =  null;
 		try {
 			//cache的键：类名.方法名.参数名
-			String cacheKey = FreemarkerHelper.class.getName()+".getTemplateFormCache."+tableName+"."+version;
-			Element element = ehCache.get(cacheKey);
-			if(element==null){
+			String cacheKey = this.getClass().getSimpleName()+".getTemplateFormCache."+tableName+"."+version;
+			Object templateObj = cacheService.get(CacheServiceI.SYSTEM_BASE_CACHE,cacheKey);
+			if(templateObj==null){
 				template = freemarker.getTemplate(tableName,freemarker.getLocale(), ENCODING);
-				element = new Element(cacheKey,  template);
-				ehCache.put(element);
+				cacheService.put(CacheServiceI.SYSTEM_BASE_CACHE,cacheKey,template);
+				log.info("--setTemplateFromCache-------cacheKey: [{}]-------------",cacheKey);
 			}else{
-				template = (Template)element.getObjectValue();
+				template = (Template)templateObj;
+				log.info("--getTemplateFromCache-------cacheKey: [{}]-------------",cacheKey);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -160,7 +161,9 @@ public class TempletContextWord {
 	 */
 	public String autoFormGenerateHtml(String tableName,String id,String mode) {
 		String html = autoFormViewGenerateHtml(tableName, id, mode);
-		html = html.replace("<html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\">", "<%@ page language=\"java\" import=\"java.util.*\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%><br><%@include file=\"/context/mytags.jsp\"%>");
+
+//		html = html.replace("<html xmlns:m=\"http://schemas.microsoft.com/office/2004/12/omml\">", "<%@ page language=\"java\" import=\"java.util.*\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%><br><%@include file=\"/context/mytags.jsp\"%>");
+
 //		html = replaceAddJSP(html);
 		html = html.replace("cgFormBuildController.do?saveOrUpdate", "@@{entityName?uncap_first}Controller.do?doAdd");
 //		html = html.replace("<input id=\"jformHiddenField\" name=\"jformHiddenField\" type=\"text\" value=\"@@@{@@{entityName?uncap_first}.jformHiddenField}\" style=\"width: 150px\" class=\"inputxt\" >", "");
@@ -232,9 +235,14 @@ public class TempletContextWord {
     	data.put("data", tableData);
     	data.put("id", id);
     	data.put("head", head);
+
+    	data.put("basePath", "<%=basePath%>");
 		String content =null;
 		content = getTableTemplate(templateName,data);
-		return content;
+		//增加jsp 标签
+		String jspHead = "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" pageEncoding=\"UTF-8\"%>\r\n<%@include file=\"/context/mytags.jsp\"%>\r\n";
+		return jspHead+content;
+
 	}
 	
 	/**

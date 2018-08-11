@@ -165,6 +165,10 @@ public class TSInterfaceController extends BaseController {
 			}else{
 				String sql = "delete from t_s_interface where id = ?";
 				systemService.executeSql(sql, tsInterface.getId());
+
+				String interroleSql = "delete from t_s_interrole_interface where interface_id = ?";
+				systemService.executeSql(interroleSql, tsInterface.getId());
+
 				message = MutiLangUtil.paramDelSuccess("common.menu");
 				systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 			}
@@ -235,7 +239,6 @@ public class TSInterfaceController extends BaseController {
 	public AjaxJson saveInterface(TSInterfaceEntity tsInterface, HttpServletRequest request) {
 		String message = null;
 		AjaxJson j = new AjaxJson();
-		// ----------------------------------------------------------------
 		tsInterface.setInterfaceUrl(tsInterface.getInterfaceUrl().trim());
 		String functionOrder = tsInterface.getInterfaceOrder();
 		if (StringUtils.isEmpty(functionOrder)) {

@@ -27,7 +27,12 @@
 									<#-- update--end--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
 							        <#if po.operationCodesReadOnly?exists> readonly = "readonly"</#if>
 					               <#if po.field_valid_type?if_exists?html != ''>
-					               datatype="${po.field_valid_type?if_exists?html}"
+					                <#if po.field_valid_type=='only'>
+						       		   validType="${tableName},${po.field_name},id"
+						       		   datatype="*"
+						       		<#else>
+					                   datatype="${po.field_valid_type?if_exists?html}"
+					               </#if>
 					               <#else>
 					               <#if po.type == 'int'>
 					               datatype="n" 

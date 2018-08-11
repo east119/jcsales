@@ -196,12 +196,10 @@ public class CgformFtlController extends BaseController {
 				cgformFtl.setFtlStatus("1");
 				cgformFtlService.saveOrUpdate(cgformFtl);
 				message = "激活成功";
-
 				CgFormHeadEntity po = systemService.getEntity(CgFormHeadEntity.class, cgformFtl.getCgformId());
 				templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.ADD.getName());
 				templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.DETAIL.getName());
 				templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.UPDATE.getName());
-
 				systemService.addLog(message, Globals.Log_Type_UPDATE,Globals.Log_Leavel_INFO);
 				logger.info("["+IpUtil.getIpAddr(request)+"][online表单模板激活]"+message+"表名："+po.getTableName());
 				j.setSuccess(true);
@@ -233,12 +231,10 @@ public class CgformFtlController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		try {
 			cgformFtl = systemService.getEntity(CgformFtlEntity.class,cgformFtl.getId());
-
 			CgFormHeadEntity po = systemService.getEntity(CgFormHeadEntity.class, cgformFtl.getCgformId());
 			templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.ADD.getName());
 			templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.DETAIL.getName());
 			templetContext.removeTemplateFromCache(po.getTableName()+"_"+TemplateUtil.TemplateType.UPDATE.getName());
-
 			cgformFtl.setFtlStatus("0");
 			cgformFtlService.saveOrUpdate(cgformFtl);
 			message = "取消激活成功";
@@ -309,6 +305,7 @@ public class CgformFtlController extends BaseController {
 
 		sb.append("<base href=\"${basePath}/\" />");
     	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/jquery/jquery-1.8.3.js\"></script>");
+    	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
     	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/dataformat.js\"></script>");
     	sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"${basePath}/plug-in/accordion/css/accordion.css\"></link>");
     	sb.append("<link id=\"easyuiTheme\" rel=\"stylesheet\" href=\"${basePath}/plug-in/easyui/themes/default/easyui.css\" type=\"text/css\"></link>");
@@ -321,7 +318,7 @@ public class CgformFtlController extends BaseController {
     	sb.append("<link rel=\"stylesheet\" href=\"${basePath}/plug-in/ace/css/font-awesome.css\" type=\"text/css\"></link>");
     	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/lhgDialog/lhgdialog.min.js\"></script>");
     	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/layer/layer.js\"></script>");
-    	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/curdtools_zh-cn.js\"></script>");
+    	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/curdtools.js\"></script>");
     	sb.append("<script type=\"text/javascript\" src=\"${basePath}/plug-in/tools/easyuiextend.js\"></script>");
     	sb.append("<link id=\"easyuiTheme\" rel=\"stylesheet\" href=\"${basePath}/plug-in/easyui/themes/metrole/main.css\" type=\"text/css\"></link>");
     	sb.append("<link rel=\"stylesheet\" href=\"${basePath}/plug-in/uploadify/css/uploadify.css\" type=\"text/css\"></link>");
@@ -426,17 +423,14 @@ public class CgformFtlController extends BaseController {
 			}
 			Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 			// 文件数据库保存路径
-
 			String path = uploadbasepath + File.separator;// 文件保存在硬盘的相对路径
 			String realPath = uploadFile.getMultipartRequest().getSession()
 					.getServletContext().getRealPath(File.separator)
 					+ path;// 文件的硬盘真实路径
-
 			File file = new File(realPath);
 			if (!file.exists()) {
 				file.mkdir();// 创建根目录
 			}
-
 			if (uploadFile.getCusPath() != null) {
 				realPath += uploadFile.getCusPath() + File.separator;
 				path += uploadFile.getCusPath() +File.separator;
@@ -447,7 +441,6 @@ public class CgformFtlController extends BaseController {
 			} else {
 				realPath += DateUtils.getDataString(DateUtils.yyyyMMdd) +File.separator;
 				path += DateUtils.getDataString(DateUtils.yyyyMMdd) +File.separator;
-
 				file = new File(realPath);
 				if (!file.exists()) {
 					file.mkdir();// 创建文件时间子目录

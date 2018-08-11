@@ -2233,3 +2233,11 @@ a.s-btn-plain-active {
     line-height: normal;
 }
 /*update-end--Author:xuelin  Date:20170624 for：TASK #2167 【技术研究】列表表头表头怎么换行---------------------- */
+/*update-begin--Author:scott  Date:20180628 for：shortcut风格下列表查询区域样式优化，上间距太小  -- */
+#searchColums, div[name="searchColums"] {
+    padding: 3px 0 3px 0;
+}
+form {
+    margin-bottom: 0em;
+}
+/*update-end--Author:scott  Date:20180628 for：shortcut风格下列表查询区域样式优化 ，上间距太小  -- */

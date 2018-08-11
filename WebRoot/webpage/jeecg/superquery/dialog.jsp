@@ -6,7 +6,7 @@
 <title>高级查询</title>
 <t:base type="jquery,easyui,tools"></t:base>
 <script type="text/javascript" src="plug-in/ztree/js/ztreeCreator.js" ></script>
-<link rel="stylesheet" href="plug-in/ztree/css/zTreeStyle.css" type="text/css"/>
+<link rel="stylesheet" href="plug-in/ztree/css/metroStyle.css" type="text/css"/>
 <script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>
 <style>

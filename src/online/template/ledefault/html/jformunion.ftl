@@ -1,4 +1,7 @@
 <#setting number_format="0.#####################">
+<#-- update-begin-author:taoyan date:20180705 for:宏封装 -->
+<#include "online/template/ui/basetag.ftl"/>
+<#-- update-end-author:taoyan date:20180705 for: 宏封装 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -8,33 +11,7 @@
   <title>jeecg</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/vendor.css">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/bootstrap-theme.css">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/bootstrap.css">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/app.css">
-  
-  <link rel="stylesheet" href="${basePath}/plug-in/Validform/css/metrole/style.css" type="text/css"/>
-  <link rel="stylesheet" href="${basePath}/plug-in/Validform/css/metrole/tablefrom.css" type="text/css"/>
-  <script type="text/javascript" src="${basePath}/plug-in/jquery/jquery-1.8.3.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/tools/dataformat.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/easyui/jquery.easyui.min.1.3.2.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/easyui/locale/zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/tools/syUtil.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/My97DatePicker/WdatePicker.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/lhgDialog/lhgdialog.min.js"></script>
-  <#--update--begin--author:scott Date:20170304 for:替换layer风格提示框-->
-  <script type="text/javascript" src="${basePath}/plug-in/layer/layer.js"></script>
-  <#--update--end--author:scott Date:20170304 for:替换layer风格提示框-->
-  <script type="text/javascript" src="${basePath}/plug-in/tools/curdtools_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/tools/easyuiextend.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/js/datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
-  <link rel="stylesheet" href="${basePath}/plug-in/uploadify/css/uploadify.css" type="text/css"></link>
-  <script type="text/javascript" src="${basePath}/plug-in/uploadify/jquery.uploadify-3.1.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="${basePath}/plug-in/ueditor/ueditor.config.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="${basePath}/plug-in/ueditor/ueditor.all.min.js"></script>
+  <@basetag webRoot=basePath hasFile=true lang=lang/>
 </head>
 
 
@@ -201,8 +178,9 @@
 	});
 }
 </script>
-
-<div id="jform_tab" class="tab-wrapper">
+<!-- update-begin-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
+<div id="jform_tab" class="tab-wrapper" style="width:100%;overflow-x:hidden">
+<!-- update-end-Author:zhangweijian  Date: 20180709 for：#2919 online样式问题 -->
 	<!-- tab -->
     <ul class="nav nav-tabs">
       <#assign subTableStr>${head.subTableStr?if_exists?html}</#assign>

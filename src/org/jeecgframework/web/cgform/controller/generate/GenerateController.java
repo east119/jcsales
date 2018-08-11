@@ -31,6 +31,7 @@ import org.jeecgframework.codegenerate.util.CodeStringUtils;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.model.json.AjaxJson;
 import org.jeecgframework.core.enums.OnlineGenerateEnum;
+import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.web.cgform.entity.button.CgformButtonEntity;
@@ -44,9 +45,11 @@ import org.jeecgframework.web.cgform.entity.generate.GenerateSubListEntity;
 import org.jeecgframework.web.cgform.service.build.DataBaseService;
 import org.jeecgframework.web.cgform.service.button.CgformButtonServiceI;
 import org.jeecgframework.web.cgform.service.button.CgformButtonSqlServiceI;
+import org.jeecgframework.web.cgform.service.cgformftl.CgformFtlServiceI;
 import org.jeecgframework.web.cgform.service.config.CgFormFieldServiceI;
 import org.jeecgframework.web.cgform.service.enhance.CgformEnhanceJsServiceI;
 import org.jeecgframework.web.cgform.service.impl.generate.TempletContextWord;
+import org.jeecgframework.web.cgform.util.GenerateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,6 +87,8 @@ public class GenerateController extends BaseController {
 	private TempletContextWord templetContextWord;
 	@Autowired
 	private DataBaseService dataBaseService;
+	@Autowired
+	private CgformFtlServiceI cgformFtlService;
 	/**
 	 * 代码生成配置页面
 	 * @param request
@@ -102,7 +107,7 @@ public class GenerateController extends BaseController {
 		if(cgFormHead.getJformType()==1 || cgFormHead.getJformType()==3){
 			//如果是单表或者附表，则进入单表模型
 
-			request.setAttribute("jspModeList", getOnlineGenerateEnum("single","ext-common"));// 表单风格
+			request.setAttribute("jspModeList", GenerateUtil.getOnlineGenerateEnum("single","ext-common","Y".equals(cgFormHead.getIsTree())));// 默认老版本模板(IE8+/不支持移动/列表标签)
 
 			returnModelAndView = "jeecg/cgform/generate/single";
 		}else{
@@ -117,7 +122,7 @@ public class GenerateController extends BaseController {
 				}
 			}
 
-			request.setAttribute("jspModeList", getOnlineGenerateEnum("onetomany","ext-common"));// 表单风格
+			request.setAttribute("jspModeList", GenerateUtil.getOnlineGenerateEnum("onetomany","ext-common","Y".equals(cgFormHead.getIsTree())));// 默认老版本模板(IE8+/不支持移动/列表标签)
 
 			request.setAttribute("subTableList", subTableList);
 			returnModelAndView = "jeecg/cgform/generate/one2many";
@@ -147,36 +152,19 @@ public class GenerateController extends BaseController {
 		return new ModelAndView(returnModelAndView);
 	}
 	
-	private List<OnlineGenerateEnum> getOnlineGenerateEnum(String type){
-		List<OnlineGenerateEnum> list = new ArrayList<OnlineGenerateEnum>();
-		for(OnlineGenerateEnum item : OnlineGenerateEnum.values()) {
-			if(item.getFormType().equals(type)) {
-				list.add(item);
-			}
-		}
-		return list;
-	}
-
-	private List<OnlineGenerateEnum> getOnlineGenerateEnum(String type,String version){
-		List<OnlineGenerateEnum> list = new ArrayList<OnlineGenerateEnum>();
-		for(OnlineGenerateEnum item : OnlineGenerateEnum.values()) {
-			if(item.getFormType().equals(type)&&item.getVersion().equals(version)) {
-				list.add(item);
-			}
-		}
-		return list;
-	}
-
+	
 	/**
 	 * 根据模板类型查询模板风格
 	 * @return
 	 */
 	@RequestMapping(params = "getOnlineTempletStyle")
 	@ResponseBody
-	public AjaxJson getOnlineTempletStyle(String type,String version){
+	public AjaxJson getOnlineTempletStyle(String type,String version,boolean supportTree){
 		AjaxJson j = new AjaxJson();
 		try {
-			List<OnlineGenerateEnum> list =  getOnlineGenerateEnum(type,version);
+
+			List<OnlineGenerateEnum> list =  GenerateUtil.getOnlineGenerateEnum(type,version,supportTree);
+
 			List<Map<String,String>> mapList = new ArrayList<Map<String,String>>();
 			Map<String,String> map = null;
 			for(OnlineGenerateEnum item : list) {
@@ -223,18 +211,7 @@ public class GenerateController extends BaseController {
 				OnlineGenerateEnum modeEnum = OnlineGenerateEnum.toEnum(createFileProperty.getJspMode(),version);
 
 				if(modeEnum!=null){
-					if("system".equals(modeEnum.getVersion())){
-
-						//step.3 判断是不是用用户自定义界面
-						CgformCodeGenerate generate = new CgformCodeGenerate(createFileProperty,generateEntity);
-						if(createFileProperty.getJspMode().equals("04")){
-							String formhtml = templetContextWord.autoFormGenerateHtml(tableName, null, null);
-							generate.setCgformJspHtml(formhtml);
-						}
-
-						//step.4 调用代码生成器
-						generate.generateToFile();
-					}else if("ext".equals(modeEnum.getVersion())){
+					if("ext".equals(modeEnum.getVersion())){
 						CgformCodeGenerate generate = new CgformCodeGenerate(createFileProperty,generateEntity);
 						generate.generateToFileUserDefined();
 					}
@@ -248,6 +225,36 @@ public class GenerateController extends BaseController {
 					}
 
 					j.setMsg(ftlDescription+"：功能生成成功，请刷新项目重启，菜单访问路径："+CodeStringUtils.getInitialSmall(generateEntity.getEntityName())+"Controller.do?list");
+				}else if("system".equals(version)){
+					CgformCodeGenerate generate = new CgformCodeGenerate(createFileProperty,generateEntity);
+					createFileProperty.setJspMode(OnlineGenerateEnum.ONLINE_TABLE_SINGLE.getCode());
+					//判断是否获取word模板
+					Map<String,Object> cgformFtlEntity = cgformFtlService.getCgformFtlByTableName(tableName);
+					if(cgformFtlEntity!=null){
+						String formhtml = templetContextWord.autoFormGenerateHtml(tableName, null, null);
+						generate.setCgformJspHtml(formhtml);
+					}else{
+
+						j.setMsg("该表单没有激活的word模板不能生成");
+						try {
+							String projectPath = URLEncoder.encode(generateEntity.getProjectPath(), "UTF-8");
+							Cookie cookie = new Cookie("cookie_projectPath",projectPath );				
+							cookie.setMaxAge(60*60*24*30); //cookie 保存30天
+							response.addCookie(cookie);
+							response.getWriter().print(j.getJsonStr());
+							response.getWriter().flush();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}finally{
+							try {
+								response.getWriter().close();
+							} catch (Exception e2) {
+							}
+						}
+						return;
+
+					}
+					generate.generateToFileUserDefined();
 				}else{
 					j.setMsg("代码生成器不支持该页面风格");
 				}
@@ -302,6 +309,9 @@ public class GenerateController extends BaseController {
 			GenerateEntity mainG = new GenerateEntity();
 			mainG.setProjectPath(subTableListEntity.getProjectPath());
 			mainG.setPackageStyle(subTableListEntity.getPackageStyle());
+
+			mainG.setSupportRestful(request.getParameter("supportRestful"));
+
 			CgFormHeadEntity mCgFormHead = cgFormFieldService.getCgFormHeadByTableName(mainTable);
 			getCgformConfig(mCgFormHead, mainG);
 			//step.4 填充子表的所有智能表单配置
@@ -437,25 +447,31 @@ public class GenerateController extends BaseController {
 		List<CgformButtonEntity> buttons = null;
 		Map<String, String[]> buttonSqlMap = new LinkedHashMap<String, String[]>();
 		//表单配置
-		cgFormHead = cgFormFieldService.getEntity(
-				CgFormHeadEntity.class, cgFormHead.getId());
+		cgFormHead = cgFormFieldService.getEntity(CgFormHeadEntity.class, cgFormHead.getId());
 		//按钮配置
 		buttons = cgformButtonService.getCgformButtonListByFormId(cgFormHead.getId());
+
 		//按钮SQL增强
 		for(CgformButtonEntity cb:buttons){
 			CgformButtonSqlEntity cbs = cgformButtonSqlService.getCgformButtonSqlByCodeFormId(cb.getButtonCode(), cgFormHead.getId());
-
-			buttonSqlMap.put(cb.getButtonCode(),this.getCgformButtonSql(cbs));
-
+			if(cbs !=null && oConvertUtils.isNotEmpty(cbs.getCgbSqlStr())){
+				buttonSqlMap.put(cb.getButtonCode(),this.getCgformButtonSql(cbs));
+			}
 		}
 		CgformButtonSqlEntity cbsAdd = cgformButtonSqlService.getCgformButtonSqlByCodeFormId("add", cgFormHead.getId());
-
-		buttonSqlMap.put("add",this.getCgformButtonSql(cbsAdd));
+		if(cbsAdd!=null && oConvertUtils.isNotEmpty(cbsAdd.getCgbSqlStr())){
+			buttonSqlMap.put("add",this.getCgformButtonSql(cbsAdd));
+		}
 		CgformButtonSqlEntity cbsUpdate = cgformButtonSqlService.getCgformButtonSqlByCodeFormId("update", cgFormHead.getId());
-		buttonSqlMap.put("update",this.getCgformButtonSql(cbsUpdate));
+		if(cbsUpdate!=null && oConvertUtils.isNotEmpty(cbsUpdate.getCgbSqlStr())){
+			buttonSqlMap.put("update",this.getCgformButtonSql(cbsUpdate));
+		}
 		CgformButtonSqlEntity cbsDelete = cgformButtonSqlService.getCgformButtonSqlByCodeFormId("delete", cgFormHead.getId());
-		buttonSqlMap.put("delete",this.getCgformButtonSql(cbsDelete));
+		if(cbsDelete!=null && oConvertUtils.isNotEmpty(cbsDelete.getCgbSqlStr())){
+			buttonSqlMap.put("delete",this.getCgformButtonSql(cbsDelete));
+		}
 
+		
 		//按钮java增强
 		Map<String, CgformEnhanceJavaEntity> buttonJavaMap = new LinkedHashMap<String, CgformEnhanceJavaEntity>();
 		List<CgformEnhanceJavaEntity> javaList = dataBaseService.getCgformEnhanceJavaEntityByFormId(cgFormHead.getId());

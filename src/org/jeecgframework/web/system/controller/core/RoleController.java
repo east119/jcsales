@@ -29,7 +29,6 @@ import org.jeecgframework.core.common.model.json.DataGrid;
 import org.jeecgframework.core.common.model.json.TreeGrid;
 import org.jeecgframework.core.common.model.json.ValidForm;
 import org.jeecgframework.core.constant.Globals;
-import org.jeecgframework.core.util.EhcacheUtil;
 import org.jeecgframework.core.util.ExceptionUtil;
 import org.jeecgframework.core.util.LogUtil;
 import org.jeecgframework.core.util.MutiLangUtil;
@@ -55,6 +54,7 @@ import org.jeecgframework.web.system.pojo.base.TSRoleFunction;
 import org.jeecgframework.web.system.pojo.base.TSRoleOrg;
 import org.jeecgframework.web.system.pojo.base.TSRoleUser;
 import org.jeecgframework.web.system.pojo.base.TSUser;
+import org.jeecgframework.web.system.service.CacheServiceI;
 import org.jeecgframework.web.system.service.SystemService;
 import org.jeecgframework.web.system.service.UserService;
 import org.jeecgframework.web.system.util.OrgConstants;
@@ -87,6 +87,8 @@ public class RoleController extends BaseController {
 	private static final Logger logger = Logger.getLogger(RoleController.class);
 	private UserService userService;
 	private SystemService systemService;
+	@Autowired
+	private CacheServiceI cacheService;
 
 
 	@Autowired
@@ -166,7 +168,7 @@ public class RoleController extends BaseController {
 	public AjaxJson refresh(HttpServletRequest request,HttpServletResponse response) {
 		AjaxJson ajaxJson = new AjaxJson();
 		try {
-			EhcacheUtil.clean("sysAuthCache");
+			cacheService.clean("sysAuthCache");
 			logger.info("-----清空登录用户权限缓存成功--------[sysAuthCache]-----");
 			ajaxJson.setMsg("重置用户权限成功");
 		} catch (Exception e) {
@@ -263,9 +265,11 @@ public class RoleController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		if (StringUtil.isNotEmpty(role.getId())) {
 			message = "角色: " + role.getRoleName() + "被更新成功";
+
+			role.setRoleType(OrgConstants.SYSTEM_ROLE_TYPE);
+
 			userService.saveOrUpdate(role);
-			systemService.addLog(message, Globals.Log_Type_UPDATE,
-					Globals.Log_Leavel_INFO);
+			systemService.addLog(message, Globals.Log_Type_UPDATE,Globals.Log_Leavel_INFO);
 		} else {
 			message = "角色: " + role.getRoleName() + "被添加成功";
 
@@ -543,10 +547,9 @@ public class RoleController extends BaseController {
 			if (in.size() > 0) {
 				for (TSFunction inobj : in) {
 					String inId = oConvertUtils.getString(inobj.getId());
-                   if (inId.equals(id)) {
+                    if (inId.equals(id)) {
 						tree.setChecked(true);
 					}
-
 				}
 			}
 		}
@@ -569,9 +572,7 @@ public class RoleController extends BaseController {
 
 		if (curChildList != null && curChildList.size() > 0) {
 			tree.setState("closed");
-
 			//tree.setChecked(false);
-
 
             if (recursive) { // 递归查询子节点
                 List<ComboTree> children = new ArrayList<ComboTree>();
@@ -822,9 +823,7 @@ public class RoleController extends BaseController {
 			String functionId, String roleId) {
 		CriteriaQuery cq = new CriteriaQuery(TSOperation.class);
 		cq.eq("TSFunction.id", functionId);
-
 		cq.eq("status", Short.valueOf("0"));
-
 		cq.add();
 		List<TSOperation> operationList = this.systemService
 				.getListByCriteriaQuery(cq, false);
@@ -963,8 +962,11 @@ public class RoleController extends BaseController {
         subCq.eq("TSRole.id", roleId);
         subCq.add();
         
-
         cq.add(Property.forName("id").notIn(subCq.getDetachedCriteria()));
+
+        cq.eq("deleteFlag", Globals.Delete_Normal);//删除状态，不删除
+        cq.eq("userType",Globals.USER_TYPE_SYSTEM);//系统用户
+
         cq.add();
 
         this.systemService.getDataGridReturn(cq, true);

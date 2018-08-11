@@ -31,7 +31,6 @@
 	    filter: alpha(opacity=50);
 	    background-color: rgba(255, 255, 255, 0.20);
 	}
-	/* update-begin--Author:zhoujf  Date:20180503 for：TASK #2670 【fineUI】fineUI 首页加载聊天插件时 菜单样式乱了 --*/
 	.titlecell{
 		width:100%;
 		position: relative;
@@ -39,7 +38,6 @@
 	    padding: 0;
 	    line-height: 24px;
     }
-	/* update-end--Author:zhoujf  Date:20180503 for：TASK #2670 【fineUI】fineUI 首页加载聊天插件时 菜单样式乱了 --*/
     
     .searchbox{
         border-radius: 0;    
@@ -126,6 +124,13 @@
 			color:#007465;
 			 background-color: #ddd;
 		}
+			
+	@media (max-width: 767px){
+		.hiddenty-xs {
+		    display: none!important;
+		}
+	}
+		
 		/*.ccrame{
 		 transition:all 1s ease-out 
 		
@@ -149,13 +154,13 @@
 			</div>
 			<ul class="header-bar">
 			
-			<li class="header-bar-nav personInfo" style="cursor:pointer;"> 
+			<li class="header-bar-nav personInfo hiddenty-xs" style="cursor:pointer;"> 
 				<i class="icon-font">&#xe751;</i>&nbsp;
 				<span>控制面板</span>
 				<i class="icon-font adminIcon" style="margin-right:5px;">&#xe607;</i>
 				<ul class="header-dropdown-menu" style="padding-right:4px">
 					<li>
-	                         <a href="javascript:openwindow('系统信息','tSSmsController.do?getSysInfos')" title="系统信息">系统信息</a>
+	                         <a href="javascript:createdetailwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?goMySmsList',800,400)" title="系统消息">系统消息</a>
 					</li>
 					<li >
 	                         <a href="javascript:window.open('http://yun.jeecg.org')" title="云应用中心">云应用中心</a>
@@ -166,7 +171,7 @@
 			</li> 
 			
 			
-			<li class="header-bar-nav"> 
+			<li class="header-bar-nav hiddenty-xs"> 
 				<a href="javascript:add('首页风格','userController.do?changestyle','',550,250)" title="换肤">
 					<i class="icon-font">&#xe615;</i>&nbsp;风格切换
 				</a>
@@ -213,16 +218,17 @@
 		</aside>
 		
 		<!-- 切换左侧菜单栏 -->
-	<!-- 	<div class="layout-side-arrow">
+		<div id="toggleLeftMenu" class="layout-side-arrow" style="display:none">
 			<div class="layout-side-arrow-icon">
 				<i class="icon-font">&#xe60e;</i>
 			</div>
-		</div> -->
+		</div>
 		
 		<!-- 右侧home -->
 		<section class="layout-main">
 			<div class="layout-main-tab">
-				<button class="tab-btn btn-left"><i class="icon-font">&#xe628;</i></button>
+				<button onclick="toggleLeftMenu(this);" class="tab-btn btn-left" title="折叠菜单"><i class="icon-font">&#xe60e;</i></button>
+				<!-- <button class="tab-btn btn-left" style="left:18px"><i class="icon-font">&#xe628;</i></button> -->
                 <nav class="tab-nav">
                     <div class="tab-nav-content" id="tab-contents-div">
                     	<div id="tytabbottomsepar" class="f-tabstrip-header-inkbar"></div>
@@ -256,7 +262,6 @@
 	<!-- 在线聊天 -->
 	<%@include file="/context/layui.jsp"%>
 	<script type="text/javascript">
-
 	function checkput(){
 		var name = $("#searchbox").val();
     	$.ajax({
@@ -320,7 +325,6 @@
                  }); 
         }
 	 })
-
 	
 	
 	function logout(){
@@ -354,11 +358,10 @@
 			$(this).next("div").removeClass("ui-iconss-focus");
 		});
 		$("body").css("height",document.documentElement.clientHeight);
-
+		//fineui首页菜单样式bug-临时方案---
 		$(window).resize(function(){
 			$("body").css("height",document.documentElement.clientHeight);
 		});
-
 		
 	});
 	
@@ -376,7 +379,27 @@
         //bootbox.alert( "浏览器缓存清除成功!");
         layer.msg("浏览器缓存清除成功!");
     }
+    //菜单折叠切换
+    function toggleLeftMenu(obj){
+    	if($('#toggleLeftMenu').hasClass("close")){
+    		$(obj).attr("title","折叠菜单").find("i").html("&#xe60e;");
+    	}else{
+    		$(obj).attr("title","展开菜单").find("i").html("&#xe501;");
+    	}
+		$('#toggleLeftMenu').click();
+	}
 	</script>
+	
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?098e6e84ab585bf0c2e6853604192b8b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 </body>
 </html>
 

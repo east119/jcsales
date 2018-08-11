@@ -14,8 +14,6 @@
     <link href="plug-in/hplus/css/style.css?v=4.1.0" rel="stylesheet">
     <link rel="stylesheet" href="plug-in/themes/fineui/main/iconfont.css">
 	<script src="plug-in/laydate/laydate.js"></script> 
-    <!--  <link href="plug-in/themes/fineui/css/animate.css" rel="stylesheet">
-    <link href="plug-in/themes/fineui/css/style.css?v=4.1.0" rel="stylesheet"> -->
     <style type="text/css">
 	.gray-bg{
 		background-color: #e9ecf3;
@@ -54,14 +52,30 @@
     	 padding-right: 1px !important;
     	 padding-left: 1px !important;
 	}
-	.color_red{color:#e55555;} */
+	.color_red{color:#e55555;}
+	.col-cs-2 {
+	    width: 10%;
+		padding-left: 5px;
+		padding-right: 5px;
+		float: left;
+	}*/
+	
+	@media (min-width: 992px){
+		.col-cs-2 {
+		    width: 11.11%;
+			padding-left: 5px;
+			padding-right: 5px;
+			float: left;
+		}
+	}
+
     </style>
 </head>
  <body class="gray-bg">
         <div class="wrapper wrapper-content">
            
 			<div class="row">
-                <div class="col-sm-2">
+                <div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #cfa972;">
 						<div><!-- class="ibtn" -->
                             <i class="iconfont icon-zhihuizhongxin" style="font-size: 30px;"></i>
@@ -70,7 +84,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2" >
+                <div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #f29b76;">
 						<div>
                             <i class="iconfont icon-yujing" style="font-size: 30px;"></i>
@@ -79,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2" >
+                <div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #acd598;">
 						<div>
                             <i class="iconfont icon-ln-" style="font-size: 30px;"></i>
@@ -88,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2" style="width: 9%;">
+                <div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #84ccc9;">
 						<div>
                             <i class="iconfont icon-wuliu" style="font-size: 30px;"></i>
@@ -97,7 +111,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2" style="width: 11%;">
+                <div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #89c997;">
 						<div>
                             <i class="iconfont icon-quanshengmingzhouqiguanli" style="font-size: 30px;"></i>
@@ -106,7 +120,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2" >
+                <div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #88abda;">
 						<div>
                             <i class="iconfont icon-jixiao" style="font-size: 30px;"></i>
@@ -115,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-				<div class="col-sm-2" >
+				<div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #8c97cb;">
 						<div>
                             <i class="iconfont icon-fangdajing-copy" style="font-size: 30px;"></i>
@@ -124,7 +138,7 @@
                         </div>
                     </div>
                 </div>
-				<div class="col-sm-2" >
+				<div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #c490bf;">
 						<div>
                             <i class="iconfont icon--youhuajieduan" style="font-size: 30px;"></i>
@@ -133,21 +147,12 @@
                         </div>
                     </div>
                 </div>
-				<div class="col-sm-2" >
+				<div class="col-md-1 col-cs-2 col-xs-4">
 					<div class="widget  p-lg text-center" style="background: #f19ec2;">
 						<div>
                             <i class="iconfont icon-duoren" style="font-size: 30px;"></i>
                             <h3 class="font-bold no-margins"></h3>
                             <small>功能9</small>
-                        </div>
-                    </div>
-                </div>
-				<div class="col-sm-2" >
-					<div class="widget p-lg text-center" style="background: #7ecef4;">
-						<div>
-                            <i class="iconfont icon-kongzhi" style="font-size: 30px;"></i>
-                            <h3 class="font-bold no-margins"></h3>
-                            <small>功能10</small>
                         </div>
                     </div>
                 </div>
@@ -177,7 +182,7 @@
         </h2>
         <p>JEECG是一款基于代码生成器的J2EE快速开发平台，开源界“小普元”超越传统商业企业级开发平台。引领新的开发模式(Online Coding模式(自定义表单)->代码生成器模式->手工MERGE智能开发)， 可以帮助解决Java项目60%的重复工作，让开发更多关注业务逻辑。既能快速提高开发效率，帮助公司节省人力成本，同时又不失灵活性。她可以用于所有的Web应用程序，如:<b>MIS</b>，<b>CRM</b>，<b>OA</b>，<b>ERP</b>，<b>CMS</b>，<b>网站后台</b>，<b>微信管家</b>，等等，当然，您也可以对她进行深度定制，以做出更强系统。</p>
         <p>
-            <b>当前版本：</b>v_3.7.6
+            <b>当前版本：</b>v_3.7.8
         </p>
         <p>
             <span class="label label-warning">开源     &nbsp; | &nbsp; 免费  | &nbsp; 更多插件</span>
@@ -185,13 +190,13 @@
         <br>
         <p>
         	<a class="btn btn-success btn-outline" href="http://yun.jeecg.org" target="_blank">
-                <i class="fa fa-cloud"></i> 云应用中心
+                <i class="fa fa-cloud"></i> JEECG插件下载
             </a>
-            <a class="btn btn-white btn-bitbucket" href="http://www.jeecg.org/" target="_blank">
+            <a class="btn btn-white btn-bitbucket" href="http://www.jeecg.org/forum.php?mod=viewthread&tid=1249&page=1&extra=#pid3689" target="_blank">
                 <i class="fa fa-qq"> </i> 联系我们
             </a>
-            <a class="btn btn-white btn-bitbucket" href="http://blog.csdn.net/zhangdaiscott" target="_blank">
-                <i class="fa fa-home"></i> 官方博客
+            <a class="btn btn-white btn-bitbucket" href="http://jeecg3.mydoc.io" target="_blank">
+                <i class="fa fa-home"></i> 在线文档
             </a>
         </p>
     </div>
@@ -439,10 +444,140 @@
                         <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#version" href="#v56">v3.7.8</a><code class="pull-right">2018.08.06</code>
+                                    </h5>
+                                </div>
+                                <div id="v56" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="alert alert-warning">此版本主要目标是努力消灭BUG，让大家既有鱼丸也有粗面，多样化话主题UI满足你不同的需求，新增加5套Bootstrap风格代码生成器模板，极大提升美感和代码可控性，降低了表单的开发成本；</div>
+                                        <ol>
+											<li>【新功能】一套新的代码生成器模板，Bootstrap表单+EasyUI列表（单表、一对多）;</li>
+											<li>【新功能】一套新的代码生成器模板，Bootstrap表单+EasyUI原生列表（单表、一对多）;</li>
+											<li>【新功能】一套新的代码生成器模板， Boostrap表单+BootstapTable原生列表（单表、一对多）;</li>
+											<li>【新功能】一套新的代码生成器模板，Boostrap表单+BootstapTable标签列表（单表、一对多）;</li>
+											<li>【新功能】Datagrid列表按钮折叠功能;</li>
+											<li>【新功能】webuploader上传组件支持openoffice格式转换控制;</li>
+											<li>【新功能】validform标签验证提示效果扩展tiptype="6";</li>
+											<li>【新功能】xml模板导出word格式数据;</li>
+											<li>【bug】树形列表dgFunOpt funname函数设置列表字段参数取不到值问题;</li>
+											<li>【bug】Online表单类型点击根节点不能查询所有表单信息问题修正;</li>
+											<li>【bug】在Tomcat的https模式下，录入、编辑、查看的样式丢失;</li>
+											<li>【bug】TreeSelectTag获取值多一个undefined问题;</li>
+											<li>【bug】online表单导入bug修正;</li>
+											<li>【bug】公用上传页面，加个上传刷新遮罩, 防止没上传完，用户点击确认按钮，导致出问题;</li>
+											<li>【bug】树控件报错问题;</li>
+											<li>【bug】针对curd*.js没引用国际化js的问题处理;</li>
+											<li>【bug】新版代码生成器编辑页面多行文本值未初始化问题;</li>
+											<li>【bug】常用示例 erp风格 ，点击折叠，按钮跑位问题;</li>
+											<li>【bug】bootstrap标签列表查询区域字段，popup未实现;</li>
+											<li>【样式问题】icheck样式优化;</li>
+											<li>【升级】升级jeasypoi，支持逗号分隔多值替换字典文本;</li>
+											<li>【改进】弹出窗口大小控制问题优化;</li>
+											<li>【改进】上传增加进度条显示问题;</li>
+											<li>【改进】Base标签命名修改;</li>
+											<li>【改进】Layui 全局弹出表单窗口,支持刷新列表页面;</li>
+											<li>【改进】popup弹出遮挡问题;</li>
+											<li>【优化】常用示例优化;</li>
+											<li>【优化】table模式字典性能，优化列表支持ajax异步处理数据值转换;</li>
+											<li>【demo】minidao 列表，按照字段排序demo;</li>
+											<li>【demo】bootstrap-table 树形列表demo;</li>
+											<li>【demo】下拉输入框demo;</li>
+											<li>【demo】plupload上传插件demo;</li>
+											<li>【demo】页面打印 demo;</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#version" href="#v55">v3.7.7</a><code class="pull-right">2018.07.16</code>
+                                    </h5>
+                                </div>
+                                <div id="v55" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        <div class="alert alert-warning">此版本为性能和表单UI深化加强版本，简称闪电版本 （闪电般的速度，主流的Bootstrap表单风格）。平台性能访问速度提升至少3倍；表单提供Bootstrap风格极大提升美感和代码可控性，降低了表单的开发成本；</div>
+                                        <ol>
+											<li>【新功能】一套新的代码生成器模板，Bootstrap表单+EasyUI列表（单表、一对多）;</li>
+											<li>【新功能】一套新的代码生成器模板，Bootstrap表单+EasyUI原生列表（单表、一对多）;</li>
+											<li>【新功能】一套新的代码生成器模板， Boostrap表单+BootstapTable原生列表（单表、一对多）;</li>
+											<li>【新功能】一套新的代码生成器模板，Boostrap表单+BootstapTable标签列表（单表、一对多）;</li>
+											<li>【新功能】Online代码生成器，支持生成word模板方式生成 ;</li>
+											<li>【新功能】代码生成器优化，Restful接口代码生成，可选择;</li>
+											<li>【新功能】Jeasypoi提供例子，支持自定义导入字段转换规则;</li>
+											<li>【新功能】fineui风格首页，菜单支持折叠功能;</li>
+											<li>【新功能】字典值不支持排序，增加一个排序字段;</li>
+											<li>【新功能】UploadTag标签 ，支持自定义上传按钮高度宽度;</li>
+											<li>【bug】online 开发，自定义按钮显示表达式问题;</li>
+											<li>【bug】Online移动报表功能演示导出Excel报错;</li>
+											<li>【bug】新版代码生成器乱码问题;</li>
+											<li>【bug】SystemService.addLog( )的调用，第二个参数和第三个参数搞错了;</li>
+											<li>【bug】Online word 布局模板唯一值校验问题;</li>
+											<li>【bug】 一对多全tab、一对多带子表明细模板，不支持唯一校验处理;</li>
+											<li>【bug】online 数据库表导入功能,SqlServer下 字段类型生成错误、精度和小数点不正确、加载的表清单有多余系统表;</li>
+											<li>【bug】系统管理-二级管理员模块代码中SQL语法不兼容ORACLE;</li>
+											<li>【bug】字典组名带有空格情况下，点击查看字典值，js无效问题处理;</li>
+											<li>【bug】 basepath 问题 始终是127.0.0.1的错误bug;</li>
+											<li>【bug】Excel导出问题typecode 如果 带有下划线 就不能正确的检索数据字典表;</li>
+											<li>【bug】新版代码生成器没有处理js增强的生成 ;</li>
+											<li>【bug】新版代码生成器java增强逻辑的生成 ;</li>
+											<li>【bug】生成器生成去掉无用代码的生成，java增强，sql增强没有配置时不做生成相应代码 ;</li>
+											<li>【bug】Online报表配置 oracle时间处理bug</li>
+											<li>【bug】Online表单字段默认值，循环加了很多单引号问题;</li>
+											<li>【样式问题】Online table风格一对多，输入框上下太宽;</li>
+											<li>【样式问题】shortcut风格下表单时间控件高度兼容;</li>
+											<li>【样式问题】修改时间背景图片/修改下拉背景图片/下拉框高度;</li>
+											<li>【升级】VUE版本代码生成器模板改造优化;</li>
+											<li>【升级】改造pom.xml，删除不用的或者有子依赖的jar，依赖精简;</li>
+											<li>【升级】webUploadpath图片访问和下载服务，改造请求格式，实现浏览器缓存;</li>
+											<li>【升级】改造平台底层机制，提高平台性能，访问速度至少提升3倍;</li>
+											<li>【升级】列表数据加载重构，减少json解析重复转换的过程，提高列表数据加载速度;</li>
+											<li>【升级】字典缓存屏蔽不需要的属性，尽量少占内存;</li>
+											<li>【升级】重构缓存机制，采用缓存接口定义，支持Ehcache和redis 非常简单的切换;</li>
+											<li>【升级】 ztree 样式风格升级， 用户选择、部门选择的ztree样式替换等。;</li>
+											<li>【升级】SQL注入问题处理，Online报表自定义sql,以及查询条件处理重构成占位符;</li>
+											<li>【升级】online报表，参数和列查询条件同时支持的问题;</li>
+											<li>【升级】升级minidao，表达式混淆参数问题;</li>
+											<li>【升级】新版代码生成器一对多模板java增强逻辑支持;</li>
+											<li>【改进】数据列表，查询规则友好提醒;</li>
+											<li>【改进】online图形报表在线效果图标美化;</li>
+											<li>【改进】online风格样式，一对多全tab风格优化;</li>
+											<li>【改进】online报表 SQL支持上下文变量;</li>
+											<li>【改进】高级查询页面样式优化重构;</li>
+											<li>【改进】默认首页改为fineui风格;</li>
+											<li>【改进】 ace风格，输入框和select不对齐（online、代码生成器）;</li>
+											<li>【改进】字典名称长度太短;</li>
+											<li>【改进】Fineui首页， 兼容移动端;</li>
+											<li>【改造】online在线风格，boostrap 简约风格样式改造;</li>
+											<li>【改造】online在线风格，通用移动模板001 moblieCommon001;</li>
+											<li>【改造】代码进行重构，抽取，简化代码逻辑;</li>
+											<li>【改造】代码生成器生成代码，列表默认按照创建时间降序排列;</li>
+											<li>【改造】jeecg前段js 国际化改造，采用i18n技术实现;</li>
+											<li>【改造】上下布局表单二 ，上下拖动等问题修复;</li>
+											<li>【改造】UI标签，列表支持操作按钮折叠成组弹出展示，节省按钮列的空间;</li>
+											<li>【优化】online代码生成器模板优化,java增强，sql增强非空情况下不生成;</li>
+											<li>【优化】精简首页代码;</li>
+											<li>【优化】table模式字典性能，优化列表支持ajax异步处理数据值转换;</li>
+											<li>【改造】重构通知公告模块;</li>
+											<li>【改造】重构消息中心模块;</li>
+											<li>【改造】消息中间件优化;</li>
+											<li>【改造】日志打印格式错误，统一替换为slf4j日志方式;</li>
+											<li>【升级】老版本的代码生成器，原ace系列的模板，js引用全部改成标签方式;</li>
+											<li>【demo】下拉数据表格;</li>
+											<li>【demo】列表按钮折叠例子;</li>
+											<li>【demo】excel导入导出例子，支持导入字段值转换;</li>
+											<li>【demo】新UI控件效果demo;</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h5 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#version" href="#v54">v3.7.6</a><code class="pull-right">2018.06.06</code>
                                     </h5>
                                 </div>
-                                <div id="v54" class="panel-collapse collapse in">
+                                <div id="v54" class="panel-collapse collapse">
                                     <div class="panel-body">
                                         <div class="alert alert-warning">此版本提供新一代风格代码生成器模板，采用Vue技术，提供两套精美模板 ElementUI风格、Bootstrap风格，追逐潮流技术支持移动端；</div>
                                         <ol>
@@ -1040,6 +1175,9 @@
 <!-- 自定义js -->
 <script src="plug-in/hplus/js/content.js"></script>
 <script type="text/javascript" src="plug-in/echart/echarts.min.js"></script>
+<script type="text/javascript" src="plug-in/jquery-plugs/i18n/jquery.i18n.properties.js"></script>
+<t:base type="tools"></t:base>
+<script type="text/javascript" src="plug-in/login/js/getMsgs.js"></script>
 <script>
 $(document).ready(function() {
 	//直接嵌套显示
@@ -1291,7 +1429,7 @@ $(document).ready(function() {
 		$(window).resize(chart4.resize);
 });
 </script>
-<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
 <!--统计代码，可删除-->
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
 </body>
 </html>

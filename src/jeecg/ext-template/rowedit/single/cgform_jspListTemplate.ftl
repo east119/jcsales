@@ -3,10 +3,17 @@
 <#-- update--begin--author:zhangjiaqiang date:20170531 for:增加列表页面对于图片和文件的判断 -->
 <#include "../../ui/tdgCol.ftl"/>
 <#-- update--end--author:zhangjiaqiang date:20170531 for:增加列表页面对于图片和文件的判断 -->
+<#assign orderByCreateDate = false />
+<#list columns as po>
+	<#if po.fieldName=='createDate'>
+		<#assign orderByCreateDate = true />
+		<#break>
+	</#if>
+</#list>
 <t:base type="jquery,easyui,tools,DatePicker,autocomplete"></t:base>
 <div class="easyui-layout" fit="true">
   <div region="center" style="padding:0px;border:0px">
-  <t:datagrid name="${entityName?uncap_first}rowList" checkbox="true" <#if cgformConfig.cgFormHead.isPagination == 'Y'> pagination="true"<#else> pagination="false"</#if><#if cgformConfig.cgFormHead.isTree == 'Y'> treegrid="true" treeField="${cgformConfig.cgFormHead.treeFieldnamePage}"</#if> fitColumns="true" 
+  <t:datagrid name="${entityName?uncap_first}rowList" checkbox="true" <#if cgformConfig.cgFormHead.isPagination == 'Y'> pagination="true"<#else> pagination="false"</#if><#if cgformConfig.cgFormHead.isTree == 'Y'> treegrid="true" treeField="${cgformConfig.cgFormHead.treeFieldnamePage}"</#if> fitColumns="true" <#if orderByCreateDate == true >sortName="createDate"<#else>sortName="id"</#if><#rt/>
   title="${ftl_description}" actionUrl="${entityName?uncap_first}Controller.do?datagrid" idField="id"  queryMode="group">
    <#--<@dgcol columns=columns/> -->
    <#list columns as po>
@@ -40,6 +47,14 @@
     <#elseif po.showType == 'popup'> 
     <t:dgCol title="${po.content}"  field="${po.fieldName}" queryMode="${po.queryMode}" <#if  po.isQuery == 'Y'>query="true"</#if><#if po.dictTable?if_exists?html!=""> dictionary="${po.dictTable},${po.dictField?replace(',', '@')},${po.dictText?replace(',', '@')}"<#if po.showType=='popup'> popup="true"</#if><#else><#if po.dictTable?if_exists?html=="" && po.dictField?if_exists?html!=""> dictionary="${po.dictField}"</#if></#if> extendParams="editor:'text'" width="100"></t:dgCol>
     <#-- update--end--author:zhoujf date:20180413 for:TASK #2641 【popup重构问题】popup查询条件多字段回填问题-->
+    <#-- update--begin--author:zhangweijian date:20180710 for:TASK #2927 【bug】代码生成器模板，行编辑模式生成的列表页面，图片和文件展示问题-->
+    <#elseif po.showType?index_of("image") != -1>
+    <#-- update--begin--author:zhangweijian date:20180710 for:TASK #2951 【样式体验问题】行编辑代码生成器，生成的代码页面， 这个附件字段为什么这么短-->
+    <t:dgCol title="${po.content}"  field="${po.fieldName}" extendParams="editor:'text'" image="true" imageSize="50,50" width="100"></t:dgCol>
+	<#elseif po.showType?index_of("file") != -1>
+    <t:dgCol title="${po.content}"  field="${po.fieldName}" extendParams="editor:'text'" downloadName="附件下载" width="100"></t:dgCol>
+    <#-- update--end--author:zhangweijian date:20180710 for:TASK #2951 【样式体验问题】行编辑代码生成器，生成的代码页面， 这个附件字段为什么这么短-->
+    <#-- update--end--author:zhangweijian date:20180710 for:TASK #2927 【bug】代码生成器模板，行编辑模式生成的列表页面，图片和文件展示问题-->
     <#else> 
     <#-- update--begin--author:zhoujf date:20180319 for:TASK #2557 popup,当字典Text为多个值时 -->
     <t:dgCol title="${po.content}"  field="${po.fieldName}" queryMode="${po.queryMode}" <#if  po.isQuery == 'Y'>query="true"</#if><#if po.dictTable?if_exists?html!=""> dictionary="${po.dictTable},${po.dictText},${po.dictField}"<#if po.showType=='popup'> popup="true"</#if><#else><#if po.dictTable?if_exists?html=="" && po.dictField?if_exists?html!=""> dictionary="${po.dictField}"</#if></#if> extendParams="editor:'text'" width="100"></t:dgCol>

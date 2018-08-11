@@ -1,11 +1,15 @@
 package org.jeecgframework.web.system.service.impl;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.jeecgframework.core.common.exception.BusinessException;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
+import org.jeecgframework.core.constant.Globals;
 import org.jeecgframework.web.system.pojo.base.TSNoticeAuthorityUser;
+import org.jeecgframework.web.system.pojo.base.TSNoticeReadUser;
 import org.jeecgframework.web.system.service.NoticeAuthorityUserServiceI;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,5 +90,56 @@ public class NoticeAuthorityUserServiceImpl extends CommonServiceImpl implements
 		}else{
 			return true;
 		}
+	}
+
+	@Override
+	public void saveNoticeAuthorityUser(TSNoticeAuthorityUser noticeAuthorityUser) {
+		String noticeId = noticeAuthorityUser.getNoticeId();
+		String userId = noticeAuthorityUser.getUser().getId();
+		if(this.checkAuthorityUser(noticeId, userId)){
+			throw new BusinessException("该用户已授权，请勿重复操作。");
+		}else{
+			String hql = "from TSNoticeReadUser where noticeId = ? and userId = ?";
+			List<TSNoticeReadUser> noticeReadList = this.findHql(hql,noticeId,userId);
+			if(noticeReadList == null || noticeReadList.isEmpty()){
+				//未授权过的消息，添加授权记录
+				TSNoticeReadUser noticeRead = new TSNoticeReadUser();
+				noticeRead.setNoticeId(noticeId);
+				noticeRead.setUserId(userId);
+				noticeRead.setCreateTime(new Date());
+				this.commonDao.save(noticeRead);
+			}else if(noticeReadList.size() > 0){
+				for (TSNoticeReadUser noticeRead : noticeReadList) {
+					if(noticeRead.getDelFlag() == 1){
+						noticeRead.setDelFlag(0);
+						this.commonDao.updateEntitie(noticeRead);
+					}
+				}
+				noticeReadList.clear();
+			}
+			this.commonDao.save(noticeAuthorityUser);
+		}
+	}
+
+	@Override
+	public void doDelNoticeAuthorityUser(TSNoticeAuthorityUser noticeAuthorityUser) {
+		noticeAuthorityUser = this.commonDao.getEntity(TSNoticeAuthorityUser.class, noticeAuthorityUser.getId());
+		if(noticeAuthorityUser != null){
+			//删除授权关系的时候，判断是否已被阅读，如果已被阅读过，通过标记逻辑删除，否则直接删除数据
+			String hql = "from TSNoticeReadUser where noticeId = ? and userId = ?";
+			List<TSNoticeReadUser> noticeReadList = this.commonDao.findHql(hql,noticeAuthorityUser.getNoticeId(),noticeAuthorityUser.getUser().getId());
+			if(noticeReadList != null && !noticeReadList.isEmpty()){
+				for (TSNoticeReadUser noticeReadUser : noticeReadList) {
+					if(noticeReadUser.getIsRead() == 1){
+						noticeReadUser.setDelFlag(1);
+						this.commonDao.updateEntitie(noticeReadUser);
+					}else if(noticeReadUser.getIsRead() == 0){
+						this.commonDao.delete(noticeReadUser);
+					}
+				}
+				noticeReadList.clear();
+			}
+		}
+		this.delete(noticeAuthorityUser);
 	}
 }

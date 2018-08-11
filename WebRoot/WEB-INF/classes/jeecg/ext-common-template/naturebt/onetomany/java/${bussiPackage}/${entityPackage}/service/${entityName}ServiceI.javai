@@ -10,48 +10,24 @@ import org.jeecgframework.core.common.service.CommonService;
 import java.io.Serializable;
 
 public interface ${entityName}ServiceI extends CommonService{
-	
- 	public <T> void delete(T entity);
+	<#-- update--begin--author:jiaqiankun date:20180709 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+ 	public void delete(${entityName}Entity entity) throws Exception;
 	/**
 	 * 添加一对多
 	 * 
 	 */
-	public void addMain(${entityName}Entity ${entityName?uncap_first},<#list subTab as sub>List<${sub.entityName}Entity> ${sub.entityName?uncap_first}List<#if sub_has_next>,</#if></#list>) ;
+	public void addMain(${entityName}Entity ${entityName?uncap_first},<#list subTab as sub>List<${sub.entityName}Entity> ${sub.entityName?uncap_first}List<#if sub_has_next>,</#if></#list>)  throws Exception;
 	        
 	/**
 	 * 修改一对多
 	 * 
 	 */
-	public void updateMain(${entityName}Page ${entityName?uncap_first}Page);
+	public void updateMain(${entityName}Page ${entityName?uncap_first}Page) throws Exception;
 	
-	public void delMain (${entityName}Entity ${entityName?uncap_first});
-	
-	<#list buttons as btn>
- 	<#if btn.buttonStyle =='button' && btn.optType=='action'>
- 	/**
-	 * 自定义按钮-sql增强-${btn.buttonName}
-	 * @param id
-	 * @return
+	/**
+	 * 删除一对多
+	 * 
 	 */
-	 public boolean do${btn.buttonCode?cap_first}Sql(${entityName}Entity t);
- 	</#if>
- 	</#list> 
- 	/**
-	 * 默认按钮-sql增强-新增操作
-	 * @param id
-	 * @return
-	 */
- 	public boolean doAddSql(${entityName}Entity t);
- 	/**
-	 * 默认按钮-sql增强-更新操作
-	 * @param id
-	 * @return
-	 */
- 	public boolean doUpdateSql(${entityName}Entity t);
- 	/**
-	 * 默认按钮-sql增强-删除操作
-	 * @param id
-	 * @return
-	 */
- 	public boolean doDelSql(${entityName}Entity t);
+	public void delMain (${entityName}Entity ${entityName?uncap_first}) throws Exception;
+	<#-- update--end--author:jiaqiankun date:20180709 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 }

@@ -11,6 +11,7 @@ import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.json.AjaxJson;
 import org.jeecgframework.core.common.model.json.DataGrid;
 import org.jeecgframework.core.constant.Globals;
+import org.jeecgframework.core.online.def.CgReportConstant;
 import org.jeecgframework.core.util.IpUtil;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.tag.core.easyui.TagUtil;
@@ -151,6 +152,18 @@ public class CgreportConfigHeadController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		message = "添加成功";
 		try{
+			//判断参数和查询列是否有冲突的
+			for(CgreportConfigParamEntity parm:cgreportConfigParamList){
+				for(CgreportConfigItemEntity item:cgreportConfigItemList){
+					if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(item.getSFlag())
+							&&parm.getParamName().equals(item.getFieldName())){
+						message = "配置的参数名【"+parm.getParamName()+"】和配置明细中是查询的列冲突，请更改参数名称";
+						j.setMsg(message);
+						j.setSuccess(false);
+						return j;
+					}
+				}
+			}
 			cgreportConfigHeadService.addMain(cgreportConfigHead, cgreportConfigItemList,cgreportConfigParamList);
 			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 			logger.info("["+IpUtil.getIpAddr(request)+"][online报表录入]["+cgreportConfigHead.getCode()+"]"+message);
@@ -177,6 +190,18 @@ public class CgreportConfigHeadController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		message = "更新成功";
 		try{
+			//判断参数和查询列是否有冲突的
+			for(CgreportConfigParamEntity parm:cgreportConfigParamList){
+				for(CgreportConfigItemEntity item:cgreportConfigItemList){
+					if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(item.getSFlag())
+							&&parm.getParamName().equals(item.getFieldName())){
+						message = "配置的参数名【"+parm.getParamName()+"】和配置明细中是查询的列冲突，请更改参数名称";
+						j.setMsg(message);
+						j.setSuccess(false);
+						return j;
+					}
+				}
+			}
 			cgreportConfigHeadService.updateMain(cgreportConfigHead, cgreportConfigItemList, cgreportConfigParamList);
 			systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 			logger.info("["+IpUtil.getIpAddr(request)+"][online报表更新]["+cgreportConfigHead.getCode()+"]"+message);

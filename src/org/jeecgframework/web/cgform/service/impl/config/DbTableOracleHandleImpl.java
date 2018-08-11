@@ -29,7 +29,6 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 
 	
 	public String getMatchClassTypeByDataType(String dataType,int digits) {
-
 		String result ="";
 		if (dataType.equalsIgnoreCase("varchar2")) {
 			result="string";
@@ -52,7 +51,6 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 		}else if (dataType.equalsIgnoreCase("clob")) {
 			result="text";
 		}
-
 		return result;
 	}
 
@@ -94,7 +92,6 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 		if (!datacolumnMeta.getIsNullable().equals(cgformcolumnMeta.getIsNullable())) {
 			isnull=(cgformcolumnMeta.getIsNullable().equals("Y")?"NULL":"NOT NULL");
 		}
-
 		if(cgformcolumnMeta.getColunmType().equalsIgnoreCase("string")){
 				result = cgformcolumnMeta.getColumnName()+" varchar2("+cgformcolumnMeta.getColumnSize()+")"+isnull;
 			
@@ -113,7 +110,6 @@ public class DbTableOracleHandleImpl implements DbTableHandleI {
 		}else if(cgformcolumnMeta.getColunmType().equalsIgnoreCase("text")){ 
 			result = cgformcolumnMeta.getColumnName()+" CLOB "+isnull;
 		}
-
 		result += (StringUtils.isNotEmpty(cgformcolumnMeta.getFieldDefault())?" DEFAULT "+cgformcolumnMeta.getFieldDefault():" ");
 		result += isnull;
 		return result;

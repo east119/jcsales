@@ -22,10 +22,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
  */
 public class DynamicDBUtil {
 	private static final Logger logger = Logger.getLogger(DynamicDBUtil.class);
-	/**
-	 * 多数据连接池
-	 */
-	private static Map<String,BasicDataSource> dbSources = new HashMap<String,BasicDataSource>();
 	
 	/**
 	 * 获取数据源【最底层方法，不要随便调用】
@@ -39,12 +35,11 @@ public class DynamicDBUtil {
 		String driverClassName = dynamicSourceEntity.getDriverClass();
 		String url = dynamicSourceEntity.getUrl();
 		String dbUser = dynamicSourceEntity.getDbUser();
-//	      update-start--Author:chenjin  Date:20160712 for：多数据源目前数据库密码是明文，采用加密方式存储
+
 		//设置数据源的时候，要重新解密
 		//String dbPassword = dynamicSourceEntity.getDbPassword();
 		String dbPassword  = PasswordUtil.decrypt(dynamicSourceEntity.getDbPassword(), dynamicSourceEntity.getDbUser(), PasswordUtil.getStaticSalt());//解密字符串；
-		
-//	      update-end--Author:chenjin  Date:20160712 for：多数据源目前数据库密码是明文，采用加密方式存储
+
 		
 		dataSource.setDriverClassName(driverClassName);
 		dataSource.setUrl(url);
@@ -60,14 +55,16 @@ public class DynamicDBUtil {
 	 */
 	public static BasicDataSource getDbSourceBydbKey(final String dbKey) {
 		//获取多数据源配置
-		DynamicDataSourceEntity dynamicSourceEntity = ResourceUtil.dynamicDataSourceMap.get(dbKey);
+		DynamicDataSourceEntity dynamicSourceEntity = ResourceUtil.getCacheDynamicDataSourceEntity(dbKey);
 		//先判断缓存中是否存在数据库链接
-		BasicDataSource cacheDbSource = dbSources.get(dbKey);
+		BasicDataSource cacheDbSource = ResourceUtil.getCacheBasicDataSource(dbKey);
 		if(cacheDbSource!=null && !cacheDbSource.isClosed()){
+			logger.debug("--------getDbSourceBydbKey------------------从缓存中获取DB连接-------------------");
 			return cacheDbSource;
 		}else{
 			BasicDataSource dataSource = getJdbcDataSource(dynamicSourceEntity);
-			dbSources.put(dbKey, dataSource);
+			ResourceUtil.putCacheBasicDataSource(dbKey, dataSource);
+			logger.info("--------getDbSourceBydbKey------------------创建DB数据库连接-------------------");
 			return dataSource;
 		}
 	}
@@ -116,8 +113,7 @@ public class DynamicDBUtil {
 		}
 		return effectCount;
 	}
-	
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的Update
 	 * @param dbKey 数据源标识
@@ -134,13 +130,13 @@ public class DynamicDBUtil {
 		effectCount = namedParameterJdbcTemplate.update(sql, data);
 		return effectCount;
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	
 	public static Object findOne(final String dbKey, String sql, Object... param) {
 		List<Map<String, Object>> list;
-		//update-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 		list = findList(dbKey, sql, param);
-		//update-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 		
 		if(ListUtils.isNullOrEmpty(list))
 		{
@@ -154,7 +150,7 @@ public class DynamicDBUtil {
 		
 		return list.get(0);
 	}
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的查询 返回HashMap
 	 * @param dbKey 数据源标识
@@ -173,8 +169,7 @@ public class DynamicDBUtil {
 		}
 		return list.get(0);
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
-	//add-begin--Author:yugwu  Date:20170810 for:返回单个实例而非hashMap----
+
 	/**
 	 * 直接sql查询 根据clazz返回单个实例
 	 * @param dbKey 数据源标识
@@ -201,7 +196,7 @@ public class DynamicDBUtil {
 		Map<String, Object> map = (Map<String, Object>) findOneByHash(dbKey, sql, data);
 		return ReflectHelper.setAll(clazz, map);
 	}
-	//add-begin--Author:yugwu  Date:20170810 for:返回单个实例而非hashMap----
+
 	public static List<Map<String, Object>> findList(final String dbKey, String sql, Object... param) {
 		List<Map<String, Object>> list;
 		JdbcTemplate jdbcTemplate = getJdbcTemplate(dbKey);
@@ -213,7 +208,7 @@ public class DynamicDBUtil {
 		}
 		return list;
 	}
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的查询
 	 * @param dbKey 数据源标识
@@ -230,8 +225,7 @@ public class DynamicDBUtil {
 		list = namedParameterJdbcTemplate.queryForList(sql, data);
 		return list;
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
-	//add-begin--Author:luobaoli  Date:20150620 for：增加返回值为List的方法
+
 	//此方法只能返回单列，不能返回实体类
 	public static <T> List<T> findList(final String dbKey, String sql, Class<T> clazz,Object... param) {
 		List<T> list;
@@ -244,8 +238,7 @@ public class DynamicDBUtil {
 		}
 		return list;
 	}
-	//add-end--Author:luobaoli  Date:20150620 for：增加返回值为List的方法
-	//add-begin--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
+
 	/**
 	 * 支持miniDao语法操作的查询 返回单列数据list
 	 * @param dbKey 数据源标识
@@ -287,70 +280,5 @@ public class DynamicDBUtil {
 		List<Map<String,Object>> queryList = findListByHash(dbKey, sql, data);
 		return ReflectHelper.transList2Entrys(queryList, clazz);
 	}
-	//add-end--Author:yugwu  Date:20170808 for:TASK #1827 【改造】多数据源，支持minidao语法sql----
-	
-	@SuppressWarnings("unchecked")
-	public static void main(String[] args) {
-		DynamicDataSourceEntity dynamicSourceEntity = new DynamicDataSourceEntity();
-		
-		String dbKey = "SAP_DB";
-		String driverClassName = "com.mysql.jdbc.Driver";
-		String url = "jdbc:mysql://localhost:3306/jeecg";
-		String dbUser = "root";
-		String dbPassword = "root";
-		
-		dynamicSourceEntity.setDbKey(dbKey);
-		dynamicSourceEntity.setDriverClass(driverClassName);
-		dynamicSourceEntity.setUrl(url);
-		dynamicSourceEntity.setDbUser(dbUser);
-		dynamicSourceEntity.setDbPassword(dbPassword);
-		
-		ResourceUtil.dynamicDataSourceMap.put(dbKey, dynamicSourceEntity);
-		
-		String sql = "<#if nlevel gt 2> insert into GWYUTEST003(id, sname, nlevel) values ((select maxid from (select ifnull(max(id)+1,1) maxid from GWYUTEST003) a),"
-				+ " :sname, :nlevel)</#if>";
-		HashMap<String, Object> data = new HashMap<String, Object>();
-		data.put("sname", "aaa");
-		data.put("nlevel", 3);
-		DynamicDBUtil.updateByHash(dbKey, sql, data);
-		
-		sql = "SELECT * FROM GWYUTEST003 WHERE id = :id";data = new HashMap<String, Object>();
-		data.put("id", 1);
-		Map<String, Object> aaa = (Map<String, Object>) DynamicDBUtil.findOneByHash(dbKey, sql, data);
-		System.out.println(aaa.get("sname"));
-		
-		sql = "SELECT * FROM GWYUTEST003 WHERE id >= '${id}'";data = new HashMap<String, Object>();
-		data.put("id", 2);
-		List<GwyuTest> bbb = DynamicDBUtil.findListEntrysByHash(dbKey, sql, GwyuTest.class, data);
-		System.out.println(bbb);
-		
-		//List<Map<String, Object>> list = DynamicDBUtil.getList(jdbcTemplate, sql);
-		//System.out.println(list.size());
-	}
-	public static class GwyuTest{
-		public GwyuTest(){}
-		private long id;
-		private String sname;
-		private long nlevel;
-		public long getId() {
-			return id;
-		}
-		public void setId(long id) {
-			this.id = id;
-		}
-		public String getSname() {
-			return sname;
-		}
-		public void setSname(String sname) {
-			this.sname = sname;
-		}
-		public long getNlevel() {
-			return nlevel;
-		}
-		public void setNlevel(long nlevel) {
-			this.nlevel = nlevel;
-		}
-		
-	}
-	
+
 }

@@ -226,13 +226,17 @@
 	  				var td_title = $("<td title=\""+file.title+"\">" + title + "</td>");
 	  		  		var td_download = $("<td style=\"width:40px;text-align: center;\"><a href=\"commonController.do?viewFile&fileid=" + file.fileKey + "&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity\" title=\"下载\">下载</a></td>")
 	  		  		var td_view = $("<td style=\"width:40px;text-align: center;\"><a href=\"javascript:void(0);\" onclick=\"openwindow('预览','commonController.do?openViewFile&fileid=" + file.fileKey + "&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity','fList',700,500)\">预览</a></td>");
-	  		  		var td_del = $("<td style=\"width:40px;text-align: center;\"><a href=\"javascript:void(0)\" class=\"jeecgDetail\" onclick=\"del('cgUploadController.do?delFile&id=" + file.fileKey + "',this)\">删除</a></td>");
 	  		  		<#-- update--end--author:Yandong date:20180418 for:TASK #2638 【UI样式效果】上传效果重复，样式不好看 -->
 	  		  		tr.appendTo(table);
 	  		  		td_title.appendTo(tr);
 	  		  		td_download.appendTo(tr);
 	  		  		td_view.appendTo(tr);
-	  		  		td_del.appendTo(tr);
+	  		  		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2969 【代码生成器--贾乾坤】代码生成器模板测试 -->
+		  		  		if(location.href.indexOf("load=detail")==-1){
+			  		  		var td_del = $("<td style=\"width:40px;text-align: center;\"><a href=\"javascript:void(0)\" class=\"jeecgDetail\" onclick=\"del('cgUploadController.do?delFile&id=" + file.fileKey + "',this)\">删除</a></td>");
+			  		  		td_del.appendTo(tr);
+		  		  		}
+	  		  		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2969 【代码生成器--贾乾坤】代码生成器模板测试 -->
 	  			 });
 	  		   }
 	  		});

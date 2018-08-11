@@ -67,6 +67,8 @@ public class DataGridColumnTag extends TagSupport {
 	private String filterType = "text";//过滤操作的类型
 	private boolean optsMenu = false;//操作列风格转变 【船舶专用】
 
+	private boolean isAjaxDict = false;
+
 	public boolean isNewColumn() {
 		return newColumn;
 	}
@@ -83,7 +85,6 @@ public class DataGridColumnTag extends TagSupport {
 		this.showMode = showMode;
 	}
 
-
 	public String getEditor() {
 		return editor;
 	}
@@ -97,7 +98,7 @@ public class DataGridColumnTag extends TagSupport {
 		Tag t = findAncestorWithClass(this, DataGridTag.class);
 		DataGridTag parent = (DataGridTag) t;
 
-		parent.setColumn(title,field,width,showLen,rowspan,colspan,align,sortable,checkbox,formatter,formatterjs,hidden,replace,treefield,image,imageSize,query,url,funname,arg,queryMode, dictionary,popup,frozenColumn,extend,style,downloadName,autocomplete,extendParams,editor,defaultVal,showMode,newColumn,dictCondition,filterType,optsMenu);
+		parent.setColumn(title,field,width,showLen,rowspan,colspan,align,sortable,checkbox,formatter,formatterjs,hidden,replace,treefield,image,imageSize,query,url,funname,arg,queryMode, dictionary,popup,frozenColumn,extend,style,downloadName,autocomplete,extendParams,editor,defaultVal,showMode,newColumn,dictCondition,filterType,optsMenu,isAjaxDict);
 
 		return EVAL_PAGE;
 	}
@@ -281,6 +282,14 @@ public class DataGridColumnTag extends TagSupport {
 
 	public void setOptsMenu(boolean optsMenu) {
 		this.optsMenu = optsMenu;
+	}
+
+	public void setIsAjaxDict(boolean isAjaxDict) {
+		this.isAjaxDict = isAjaxDict;
+	}
+
+	public boolean getIsAjaxDict() {
+		return isAjaxDict;
 	}
 	
 }

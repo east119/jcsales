@@ -256,11 +256,15 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 //					SwfToolsUtil.convert2SWF(savePath);
 //				}
 //				FileCopyUtils.copy(mf.getBytes(), savefile);
-				if (uploadFile.getSwfpath() != null) {
+
+				//默认上传文件是否转换为swf，实现在线预览功能开关
+				String globalSwfTransformFlag = ResourceUtil.getConfigByName("swf.transform.flag");
+				if ( "true".equals(globalSwfTransformFlag) && uploadFile.getSwfpath() != null) {
 					// 转SWF
 					reflectHelper.setMethodValue(uploadFile.getSwfpath(), path + FileUtils.getFilePrefix(myfilename) + ".swf");
 					SwfToolsUtil.convert2SWF(savePath);
 				}
+
 
 			}
 		} catch (Exception e1) {
@@ -546,10 +550,9 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 				for (Object inobj : in) {
 					ReflectHelper reflectHelper2 = new ReflectHelper(inobj);
 					String inId = oConvertUtils.getString(reflectHelper2.getMethodValue(comboTreeModel.getIdField()));
-                   if (inId.equals(id)) {
+                    if (inId.equals(id)) {
 						tree.setChecked(true);
 					}
-
 				}
 			}
 		}
@@ -579,7 +582,7 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
 	/**
 	 * 构建树形数据表
 	 */
-	public List<TreeGrid> treegrid(List all, TreeGridModel treeGridModel) {
+	public List<TreeGrid> treegrid(List<?> all, TreeGridModel treeGridModel) {
 		List<TreeGrid> treegrid = new ArrayList<TreeGrid>();
 		for (Object obj : all) {
 			ReflectHelper reflectHelper = new ReflectHelper(obj);
@@ -668,7 +671,7 @@ public class CommonDao extends GenericBaseCommonDao implements ICommonDao, IGene
                     tg.getFieldMap().put(entry.getKey(), fieldValue);
                 }
             }
-           if (treeGridModel.getFunctionType() != null) {
+            if (treeGridModel.getFunctionType() != null) {
             	String functionType = oConvertUtils.getString(reflectHelper.getMethodValue(treeGridModel.getFunctionType()));
             	tg.setFunctionType(functionType);
             }

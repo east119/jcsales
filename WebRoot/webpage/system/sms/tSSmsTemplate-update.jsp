@@ -30,13 +30,25 @@
 						</td>
 					</tr>
 					<tr>
+					<td align="right">
+						<label class="Validform_label">
+							模板CODE:
+						</label>
+					</td>
+					<td class="value">
+					     	 <input id="templateCode" name="templateCode" value='${tSSmsTemplatePage.templateCode}' type="text" style="width: 150px" class="inputxt"  datatype="*" >
+							<span class="Validform_checktip"></span>
+							<label class="Validform_label" style="display: none;">模板Code</label>
+						</td>
+					</tr>
+					<tr>
 						<td align="right">
 							<label class="Validform_label">
 								模板名称:
 							</label>
 						</td>
 						<td class="value">
-						     	 <input id="templateName" name="templateName" type="text" style="width: 150px" class="inputxt"  datatype="*"  value='${tSSmsTemplatePage.templateName}'>
+						     	 <input id="templateName" name="templateName" type="text" style="width: 200px" class="inputxt"  datatype="*"  value='${tSSmsTemplatePage.templateName}'>
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">模板名称</label>
 						</td>
@@ -53,6 +65,18 @@
 							<label class="Validform_label" style="display: none;">模板内容</label>
 						</td>
 					</tr>
+					<tr>
+					<td align="right">
+						<label class="Validform_label">
+							模板测试JSON:
+						</label>
+					</td>
+					<td class="value">
+						  	 <textarea style="width:600px;height:100px" class="inputxt" rows="6" id="templateTestJson" name="templateTestJson">${tSSmsTemplatePage.templateTestJson}</textarea>
+							<span class="Validform_checktip"></span>
+							<label class="Validform_label" style="display: none;">模板测试JSON</label>
+						</td>
+				</tr>
 			</table>
 		</t:formvalid>
  </body>

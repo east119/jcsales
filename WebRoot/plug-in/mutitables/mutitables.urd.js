@@ -93,8 +93,8 @@ function deleteRecord(id,url,tip,flag){
  */
 function deleteALLSelectPms(confirm,url,gname,flag) {
     var ids = [];
-    var rows = $("#"+gname).datagrid('getSelections');
-   // var rows = $("#"+gname).datagrid('getChecked');
+   // var rows = $("#"+gname).datagrid('getSelections');
+    var rows = $("#"+gname).datagrid('getChecked');
     if (rows.length > 0) {
     	$.dialog.setting.zIndex = getzIndex(true);
     	if(!confirm){
@@ -270,14 +270,14 @@ function formatterImg(value,rec,index){
   	if(value==null || value.length==0){
   		return href;
   	}
-  	var value1 = "systemController/showOrDownByurl.do?dbPath="+value;
+  	var value1 = "img/server/"+value;
   	if("image"==type){
-   		href+="<img src='"+value1+"' width=30 height=30  onmouseover='tipImg(this)' onmouseout='moveTipImg()' style='vertical-align:middle'/>";
+   		href+="<img src='"+value1+"' width=30 height=30  onmouseover='tipImg(this,1)' onmouseout='moveTipImg(1)' style='vertical-align:middle'/>";
   	}else{
    		if(value.indexOf(".jpg")>-1 || value.indexOf(".gif")>-1 || value.indexOf(".png")>-1){
-   			href+="<img src='"+value1+"' onmouseover='tipImg(this)' onmouseout='moveTipImg()' width=30 height=30 style='vertical-align:middle'/>";
+   			href+="<img src='"+value1+"' onmouseover='tipImg(this,1)' onmouseout='moveTipImg(1)' width=30 height=30 style='vertical-align:middle'/>";
    		}else{
-   			var value2 = "systemController/showOrDownByurl.do?down=1&dbPath="+value;
+   			var value2 = "img/server/"+value+"?down=true";
    			href+="<a href='"+value2+"' class='ace_button' style='text-decoration:none;' target=_blank><u><i class='fa fa-download'></i>点击下载</u></a>";
    		}
   	}
@@ -336,6 +336,152 @@ function formatterImg(value,rec,index){
 		  message: '请输入0-1之间至多6位的小数'
 	  	}  
 	  });
+
+//datagrid 时间控件编辑器扩展
+ $.extend($.fn.datagrid.defaults.editors, {
+     datetimebox: { 
+ 		// datetimebox就是你要自定义editor的名称
+         init: function(container, options) {
+             var input = $('<input class="easyuidatetimebox"/>').appendTo(container);
+             return input.datetimebox({
+                 formatter: function(date) {
+                     return new Date(date).formatty("yyyy-MM-dd hh:mm:ss");
+                 },
+                 width:'150'
+             });
+         },
+         getValue: function(target) {
+             return $(target).parent().find('input.combo-value').val();
+         },
+         setValue: function(target, value) {
+             $(target).datetimebox("setValue", value);
+         },
+         resize: function(target, width) {
+             var input = $(target);
+             if ($.boxModel == true) {
+                 input.width(width - (input.outerWidth() - input.width()));
+             } else {
+                 input.width(width);
+             }
+         }
+     }
+ });
+ 
+//通用弹出式文件上传
+function rowEditUpload(obj,input,isnew){
+	var content = "url:systemController.do?commonWebUpload";//老版上传走这个逻辑
+	if(!isnew){
+		//如果是webuploader
+		content = "url:systemController.do?commonUpload";
+	}
+    $.dialog({
+           content:content ,
+           lock : true,
+           title:"文件上传",
+           zIndex:getzIndex(),
+           width:700,
+           height: 200,
+           parent:windowapi,
+           cache:false,
+	       ok: function(){
+	               var iframe = this.iframe.contentWindow;
+	               var url = iframe.uploadCallback();
+	               $("input[id='"+input+"']").val(url);
+	               $(obj).html("<i class=\"fa fa-upload\"></i>重新上传");
+	               if($(obj).next('.rowedit-file-tip').length==0){
+	            	   var container = $(obj).closest("td");
+	            	   $('<span class="rowedit-file-tip"><label class="upload-ok"><i>√</i></label></span>').appendTo(container);
+	               }else{
+	            	   $(obj).next('span.rowedit-file-tip').html('<label class="upload-ok"><i>√</i></label>');
+	               }
+	               return true;
+	       },
+	       cancelVal: '关闭',
+	       cancel: function(){
+       	   } 
+      });
+  }
+
+ $.extend($.fn.datagrid.defaults.editors, {
+     filecontrol: { 
+ 		// 文件上传行编辑扩展
+         init: function(container, options) {
+        	 var input;
+        	 var inp = 'tempfile_'+getRandomId();
+        	 var btnclass = "rowedit-file-control";
+        	 if(!!options && !!options.btnclass){
+        		 btnclass = options.btnclass;
+        	 }
+        	 if(!!options && options.control=='uploadfy'){
+        		 //TODO 老版上传在此写逻辑 一样是一个input和一个btn 
+        	 }else{
+        		input = $('<input id="'+inp+'" type="hidden" class="filecontrol"/>').appendTo(container);
+        		var btn = $('<a onclick="rowEditUpload(this,\''+inp+'\',\'1\')" class="'+btnclass+'" href="javascript:void(0);" style="text-decoration:none;margin-left:8px"><i class="fa fa-upload"></i>点击上传</a>').appendTo(container);
+        	 }
+        	 
+             return input;
+         },
+         getValue: function(target) {
+             return $(target).parent().find('input.filecontrol').val();
+         },
+         setValue: function(target, value) {
+             $(target).val(value);
+         },
+         resize: function(target, width) {
+             var input = $(target);
+             if ($.boxModel == true) {
+                 input.width(width - (input.outerWidth() - input.width()));
+             } else {
+                 input.width(width);
+             }
+         }
+     }
+ });
+ 
+ /* 随机数*/
+ function getRandomId(){
+	 var Rand = Math.random();   
+	 return(1 + Math.round(Rand * 99999));   
+ }
+ 
+ // 时间格式化
+ Date.prototype.formatty = function(format) {
+     /*
+     * eg:format="yyyy-MM-dd hh:mm:ss";
+     */
+     if (!format) {
+         format = "yyyy-MM-dd hh:mm:ss";
+     }
+
+     var o = {
+         "M+": this.getMonth() + 1,
+         // month
+         "d+": this.getDate(),
+         // day
+         "h+": this.getHours(),
+         // hour
+         "m+": this.getMinutes(),
+         // minute
+         "s+": this.getSeconds(),
+         // second
+         "q+": Math.floor((this.getMonth() + 3) / 3),
+         // quarter
+         "S": this.getMilliseconds()
+         // millisecond
+     };
+
+     if (/(y+)/.test(format)) {
+         format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+     }
+
+     for (var k in o) {
+         if (new RegExp("(" + k + ")").test(format)) {
+             format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+         }
+     }
+     return format;
+ };
+ 
 /*---------------------------------自定义验证--------------------------------------------*/
 
 

@@ -1,12 +1,10 @@
 package org.jeecgframework.web.system.controller.core;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.client.ClientProtocolException;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.json.AjaxJson;
@@ -212,15 +210,9 @@ public class TimeTaskController extends BaseController {
 			try {
 				String url = "http://"+timeTask.getRunServer()+"/timeTaskController.do?remoteTask";//spring-mvc.xml
 				String param = "id="+timeTask.getId()+"&isStart="+(isStart ? "1" : "0");
-				String jsonstr = HttpRequest.httpPost(url, param, false);
-				if (null != jsonstr && jsonstr.length() > 0) {
-					JSONObject json = (JSONObject) JSONObject.parse(jsonstr);
-					isSuccess = json.getBooleanValue("success");
-				}
-			} catch (ClientProtocolException e) {
-				j.setMsg("远程主机‘"+timeTask.getRunServer()+"’响应超时");
-				return j;
-			} catch (IOException e) {
+				JSONObject json = HttpRequest.sendPost(url, param);
+				isSuccess = json.getBooleanValue("success");
+			} catch (Exception e) {
 				j.setMsg("远程主机‘"+timeTask.getRunServer()+"’响应超时");
 				return j;
 			}
@@ -262,5 +254,4 @@ public class TimeTaskController extends BaseController {
 		json.put("success", isSuccess);
 		return json;
 	}
-
 }

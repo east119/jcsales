@@ -18,7 +18,7 @@
 	 	 return false;
     });  
 	$('#del${subsG['${key}'].entityName}Btn').bind('click', function(){   
-      	$("#add_${subsG['${key}'].entityName?uncap_first}_table").find("input:checked").parent().parent().remove();   
+      	$("#add_${subsG['${key}'].entityName?uncap_first}_table").find("input[name$='ck']:checked").parent().parent().remove();   
         resetTrNum('add_${subsG['${key}'].entityName?uncap_first}_table'); 
         return false;
     }); 

@@ -2,7 +2,7 @@
 <%@include file="/context/mytags.jsp"%>
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
 
-<link rel="stylesheet" type="text/css" href="plug-in/ztree/css/zTreeStyle.css">
+<link rel="stylesheet" type="text/css" href="plug-in/ztree/css/metroStyle.css">
 <script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.excheck-3.5.min.js"></script>
 <script type="text/javascript">
@@ -70,11 +70,11 @@
         <ul id="departSelect" class="ztree" ></ul>
     </div>
     <div data-options="region:'center'">
-        <t:datagrid checkbox="true" name="userList1" title="common.user.select" actionUrl="userController.do?datagrid"
+        <t:datagrid checkbox="true" name="userList1" title="common.user.select" actionUrl="userController.do?datagridByOrgCode"
                     fit="true" fitColumns="true" idField="id" queryMode="group" sortName="createDate" sortOrder="desc">
             <t:dgCol title="common.id" field="id" hidden="true"></t:dgCol>
             <t:dgCol title="common.username" sortable="false" field="userName" query="true"></t:dgCol>
-            <t:dgCol title="common.department" sortable="false" field="userOrgList.tsDepart.departname" query="false"></t:dgCol>
+            <t:dgCol title="common.department" sortable="false" field="orgNames" query="false"></t:dgCol>
             <t:dgCol title="common.real.name" field="realName" query="false"></t:dgCol>
             <t:dgCol title="common.role" field="userKey" ></t:dgCol>
             <t:dgCol title="common.createby" field="createBy" hidden="true"></t:dgCol>
@@ -86,7 +86,3 @@
         </t:datagrid>
     </div>
 </div>
-
-<script type="text/javascript">
-
-</script>

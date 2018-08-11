@@ -135,7 +135,16 @@ public class JdbcDao extends SimpleJdbcTemplate{
 		sql = jeecgCreatePageSql(sql,page,rows);
 		return this.jdbcTemplate.queryForList(sql);
 	}
-	
+
+	/**
+	 * 使用指定的检索标准检索数据并分页返回数据
+	 */
+	public List<Map<String, Object>> findForListMap(String sql, Map parameters, int page, int rows) {
+		//封装分页SQL
+		sql = jeecgCreatePageSql(sql,page,rows);
+		return super.findForListMap(sql, parameters);
+	}
+
 	
 	public List<Map<String, Object>> findForJdbc(String sql, Object... objs) {
 		return this.jdbcTemplate.queryForList(sql,objs);

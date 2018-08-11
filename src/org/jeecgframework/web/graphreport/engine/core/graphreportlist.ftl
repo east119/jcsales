@@ -5,7 +5,7 @@
 ${config_iframe}
 </head>
 <body>
-<div class="operations" style="text-align: right;"> 
+<div class="operations" style="text-align: right;border-top:1px solid #e7eaec;"> 
 	<div class="bd3">
 		<#list config_queryList as x>
 			<span style="display:-moz-inline-box;display:inline-block;">
@@ -42,7 +42,7 @@ ${config_iframe}
 				            });
 				        </script>
 					<#else>
-						<select name = "${x['field_name']}" WIDTH="100" style="width: 104px" <#if  (x['field_dictlist']?size >10)>class="easyui-combobox"</#if>>
+						<select name = "${x['field_name']}" style="width: 104px" <#if  (x['field_dictlist']?size >10)></#if>>
 						<#if  (x['field_dictlist']?size <= 10)><option value = ""></option></#if>
 						<#if  (x['field_dictlist']?size > 10)><option value = ""></option></#if>
 						<#list x['field_dictlist']  as xd>
@@ -58,9 +58,9 @@ ${config_iframe}
 			</span>	
 		</#list> 
 		<#if (config_queryList?size > 0)>
-			<span style="display:-moz-inline-box;display:inline-block;margin-top: 5px;margin-left: 10px;">
-				<a href="#" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">查询</a>
-				<a href="#" class="easyui-linkbutton" iconCls="icon-reload" id="resetBtn">重置</a>
+			<span style="display:-moz-inline-box;display:inline-block;margin-left: 20px;">
+				<a href="#"  id="searchBtn"><img style="top: 3px;position: relative;" src="plug-in/graphreport/css/images/search.png"> 查询</a> &nbsp;
+				<a href="#"  id="resetBtn"><img style="top: 3px;position: relative;" src="plug-in/graphreport/css/images/reset.png"> 重置</a>
 			</span>
 		</#if>	 
 	</div>
@@ -93,7 +93,7 @@ ${config_iframe}
 		<h2>数据明细</h2>
 		<div class="option">
 			<a href="###" id="exportExcel">
-				<span class="icon export exportCsv" title="导出"></span>
+				<span class="icon" title="导出"></span>
 			</a>
 		</div>
 	</div>

@@ -22,11 +22,13 @@ import org.jeecgframework.core.online.util.CgReportQueryParamUtil;
 import org.jeecgframework.core.online.util.FreemarkerHelper;
 import org.jeecgframework.core.util.ContextHolderUtils;
 import org.jeecgframework.core.util.DynamicDBUtil;
-import org.jeecgframework.core.util.SqlInjectionUtil;
+import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.core.util.SqlUtil;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.core.util.SysThemesUtil;
 import org.jeecgframework.web.cgreport.service.core.CgReportServiceI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/cgReportController")
 public class CgReportController extends BaseController {
+	private static final Logger log = LoggerFactory.getLogger(CgReportController.class);
+	
 	@Autowired
 	private CgReportServiceI cgReportService;
 	/**
@@ -97,6 +101,7 @@ public class CgReportController extends BaseController {
 
 		SysThemesEnum sysThemesEnum = SysThemesUtil.getSysTheme(request);
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/jquery/jquery-1.8.3.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/dataformat.js\"></script>");
 		sb.append(SysThemesUtil.getEasyUiTheme(sysThemesEnum));
 		sb.append(SysThemesUtil.getEasyUiMainTheme(sysThemesEnum));
@@ -115,7 +120,7 @@ public class CgReportController extends BaseController {
 
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/layer/layer.js\"></script>");
 
-		sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
+		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/easyuiextend.js\"></script>");
 		return sb.toString();
 	}
@@ -183,13 +188,18 @@ public class CgReportController extends BaseController {
 		}
 		StringBuilder sb = new StringBuilder("");
 		if(paramList!=null&&paramList.size()>0){
-			queryList = new ArrayList<Map<String,Object>>(0);
+//			queryList = new ArrayList<Map<String,Object>>(0);
 			for(String param:paramList){
 				sb.append("&").append(param).append("=");
 				String value = request.getParameter(param);
     			if(StringUtil.isNotEmpty(value)){
     				sb.append(value);
+
+    			}else{
+    				value = ResourceUtil.getUserSystemData(param);
+    				sb.append(value);
     			}
+
 			}
 		}
 		cgReportMap.put(CgReportConstant.CONFIG_ID, mainM.get("code"));
@@ -225,28 +235,41 @@ public class CgReportController extends BaseController {
 		}
 		//step.2 获取该配置的查询SQL
 		Map configM = (Map) cgReportMap.get(CgReportConstant.MAIN);
+		//报表 - 查询SQL
 		String querySql = (String) configM.get(CgReportConstant.CONFIG_SQL);
+		//报表字段
 		List<Map<String,Object>> items = (List<Map<String, Object>>) cgReportMap.get(CgReportConstant.ITEMS);
+		//SQL参数
 		List<String> paramList = (List<String>) cgReportMap.get(CgReportConstant.PARAMS);
-		Map queryparams =  new LinkedHashMap<String,Object>();
+		//页面参数查询字段（SQL条件语句片段）
+		Map<String,Object> pageSearchFields =  new LinkedHashMap<String,Object>();
+
+		//获取查询条件数据
+		Map<String,Object> paramData = new HashMap<String, Object>();
 		if(paramList!=null&&paramList.size()>0){
 			for(String param :paramList){
 				String value = request.getParameter(param);
 				value = value==null?"":value;
 
-				SqlInjectionUtil.filterContent(value);
+//				SqlInjectionUtil.filterContent(value);
 
-				querySql = querySql.replace("${"+param+"}", value);
-			}
-		}else{
-			for(Map<String,Object> item:items){
-				String isQuery = (String) item.get(CgReportConstant.ITEM_ISQUERY);
-				if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(isQuery)){
-					//step.3 装载查询条件
-					CgReportQueryParamUtil.loadQueryParams(request, item, queryparams);
-				}
+//				querySql = querySql.replace("${"+param+"}", value);
+				
+				
+				querySql = querySql.replace("'${"+param+"}'", ":"+param);
+				querySql = querySql.replace("${"+param+"}", ":"+param);
+				paramData.put(param, value);
 			}
 		}
+
+		for(Map<String,Object> item:items){
+			String isQuery = (String) item.get(CgReportConstant.ITEM_ISQUERY);
+			if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(isQuery)){
+				//step.3 装载查询条件
+				CgReportQueryParamUtil.loadQueryParams(request, item, pageSearchFields,paramData);
+			}
+		}
+
 		//step.4 进行查询返回结果
 		int p = page==null?1:Integer.parseInt(page);
 		int r = rows==null?99999:Integer.parseInt(rows);
@@ -255,9 +278,17 @@ public class CgReportController extends BaseController {
         List<Map<String, Object>> result=null;
         Long size=0l;
         if(StringUtils.isNotBlank(dbKey)){
-            result= DynamicDBUtil.findList(dbKey,SqlUtil.jeecgCreatePageSql(dbKey,querySql,queryparams,p,r));
 
-            Map map=(Map)DynamicDBUtil.findOne(dbKey,SqlUtil.getCountSql(querySql,queryparams));
+        	Map map= null;
+        	if(paramData!=null&&paramData.size()>0){
+        		result= DynamicDBUtil.findListByHash(dbKey,SqlUtil.jeecgCreatePageSql(dbKey,querySql,pageSearchFields,p,r),(HashMap<String, Object>)paramData);
+        		map=(Map)DynamicDBUtil.findOneByHash(dbKey,SqlUtil.getCountSql(querySql,pageSearchFields),(HashMap<String, Object>)paramData);
+        	}else{
+        		result= DynamicDBUtil.findList(dbKey,SqlUtil.jeecgCreatePageSql(dbKey,querySql,pageSearchFields,p,r));
+
+        		map=(Map)DynamicDBUtil.findOne(dbKey,SqlUtil.getCountSql(querySql,pageSearchFields));
+
+        	}
 
             if(map.get("COUNT(*)") instanceof BigDecimal){
             	BigDecimal count = (BigDecimal)map.get("COUNT(*)");
@@ -266,8 +297,11 @@ public class CgReportController extends BaseController {
             	size=(Long)map.get("COUNT(*)");
             }
         }else{
-            result= cgReportService.queryByCgReportSql(querySql, queryparams, p, r);
-            size = cgReportService.countQueryByCgReportSql(querySql, queryparams);
+
+        	result= cgReportService.queryByCgReportSql(querySql, pageSearchFields,paramData, p, r);
+        	log.debug(" ------cgReport SQL: {} , paramData: {} ," ,querySql,paramData );
+            size = cgReportService.countQueryByCgReportSql(querySql, pageSearchFields,paramData);
+
         }
 
         cgReportService.dealDic(result,items);
@@ -297,7 +331,7 @@ public class CgReportController extends BaseController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(params = "getFields", method = RequestMethod.POST)
 	@ResponseBody
-	public Object getSqlFields(String sql,String dbKey){
+	public Object getFields(String sql,String dbKey){
 		List<String> fields = null;
 		List<String> params = null;
 		Map reJson = new HashMap<String, Object>();

@@ -104,6 +104,7 @@ public class CgDynamGraphController extends BaseController {
 		StringBuilder sb= new StringBuilder("");
 		SysThemesEnum sysThemesEnum = SysThemesUtil.getSysTheme(request);
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/jquery/jquery-1.8.3.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\"plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/dataformat.js\"></script>");
 		sb.append(SysThemesUtil.getEasyUiTheme(sysThemesEnum));
 		sb.append("<link rel=\"stylesheet\" href=\"plug-in/easyui/themes/icon.css\" type=\"text/css\"></link>");
@@ -116,7 +117,7 @@ public class CgDynamGraphController extends BaseController {
 
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/layer/layer.js\"></script>");
 
-		sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
+		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/curdtools.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/tools/easyuiextend.js\"></script>");
 		return sb.toString();
 	}
@@ -141,7 +142,7 @@ public class CgDynamGraphController extends BaseController {
 		}
 		StringBuilder sb = new StringBuilder("");
 		if(paramList!=null&&paramList.size()>0){
-			queryList = new ArrayList<Map<String,Object>>(0);
+//			queryList = new ArrayList<Map<String,Object>>(0);
 			for(String param:paramList){
 				sb.append("&").append(param).append("=");
 				String value = request.getParameter(param);
@@ -186,34 +187,50 @@ public class CgDynamGraphController extends BaseController {
 		String querySql = (String) configM.get(CgReportConstant.CONFIG_SQL);
 		List<Map<String,Object>> items = (List<Map<String, Object>>) cgDynamGraphMap.get(CgReportConstant.ITEMS);
 		List<String> paramList = (List<String>) cgDynamGraphMap.get(CgReportConstant.PARAMS);
-		Map queryparams =  new LinkedHashMap<String,Object>();
+		//页面参数查询字段（占位符的条件语句）
+		Map pageSearchFields =  new LinkedHashMap<String,Object>();
+
+		//获取查询条件数据
+		Map<String,Object> paramData = new HashMap<String, Object>();
 		if(paramList!=null&&paramList.size()>0){
 			for(String param :paramList){
 				String value = request.getParameter(param);
 				value = value==null?"":value;
 
-				SqlInjectionUtil.filterContent(value);
+//				SqlInjectionUtil.filterContent(value);
 
-				querySql = querySql.replace("${"+param+"}", value);
-			}
-		}else{
-			for(Map<String,Object> item:items){
-				String isQuery = (String) item.get(CgReportConstant.ITEM_ISQUERY);
-				if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(isQuery)){
-					//step.3 装载查询条件
-					CgReportQueryParamUtil.loadQueryParams(request, item, queryparams);
-				}
+//				querySql = querySql.replace("${"+param+"}", value);
+				
+				querySql = querySql.replace("'${"+param+"}'", ":"+param);
+				querySql = querySql.replace("${"+param+"}", ":"+param);
+				paramData.put(param, value);
 			}
 		}
+
+		for(Map<String,Object> item:items){
+			String isQuery = (String) item.get(CgReportConstant.ITEM_ISQUERY);
+			if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(isQuery)){
+				//step.3 装载查询条件
+				CgReportQueryParamUtil.loadQueryParams(request, item, pageSearchFields,paramData);
+			}
+		}
+
 		//step.4 进行查询返回结果
 
         String dbKey=(String)configM.get("db_source");
         List<Map<String, Object>> result=null;
         Long size=0l;
         if(StringUtils.isNotBlank(dbKey)){
-        	
-            result= DynamicDBUtil.findList(dbKey,querySql);
-            Map map=(Map)DynamicDBUtil.findOne(dbKey,SqlUtil.getCountSql(querySql,null));
+
+        	Map map= null;
+        	if(paramData!=null&&paramData.size()>0){
+        		result= DynamicDBUtil.findListByHash(dbKey,SqlUtil.getFullSql(querySql,pageSearchFields),(HashMap<String, Object>)paramData);
+        		map=(Map)DynamicDBUtil.findOneByHash(dbKey,SqlUtil.getCountSql(querySql,pageSearchFields),(HashMap<String, Object>)paramData);
+        	}else{
+        		result= DynamicDBUtil.findList(dbKey,querySql);
+        		map=(Map)DynamicDBUtil.findOne(dbKey,SqlUtil.getCountSql(querySql,null));
+        	}
+
             if(map.get("COUNT(*)") instanceof BigDecimal){
             	BigDecimal count = (BigDecimal)map.get("COUNT(*)");
             	size = count.longValue();
@@ -221,8 +238,10 @@ public class CgDynamGraphController extends BaseController {
             	size=(Long)map.get("COUNT(*)");
             }
         }else{
-            result= cgDynamGraphService.queryByCgDynamGraphSql(querySql, queryparams);
-            size = cgDynamGraphService.countQueryByCgDynamGraphSql(querySql, queryparams);
+
+            result= cgDynamGraphService.queryByCgDynamGraphSql(querySql, pageSearchFields,paramData);
+            size = cgDynamGraphService.countQueryByCgDynamGraphSql(querySql, pageSearchFields,paramData);
+
         }
 
         cgReportService.dealDic(result,items);

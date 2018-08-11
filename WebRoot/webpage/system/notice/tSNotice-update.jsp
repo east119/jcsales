@@ -18,6 +18,7 @@
 		    $("#noticeContent").val(editor.getContent());
 		}
 	}
+  
   function dataytpeSelect(name) {
         $("#roleName").removeAttr('datatype');
         $("#roleName_span").hide()
@@ -55,7 +56,7 @@
 						</td>
 						<td class="value">
 								<input id="noticeContent" name="noticeContent" type="hidden" value='${tSNoticePage.noticeContent}'>
-								<script id="content" type="text/plain" style="width:700px;" value='${tSNoticePage.noticeContent}'></script>
+								<script id="content" type="text/plain" style="width:95%" value='${tSNoticePage.noticeContent}'></script>
 						  	 	<script type="text/javascript">
 						  	 	var editor = UE.getEditor('content',{
 					        	    toolleipi:true,//是否显示，设计器的 toolbars
@@ -86,9 +87,9 @@
 							</label>
 						</td>
 						<td class="value">
-						     	 <input type="radio" name="noticeType" value="1" datatype="*"  <c:if test="${tSNoticePage.noticeType=='1'}">checked="checked"</c:if> 
-						     	 <c:if test="${empty tSNoticePage.noticeType}">checked="checked"</c:if> />通知
-         				&nbsp;&nbsp;<input type="radio" name="noticeType" value="2" <c:if test="${tSNoticePage.noticeType=='2'}">checked="checked"</c:if> />公告
+						     	<%--  <input type="radio" name="noticeType" value="1" datatype="*"  <c:if test="${tSNoticePage.noticeType=='1'}">checked="checked"</c:if> 
+						     	 <c:if test="${empty tSNoticePage.noticeType}">checked="checked"</c:if> />通知 --%>
+         				    <input type="radio" name="noticeType" value="2" checked="checked" />公告
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">类型</label>
 						</td>
@@ -129,7 +130,7 @@
 							</label>
 						</td>
 						<td class="value">
-						     <input class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  style="width: 150px" id="noticeTerm" 
+						     <input type="text" class="Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})"  style="width: 150px" id="noticeTerm" 
 						     name="noticeTerm" ignore="ignore" value="<fmt:formatDate value='${tSNoticePage.noticeTerm}' type="date" pattern="yyyy-MM-dd"/>"> 		  
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">阅读期限</label>

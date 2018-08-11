@@ -5,7 +5,7 @@ ${config_iframe}
 /**
 *表单的高度,表单的宽度
 **/
-var ${config_id}Fw = 700,${config_id}Fh = 400;
+<#if tableType=="2">var ${config_id}Fw = 950,${config_id}Fh = 450;<#else>var ${config_id}Fw = 700,${config_id}Fh = 400;</#if>
 
 $(function(){
 	$.get("cgFormHeadController.do?checkIsExit&checkIsTableCreate&name=${config_id}",
@@ -89,7 +89,10 @@ function createDataGrid${config_id}(){
 						 			<#if brower_type?? && brower_type == 'Microsoft%20Internet%20Explorer'>
 						 				href+="[<a href='"+value+"' style='text-decoration:none;' target=_blank>点击下载</a>]";
 						 			<#else>
-						 				href+="<a href='"+value+"' class='ace_button' style='text-decoration:none;' target=_blank><u><i class='fa fa-download'></i>点击下载</u></a>";
+						 			<#-- update-begin-- author:gj_shaojc date:20180608 for:TASK #2760 【online表单】列表字段下载 文本乱码 -->
+						 				var value2="systemController/downloadFile.do?filePath="+value
+						 				href+="<a href='"+value2+"' class='ace_button' style='text-decoration:none;' target=_blank><u><i class='fa fa-download'></i>点击下载</u></a>";
+						 			<#-- update-end-- author:gj_shaojc date:20180608 for:TASK #2760 【online表单】列表字段下载 文本乱码 -->
 						 			</#if>
 						 			<#-- update--end--author:zhangjiaqiang date:20170628 for: TASK #2194 【online链接样式切换】Online 功能测试的列表链接样式，需要根据浏览器IE进行切换 -->
 						 			<#-- //update-begin--Author:zhangjiaqiang  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->
@@ -212,12 +215,12 @@ function createDataGrid${config_id}(){
 						<#--//update-end--Author:zhangjiaqiang  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->
 						</#if>
 						<#list config_buttons as x>
-						<#--update-begin--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
-							<#if x['exp'] != '' ||x['exp'] !=null>
-								if(<@exp exp="${ x['exp']}" data="rec" />){
-						 	 </#if>
-						 <#--update-end--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 							<#if x['buttonStyle'] == 'link' && x['buttonStatus']=='1' && config_noliststr?index_of("${x['buttonCode']}")==-1>
+								<#--update-begin--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
+									<#if x['exp'] != '' ||x['exp'] !=null>
+										if(<@exp exp="${ x['exp']}" data="rec" />){
+								 	 </#if>
+								<#--update-end--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 								<#--//update-begin--Author:zhangjiaqiang  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->
 								<#-- update--begin--author:zhangjiaqiang date:20170628 for: TASK #2194 【online链接样式切换】Online 功能测试的列表链接样式，需要根据浏览器IE进行切换 -->
 								<#if brower_type?? && brower_type != 'Microsoft%20Internet%20Explorer'>
@@ -253,12 +256,12 @@ function createDataGrid${config_id}(){
 								</#if>
 								<#-- update--end--author:zhangjiaqiang date:20170628 for: TASK #2194 【online链接样式切换】Online 功能测试的列表链接样式，需要根据浏览器IE进行切换 -->
 								<#--//update-end--Author:zhangjiaqiang  Date:20160925 for：TASK #1344 [链接图标] online功能测试的按钮链接图标修改 -->
+								<#--update-begin--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
+									<#if x['exp'] != '' ||x['exp'] !=null>
+										}
+								    </#if>
+							    <#--update-end--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 							</#if>
-							<#--update-begin--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
-							<#if x['exp'] != '' ||x['exp'] !=null>
-								}
-						    </#if>
-						    <#--update-end--Author:gj_shaojc  Date:20180605 for：TASK #2753 【论坛问题确认】online 开发，自定义按钮显示表达式问题-->
 						</#list>
 						return href;
 						}

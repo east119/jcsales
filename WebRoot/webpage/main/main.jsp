@@ -165,7 +165,7 @@ a:hover {
                         <t:mutiLang langKey="common.change.password"/>
                     </div>
 					<div class="menu-sep"></div>
-                    <div onclick="openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')">
+                    <div onclick="createdetailwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?goMySmsList',800,400)">
                         <t:mutiLang langKey="common.ssms.getSysInfos"/>
                     </div>
                     <div class="menu-sep"></div>

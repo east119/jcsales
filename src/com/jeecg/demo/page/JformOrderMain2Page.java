@@ -1,24 +1,13 @@
 
 package com.jeecg.demo.page;
-import com.jeecg.demo.entity.JformOrderMain2Entity;
-import com.jeecg.demo.entity.JformOrderTicket2Entity;
-import com.jeecg.demo.entity.JformOrderCustomer2Entity;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 import java.util.ArrayList;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.SequenceGenerator;
+import java.util.List;
 import org.jeecgframework.poi.excel.annotation.Excel;
 import org.jeecgframework.poi.excel.annotation.ExcelCollection;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jeecg.demo.entity.JformOrderCustomer2Entity;
+import com.jeecg.demo.entity.JformOrderMain2Entity;
+import com.jeecg.demo.entity.JformOrderTicket2Entity;
 
 /**   
  * @Title: Entity
@@ -123,19 +112,28 @@ public class JformOrderMain2Page implements java.io.Serializable {
 	/**保存-订单机票信息*/
     @ExcelCollection(name="订单机票信息")
 	private List<JformOrderTicket2Entity> jformOrderTicket2List = new ArrayList<JformOrderTicket2Entity>();
-		public List<JformOrderTicket2Entity> getJformOrderTicket2List() {
+	public List<JformOrderTicket2Entity> getJformOrderTicket2List() {
 		return jformOrderTicket2List;
-		}
-		public void setJformOrderTicket2List(List<JformOrderTicket2Entity> jformOrderTicket2List) {
+	}
+	public void setJformOrderTicket2List(List<JformOrderTicket2Entity> jformOrderTicket2List) {
 		this.jformOrderTicket2List = jformOrderTicket2List;
-		}
+	}
 	/**保存-订单客户信息*/
     @ExcelCollection(name="订单客户信息")
 	private List<JformOrderCustomer2Entity> jformOrderCustomer2List = new ArrayList<JformOrderCustomer2Entity>();
-		public List<JformOrderCustomer2Entity> getJformOrderCustomer2List() {
+	public List<JformOrderCustomer2Entity> getJformOrderCustomer2List() {
 		return jformOrderCustomer2List;
-		}
-		public void setJformOrderCustomer2List(List<JformOrderCustomer2Entity> jformOrderCustomer2List) {
+	}
+	public void setJformOrderCustomer2List(List<JformOrderCustomer2Entity> jformOrderCustomer2List) {
 		this.jformOrderCustomer2List = jformOrderCustomer2List;
-		}
+	}
+	
+	@JsonIgnore
+	private List<JformOrderMain2Entity> jformOrderMain2List = new ArrayList<JformOrderMain2Entity>();
+	public List<JformOrderMain2Entity> getJformOrderMain2List() {
+		return jformOrderMain2List;
+	}
+	public void setJformOrderMain2List(List<JformOrderMain2Entity> jformOrderMain2List) {
+		this.jformOrderMain2List = jformOrderMain2List;
+	}
 }

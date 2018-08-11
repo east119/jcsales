@@ -298,7 +298,10 @@ select{
   line-height: 32px;
   min-height: 32px;
   /*update-end--Author:scott  Date:20171127 for：ace风格一对多样式改造，参考fineui紧凑样式------*/
-  border-left: 1px solid #e4e4e4;
+  
+  /*update-begin--Author:scott ---- Date:20180706 ---- for：ace风格去掉表格竖线------*/
+  /*border-left: 1px solid #e4e4e4;*/
+  /*update-end--Author:scott ---- Date:20180706 ---- for：ace风格去掉表格竖线------*/
 }
 .con-wrapper .row > div:first-child{
   border-left: none;

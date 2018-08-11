@@ -7,16 +7,18 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name=viewportcontent="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui">
 	<link rel="stylesheet" href="${'$'}{webRoot}/plug-in/element-ui/css/index.css">
+	<link rel="stylesheet" href="${'$'}{webRoot}/plug-in/element-ui/css/elementui-ext.css">
 	<script src="${'$'}{webRoot}/plug-in/vue/vue.js"></script>
 	<script src="${'$'}{webRoot}/plug-in/vue/vue-resource.js"></script>
 	<script src="${'$'}{webRoot}/plug-in/element-ui/index.js"></script>
 	<!-- Jquery组件引用 -->
 	<script src="${'$'}{webRoot}/plug-in/jquery/jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="${'$'}{webRoot}/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js"></script>
 	<script src="${'$'}{webRoot}/plug-in/layer/layer.js"></script>
 	<#-- update--begin-- Author:gj_shaojc  Date:20180606 for：TASK #2767 【专题任务】element-ui 代码生成器遗留问题改造(问题9)-->
 	<script type="text/javascript" src="${'$'}{webRoot}/plug-in/mutiLang/zh-cn.js"></script>
 	<script type="text/javascript" src="${'$'}{webRoot}/plug-in/lhgDialog/lhgdialog.min.js?skin=metrole"></script>
-	<script type="text/javascript" src="${'$'}{webRoot}/plug-in/tools/curdtools_zh-cn.js"></script>
+	<script type="text/javascript" src="${'$'}{webRoot}/plug-in/tools/curdtools.js"></script>
 	<#-- update--end-- Author:gj_shaojc  Date:20180606 for：TASK #2767 【专题任务】element-ui 代码生成器遗留问题改造(问题9)-->
 	<style>
 	.toolbar {
@@ -125,7 +127,7 @@
 					<#if po.showType=='file'>
 					<el-button size="mini" type="primary" @click="handleDownFile('1',scope.row.${po.fieldName})">文件下载</el-button>
 					<#else>
-					<img width="100%" :src="'systemController/showOrDownByurl.do?dbPath='+scope.row.${po.fieldName}" alt="${po.content}">
+					<img width="30" height="30" :src="'img/server/'+scope.row.${po.fieldName}" alt="${po.content}"/>
 					</#if>
 				</template>
 			</el-table-column>
@@ -181,7 +183,7 @@
 					batchDel:'${'$'}{webRoot}/${entityName?uncap_first}Controller.do?doBatchDel',
 					goEdit:'${'$'}{webRoot}/${entityName?uncap_first}Controller.do?goForm',
 					queryDict:'${'$'}{webRoot}/systemController.do?typeListJson',
-					downFile:'${'$'}{webRoot}/systemController/showOrDownByurl.do',
+					downFile:'${'$'}{webRoot}/img/server/',
 					<#-- update--begin-- Author:gj_shaojc  Date:20180606 for：TASK #2767 【专题任务】element-ui 代码生成器遗留问题改造(问题9)-->
 					exportXls:'${'$'}{webRoot}/${entityName?uncap_first}Controller.do?exportXls&id=',
 					ImportXls:'${'$'}{webRoot}/${entityName?uncap_first}Controller.do?upload'
@@ -260,7 +262,7 @@
 				this.get${entityName?cap_first}s();
 			},
 			handleDownFile(type,filePath){
-				var downUrl=this.url.downFile+"?down="+type+"&dbPath="+filePath;
+				var downUrl=this.url.downFile+ filePath +"?down=true";
 				window.open(downUrl);
 			},
 			resetForm(formName) {
@@ -368,13 +370,13 @@
 						layer.closeAll();
 					},
 					zIndex : layer.zIndex,
-					success : function(layero) {
+					success : function(layero,index) {
 						var iframeWin = window[layero.find('iframe')[0]['name']];
 				        iframeWin.vue.initForm(Object.assign({}, row));
 						layer.setTop(layero);
+						layer.full(index);
 					}
 				});
-				layer.full(index);
 			},
 			//显示新增界面
 			handleAdd: function () {
@@ -395,13 +397,13 @@
 						layer.closeAll();
 					},
 					zIndex : layer.zIndex,
-					success : function(layero) {
+					success : function(layero,index) {
 						var iframeWin = window[layero.find('iframe')[0]['name']];
 				        iframeWin.vue.initForm();
 						layer.setTop(layero);
+						layer.full(index);
 					}
 				});
-				layer.full(index);
 			},
 			selsChange: function (sels) {
 				this.sels = sels;

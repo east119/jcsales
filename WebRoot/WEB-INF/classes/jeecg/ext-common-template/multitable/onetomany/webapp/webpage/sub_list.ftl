@@ -1,12 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <#include "/ui/tdgColcb.ftl"/>
+<#assign orderByCreateDate = false />
+<#list subColumnsMap['${key}'] as po>
+	<#if po.fieldName=='createDate'>
+		<#assign orderByCreateDate = true />
+		<#break>
+	</#if>
+</#list>
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
 <link rel="stylesheet" href="${'$'}{webRoot}/plug-in/mutitables/datagrid.menu.css" type="text/css"></link>
 <style>.datagrid-toolbar{padding:0 !important;border:0}</style>
 <div class="easyui-layout" fit="true">
   <div region="center" style="padding:0px;border:0px">
-  <t:datagrid name="${subsG['${key}'].entityName?uncap_first}List" filterBtn="true" checkbox="true" fitColumns="false" title="" actionUrl="${subsG['${key}'].entityName?uncap_first}Controller.do?datagrid" idField="id" fit="true" queryMode="group" onDblClick="datagridDbclick" onLoadSuccess="optsMenuToggle">
+  <t:datagrid name="${subsG['${key}'].entityName?uncap_first}List" filterBtn="true" checkbox="true" fitColumns="false" title="" <#if orderByCreateDate == true >sortName="createDate" sortOrder="desc"</#if> actionUrl="${subsG['${key}'].entityName?uncap_first}Controller.do?datagrid" idField="id" fit="true" queryMode="group" onDblClick="datagridDbclick" onLoadSuccess="optsMenuToggle">
    <t:dgCol title="操作" field="opt" width="77" optsMenu="true"></t:dgCol>
    <t:dgFunOpt funname="curd.addRow" urlfont="fa-plus" title="新增一行" />
    <t:dgFunOpt funname="curd.deleteOne(id)" urlfont="fa-minus" title="删除该行" />
@@ -28,6 +35,7 @@
 			  excelImport:'${entityName?uncap_first}Controller.do?commonUpload'
 		  }
 	  });
+	  gridname = curd.getGridname();
  	});
  	
   //双击行编辑

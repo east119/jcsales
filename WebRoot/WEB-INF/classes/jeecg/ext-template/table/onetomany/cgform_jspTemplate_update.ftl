@@ -256,8 +256,10 @@
 					        <#-- update--begin--author:zhangjiaqiang date:20170531 for:增加图片和文件的支持 -->
 										<input type="hidden" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" name="${sub.entityName?uncap_first}List[#index#].${po.fieldName}" />
 									  <#-- update--begin--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
-									    <input class="ui-button" type="button" value="上传附件"
+									    <#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+									    <input class="ui-button" type="button" value="上传附件" name="${sub.entityName?uncap_first}List[#index#].imgBtn"
 													onclick="commonUpload(commonUploadDefaultCallBack,'${sub.entityName?uncap_first}List\\[#index#\\]\\.${po.fieldName}')"/>
+										<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 										<a  target="_blank" id="${sub.entityName?uncap_first}List[#index#].${po.fieldName}_href"></a>
 									<#-- update--end--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
 							<#elseif po.showType=='popup'>
@@ -308,13 +310,18 @@
 	  		  		<#-- update--begin--author:zhangjiaqiang date:20170614 for:操作按钮之间增加间隔 -->
 	  		  		var td_download = $("<td><a style=\"margin-left:10px;\" href=\"commonController.do?viewFile&fileid=" + file.fileKey + "&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity\" title=\"下载\">下载</a></td>")
 	  		  		var td_view = $("<td><a style=\"margin-left:10px;\" href=\"javascript:void(0);\" onclick=\"openwindow('预览','commonController.do?openViewFile&fileid=" + file.fileKey + "&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity','fList',700,500)\">预览</a></td>");
-	  		  		var td_del = $("<td><a style=\"margin-left:10px;\" href=\"javascript:void(0)\" class=\"jeecgDetail\" onclick=\"del('cgUploadController.do?delFile&id=" + file.fileKey + "',this)\">删除</a></td>");
 	  		  		<#-- update--end--author:zhangjiaqiang date:20170614 for:操作按钮之间增加间隔 -->
 	  		  		tr.appendTo(table);
 	  		  		td_title.appendTo(tr);
 	  		  		td_download.appendTo(tr);
 	  		  		td_view.appendTo(tr);
-	  		  		td_del.appendTo(tr);
+	  		  		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2969 【代码生成器--贾乾坤】代码生成器模板测试 -->
+		  		  		if(location.href.indexOf("load=detail")==-1){
+			  		  		var td_del = $("<td><a style=\"margin-left:10px;\" href=\"javascript:void(0)\" class=\"jeecgDetail\" onclick=\"del('cgUploadController.do?delFile&id=" + file.fileKey + "',this)\">删除</a></td>");
+			  		  		td_del.appendTo(tr);
+		  		  		}
+	  		  		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2969 【代码生成器--贾乾坤】代码生成器模板测试 -->
+	  		  		
 	  			 });
 	  		   }
 	  		});

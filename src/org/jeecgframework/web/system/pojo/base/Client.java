@@ -13,25 +13,17 @@ import java.util.Map;
 public class Client implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
-	private TSUser user;
 
+	private TSUser user;
 	private Map<String, TSFunction> functions;
 	private Map<Integer, List<TSFunction>> functionMap;
-	public Map<Integer, List<TSFunction>> getFunctionMap() {
-		return functionMap;
-	}
-
-	public void setFunctionMap(Map<Integer, List<TSFunction>> functionMap) {
-		this.functionMap = functionMap;
-	}
 
 	/**
 	 * 用户IP
 	 */
 	private java.lang.String ip;
 	/**
-	 *登录时间
+	 * 登录时间
 	 */
 	private java.util.Date logindatetime;
 
@@ -43,6 +35,13 @@ public class Client implements java.io.Serializable {
 		this.user = user;
 	}
 
+	public Map<Integer, List<TSFunction>> getFunctionMap() {
+		return functionMap;
+	}
+
+	public void setFunctionMap(Map<Integer, List<TSFunction>> functionMap) {
+		this.functionMap = functionMap;
+	}
 
 	public Map<String, TSFunction> getFunctions() {
 		return functions;
@@ -67,6 +66,5 @@ public class Client implements java.io.Serializable {
 	public void setLogindatetime(java.util.Date logindatetime) {
 		this.logindatetime = logindatetime;
 	}
-
 
 }

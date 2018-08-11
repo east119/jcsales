@@ -5,7 +5,9 @@
 		<#-- update--begin--author:zhangjiaqiang date:20170519 for:修订资源预览关联错误 -->
 		<#list filesList as fileB>
 			<#if fileB['field']?lower_case == po.field_name>
-			<tr style="height:34px;">
+			<#-- update-begin-Author:LiShaoQing date:20180707 for:添加样式名称可供其他页面编写样式 -->
+			<tr class="upload_generate" style="height:34px;">
+			<#-- update-end-Author:LiShaoQing date:20180707 for:添加样式名称可供其他页面编写样式 -->
 			<td title="${fileB['title']}">
 			<#if fileB['title']?length gt 20>${fileB['title']?substring(0,15)}...<#else>${fileB['title']}</#if></td>
 			<#-- update--begin--author:zhangjiaqiang date:20170608 for:增加下载、预览、删除按钮之间的间隔 -->
@@ -28,7 +30,10 @@
 				auto:false,
 				progressData:'speed',
 				multi:true,
-				height:25,
+				height:18,
+				<#-- update--begin--author:jiaqiankun Date:20180627 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些 -->
+				width:80,
+				<#-- update--end--author:jiaqiankun Date:20180627 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些  -->
 				overrideEvents:['onDialogClose'],
 				fileTypeDesc:'文件格式:',
 				queueID:'filediv_${po.field_name}',
@@ -56,8 +61,14 @@
 		    <#-- update--begin--author:zhangjiaqiang date:20170519 for:修订资源预览关联错误 -->
 			<#list imageList as imageB>
 				<#if imageB['field']?lower_case == po.field_name>
-				<tr style="height:34px;">
-				<td>${imageB['title']}</td>
+				<#-- update-begin-Author:LiShaoQing date:20180707 for:添加样式名称可供其他页面编写样式 -->
+				<tr class="upload_generate" style="height:34px;">
+				<#-- update-end-Author:LiShaoQing date:20180707 for:添加样式名称可供其他页面编写样式 -->
+				
+				<#-- update--begin--author:jiaqiankun Date:20180628 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些 -->
+					<td title="${imageB['title']}"><#if imageB['title']?length gt 20>${imageB['title']?substring(0,15)}...<#else>${imageB['title']}</#if></td>
+				<#-- update--end--author:jiaqiankun Date:20180628 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些  -->
+				
 				<#-- update--begin--author:zhangjiaqiang date:20170608 for:增加下载、预览、删除按钮之间的间隔 -->
 				<td><a style="margin-left:8px;"  href="${basePath}/commonController.do?viewFile&fileid=${imageB['fileKey']}&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity" title="下载">下载</a></td>
 				<td><a style="margin-left:8px;"  href="javascript:void(0);" onclick="openwindow('预览','${basePath}/commonController.do?openViewFile&fileid=${imageB['fileKey']}&subclassname=org.jeecgframework.web.cgform.entity.upload.CgUploadEntity','fList',700,500)">预览</a></td>
@@ -67,6 +78,7 @@
 				</#if>
 			</#list>
 			<#-- update--end--author:zhangjiaqiang date:20170519 for:修订资源预览关联错误 -->
+			
 		</table>
 		<#if !(po.operationCodesReadOnly ??)>
 	    <div class="form jeecgDetail">
@@ -78,7 +90,10 @@
 				auto:false,
 				progressData:'speed',
 				multi:true,
-				height:25,
+				height:18,
+				<#-- update--begin--author:jiaqiankun Date:20180627 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些 -->
+				width:80,
+				<#-- update--end--author:jiaqiankun Date:20180627 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些  -->
 				overrideEvents:['onDialogClose'],
 				fileTypeDesc:'图片格式:',
 				queueID:'imagediv_${po.field_name}',

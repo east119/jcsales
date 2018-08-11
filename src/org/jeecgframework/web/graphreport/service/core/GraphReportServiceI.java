@@ -43,7 +43,9 @@ public interface GraphReportServiceI extends CommonService{
 	 * @param rows 要获取的条目总数
 	 * @return
 	 */
-	public List<Map<String,Object>> queryByCgReportSql(String sql,Map params,int page,int rows);
+
+	public List<Map<String,Object>> queryByCgReportSql(String sql,Map params,Map<String,Object> paramData,int page,int rows);
+
 	/**
 	 * 获取报表sql结果集大小
 	 * @param sql 报表SQL

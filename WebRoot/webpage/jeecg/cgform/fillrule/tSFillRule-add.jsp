@@ -22,6 +22,7 @@
 	href="plug-in/Validform/css/metrole/tablefrom.css" type="text/css" />
 
 <script type="text/javascript" src="plug-in/jquery/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="plug-in/jquery-plugs/i18n/jquery.i18n.properties.js"></script>
 <script type="text/javascript" src="plug-in/tools/dataformat.js"></script>
 <script type="text/javascript"
 	src="plug-in/easyui/jquery.easyui.min.1.3.2.js"></script>
@@ -30,7 +31,7 @@
 <script type="text/javascript"
 	src="plug-in/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js"></script>
-<script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
+<script type="text/javascript" src="plug-in/tools/curdtools.js"></script>
 <script type="text/javascript" src="plug-in/tools/easyuiextend.js"></script>
 <script type="text/javascript"
 	src="plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>

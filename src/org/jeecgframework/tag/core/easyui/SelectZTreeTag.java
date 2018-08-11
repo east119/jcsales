@@ -133,7 +133,7 @@ public class SelectZTreeTag extends TagSupport {
 		if(StringUtils.isBlank(windowHeight)){
 			windowHeight = "30px";
 		}
-		sb.append("<link rel=\"stylesheet\" href=\"plug-in/ztree/css/zTreeStyle.css\" type=\"text/css\"></link>");
+		sb.append("<link rel=\"stylesheet\" href=\"plug-in/ztree/css/metroStyle.css\" type=\"text/css\"></link>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/ztree/js/jquery.ztree.core-3.5.min.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\"plug-in/ztree/js/jquery.ztree.excheck-3.5.min.js\"></script>");
 

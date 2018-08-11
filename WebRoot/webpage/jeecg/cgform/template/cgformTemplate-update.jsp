@@ -209,11 +209,12 @@
   <script src = "webpage/jeecg/cgform/template/cgformTemplate.js"></script>
  <script>
 	 $(function () {
-		 $("#prePic").attr("src","cgformTemplateController.do?showPic&path=${cgformTemplatePage.templatePic}&code=${cgformTemplatePage.templateCode}");
+		 $("#prePic").attr("src","img-online/server/${cgformTemplatePage.templateCode}/images/${cgformTemplatePage.templatePic}");
 		 $('#templatePic_u').uploadify({buttonText:'浏览',
 			 progressData:'speed',
 			 multi:false,
-			 height:25,
+			 height:18,
+	         width:80,
 			 overrideEvents:['onDialogClose'],
 			 fileTypeDesc:'文件格式:',
 			 fileTypeExts:'*.jpg;*,jpeg;*.png;*.gif;*.bmp;*.ico;*.tif',
@@ -227,7 +228,7 @@
 				 if(data){
 					 var d=$.parseJSON(data);
 					 if(d.success){
-						 $("#prePic").attr("src","cgformTemplateController.do?showPic&path="+ d.obj);
+						 $("#prePic").attr("src","img-online/server/temp/"+ d.obj);
 						 $("#templatePic").val(d.obj);
 					 }
 				 }
@@ -238,7 +239,8 @@
 		 $('#templateZip').uploadify({buttonText:'浏览文件',
 			 progressData:'speed',
 			 multi:false,
-			 height:25,
+			 height:18,
+	         width:80,
 			 overrideEvents:['onDialogClose'],
 			 fileTypeDesc:'文件格式:',
 			//author:scott -- date:20170317 -- for:配置rar或者zip的时候,点击上传按钮之后要过10多秒才弹出文件选择框，采用方案不做上传类型限制--

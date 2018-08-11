@@ -289,7 +289,11 @@
 					               </#if>>
 
 						</#if>
-						<span class="Validform_checktip"></span>
+						
+						<#-- update--begin--author:jiaqiankun Date:20180628 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些 -->
+							<span class="Validform_checktip" style="float:left;height:0px;"></span>
+					    <#-- update--end--author:jiaqiankun Date:20180628 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些  -->
+
 						<label class="Validform_label" style="display: none;"><@mutiLang langKey="${po.content?if_exists?html}"/></label>
 					</td>
 				<#if (columns?size>10)>

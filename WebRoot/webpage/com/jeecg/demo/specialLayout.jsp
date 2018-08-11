@@ -8,16 +8,18 @@
 	  <t:datagrid name="jeecgrowList" pagination="true" fitColumns="true" title="数据列表" actionUrl="jeecgListDemoController.do?datagrid" pageSize="5" idField="id" queryMode="group">
 		<t:dgCol title="id"  field="id"   hidden="true"   queryMode="group"  width="140"></t:dgCol>
 	    <t:dgCol title="名称"  field="name" query="true" extendParams="editor:'text'" width="150"></t:dgCol>
-	    <t:dgCol title="年龄"  field="age"  query="true" extendParams="editor:'numberbox'" width="80"></t:dgCol>
+	    <!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，年龄改为区间查询-->
+	    <t:dgCol title="年龄"  field="age"  query="true" extendParams="editor:'numberbox'" width="80" queryMode="group"></t:dgCol>
+	    <!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，年龄改为区间查询-->
 	    <t:dgCol title="生日"  field="birthday" formatter="yyyy-MM-dd"  extendParams="editor:'datebox'" width="150"></t:dgCol>
 	    <t:dgCol title="性别"  field="sex"  query="true" dictionary="sex" extendParams="editor:'combobox'" width="100"></t:dgCol>
 	    <t:dgCol title="工资"  field="salary"  queryMode="group" extendParams="editor:'numberbox'" width="100"></t:dgCol>
 	    <t:dgCol title="入职状态"  field="status" query="true" dictionary="sf_yn" extendParams="editor:'combobox'" width="100"></t:dgCol>
 	    <t:dgCol title="个人介绍"  field="content"  hidden="true"   queryMode="group"  width="500" extendParams="editor:'text'" ></t:dgCol>
 	  
-	   		<t:dgCol title="操作" field="opt" width="100"></t:dgCol>
-			<t:dgFunOpt funname="deleteDialog(id)" title="common.delete" urlclass="ace_button"  urlfont="fa-trash-o"></t:dgFunOpt>
-			<%-- <t:dgFunOpt funname="showEdit(id,name)" title="common.edit" urlclass="ace_button"  urlfont="fa-trash-o"></t:dgFunOpt> --%>
+   		<t:dgCol title="操作" field="opt" width="100"></t:dgCol>
+		<t:dgFunOpt funname="deleteDialog(id)" title="common.delete" urlclass="ace_button"  urlfont="fa-trash-o"></t:dgFunOpt>
+		<%-- <t:dgFunOpt funname="showEdit(id,name)" title="common.edit" urlclass="ace_button"  urlfont="fa-trash-o"></t:dgFunOpt> --%>
 			
 	  </t:datagrid>
   </div>
@@ -43,7 +45,7 @@
 	        }
 	    });
 	}
-
+    //上下特殊布局 优化表单数据填充逻辑--------------------	
  	function fillData(rowData){ 
  		//清空表单	
  		$("#ff").form('clear');
@@ -60,7 +62,6 @@
 		}		
 		$("#birthday").datebox("setValue", birthday); 
  	}
-
  	$(function(){
  	
  		 $("#jeecgrowList").datagrid({
@@ -115,13 +116,14 @@
 	}
  
  </script>
+ <!--新提示方法改进   美化布局-------------------  -->  
  <style type="text/css">
  	.value{
  		padding: 10px auto 10px 10px;
  	}
  </style>
  	</div>
-    <div title="新增数据" style="height:350px;" name="editPanel" id="editPanel" fit="true" class="easyui-panel"> 
+    <div title="新增数据" style="height:350px;background-color:#fff;overflow-y:auto;"  name="editPanel" id="editPanel"> 
     	<div class="datagrid-toolbar" style="float:left;width: 100%;">
 		    <a href="#" class="easyui-linkbutton l-btn l-btn-plain" plain="true" icon="icon-add" onclick="clearData()">
 			  	 清空表单
@@ -135,7 +137,7 @@
     	</div>
 		<t:formvalid formid="ff" dialog="true" layout="table" tiptype="4" action="jeecgListDemoController.do?saveRows">
 			<input name="demos[0].id" id="id" type="hidden" value="" /> 
-			<table style="width: 600px;" cellpadding="0" cellspacing="1" class="formtable">
+			<table style="width: 600px;margin-bottom:75px" cellpadding="0" cellspacing="1" class="formtable">
 					<tbody><tr>
 						<td align="right">
 							<label class="Validform_label">

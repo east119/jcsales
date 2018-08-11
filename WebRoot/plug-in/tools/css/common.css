@@ -57,3 +57,19 @@ a.ace_button:hover{ color:#DDDDDD !important; text-decoration:none;}
   display: inline-block;
  }
  /*	//update-end--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，*/
+
+ /*update-begin--Author:zhoujf  Date:20180713 for：TASK #2955 【样式功能】抽到开源里面，写个文档，供大家使用-------------------- */
+.groupinput{
+	float:left;
+}
+.groupspan{
+	float:left;
+	display:table-cell;
+	background-color:#ddd;
+	white-space:nowrap;
+	padding:4px 10px;
+	border: 1px solid #54A5D5;
+	height: 25px;
+	margin-left: -2px;
+}
+/*update-end--Author:zhoujf  Date:20180713 for：TASK #2955 【样式功能】抽到开源里面，写个文档，供大家使用-------------------- */

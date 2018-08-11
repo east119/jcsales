@@ -4,8 +4,13 @@
 <html>
 <head>
 <title>授权组授权</title>
-<t:base type="jquery,easyui,tools,DatePicker,ztree"></t:base>
+<t:base type="jquery,easyui,tools,DatePicker"></t:base>
+<!-- update-begin-author:LiShaoQing date:20180621 for: 左侧图标样式太大问题，右侧ztree复选框不出现问题-->
+<link rel="stylesheet" href="plug-in/ztree/css/zTreeStyle.css" type="text/css">
+<script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="plug-in/ztree/js/ztreeCreator.js"></script>
+<script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.excheck-3.5.min.js"></script>
+<!-- update-end-author:LiShaoQing date:20180621 for: 左侧图标样式太大问题，右侧ztree复选框不出现问题-->
 <script type="text/javascript">
 	var departId = "";
     var setting = {
@@ -143,8 +148,8 @@
                     fit="true" fitColumns="true" idField="id" queryMode="group" sortName="createDate" sortOrder="desc">
             <t:dgCol title="common.id" field="id" hidden="true"></t:dgCol>
             <t:dgCol title="common.username" sortable="false" field="userName" query="true"></t:dgCol>
-            <t:dgCol title="common.department" hidden="true" sortable="false" field="userOrgList.tsDepart.departname" query="false"></t:dgCol>
             <t:dgCol title="common.real.name" field="realName" query="false"></t:dgCol>
+            <t:dgCol title="common.department" sortable="false" field="orgNames" query="false"></t:dgCol>
             <t:dgCol title="common.role" field="userKey" ></t:dgCol>
             <t:dgCol title="common.createby" field="createBy" hidden="true"></t:dgCol>
             <t:dgCol title="common.createtime" field="createDate" formatter="yyyy-MM-dd" hidden="true"></t:dgCol>

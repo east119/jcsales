@@ -13,7 +13,6 @@
 		<!-- basic styles -->
 		<link href="plug-in/ace/assets/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="plug-in/hplus/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
-		<!-- update-end--Author: dangzhenghui Date:20160812 for: TASK #2088 【图标问题】首页风格图标统一-->
 		<link rel="stylesheet" href="plug-in/ace/assets/css/font-awesome.min.css" />
 
 		<!--[if IE 7]>
@@ -41,13 +40,19 @@
 		<!-- ace settings handler -->
 
 		<script src="plug-in/ace/assets/js/ace-extra.min.js"></script>
-
+		<t:base type="tools,jquery"></t:base>
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
 		<!--[if lt IE 9]>
 		<script src="plug-in/ace/assets/js/html5shiv.js"></script>
 		<script src="plug-in/ace/assets/js/respond.min.js"></script>
 		<![endif]-->
+		<style type="text/css">
+		.dropdown-menu li a:hover, .dropdown-menu li a:focus, .dropdown-menu li a:active, .dropdown-menu li.active a, .dropdown-menu li.active a:hover, .dropdown-menu .dropdown-submenu:hover>a, .nav-tabs .dropdown-menu li>a:focus {
+		    background: rgba(255,255,255,.15);
+		    color: #428bca;
+		}
+		</style>
 	</head>
 
 	<body>
@@ -313,7 +318,9 @@
 						</div>
 					</div><!-- #sidebar-shortcuts -->
 
-					<ul class="nav nav-list">
+					<!-- update-begin-author:taoYan date:20180807 for: TASK #3052 【bug】论坛反馈 -- 3.7.8页面布局受到影响-->
+					<ul class="nav nav-list" id="aceMainPageMenu" style="overflow-y:auto">
+					<!-- update-end-author:taoYan date:20180807 for: TASK #3052 【bug】论坛反馈 -- 3.7.8页面布局受到影响-->
 						<li class="active">
 							<a  href="javascript:addTabs({id:'home',title:'首页',close: false,url: 'loginController.do?hplushome'});">
 								<i class="fa fa-tachometer"></i>
@@ -472,7 +479,6 @@
 		  <script src="plug-in/ace/assets/js/excanvas.min.js"></script>
 		<![endif]-->
 		<!-- ace scripts -->
-		<t:base type="tools"></t:base>
 		<script src="plug-in/jquery-plugs/storage/jquery.storageapi.min.js"></script>
 		<script src="plug-in/ace/assets/js/ace-elements.min.js"></script>
 		<script src="plug-in/ace/assets/js/ace.min.js"></script>
@@ -504,6 +510,9 @@
 
 		<script type="text/javascript">
 			jQuery(function($) {
+
+				$("#aceMainPageMenu").css("max-height",($(window).height()-140)+"px");
+
 				$('.easy-pie-chart.percentage').each(function(){
 					var $box = $(this).closest('.infobox');
 					var barColor = $(this).data('color') || (!$box.hasClass('infobox-dark') ? $box.css('color') : 'rgba(255,255,255,0.95)');
@@ -670,6 +679,11 @@
 
 
 	$(document).ready(function(){
+		loadNotice();
+		loadSms();
+	});
+	
+	function loadNotice(){
 		//加载公告
 		var url = "noticeController.do?getNoticeList";
 		jQuery.ajax({
@@ -713,8 +727,9 @@
     			}
     		}
     	});
-		
-		
+	}
+	
+	function loadSms(){
 		//加载消息
 		var url = "tSSmsController.do?getMessageList";
 		$.ajax({
@@ -761,8 +776,7 @@
     			}
     		}
     	});
-		
-	});
+	}
 
     function goAllNotice(){
     	var addurl = "noticeController.do?noticeList";
@@ -772,28 +786,18 @@
     function goNotice(id){
   		var addurl = "noticeController.do?goNotice&id="+id;
 		createdetailwindow("通知公告详情", addurl, 750, 600);
+		loadNotice();
     }
     
     function goAllMessage(){
-    	var addurl = "tSSmsController.do?getSysInfos";
+    	var addurl = "tSSmsController.do?goMySmsList";
   		createdetailwindow("消息", addurl, 800, 400);
     }
     
     function goMessage(id){
-    	var title = $("#"+id+"_title").val();
-    	var content = $("#"+id+"_content").val();
-    	$("#msgId").val(id);
-    	$("#msgTitle").html(title);
-    	$("#msgContent").html(content);
-    	var status = $("#"+id+"_status").val();
-    	if(status==1){
-    		$("#msgStatus").html("未读");
-    	}else{
-    		$("#msgStatus").html("已读");
-    	}
-
-    	$('.theme-popover-mask').fadeIn(100);
-    	$('.theme-popover').slideDown(200);
+    	var addurl = "tSSmsController.do?goSmsDetail&id="+id;
+		createdetailwindow("通知详情", addurl, 750, 600);
+		loadSms();
     }
     
     function readMessage(){
@@ -825,6 +829,15 @@
     }
 
 		</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?098e6e84ab585bf0c2e6853604192b8b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 </body>
 </html>
 

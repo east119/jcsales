@@ -18,7 +18,7 @@
 			 	 return false;
 		    });  
 			$('#delBtn_${subsG['${key}'].entityName}').bind('click', function(){   
-		       $("#add_${subsG['${key}'].entityName?uncap_first}_table").find("input:checked").parent().parent().remove();   
+		       $("#add_${subsG['${key}'].entityName?uncap_first}_table").find("input[name$='ck']:checked").parent().parent().remove();   
 		        resetTrNum('add_${subsG['${key}'].entityName?uncap_first}_table');
 		        return false;
 		    });
@@ -63,64 +63,64 @@
         
 	<tbody id="add_${subsG['${key}'].entityName?uncap_first}_table">	
 	<c:if test="${"$"}{fn:length(${subsG['${key}'].entityName?uncap_first}List)  <= 0 }">
-			<tr>
-				<td><input style="width:20px;" type="checkbox" name="ck"/></td>
-				<#list subColumnsMap['${key}'] as po>
-				<#if po.isShow=="N">
-					<input name="${subsG['${key}'].entityName?uncap_first}List[0].${po.fieldName}" type="hidden"/>
-				</#if>
-				</#list>
-				<th scope="row"><div name="xh"></div></th>
-				<#assign index = 0 >
-				<#list subColumnsMap['${key}'] as po>
-				<#if po.isShow=="Y">
-				  <#assign check = 0 >
-				  <#list subsG['${key}'].foreignKeys as key>
-				  <#if subFieldMeta[po.fieldName]==key?uncap_first>
-				  <#assign check = 1 >
-				  <#break>
-				  </#if>
-				  </#list>
-				 
-				   <#if check==0>
-			  		<td>
-					<@formControl po = po namepre="${subsG['${key}'].entityName?uncap_first}List[0]."/>
-					</td>
-				  </#if>
-				  </#if>
-	            </#list>
-   			</tr>
+	<tr>
+		<td><input style="width:20px;" type="checkbox" name="ck"/></td>
+			<#list subColumnsMap['${key}'] as po>
+			<#if po.isShow=="N">
+			<input name="${subsG['${key}'].entityName?uncap_first}List[0].${po.fieldName}" type="hidden"/>
+			</#if>
+			</#list>
+		<th scope="row"><div name="xh"></div></th>
+		<#assign index = 0 >
+		<#list subColumnsMap['${key}'] as po>
+		<#if po.isShow=="Y">
+		  <#assign check = 0 >
+		  <#list subsG['${key}'].foreignKeys as key>
+		  <#if subFieldMeta[po.fieldName]==key?uncap_first>
+		  <#assign check = 1 >
+		  <#break>
+		  </#if>
+		  </#list>
+		 
+	   <#if check==0>
+		<td>
+		<@formControl po = po namepre="${subsG['${key}'].entityName?uncap_first}List[0]." style="onetomany"/>
+		</td>
+		</#if>
+		</#if>
+	    </#list>
+   	</tr>
 	</c:if>
 	<c:if test="${"$"}{fn:length(${subsG['${key}'].entityName?uncap_first}List)  > 0 }">
-		<c:forEach items="${"$"}{${subsG['${key}'].entityName?uncap_first}List}" var="poVal" varStatus="stuts">
-			<tr>
-				<td><input style="width:20px;" type="checkbox" name="ck"/></td>
-				<#list subColumnsMap['${key}'] as po>
-				<#if po.isShow=="N">
-					<input name="${subsG['${key}'].entityName?uncap_first}List[${'$'}{stuts.index }].${po.fieldName}" type="hidden" value="${'$'}{poVal.${po.fieldName} }"/>
-				</#if>
-				</#list>
-				<th scope="row"><div name="xh">${'$'}{stuts.index+1 }</div></th>
+	<c:forEach items="${"$"}{${subsG['${key}'].entityName?uncap_first}List}" var="poVal" varStatus="stuts">
+	<tr>
+		<td><input style="width:20px;" type="checkbox" name="ck"/></td>
+		<#list subColumnsMap['${key}'] as po>
+		<#if po.isShow=="N">
+			<input name="${subsG['${key}'].entityName?uncap_first}List[${'$'}{stuts.index }].${po.fieldName}" type="hidden" value="${'$'}{poVal.${po.fieldName} }"/>
+		</#if>
+		</#list>
+		<th scope="row"><div name="xh">${'$'}{stuts.index+1 }</div></th>
 				
-				<#assign index = 0 >
-				<#list subColumnsMap['${key}'] as po>
-				<#if po.isShow=="Y">
-				  <#assign check = 0 >
-				  <#list subsG['${key}'].foreignKeys as key>
-				  <#if subFieldMeta[po.fieldName]==key?uncap_first>
-				  <#assign check = 1 >
-				  <#break>
-				  </#if>
-				  </#list>
-				  <#if check==0>
-				   <td>
-					<@formControl po = po namepre="${subsG['${key}'].entityName?uncap_first}List[${'$'}{stuts.index}]." valuepre = "poVal."/>
-				   </td>
-				  </#if>
-				  </#if>
-   			 	</#list>
-   			</tr>
-		</c:forEach>
+		<#assign index = 0 >
+		<#list subColumnsMap['${key}'] as po>
+		<#if po.isShow=="Y">
+		  <#assign check = 0 >
+		  <#list subsG['${key}'].foreignKeys as key>
+		  <#if subFieldMeta[po.fieldName]==key?uncap_first>
+		  <#assign check = 1 >
+		  <#break>
+		  </#if>
+		  </#list>
+		  <#if check==0>
+		  <td>
+			<@formControl po = po namepre="${subsG['${key}'].entityName?uncap_first}List[${'$'}{stuts.index}]." valuepre = "poVal." style="onetomany"/>
+		  </td>
+		  </#if>
+		  </#if>
+	 	</#list>
+	</tr>
+	</c:forEach>
 	</c:if>	
 	</tbody>
 </table>

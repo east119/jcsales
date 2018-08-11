@@ -109,9 +109,7 @@ public class CgFormBuildController extends BaseController {
 				request.setAttribute("olstylecode", mp.get("form_template_mobile").toString().trim());
 			}
 		}
-
 		ftlForm(tableName,"",request,response);
-
 		
 	}
 
@@ -142,7 +140,6 @@ public class CgFormBuildController extends BaseController {
 		}
 	}
 
-
 	/**
 	 * 设置页面字典类型的默认值
 	 * 类型： select、checkbox、radio
@@ -163,12 +160,12 @@ public class CgFormBuildController extends BaseController {
 				     }
 				     dfVal = dfVal.replace("value=","").replace("\"","").trim();
 					 dataForm.put(column.get("field_name").toString(),dfVal);
-					 logger.debug("--------------online添加页面字典类型默认值初始化----------field_name:{} ,dfVal:{} ,show_type :{}", column.get("field_name").toString(),dfVal,show_type.toString());
+					 logger.debug("--------------online添加页面字典类型默认值初始化----------field_name:{} ,dfVal:{} ,show_type :{}",
+							 					new Object[] { column.get("field_name").toString(), dfVal, show_type.toString() });
 				}
 			}
 		}
 	}
-
 	
 	
 	/**
@@ -180,6 +177,12 @@ public class CgFormBuildController extends BaseController {
 		try {
 			long start = System.currentTimeMillis();
 //			String tableName =request.getParameter("tableName");
+
+			String lang = (String)request.getSession().getAttribute("lang");
+			if(oConvertUtils.isEmpty(lang)){
+				lang = "zh-cn";
+			}
+
 	        Map<String, Object> data = new HashMap<String, Object>();
 	        String id = request.getParameter("id");
 
@@ -208,7 +211,6 @@ public class CgFormBuildController extends BaseController {
 //		        	id = null;
 //		        	dataForm = new HashMap<String, Object>();
 //		        }
-
 //	        }
 
 			TemplateUtil.TemplateType templateType=TemplateUtil.TemplateType.LIST;
@@ -259,10 +261,8 @@ public class CgFormBuildController extends BaseController {
 	        //获取主表或单表表单数据
 
 			if(StringUtils.isBlank(id)){
-
 				//Online添加页面，select\radio\checkbox 支持默认值设置
 				initAddDictTagDefaultVal((List<Map<String,Object>>)data.get("columns"),dataForm);
-
 				
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				logger.info("============================填值规则开始时间:"+sdf.format(new Date())+"==============================");
@@ -281,10 +281,8 @@ public class CgFormBuildController extends BaseController {
 						CgSubTableVO subTableVO=(CgSubTableVO) field.get(subTable);
 						subTableData=new ArrayList<Map<String,Object>>();
 						subDataForm=new HashMap<String, Object>();
-
 						//Online添加页面，select\radio\checkbox控件， 支持默认值设置
 						initAddDictTagDefaultVal((List<Map<String,Object>>)subTableVO.getFieldList(),subDataForm);
-
 						putFormData(subTableVO.getFieldList(),subDataForm);
 						putFormData(subTableVO.getHiddenFieldList(),subDataForm);
 						subTableData.add(subDataForm);
@@ -326,12 +324,11 @@ public class CgFormBuildController extends BaseController {
 			    	}
 		    	}
 	    	}
+	    	data.put("lang", lang);//国际化
 	    	//装载单表/(主表和附表)表单数据
 	    	data.put("data", tableData);
 	    	data.put("id", id);
-
 	    	data.put("head", head);
-
 	    	
 	    	//页面样式js引用
 	    	data.put(CgAutoListConstant.CONFIG_IFRAME, getHtmlHead(request));
@@ -340,8 +337,7 @@ public class CgFormBuildController extends BaseController {
 	    	pushImages(data, id);
 	    	
 	    	//增加basePath
-	    	//String basePath = request.getContextPath();
-	    	String basePath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+	    	String basePath = request.getScheme()+"://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 	    	data.put(CgAutoListConstant.BASEPATH, basePath);
 
 	    	data.put("brower_type", ContextHolderUtils.getSession().getAttribute("brower_type"));
@@ -394,9 +390,7 @@ public class CgFormBuildController extends BaseController {
 		CgformTemplateEntity entity=cgformTemplateService.findByCode(templateName);
 		if(entity!=null){
 			FreemarkerHelper viewEngine = new FreemarkerHelper();
-
 			dataMap.put("DictData", ApplicationContextUtil.getContext().getBean("dictDataTag"));
-
 			content = viewEngine.parseTemplate(TemplateUtil.getTempletPath(entity,0, templateType), dataMap);
 		}
 		return content;
@@ -412,11 +406,9 @@ public class CgFormBuildController extends BaseController {
 	private String getTableTemplate(String templateName,HttpServletRequest request,Map data){
 		StringWriter stringWriter = new StringWriter();
 		BufferedWriter writer = new BufferedWriter(stringWriter);
-
-		String ftlVersion =request.getParameter("ftlVersion");
-//		String ftlVersion = oConvertUtils.getString(data.get("version"));
-
-		Template template = templetContext.getTemplate(templateName, ftlVersion);
+		//如果URL请求有ftlVersion参数，表示用户指定word模板渲染表单
+		String wordFtlVersion =request.getParameter("ftlVersion");
+		Template template = templetContext.getTemplate(templateName, wordFtlVersion);
 		try {
 
 			template.setDateTimeFormat("yyyy-MM-dd HH:mm:ss");  
@@ -440,9 +432,9 @@ public class CgFormBuildController extends BaseController {
 		}
 		StringBuilder sb= new StringBuilder("");
 		SysThemesEnum sysThemesEnum = SysThemesUtil.getSysTheme(request);
-		//String basePath = request.getContextPath();
-		String basePath = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+		String basePath = request.getScheme()+"://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery/jquery-1.8.3.js\"></script>");
+		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/dataformat.js\"></script>");
 		sb.append("<link rel=\"stylesheet\" type=\"text/css\" href=\""+basePath+"/plug-in/accordion/css/accordion.css\">");
 		sb.append(SysThemesUtil.getEasyUiTheme(sysThemesEnum,basePath));
@@ -462,7 +454,7 @@ public class CgFormBuildController extends BaseController {
 
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/layer/layer.js\"></script>");
 
-		sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
+		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/curdtools.js\"></script>");
 		sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/easyuiextend.js\"></script>");
 		sb.append(SysThemesUtil.getEasyUiMainTheme(sysThemesEnum,basePath));
 		sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/uploadify/css/uploadify.css\" type=\"text/css\"></link>");

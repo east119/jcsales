@@ -12,7 +12,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.exception.BusinessException;
@@ -34,6 +33,8 @@ import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.web.cgform.entity.fillrule.TSFillRuleEntity;
 import org.jeecgframework.web.cgform.service.fillrule.TSFillRuleServiceI;
 import org.jeecgframework.web.system.service.SystemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -63,10 +64,7 @@ import com.alibaba.fastjson.JSONArray;
 @Controller
 @RequestMapping("/tSFillRuleController")
 public class TSFillRuleController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(TSFillRuleController.class);
+	private static final Logger logger = LoggerFactory.getLogger(TSFillRuleController.class);
 
 	@Autowired
 	private TSFillRuleServiceI tSFillRuleService;
@@ -383,7 +381,7 @@ public class TSFillRuleController extends BaseController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseMessage<?> delete(@PathVariable("id") String id) {
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");

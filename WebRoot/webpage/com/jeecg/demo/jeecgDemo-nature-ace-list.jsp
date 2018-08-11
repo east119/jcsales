@@ -5,32 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>ace列表</title>
-<script type="text/javascript" src="plug-in/mutiLang/zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/jquery/jquery-1.8.3.js"></script>
-<script type="text/javascript" src="plug-in/jquery/jquery.cookie.js" ></script>
-<script type="text/javascript" src="plug-in/jquery-plugs/storage/jquery.storageapi.min.js" >
-</script><script type="text/javascript" src="plug-in/tools/dataformat.js"></script>
-<link id="easyuiTheme" rel="stylesheet" href="plug-in/easyui/themes/metrole/easyui.css" type="text/css"></link>
-<link id="easyuiTheme" rel="stylesheet" href="plug-in/easyui/themes/metrole/main.css" type="text/css"></link>
-<link id="easyuiTheme" rel="stylesheet" href="plug-in/easyui/themes/metrole/icon.css" type="text/css"></link>
-<link rel="stylesheet" type="text/css" href="plug-in/accordion/css/accordion.css">
-<link rel="stylesheet" type="text/css" href="plug-in/accordion/css/icons.css">
-<script type="text/javascript" src="plug-in/easyui/jquery.easyui.min.1.3.2.js"></script>
-<script type="text/javascript" src="plug-in/easyui/locale/zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/tools/syUtil.js"></script>
-<script type="text/javascript" src="plug-in/easyui/extends/datagrid-scrollview.js"></script>
-<script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>
-<link rel="stylesheet" href="plug-in/tools/css/metrole/common.css" type="text/css"></link>
-<link rel="stylesheet" href="plug-in/ace/css/font-awesome.css" type="text/css"></link>
-<script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js?skin=metrole"></script>
-<script type="text/javascript" src="plug-in/ace/js/bootstrap-tab.js"></script>
-<script type="text/javascript" src="plug-in/layer/layer.js"></script>
-<script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/tools/easyuiextend.js"></script>
-<script type="text/javascript" src="plug-in/jquery-plugs/hftable/jquery-hftable.js"></script>
-<script type="text/javascript" src="plug-in/tools/json2.js" ></script>
-<link rel="stylesheet" href="plug-in/jquery/jquery-autocomplete/jquery.autocomplete.css" type="text/css"></link>
-<script type="text/javascript" src="plug-in/jquery/jquery-autocomplete/jquery.autocomplete.min.js"></script>
+<t:base type="jquery,easyui,DatePicker,autocomplete,layer,tools"></t:base>
 </head>
 <body>
 <script>
@@ -56,7 +31,7 @@ function initDatagrid(){
  	$('#aceEasyuiList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
-		title: 'aceDEMO列表页面',
+		title: 'Ace DEMO列表页面',
 		loadMsg: '数据加载中...',
 		fit:true,
 		fitColumns:true,
@@ -65,8 +40,8 @@ function initDatagrid(){
 		pageSize: 10,
 		pagination:true,
 		singleSelect:false,
-	/* 	sortName: 'birthday,name,age,salary',
-        sortOrder: 'asc', */
+	 	sortName: 'createDate',
+        sortOrder: 'desc',
 		pageList:[10,30,50,100],
 		rownumbers:true,
 		showFooter:true,

@@ -69,7 +69,7 @@ public class ConfigServiceImpl implements ConfigServiceI {
 		configs.put(CgAutoListConstant.CONFIG_ISPAGINATION,tableEntity.getIsPagination());
 		configs.put(CgAutoListConstant.CONFIG_ISTREE,tableEntity.getIsTree());
 		configs.put(CgAutoListConstant.CONFIG_QUERYMODE,tableEntity.getQuerymode());
-		log.info("-- columns -- size--"+columns.size());
+		log.debug("-- columns -- size--"+columns.size());
 		configs.put(CgAutoListConstant.FILEDS,columns);
 		configs.put(CgAutoListConstant.CONFIG_VERSION, tableEntity.getJformVersion());
 		configs.put(CgAutoListConstant.TREE_PARENTID_FIELDNAME, tableEntity.getTreeParentIdFieldName());

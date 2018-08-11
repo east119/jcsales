@@ -14,7 +14,7 @@
 	 	 return false;
     });  
 	$('#delJformOrderCustomerBtn').bind('click', function(){   
-      	$("#add_jformOrderCustomer_table").find("input:checked").parent().parent().remove();   
+      	$("#add_jformOrderCustomer_table").find("input[name$='ck']:checked").parent().parent().remove();   
         resetTrNum('add_jformOrderCustomer_table'); 
         return false;
     }); 

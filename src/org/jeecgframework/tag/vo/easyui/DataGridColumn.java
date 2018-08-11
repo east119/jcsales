@@ -55,6 +55,8 @@ public class DataGridColumn {
 	private String filterType = "text";//过滤操作的类型
 	private boolean optsMenu = false;//操作列风格转变
 
+	private boolean isAjaxDict = false;
+
 	public boolean isNewColumn() {
 		return newColumn;
 	}
@@ -70,7 +72,6 @@ public class DataGridColumn {
 	public void setShowMode(String showMode) {
 		this.showMode = showMode;
 	}
-
 
 	public String getEditor() {
 		return editor;
@@ -345,6 +346,14 @@ public class DataGridColumn {
 	}
 	public void setOptsMenu(boolean optsMenu) {
 		this.optsMenu = optsMenu;
+	}
+	
+	public boolean getIsAjaxDict() {
+		return isAjaxDict;
+	}
+
+	public void setAjaxDict(boolean isAjaxDict) {
+		this.isAjaxDict = isAjaxDict;
 	}
 
 	@Override

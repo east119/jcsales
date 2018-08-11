@@ -186,6 +186,31 @@
 								/>
 							</div>
 						</li>
+						<#-- update--begin--author:taoyan Date:20170707 for:TASK #2918 【bug】online样式，通用移动模板2一对多 -->
+						<#else>
+						<li id="${sub}[#index#].${subTableField.field_name}" class="clearfix " typ="name" reqd="1">
+						<label class="desc">${subTableField.content}:<#if subTableField.is_null != 'Y'><span class="req">*</span></#if></label>
+						<div class="content">
+							<input type="text" maxlength="256" class="ui-input-text xl input fld" 
+								name="${sub}[#index#].${subTableField.field_name}" 
+								id="${sub}[#index#].${subTableField.field_name}" 
+								<#if subTableField.field_must_input?if_exists?html != ''><#if subTableField.field_must_input == 'Y' || subTableField.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif subTableField.is_null != "Y">ignore="checked"<#else>ignore="ignore"</#if>
+								${subTableField.extend_json?if_exists}
+								<#if subTableField.field_valid_type?if_exists?html != ''>
+									datatype="${subTableField.field_valid_type?if_exists?html}" 
+									<#else>
+										<#if subTableField.type == 'int'>
+											datatype="n"  <#if subTableField.is_null == 'Y'>ignore="ignore" </#if>
+											<#elseif subTableField.type=='double'>
+											datatype="/^(-?\d+)(\.\d+)?$/" <#if subTableField.is_null == 'Y'>ignore="ignore" </#if>
+											<#else>
+											<#if subTableField.is_null != 'Y'>datatype="*"</#if>
+										</#if>
+								</#if>
+							/>
+						  </div>
+					  </li>
+					  <#-- update--end--author:taoyan Date:20170707 for:TASK #2918 【bug】online样式，通用移动模板2一对多 -->
 				</#if>
 			</#list>
 	</div>

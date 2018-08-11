@@ -47,7 +47,7 @@ public class JeecgDemoEntity implements java.io.Serializable {
 	@Excel(name="电话",width=12)
 	private java.lang.String phone;
 	/**工资*/
-	@Excel(name="工资")
+	@Excel(name="工资",type=4)
 	private Double salary;
 	/**性别*/
 	@Excel(name="性别",dicCode="sex")
@@ -75,8 +75,6 @@ public class JeecgDemoEntity implements java.io.Serializable {
 	
 	private java.lang.String touxiang;
 	private java.lang.String fujian;
-	
-	
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  id
@@ -389,6 +387,4 @@ public class JeecgDemoEntity implements java.io.Serializable {
 	public void setFujian(java.lang.String fujian) {
 		this.fujian = fujian;
 	}
-	
-	
 }

@@ -17,6 +17,11 @@ import org.jeecgframework.core.util.oConvertUtils;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.io.Serializable;
+<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+import org.jeecgframework.core.util.ApplicationContextUtil;
+import org.jeecgframework.core.util.MyClassLoader;
+import org.jeecgframework.web.cgform.enhance.CgformEnhanceJavaInter;
+<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 
 <#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 import java.util.Map;
@@ -36,15 +41,22 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	<#-- update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	
-	
- 	public <T> void delete(T entity) {
+	<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+ 	public void delete(${entityName}Entity entity) throws Exception{
  		super.delete(entity);
- 		//执行删除操作配置的sql增强
-		this.doDelSql((${entityName}Entity)entity);
+ 		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 		<#if (buttonSqlMap?? && buttonSqlMap['delete']?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap['delete']?? && buttonJavaMap?size>0)>
+		<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 		//执行删除操作增强业务
+		this.doDelBus((${entityName}Entity)entity);
+		</#if>
  	}
+	<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 	
+	<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 	public void addMain(${entityName}Entity ${entityName?uncap_first},
-	        <#list subTab as sub>List<${sub.entityName}Entity> ${sub.entityName?uncap_first}List<#if sub_has_next>,</#if></#list>){
+	        <#list subTab as sub>List<${sub.entityName}Entity> ${sub.entityName?uncap_first}List<#if sub_has_next>,</#if></#list>)  throws Exception{
+	<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 			//保存主信息
 			this.save(${entityName?uncap_first});
 		
@@ -62,13 +74,21 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 				this.save(${sub.entityName?uncap_first});
 			}
 			</#list>
-			//执行新增操作配置的sql增强
- 			this.doAddSql(${entityName?uncap_first});
+			<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+			<#if (buttonSqlMap?? && buttonSqlMap['add']?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap['add']?? && buttonJavaMap?size>0)>
+			<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+			<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+			//执行新增操作增强业务
+ 			this.doAddBus(${entityName?uncap_first});
+ 			<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+ 			</#if>
 	}
 
 	
+	<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 	public void updateMain(${entityName}Entity ${entityName?uncap_first},
-	        <#list subTab as sub>List<${sub.entityName}Entity> ${sub.entityName?uncap_first}List<#if sub_has_next>,</#if></#list>) {
+	        <#list subTab as sub>List<${sub.entityName}Entity> ${sub.entityName?uncap_first}List<#if sub_has_next>,</#if></#list>)  throws Exception{
+	<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 		//保存主表信息
 		<#-- update--begin--author:zhangjiaqiang date:20170601 for:service当中增加进行获取数据库当中的数据信息 -->
 		if(StringUtil.isNotEmpty(${entityName?uncap_first}.get${jeecg_table_id?cap_first}())){
@@ -139,12 +159,20 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 			}
 		}
 		</#list>
-		//执行更新操作配置的sql增强
- 		this.doUpdateSql(${entityName?uncap_first});
+		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+		<#if (buttonSqlMap?? && buttonSqlMap['update']?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap['update']?? && buttonJavaMap?size>0)>
+		<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+		<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+		//执行更新操作增强业务
+ 		this.doUpdateBus(${entityName?uncap_first});
+ 		<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+ 		</#if>
 	}
 
 	
-	public void delMain(${entityName}Entity ${entityName?uncap_first}) {
+	<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+	public void delMain(${entityName}Entity ${entityName?uncap_first})  throws Exception{
+	<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 		//删除主表信息
 		this.delete(${entityName?uncap_first});
 		//===================================================================================
@@ -165,73 +193,132 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	    List<${sub.entityName}Entity> ${sub.entityName?uncap_first}OldList = this.findHql(hql${sub_index},<#list sub.foreignKeys as key><#if key?lower_case?index_of("${jeecg_table_id}")!=-1>${jeecg_table_id}${sub_index}<#else>${key?uncap_first}${sub_index}</#if><#if key_has_next>,</#if></#list>);
 		this.deleteAllEntitie(${sub.entityName?uncap_first}OldList);
 		</#list>
+		<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+		<#if (buttonSqlMap?? && buttonSqlMap['delete']?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap['delete']?? && buttonJavaMap?size>0)>
+ 		<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 		<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+ 		////执行删除操作增强业务
+		this.doDelBus((${entityName}Entity)${entityName?uncap_first});
+		<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+		</#if>
 	}
 	
+	<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
 	<#list buttons as btn>
 	<#if btn.buttonStyle =='button' && btn.optType=='action'>
  	/**
-	 * 自定义按钮-sql增强-${btn.buttonName}
+	 * 自定义按钮-[${btn.buttonName}]业务处理
 	 * @param id
 	 * @return
 	 */
-	 public boolean do${btn.buttonCode?cap_first}Sql(${entityName}Entity t){
-	 	<#list buttonSqlMap[btn.buttonCode] as sql>
+	 public void do${btn.buttonCode?cap_first}Bus(${entityName}Entity t) throws Exception{
+	 	//-----------------sql增强 start----------------------------
+	 	<#list buttonSqlMap[btn.buttonCode]! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	this.executeSqlEnhance(sqlEnhance_${sql_index+1},t);
 	 	<#-- update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	</#list>
-	 	return true;
+	 	//-----------------sql增强 end------------------------------
+	 	
+	 	//-----------------java增强 start---------------------------
+	 	<#if buttonJavaMap??&&buttonJavaMap[btn.buttonCode]?? >
+	 		Map<String,Object> data = populationMap(t);
+	 		executeJavaExtend("${buttonJavaMap[btn.buttonCode].cgJavaType}","${buttonJavaMap[btn.buttonCode].cgJavaValue}",data);
+	 	</#if>
+	 	//-----------------java增强 end-----------------------------
 	 }
  	</#if>
  	</#list> 
  	
+ 	<#if (buttonSqlMap?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap?size>0)>
+ 	<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 	<#if buttonSqlMap['add']??||buttonJavaMap['add']??>
+ 	<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
  	/**
-	 * 默认按钮-sql增强-新增操作
-	 * @param id
+	 * 新增操作增强业务
+	 * @param t
 	 * @return
 	 */
- 	public boolean doAddSql(${entityName}Entity t){
- 		<#list buttonSqlMap['add'] as sql>
+	private void doAddBus(${entityName}Entity t) throws Exception{
+		//-----------------sql增强 start----------------------------
+ 		<#list buttonSqlMap['add']! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	this.executeSqlEnhance(sqlEnhance_${sql_index+1},t);
 	 	<#-- update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	</#list>
-	 	return true;
+	 	//-----------------sql增强 end------------------------------
+	 	
+	 	//-----------------java增强 start---------------------------
+	 	<#if buttonJavaMap??&&buttonJavaMap['add']?? >
+	 		Map<String,Object> data = populationMap(t);
+	 		executeJavaExtend("${buttonJavaMap['add'].cgJavaType}","${buttonJavaMap['add'].cgJavaValue}",data);
+	 	</#if>
+	 	//-----------------java增强 end-----------------------------
  	}
+ 	<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 	</#if>
+ 	
+ 	<#if buttonSqlMap['update']??||buttonJavaMap['update']??>
+ 	<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
  	/**
-	 * 默认按钮-sql增强-更新操作
-	 * @param id
+	 * 更新操作增强业务
+	 * @param t
 	 * @return
 	 */
- 	public boolean doUpdateSql(${entityName}Entity t){
- 		<#list buttonSqlMap['update'] as sql>
+	private void doUpdateBus(${entityName}Entity t) throws Exception{
+		//-----------------sql增强 start----------------------------
+ 		<#list buttonSqlMap['update']! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	this.executeSqlEnhance(sqlEnhance_${sql_index+1},t);
 	 	<#-- update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	</#list>
-	 	return true;
+	 	//-----------------sql增强 end------------------------------
+	 	
+	 	//-----------------java增强 start---------------------------
+	 	<#if buttonJavaMap??&&buttonJavaMap['update']?? >
+	 		Map<String,Object> data = populationMap(t);
+	 		executeJavaExtend("${buttonJavaMap['update'].cgJavaType}","${buttonJavaMap['update'].cgJavaValue}",data);
+	 	</#if>
+	 	//-----------------java增强 end-----------------------------
  	}
+ 	<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 	</#if>
+ 	
+ 	<#if buttonSqlMap['delete']??||buttonJavaMap['delete']??>
+ 	<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
  	/**
-	 * 默认按钮-sql增强-删除操作
+	 * 删除操作增强业务
 	 * @param id
 	 * @return
 	 */
- 	public boolean doDelSql(${entityName}Entity t){
- 		<#list buttonSqlMap['delete'] as sql>
+	private void doDelBus(${entityName}Entity t) throws Exception{
+	    //-----------------sql增强 start----------------------------
+ 		<#list buttonSqlMap['delete']! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	this.executeSqlEnhance(sqlEnhance_${sql_index+1},t);
 	 	<#-- update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
 	 	</#list>
-	 	return true;
+	 	//-----------------sql增强 end------------------------------
+	 	
+	 	//-----------------java增强 start---------------------------
+	 	<#if buttonJavaMap??&&buttonJavaMap['delete']?? >
+	 		Map<String,Object> data = populationMap(t);
+	 		executeJavaExtend("${buttonJavaMap['delete'].cgJavaType}","${buttonJavaMap['delete'].cgJavaValue}",data);
+	 	</#if>
+	 	//-----------------java增强 end-----------------------------
  	}
+ 	<#-- update--begin--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 	</#if>
+ 	<#-- update--end--author:jiaqiankun date:20180713 for：TASK #2972 【代码生成器--贾乾坤】模板生成时，impl类中的增强方法判断问题 -->
+ 	<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
  	
  	/**
 	 * 替换sql中的变量
@@ -256,6 +343,31 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 		return map;
 	}
 	
+	<#-- update--begin--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
+	/**
+	 * 执行JAVA增强
+	 */
+ 	private void executeJavaExtend(String cgJavaType,String cgJavaValue,Map<String,Object> data) throws Exception {
+ 		if(StringUtil.isNotEmpty(cgJavaValue)){
+			Object obj = null;
+			try {
+				if("class".equals(cgJavaType)){
+					//因新增时已经校验了实例化是否可以成功，所以这块就不需要再做一次判断
+					obj = MyClassLoader.getClassByScn(cgJavaValue).newInstance();
+				}else if("spring".equals(cgJavaType)){
+					obj = ApplicationContextUtil.getContext().getBean(cgJavaValue);
+				}
+				if(obj instanceof CgformEnhanceJavaInter){
+					CgformEnhanceJavaInter javaInter = (CgformEnhanceJavaInter) obj;
+					javaInter.execute("${tableName}",data);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new Exception("执行JAVA增强出现异常！");
+			} 
+		}
+ 	}
+ 	<#-- update--end--author:jiaqiankun date:20180711 for：TASK #2899 【代码生成器 - 少卿】新版一对多模板没有写java增强逻辑 -->
  	private void executeSqlEnhance(String sqlEnhance,${entityName}Entity t){
 	 	Map<String,Object> data = populationMap(t);
 	 	sqlEnhance = ResourceUtil.formateSQl(sqlEnhance, data);
@@ -282,4 +394,5 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 		}
  	}
  	<#-- update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
+ 	</#if>
 }

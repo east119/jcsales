@@ -1,7 +1,8 @@
 <#setting number_format="0.#####################">
-<#-- update--begin--author:taoyan date:20180427 for:TASK #2671 【Online表单】Online表单ACE 风格上传空间、树控件 宏封装 -->
+<#-- update-begin-author:taoyan date:20180705 for:宏封装 -->
 <#include "online/template/ui/tag.ftl"/>
-<#-- update--end--author:taoyan date:20180427 for:TASK #2671 【Online表单】Online表单ACE 风格上传空间、树控件 宏封装 -->
+<#include "online/template/ui/basetag.ftl"/>
+<#-- update-end-author:taoyan date:20180705 for: 宏封装 -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -11,39 +12,7 @@
   <title>表单信息</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/vendor.css">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/bootstrap-theme.css">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/bootstrap.css">
-  <link rel="stylesheet" href="${basePath}/online/template/ledefault/css/app.css">
-  
-  <link rel="stylesheet" href="${basePath}/plug-in/Validform/css/metrole/style.css" type="text/css"/>
-  <link rel="stylesheet" href="${basePath}/plug-in/Validform/css/metrole/tablefrom.css" type="text/css"/>
-  <link rel="stylesheet" href="${basePath}/plug-in/easyui/themes/metrole/easyui.css" type="text/css">
-  <link rel="stylesheet" href="${basePath}/plug-in/easyui/themes/metrole/main.css" type="text/css">
-  <link rel="stylesheet" href="${basePath}/plug-in/easyui/themes/metrole/icon.css" type="text/css">
-  
-  <script type="text/javascript" src="${basePath}/plug-in/jquery/jquery-1.8.3.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/tools/dataformat.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/easyui/jquery.easyui.min.1.3.2.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/easyui/locale/zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/tools/syUtil.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/My97DatePicker/WdatePicker.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/lhgDialog/lhgdialog.min.js"></script>
-  <#--update--begin--author:scott Date:20170304 for:替换layer风格提示框-->
-  <script type="text/javascript" src="${basePath}/plug-in/layer/layer.js"></script>
-  <#--update--end--author:scott Date:20170304 for:替换layer风格提示框-->
-  <script type="text/javascript" src="${basePath}/plug-in/tools/curdtools_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/tools/easyuiextend.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/js/datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="${basePath}/plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
-  <link rel="stylesheet" href="${basePath}/plug-in/uploadify/css/uploadify.css" type="text/css"></link>
-  <script type="text/javascript" src="${basePath}/plug-in/uploadify/jquery.uploadify-3.1.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="${basePath}/plug-in/ueditor/ueditor.config.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="${basePath}/plug-in/ueditor/ueditor.all.min.js"></script>
-								
-  
+  <@basetag webRoot=basePath hasFile=true lang=lang/>
   <style type="text/css">
   	.combo_self{height: 30px !important;}
   	.layout-header .btn {
@@ -98,7 +67,9 @@
 			          </div>
 			          <#-- update-begin-author:taoYan date:20180427 for:文件上传文件列表样式错乱 -->
 			          <#if po.show_type=='file' || po.show_type == 'image'>
-			          		<div class="col-xs-6">
+			          	<#-- update--begin--author:jiaqiankun Date:20180627 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些 -->
+			          		<div class="col-xs-6" style="padding-top:5px">
+			          	<#-- update--end--author:jiaqiankun Date:20180627 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些  -->
 			          <#else>
 			          		<div class="col-xs-3">
 			          </#if>
@@ -237,7 +208,7 @@
 						<#elseif po.show_type=='list'>
 							<@DictData name="${po.dict_field?if_exists?html}" text="${po.dict_text?if_exists?html}" tablename="${po.dict_table?if_exists?html}" var="dataList">
 								<#--update--begin--author:gj_shaojc date:20180402 for:TASK #2606 【代码生成器】树形列表生成，多选处理 (改变select框的宽度)-->
-								<select id="${po.field_name}" ${po.extend_json?if_exists} class="form-control"  style="width:144px;" name="${po.field_name}" <#if po.operationCodesReadOnly?if_exists>onfocus="this.defOpt=this.selectedIndex" onchange="this.selectedIndex=this.defOpt;"</#if>
+								<select id="${po.field_name}" ${po.extend_json?if_exists} class="form-control"  style="width:158px;" name="${po.field_name}" <#if po.operationCodesReadOnly?if_exists>onfocus="this.defOpt=this.selectedIndex" onchange="this.selectedIndex=this.defOpt;"</#if>
 								<#--update--end--author:gj_shaojc date:20180402 for:TASK #2606 【代码生成器】树形列表生成，多选处理 (改变select框的宽度)-->
 								<#-- update--begin--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
 									<#if po.field_must_input??><#if po.field_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != 'Y'> ignore="checked"<#else>ignore="ignore"</#if>
@@ -260,7 +231,7 @@
 							
 						<#elseif po.show_type=='date'>
 							<input id="${po.field_name}" ${po.extend_json?if_exists} name="${po.field_name}" type="text" value="<#if data['${tableName}']['${po.field_name}']??>${data['${tableName}']['${po.field_name}']?if_exists?string("yyyy-MM-dd")}</#if>"
-							       style="background: url('${basePath}/plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;" class="form-control Wdate" onClick="WdatePicker({<#if po.operationCodesReadOnly?if_exists> readonly = true</#if>})" 
+							       style="background: url('${basePath}/plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;" class="form-control" onClick="WdatePicker({<#if po.operationCodesReadOnly?if_exists> readonly = true</#if>})" 
 					              <#if po.operationCodesReadOnly?exists> readonly = "readonly"</#if>
 					               <#-- update--begin--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
 									<#if po.field_must_input??><#if po.field_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != 'Y'> ignore="checked"<#else>ignore="ignore"</#if>
@@ -273,7 +244,7 @@
 						
 						<#elseif po.show_type=='datetime'>
 							<input id="${po.field_name}" ${po.extend_json?if_exists} name="${po.field_name}" type="text" value="<#if data['${tableName}']['${po.field_name}']??>${data['${tableName}']['${po.field_name}']?if_exists?string("yyyy-MM-dd HH:mm:ss")}</#if>"
-							        style="background: url('${basePath}/plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;" class="form-control Wdate" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'<#if po.operationCodesReadOnly?if_exists> ,readonly = true</#if>})"
+							        style="background: url('${basePath}/plug-in/ace/images/datetime.png') no-repeat scroll right center transparent;" class="form-control" onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'<#if po.operationCodesReadOnly?if_exists> ,readonly = true</#if>})"
 						         <#if po.operationCodesReadOnly?exists> readonly = "readonly"</#if>
 						          <#-- update--begin--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
 									<#if po.field_must_input??><#if po.field_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != 'Y'> ignore="checked"<#else>ignore="ignore"</#if>
@@ -327,7 +298,11 @@
 					               </#if>>
 
 						</#if>
-						<span class="Validform_checktip" style="float:left;height:0px;"></span>
+						
+						<#-- update--begin--author:jiaqiankun Date:20180628 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些 -->
+							<span class="Validform_checktip" style="float:left;height:0px;"></span>
+						<#-- update--end--author:jiaqiankun Date:20180628 for:TASK #2849 【样式】online开发所有的老的上传，控件高宽改小些  -->
+						
 						<label class="Validform_label" style="display: none"><@mutiLang langKey="${po.content?if_exists?html}"/></label>
 			          </div>
 			        <#if (columns?size>10)>

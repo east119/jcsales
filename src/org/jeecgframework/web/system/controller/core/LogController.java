@@ -21,7 +21,6 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
-import org.apache.log4j.Logger;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.json.DataGrid;
@@ -31,10 +30,11 @@ import org.jeecgframework.core.util.MutiLangUtil;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.tag.core.easyui.TagUtil;
-import org.jeecgframework.tag.vo.datatable.SortDirection;
 import org.jeecgframework.web.system.pojo.base.TSLog;
 import org.jeecgframework.web.system.service.LogService;
 import org.jeecgframework.web.system.service.SystemService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,10 +51,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/logController")
 public class LogController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(LogController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
     //用户浏览器统计分析的国际化KEY
     private static final String USER_BROWSER_ANALYSIS = "user.browser.analysis";
@@ -94,9 +91,9 @@ public class LogController extends BaseController {
 		CriteriaQuery cq = new CriteriaQuery(TSLog.class, dataGrid);
 		
 		//日志级别查询条件
-		String loglevel = request.getParameter("loglevel");
-		if (loglevel != null && !"0".equals(loglevel)) {
-			cq.eq("loglevel", oConvertUtils.getShort(loglevel));
+		String operatetype = request.getParameter("operatetype");
+		if (operatetype != null && !"0".equals(operatetype)) {
+			cq.eq("operatetype", oConvertUtils.getShort(operatetype));
 			cq.add();
 		}
 		//时间范围查询条件
@@ -106,7 +103,7 @@ public class LogController extends BaseController {
         	try {
 				cq.ge("operatetime", DateUtils.parseDate(operatetime_begin, "yyyy-MM-dd hh:mm:ss"));
 			} catch (ParseException e) {
-				logger.error(e);
+				logger.error(e.toString());
 			}
         	cq.add();
         }
@@ -114,7 +111,7 @@ public class LogController extends BaseController {
         	try {
 				cq.le("operatetime", DateUtils.parseDate(operatetime_end, "yyyy-MM-dd hh:mm:ss"));
 			} catch (ParseException e) {
-				logger.error(e);
+				logger.error(e.toString());
 			}
         	cq.add();
         }
@@ -193,9 +190,7 @@ public class LogController extends BaseController {
 		Long count = systemService.getCountForJdbc("SELECT COUNT(1) FROM T_S_Log WHERE 1=1");
 		List lt = new ArrayList();
 		hc = new Highchart();
-
 		hc.setName(MutiLangUtil.getLang(USER_BROWSER_ANALYSIS));
-
 		hc.setType(reportType);
 		Map<String, Object> map;
 		if (userBroswerList.size() > 0) {

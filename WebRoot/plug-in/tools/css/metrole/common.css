@@ -7,10 +7,16 @@
 div.formDetails label input { border : 1px solid #54A5D5; padding:2px; }
 
 div.formDetails label textarea,
-/*update-begin--Author:scott  Date:20171121 for：下拉框默认长度改成120px--------------------*/
-select {border : 1px solid #D7D7D7; padding:6px; width:120px; border-radius: 3px;padding: 4.5px;}
-
-/*update-begin--Author:scott  Date:20180605 for：下拉值颜色修改--------------------*/
+/* update-begin--Author:scott  Date:20180626 for：select下拉背景图美化-------------------- */
+select {border : 1px solid #D7D7D7;  width:120px; border-radius: 3px;padding: 5px;
+background: url("select-bj.png") no-repeat scroll right center transparent;
+-webkit-appearance: none;
+ /*update-begin--Author:scott  Date:20180628 for：列表查询区域，自定义下拉高度--- */
+height: 26px;
+ /*update-end--Author:scott  Date:20180628 for：列表查询区域，自定义下拉高度--- */
+}
+/* update-end--Author:scott  Date:20180626 for：select下拉背景图美化-------------------- */
+  
 option{color: #000;}
 /*update-end--Author:scott  Date:20180605 for：下拉值颜色修改--------------------*/
 
@@ -51,9 +57,9 @@ input[type="text"] {
 	border: 1px solid #D7D7D7;
 	border-radius: 3PX;
 	/*height: 14PX;*/
-	/*	//update-start--Author: scott  Date:20170609 for：特殊bpm表单页面输入框高度变形问题处理 */
+	/*update-start--Author: scott  Date:20170609 for：特殊bpm表单页面输入框高度变形问题处理 */
 	height: 26px;
-	/*	//update-start--Author: scott  Date:20170609 for：特殊bpm表单页面输入框高度变形问题处理 */
+	/*update-end--Author: scott  Date:20170609 for：特殊bpm表单页面输入框高度变形问题处理 */
 	/* padding: 7px 0 7px 5px; */
 	padding:  0 2px ;
 	line-height: 14PX;
@@ -98,3 +104,18 @@ a.ace_button:hover{ color:#DDDDDD !important; text-decoration:none;}
  }
 /*update-end--Author:xuelin  Date:20170613 for：TASK #2100 【列表样式美化】【样式专题】Jeecg平台任务 ---4列表页面，按钮和列表的字体 参考jqgrid---------------------- */
 /*	//update-end--Author: chenj  Date:20160815 for：TASK #1040 【UI按钮标签ace样式】列表后面的操作按钮支持按钮标签样式设置，*/
+
+/*update-begin--Author:zhoujf  Date:20180713 for：TASK #2955 【样式功能】抽到开源里面，写个文档，供大家使用-------------------- */
+.groupinput{
+	float:left;
+}
+.groupspan{
+	float:left;
+	display:table-cell;
+	background-color:#f3f3f3;
+	white-space:nowrap;
+	padding:4px 10px;
+	border: 0.25px solid #D7D7D7;
+	margin-left: -2px;
+}
+/*update-end--Author:zhoujf  Date:20180713 for：TASK #2955 【样式功能】抽到开源里面，写个文档，供大家使用-------------------- */

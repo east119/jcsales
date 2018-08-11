@@ -44,33 +44,21 @@ public class TSCompanyPositionServiceImpl extends CommonServiceImpl implements T
 	 * @return
 	 */
 	private void doAddBus(TSCompanyPositionEntity t) throws Exception{
-		//-----------------sql增强 start----------------------------
-	 	//-----------------sql增强 end------------------------------
-	 	
-	 	//-----------------java增强 start---------------------------
-	}
+ 	}
  	/**
 	 * 更新操作增强业务
 	 * @param t
 	 * @return
 	 */
 	private void doUpdateBus(TSCompanyPositionEntity t) throws Exception{
-		//-----------------sql增强 start----------------------------
-	 	//-----------------sql增强 end------------------------------
-	 	
-	 	//-----------------java增强 start---------------------------
-	}
+ 	}
  	/**
 	 * 删除操作增强业务
 	 * @param id
 	 * @return
 	 */
 	private void doDelBus(TSCompanyPositionEntity t) throws Exception{
-	    //-----------------sql增强 start----------------------------
-	 	//-----------------sql增强 end------------------------------
-	 	
-	 	//-----------------java增强 start---------------------------
-	}
+ 	}
  	
  	private Map<String,Object> populationMap(TSCompanyPositionEntity t){
 		Map<String,Object> map = new HashMap<String,Object>();

@@ -1,38 +1,41 @@
 package org.jeecgframework.web.cgform.engine;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateDirectiveModel;
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
-import org.jeecgframework.core.online.util.FreemarkerHelper;
-import org.jeecgframework.core.util.PropertiesUtil;
-import org.jeecgframework.web.cgform.common.CgAutoListConstant;
-import org.jeecgframework.web.cgform.service.config.CgFormFieldServiceI;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
+import org.jeecgframework.core.online.util.FreemarkerHelper;
+import org.jeecgframework.core.util.PropertiesUtil;
+import org.jeecgframework.web.cgform.common.CgAutoListConstant;
+import org.jeecgframework.web.cgform.service.config.CgFormFieldServiceI;
+import org.jeecgframework.web.system.service.CacheServiceI;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateDirectiveModel;
+
 @Component("templetContext")
 public class TempletContext {
-
+	private static final Logger log = LoggerFactory.getLogger(TempletContext.class);
+	
 	@Resource(name = "freemarker")
 	private Configuration freemarker;
 	
 	@Autowired
 	private CgFormFieldServiceI cgFormFieldService;
-
 	private Map<String, TemplateDirectiveModel> tags;
-	
 	private static final String ENCODING = "UTF-8";
 
-	private static Cache ehCache;//ehcache
+	@Autowired
+	private CacheServiceI cacheService;
+	
 	/**
 	 * 系统模式：
 	 * PUB-生产（使用ehcache）
@@ -42,9 +45,6 @@ public class TempletContext {
 	static{
 		PropertiesUtil util = new PropertiesUtil("sysConfig.properties");
 		_sysMode = util.readProperty(CgAutoListConstant.SYS_MODE_KEY);
-		if(CgAutoListConstant.SYS_MODE_PUB.equalsIgnoreCase(_sysMode)){
-			ehCache = CacheManager.getInstance().getCache("dictCache");//永久缓存块
-		}
 	}
 
 	@PostConstruct
@@ -66,15 +66,15 @@ public class TempletContext {
 			return null;
 		}
 		String oldTableName = tableName;
-
+		//根据ftlVersion动态读取模板[指定word模板号]
         if (ftlVersion != null && ftlVersion.length() > 0) {
             tableName = tableName + "&ftlVersion=" + ftlVersion;
         }
-
+        
         try {
 			if(CgAutoListConstant.SYS_MODE_DEV.equalsIgnoreCase(_sysMode)){//开发模式
 				template = freemarker.getTemplate(tableName,freemarker.getLocale(), ENCODING);
-			}else if(CgAutoListConstant.SYS_MODE_PUB.equalsIgnoreCase(_sysMode)){//生产模式（缓存）
+			}else if(CgAutoListConstant.SYS_MODE_PUB.equalsIgnoreCase(_sysMode)){//发布模式（缓存）
 				//获取版本号
 		    	String version = cgFormFieldService.getCgFormVersionByTableName(oldTableName);
 				template = getTemplateFromCache(tableName, ENCODING,version);
@@ -93,20 +93,22 @@ public class TempletContext {
 	 * 从缓存中读取ftl模板
 	 * @param template
 	 * @param encoding
+	 * @version online表配置版本号
 	 * @return
 	 */
 	public Template getTemplateFromCache(String tableName,String encoding,String version){
 		Template template =  null;
 		try {
-			//cache的键：类名.方法名.参数名
-			String cacheKey = FreemarkerHelper.class.getName()+".getTemplateFormCache."+tableName+"."+version;
-			Element element = ehCache.get(cacheKey);
-			if(element==null){
+			//cache的键：类名.方法名.参数名.version
+			String cacheKey = this.getClass().getSimpleName()+".getTemplateFormCache."+tableName+"."+version;;
+			Object templateObj = cacheService.get(CacheServiceI.SYSTEM_BASE_CACHE,cacheKey);
+			if(templateObj==null){
 				template = freemarker.getTemplate(tableName,freemarker.getLocale(), ENCODING);
-				element = new Element(cacheKey,  template);
-				ehCache.put(element);
+				cacheService.put(CacheServiceI.SYSTEM_BASE_CACHE,cacheKey,template);
+				log.info("--setTemplateFromCache-------cacheKey: [{}]-------------",cacheKey);
 			}else{
-				template = (Template)element.getObjectValue();
+				log.info("--getTemplateFromCache-------cacheKey: [{}]-------------",cacheKey);
+				template = (Template)templateObj;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -126,9 +128,7 @@ public class TempletContext {
 	    	String version = cgFormFieldService.getCgFormVersionByTableName(tableName);
 			//cache的键：类名.方法名.参数名
 			String cacheKey = FreemarkerHelper.class.getName()+".getTemplateFormCache."+tableName+"."+version;
-			if(ehCache!=null){
-				ehCache.remove(cacheKey);
-			}
+			cacheService.remove(CacheServiceI.SYSTEM_BASE_CACHE,cacheKey);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,13 +149,10 @@ public class TempletContext {
 	public void setTags(Map<String, TemplateDirectiveModel> tags) {
 		this.tags = tags;
 	}
-
+	/**
+	 * 清空online缓存
+	 */
 	public void clearCache(){
-		try{
-			ehCache.removeAll();
-		}catch (Exception e){
-
-		}
+		cacheService.clean(CacheServiceI.SYSTEM_BASE_CACHE);
 	}
-
 }

@@ -1,6 +1,4 @@
 package org.jeecgframework.web.superquery.controller;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import java.io.IOException;
@@ -17,7 +15,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.core.common.controller.BaseController;
@@ -39,9 +36,18 @@ import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.jeecgframework.tag.core.easyui.TagUtil;
+import org.jeecgframework.web.superquery.entity.SuperQueryFieldEntity;
+import org.jeecgframework.web.superquery.entity.SuperQueryHistoryEntity;
+import org.jeecgframework.web.superquery.entity.SuperQueryMainEntity;
+import org.jeecgframework.web.superquery.entity.SuperQueryTableEntity;
+import org.jeecgframework.web.superquery.page.SuperQueryMainPage;
+import org.jeecgframework.web.superquery.service.SuperQueryMainServiceI;
+import org.jeecgframework.web.superquery.util.SuperQueryUtil;
 import org.jeecgframework.web.system.service.MutiLangServiceI;
 import org.jeecgframework.web.system.service.SystemService;
 import org.jeecgframework.web.system.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,13 +66,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.alibaba.fastjson.JSONArray;
-import org.jeecgframework.web.superquery.entity.SuperQueryFieldEntity;
-import org.jeecgframework.web.superquery.entity.SuperQueryHistoryEntity;
-import org.jeecgframework.web.superquery.entity.SuperQueryMainEntity;
-import org.jeecgframework.web.superquery.entity.SuperQueryTableEntity;
-import org.jeecgframework.web.superquery.page.SuperQueryMainPage;
-import org.jeecgframework.web.superquery.service.SuperQueryMainServiceI;
-import org.jeecgframework.web.superquery.util.SuperQueryUtil;
 
 /**   
  * @Title: Controller
@@ -80,10 +79,7 @@ import org.jeecgframework.web.superquery.util.SuperQueryUtil;
 @Controller
 @RequestMapping("/superQueryMainController")
 public class SuperQueryMainController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(SuperQueryMainController.class);
+	private static final Logger logger = LoggerFactory.getLogger(SuperQueryMainController.class);
 
 	@Autowired
 	private SuperQueryMainServiceI superQueryMainService;
@@ -308,7 +304,7 @@ public class SuperQueryMainController extends BaseController {
 		Object id1 = superQueryMain.getId();
 		//===================================================================================
 		//查询-字段配置
-	    String hql1 = "from SuperQueryFieldEntity where 1 = 1 AND mAIN_ID = ? ";
+	    String hql1 = "from SuperQueryFieldEntity where 1 = 1 AND MAIN_ID = ? ";
 	    try{
 	    	List<SuperQueryFieldEntity> superQueryFieldEntityList = systemService.findHql(hql1,id1);
 			req.setAttribute("superQueryFieldList", superQueryFieldEntityList);
@@ -539,7 +535,7 @@ public class SuperQueryMainController extends BaseController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	//@ApiOperation(value="删除高级查询")
 	public ResponseMessage<?> delete(@ApiParam(name="id",value="ID",required=true)@PathVariable("id") String id) {
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");

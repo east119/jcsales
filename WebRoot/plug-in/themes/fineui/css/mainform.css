@@ -92,3 +92,58 @@ width:auto;
 }
 .table textarea{width:157px;height:95%;}
 .xh input,ck input{width:40px !important;}
+
+/* 船舶风格页面带文件上传的文件列表和上传按钮间距过大 */
+.wu-example .btns{line-height:5px;}
+.tempIMGdiv{margin-top:2px;}
+.webuploader-pick{margin-bottom:2px;}
+
+/* 船舶风格页面一对多上传按钮样式 */
+.file-upload-btn{
+	    color: #fff;
+    background-color: #18a689;
+    border-color: #4cae4c;
+	display: inline-block;
+    padding: 2px 6px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    width:86px !important;
+	
+}
+
+.file-upload-btn:hover,.file-upload-btn:focus {
+    color: #fff;
+    background-color:#13876f;
+    border-color: #255625;
+}
+
+.file-upload-btn.active {
+    color: #fff;
+    background-color:#13876f;
+    border-color: #255625;
+}
+.file-upload-btn.active, .file-upload-btn:active {
+    background-image: none;
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+.file-down-btn{
+	text-decoration: none;
+	color:#176c5b;
+}

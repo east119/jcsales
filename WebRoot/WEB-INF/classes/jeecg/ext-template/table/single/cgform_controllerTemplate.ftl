@@ -13,7 +13,8 @@ import java.text.SimpleDateFormat;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,6 +54,8 @@ import java.util.Map;
 import java.util.HashMap;
 import org.jeecgframework.core.util.ExceptionUtil;
 
+<#-- update-begin-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
+<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
 <#-- restful 通用方法生成 -->
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -84,7 +87,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 <#-- swagger api end -->
-
+</#if>
+<#-- update-end-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
 <#-- 列为文件类型的文件代码生成 -->
 <#assign fileFlag = false />
 <#list columns as filePo>
@@ -109,26 +113,30 @@ import java.util.HashMap;
  * @version V1.0   
  *
  */
+<#-- update-begin-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
+<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
  <#-- update--begin--author:zhangjiaqiang date:20171031 for:API 注解 start -->
 @Api(value="${entityName}",description="${ftl_description}",tags="${entityName?uncap_first}Controller")
 <#-- update--end--author:zhangjiaqiang date:20171031 for:API 注解 start -->
+</#if>
+<#-- update-end-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
 @Controller
 @RequestMapping("/${entityName?uncap_first}Controller")
 public class ${entityName}Controller extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(${entityName}Controller.class);
+	private static final Logger logger = LoggerFactory.getLogger(${entityName}Controller.class);
 
 	@Autowired
 	private ${entityName}ServiceI ${entityName?uncap_first}Service;
 	@Autowired
 	private SystemService systemService;
+	<#-- update-begin-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
+	<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
 	<#-- restful 通用方法生成 -->
 	@Autowired
 	private Validator validator;
 	<#-- restful 通用方法生成 -->
-	
+	</#if>
+	<#-- update-end-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
 	<#-- 列为文件类型的文件代码生成 -->
 	<#if fileFlag==true>
 	@Autowired
@@ -172,32 +180,6 @@ public class ${entityName}Controller extends BaseController {
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, ${entityName?uncap_first}, request.getParameterMap());
 		try{
 		//自定义追加查询条件
-		<#list columns as po>
-		<#if po.isQuery =='Y' && po.queryMode =='group'>
-		String query_${po.fieldName}_begin = request.getParameter("${po.fieldName}_begin");
-		String query_${po.fieldName}_end = request.getParameter("${po.fieldName}_end");
-		<#-- update--begin--author:zhoujf date:20180316 for:TASK #2557 范围查询double字段错误 -->
-		if(StringUtil.isNotEmpty(query_${po.fieldName}_begin)){
-			<#if po.type == "java.util.Date">
-			cq.ge("${po.fieldName}", new SimpleDateFormat("yyyy-MM-dd").parse(query_${po.fieldName}_begin));
-			<#elseif po.type == "java.lang.Double">
-			cq.ge("${po.fieldName}", Double.parseDouble(query_${po.fieldName}_begin));
-			<#else>
-			cq.ge("${po.fieldName}", Integer.parseInt(query_${po.fieldName}_begin));
-			</#if>
-		}
-		if(StringUtil.isNotEmpty(query_${po.fieldName}_end)){
-			<#if po.type == "java.util.Date">
-			cq.le("${po.fieldName}", new SimpleDateFormat("yyyy-MM-dd").parse(query_${po.fieldName}_end));
-			<#elseif po.type == "java.lang.Double">
-			cq.le("${po.fieldName}", Double.parseDouble(query_${po.fieldName}_end));
-			<#else>
-			cq.le("${po.fieldName}", Integer.parseInt(query_${po.fieldName}_end));
-			</#if>
-		}
-		<#-- update--end--author:zhoujf date:20180316 for:TASK #2557 范围查询double字段错误 -->
-		</#if>
-		</#list> 
 		}catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -459,7 +441,7 @@ public class ${entityName}Controller extends BaseController {
 				j.setMsg("文件导入成功！");
 			} catch (Exception e) {
 				j.setMsg("文件导入失败！");
-				logger.error(ExceptionUtil.getExceptionMessage(e));
+				logger.error(e.getMessage());
 			}finally{
 				try {
 					file.getInputStream().close();
@@ -500,6 +482,9 @@ public class ${entityName}Controller extends BaseController {
 		return j;
 	}
 	</#if>
+	
+	<#-- update-begin-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
+	<#if cgformConfig.supportRestful?? && cgformConfig.supportRestful == "1">
 	<#-- 列为文件类型的文件代码生成 -->
 	<#-- update--begin--author:zhangjiaqiang date:20171113 for:restful接口封装 -->
 	<#-- restful 通用方法生成 -->
@@ -578,7 +563,7 @@ public class ${entityName}Controller extends BaseController {
 	@ApiOperation(value="删除${ftl_description}")
 	<#-- update--begin--author:zhangjiaqiang date:20171031 for:TASK #2397 【新功能】代码生成器模板修改，追加swagger-ui注解 -->
 	public ResponseMessage<?> delete(@ApiParam(name="id",value="ID",required=true)@PathVariable("id") String id) {
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");
@@ -594,4 +579,6 @@ public class ${entityName}Controller extends BaseController {
 	}
 	<#-- restful 通用方法生成 -->
 	<#-- update--end--author:zhangjiaqiang date:20171113 for:restful接口封装 -->
+	</#if>
+	<#-- update-end-author:taoyan date:20180619 for：TASK #2812 【代码生成器优化】Restful swggerUI 代码生成，可选择 -->
 }

@@ -13,7 +13,9 @@ function resetTrNum(tableId) {
 					var s = name.indexOf("[");
 					var e = name.indexOf("]");
 					var new_name = name.substring(s+1,e);
-					$this.attr("name",name.replace(new_name,i));
+					<#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+					$this.attr("name",name.replace("["+new_name+"]","["+i+"]"));
+					<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 				}
 			}
 			if(id!=null){
@@ -23,13 +25,23 @@ function resetTrNum(tableId) {
 					var s = id.indexOf("[");
 					var e = id.indexOf("]");
 					var new_id = id.substring(s+1,e);
-					$this.attr("id",id.replace(new_id,i));
+					<#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+					$this.attr("id",id.replace("["+new_id+"]","["+i+"]"));
+					<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 				}
 			}
 			if(onclick_str!=null){
 				if (onclick_str.indexOf("#index#") >= 0){
 					$this.attr("onclick",onclick_str.replace(/#index#/g,i));
 				}else{
+					<#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+					if(name!=null && name.indexOf("imgBtn")>=0){
+						var s = onclick_str.indexOf("[");
+						var e = onclick_str.indexOf("]");
+						var new_onclick_str = onclick_str.substring(s+1,e);
+						$this.attr("onclick",onclick_str.replace(new_onclick_str,i+"\\"+"\\"));
+					}
+					<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 				}
 			}
 			if(validtype_str!=null){

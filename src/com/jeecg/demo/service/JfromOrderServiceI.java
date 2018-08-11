@@ -19,8 +19,8 @@ public interface JfromOrderServiceI extends CommonService{
 	 * 修改一对多
 	 * 
 	 */
-	public void updateMain(JfromOrderEntity jfromOrder,
-	        List<JfromOrderLineEntity> jfromOrderLineList);
+	public void updateMain(JfromOrderEntity jfromOrder, List<JfromOrderLineEntity> jfromOrderLineList);
+	
 	public void delMain (JfromOrderEntity jfromOrder);
 	
  	/**

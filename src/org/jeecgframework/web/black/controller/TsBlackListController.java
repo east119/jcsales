@@ -14,7 +14,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.jeecgframework.core.beanvalidator.BeanValidators;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.exception.BusinessException;
@@ -34,10 +33,14 @@ import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.jeecgframework.poi.excel.entity.vo.NormalExcelConstants;
 import org.jeecgframework.tag.core.easyui.TagUtil;
+import org.jeecgframework.web.black.entity.TsBlackListEntity;
+import org.jeecgframework.web.black.service.TsBlackListServiceI;
 import org.jeecgframework.web.system.enums.InterfaceEnum;
 import org.jeecgframework.web.system.pojo.base.InterfaceRuleDto;
 import org.jeecgframework.web.system.service.SystemService;
 import org.jeecgframework.web.system.util.InterfaceUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
@@ -52,9 +55,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.jeecgframework.web.black.entity.TsBlackListEntity;
-import org.jeecgframework.web.black.service.TsBlackListServiceI;
-
 /**   
  * @Title: Controller  
  * @Description: 黑名单
@@ -67,11 +67,8 @@ import org.jeecgframework.web.black.service.TsBlackListServiceI;
 @RequestMapping("/tsBlackListController")
 @Api(value = "测试用黑名单服务", description = "测试用黑名单服务接口", tags = "sysBlackAPI")
 public class TsBlackListController extends BaseController {
-	/**
-	 * Logger for this class
-	 */
-	private static final Logger logger = Logger.getLogger(TsBlackListController.class);
-
+	private static final Logger logger = LoggerFactory.getLogger(TsBlackListController.class);
+	
 	@Autowired
 	private TsBlackListServiceI tsBlackListService;
 	@Autowired
@@ -377,7 +374,7 @@ public class TsBlackListController extends BaseController {
 		if(interfaceRuleDto==null){
 			return Result.error("您没有该接口的权限！");
 		}
-		logger.info("create[{}]" + GsonUtil.toJson(tsBlackList));
+		logger.info("create[{}]" , GsonUtil.toJson(tsBlackList));
 		//调用JSR303 Bean Validator进行校验，如果出错返回1000错误码及json格式的错误信息.
 		Set<ConstraintViolation<TsBlackListEntity>> failures = validator.validate(tsBlackList);
 		if (!failures.isEmpty()) {
@@ -406,7 +403,7 @@ public class TsBlackListController extends BaseController {
 		if(interfaceRuleDto==null){
 			return Result.error("您没有该接口的权限！");
 		}
-		logger.info("update[{}]" + GsonUtil.toJson(tsBlackList));
+		logger.info("update[{}]" , GsonUtil.toJson(tsBlackList));
 		//调用JSR303 Bean Validator进行校验，如果出错返回1000错误码及json格式的错误信息.
 		Set<ConstraintViolation<TsBlackListEntity>> failures = validator.validate(tsBlackList);
 		if (!failures.isEmpty()) {
@@ -436,7 +433,7 @@ public class TsBlackListController extends BaseController {
 		if(interfaceRuleDto==null){
 			return Result.error("您没有该接口的权限！");
 		}
-		logger.info("delete[{}]" + id);
+		logger.info("delete[{}]" , id);
 		// 验证
 		if (StringUtils.isEmpty(id)) {
 			return Result.error("ID不能为空");

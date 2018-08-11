@@ -19,14 +19,12 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class TSBaseUser extends IdEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-
 	@Excel(name = "用户名",width = 15)
 	private String userName;// 用户名
 	@Excel(name = "真实姓名",width = 15)
 	private String realName;// 真实姓名
 	private String browser;// 用户使用浏览器类型
 	@Excel(name = "角色编码(多个角色编码用逗号分隔，非必填)",width =50)
-
 	private String userKey;// 用户验证唯一标示
 	private String password;//用户密码
 	private Short activitiSync;//是否同步工作流引擎
@@ -36,9 +34,8 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
 	private Short deleteFlag;// 状态: 0:不删除  1：删除
 	
 	private byte[] signature;// 签名文件
-
+	
 	private String userNameEn;//英文名
-
 	
 	@Excel(name = "组织机构编码(多个组织机构编码用逗号分隔，非必填)",width = 50)
 	private String departid;
@@ -50,11 +47,9 @@ public class TSBaseUser extends IdEntity implements java.io.Serializable {
 	public String getDepartid(){
 		return departid;
 	}
-
-    //	private TSDepart TSDepart = new TSDepart();// 部门
+	//添加非表字段currentDepart 和 添加userOrgList属性
     private List<TSUserOrg> userOrgList = new ArrayList<TSUserOrg>();
 	private TSDepart currentDepart = new TSDepart();// 当前部门
-
 
 	@Column(name = "signature",length=3000)
 	public byte[] getSignature() {

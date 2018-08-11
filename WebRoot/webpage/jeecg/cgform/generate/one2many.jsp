@@ -79,7 +79,13 @@ function browseFolder(path) {
 		<tr>
 			<td align="right"><label class="Validform_label"> 主表名: </label></td>
 			<td class="value" colspan="3"><input disabled="disabled" class="inputxt" id="tableName_tmp" name="tableName_tmp" value="${cgFormHeadPage.tableName}" datatype="*"> <span
-				class="Validform_checktip"></span></td>
+				class="Validform_checktip"></span>
+				<div style="display:inline-block">
+					<span>树形列表: </span>
+					<input disabled type="radio" name="supportTree" <c:if test="${cgFormHeadPage.isTree eq 'Y'}">checked="checked"</c:if> value="1"/>是
+					<input disabled type="radio" name="supportTree" <c:if test="${cgFormHeadPage.isTree eq 'N'}">checked="checked"</c:if> value="0"/>否
+				</div>
+			</td>
 		</tr>
 		<tr>
 			<td align="right"><label class="Validform_label"> 主表实体名(首字母大写): </label></td>
@@ -96,14 +102,21 @@ function browseFolder(path) {
 		<tr>
 			<td align="right"><label class="Validform_label"> 模板类型: </label></td>
 			<td class="value" colspan="3">
-			<input type = "radio"   name="version" value="ext-common" checked="checked" onclick="getSingleTemplate('onetomany','ext-common')">新一代模板(IE10+/移动支持/列表非标签)
-			<input type = "radio"   name="version" datatype="*" value="ext"  onclick="getSingleTemplate('onetomany','ext')">老版本模板(IE8+/不支持移动/列表标签)
+			<input type = "radio"   name="version" datatype="*" value="ext" >老版本模板(IE8+/不支持移动/标签列表)
+			<input type = "radio"   name="version" value="ext-common" checked="checked">新一代模板(IE10+/移动支持/Bootstrap/Vue/支持原生态列表)
 			<span class="Validform_checktip"></span></td>
+		</tr>
+		<tr>
+			<td align="right"><label class="Validform_label"> 是否支持Restful: </label></td>
+			<td class="value" colspan="3">
+			<input type = "radio" name="supportRestful" value="1"/>是
+			<input type = "radio" name="supportRestful" checked="checked" value="0"/>否
+			</td>
 		</tr>
 		<tr>
 			<td align="right"><label class="Validform_label"> 页面风格: </label></td>
 			<td class="value">
-			<select id="jspMode" name="jspMode" style="width: 300px">
+			<select id="jspMode" name="jspMode" style="width: 300px" datatype="*">
 		     		<c:forEach items="${jspModeList }" var="style">
 			     	 <option value="${style.code }" >${style.desc }</option>
 			     	</c:forEach>
@@ -142,13 +155,25 @@ function browseFolder(path) {
 </t:formvalid>
 </body>
 <script type="text/javascript">
+$(function(){
+	$("input[name='version']").change(function(){
+		var type = "onetomany";
+		var version = this.value;
+		getSingleTemplate(type,version,'');
+	});
+});
 //获取表单风格模板名称
-function getSingleTemplate(type,version){
+function getSingleTemplate(type,version,supportTree){
+	if(!supportTree){
+		supportTree = $("input[name='supportTree']:checked").val();
+	}
 	$.ajax({
 		url:"${pageContext.request.contextPath}/generateController.do?getOnlineTempletStyle",
 		type:"post",
-		data:{type:type,
-			version:version
+		data:{
+			type:type,
+			version:version,
+			supportTree:supportTree
 		},
 		dataType:"json",
 		success:function(data){
@@ -164,6 +189,5 @@ function getSingleTemplate(type,version){
 		}
 	});
 }
-
 </script>
 </html>

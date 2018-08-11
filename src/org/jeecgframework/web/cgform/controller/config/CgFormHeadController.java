@@ -159,7 +159,6 @@ public class CgFormHeadController extends BaseController {
 			 	extMap.put(temp.getId(), m); 
 			}       
 		}
-
 		
 		TagUtil.datagrid(response, dataGrid, extMap);
 
@@ -260,18 +259,17 @@ public class CgFormHeadController extends BaseController {
 			return j;
 		}
 		TSUser currentUser = ResourceUtil.getSessionUser();
-       if(CgAutoListConstant.SYS_DEV_FLAG_0.equals(currentUser.getDevFlag())){
+        if(CgAutoListConstant.SYS_DEV_FLAG_0.equals(currentUser.getDevFlag())){
             message = "同步失败，当前用户未授权开发权限！";
             logger.info(message+" ----- 请求IP ---+"+IpUtil.getIpAddr(request));
             j.setMsg(message);
             return j;
         }
-       //TODO 校验登录用户是否拥有开发权限
+        //TODO 校验登录用户是否拥有开发权限
 
 		
 		//同步数据库
 		try {
-
 			if("force".equals(synMethod)){
 				DbTableHandleI dbTableHandle = DbTableUtil.getTableHandle(systemService.getSession());
 				if(dbTableHandle instanceof TableSQLServerHandleImpl){
@@ -279,7 +277,6 @@ public class CgFormHeadController extends BaseController {
 					systemService.executeSql(dropsql); 
 				}
 			}
-
 			
 			boolean bl = cgFormFieldService.dbSynch(cgFormHead,synMethod);
 			if(bl){
@@ -634,7 +631,7 @@ public class CgFormHeadController extends BaseController {
 			req.setAttribute("cgFormHeadPage", cgFormHead);
 		}
 
-		List<TSType> typeList = ResourceUtil.allTypes.get(MutiLangUtil.getLang("bdfl"));
+		List<TSType> typeList = ResourceUtil.getCacheTypes(MutiLangUtil.getLang("bdfl"));
 		req.setAttribute("typeList", typeList);
 
 		return new ModelAndView("jeecg/cgform/config/cgFormHead");
@@ -1164,8 +1161,16 @@ public class CgFormHeadController extends BaseController {
 	public void configDatagrid(CgFormHeadEntity cgFormHead,String id,
 			HttpServletRequest request, HttpServletResponse response,
 			DataGrid dataGrid) {
-		String hql = "from CgFormHeadEntity c where c.physiceId = ? order by c.tableVersion asc";
-		List<CgFormHeadEntity> findHql = systemService.findHql(hql, id);
+
+		List<CgFormHeadEntity> findHql = null;
+		if(oConvertUtils.isNotEmpty(cgFormHead.getTableName())) {
+			String hql = "from CgFormHeadEntity c where c.physiceId = ? AND c.tableName = ? order by c.tableVersion asc";
+			findHql = systemService.findHql(hql, id, cgFormHead.getTableName());
+		} else {
+			String hql = "from CgFormHeadEntity c where c.physiceId = ? order by c.tableVersion asc";
+			findHql = systemService.findHql(hql, id);
+		}
+
 		dataGrid.setResults(findHql);
 		dataGrid.setTotal(findHql.size());
 		TagUtil.datagrid(response, dataGrid);

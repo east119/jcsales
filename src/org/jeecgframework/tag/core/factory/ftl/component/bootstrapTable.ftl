@@ -7,6 +7,11 @@
 					<div class="panel panel-default" style="margin-bottom: 0px;">
             				<div class="panel-body" >
 			                <form id="searchForm" class="form form-horizontal" action="" method="post">
+			                	<#-- update-begin-author:taoYan date:20180622 for:TASK #2815 【待完善功能】datagrid 设为bootstrap 风格时， superQuery="true" 时，高级查询按钮不显示 -->
+			                	<#if dataGrid.superQuery == true>
+			                	<input  id="_sqlbuilder" name="sqlbuilder" type="hidden" />
+			                	</#if>
+			                	<#-- update-end-author:taoYan date:20180622 for:TASK #2815 【待完善功能】datagrid 设为bootstrap 风格时， superQuery="true" 时，高级查询按钮不显示 -->
 			                	<#list dataGrid.columnList as po>
 								<#if po.query==true>
 									<#include "/org/jeecgframework/tag/core/factory/ftl/component/bootstrapTable-search.ftl">
@@ -16,6 +21,11 @@
 			                         <div  class="input-group col-md-12" style="margin-top:20px">
 			                         <a type="button" onclick="searchList();" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询</a>
 			                         <a type="button" onclick="searchRest();" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置</a>
+									 <#-- update-begin-author:taoYan date:20180622 for:TASK #2815 【待完善功能】datagrid 设为bootstrap 风格时， superQuery="true" 时，高级查询按钮不显示 -->
+			                         <#if dataGrid.superQuery == true>
+			                         	<a type="button" onclick="bootstrapQueryBuilder()" class="btn btn-primary btn-rounded  btn-bordered btn-sm"><span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>高级查询</a>
+			                         </#if>
+			                         <#-- update-end-author:taoYan date:20180622 for:TASK #2815 【待完善功能】datagrid 设为bootstrap 风格时， superQuery="true" 时，高级查询按钮不显示 -->
 			                         </div>
 			                    </div>
 			                </form>
@@ -30,7 +40,9 @@
 		<!-- toolbar -->
         <div id="toolbar">
             <#list dataGrid.toolBarList as po>
-					<button  onclick="${po.funname}('${po.title}','${po.url}','${dataGrid.name}',600,400)"
+            <#-- update-begin-author:liushaoqian date:201800713 for:TASK #2962 【online表单开发--刘少谦】 测试问题 -->
+					<button  onclick="${po.funname}('${po.title}','${po.url}','${dataGrid.name}','${po.width}','${po.height}')"
+			<#-- update-begin-author:liushaoqian date:201800713 for:TASK #2962 【online表单开发--刘少谦】 测试问题 -->
 					<#if po.icon=="icon-add">
 					id="btn_add" class="btn btn-primary btn-sm" >
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -93,7 +105,15 @@
 	            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
 	            pagination: true,                   //是否显示分页（*）
 	            sortable: true,                     //是否启用排序
-	            sortOrder: "asc",                   //排序方式
+				<#-- update-begin-author:jiaqiankun date:20180704 for:TASK #2882 【bootstrapTable】代码生成器存在的问题 bootstrap表格排序 -->
+				<#if dataGrid.sortName??>
+				sortName:'${dataGrid.sortName}',		
+				</#if>
+				<#if dataGrid.sortOrder??>
+				sortOrder: "${dataGrid.sortOrder}", 		
+				</#if>
+				<#-- update-end-author:jiaqiankun date:20180704 for:TASK #2882 【bootstrapTable】代码生成器存在的问题 bootstrap表格排序 -->
+	                              //排序方式
 	            queryParams: oTableInit.queryParams,//传递参数（*）
 	            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
 	            pageNumber:1,                       //初始化加载第一页，默认第一页
@@ -141,6 +161,9 @@
 				</#list>
 	            ],
 	            onLoadSuccess: function(){  //加载成功时执行
+	                <#-- update-begin-author:zhoujf date:20180712 for:TASK #2809 【bug】网友反馈问题，字典性能问题 -->
+	                try{loadAjaxDict();}catch(e){}
+	                <#-- update-end-author:zhoujf date:20180712 for:TASK #2809 【bug】网友反馈问题，字典性能问题 -->
 	                console.info("加载成功");
 	          },
 	          onLoadError: function(){  //加载失败时执行
@@ -185,5 +208,10 @@
 		$("#searchForm  .select-item").html("");
 		reloadTable();
 	}
-	
+	<#-- update-begin-author:taoYan date:20180622 for:TASK #2815 【待完善功能】datagrid 设为bootstrap 风格时， superQuery="true" 时，高级查询按钮不显示 -->
+	//高级查询模态框
+	function bootstrapQueryBuilder(){
+		$('#superQueryModal').modal({backdrop:false});
+	}
+	<#-- update-end-author:taoYan date:20180622 for:TASK #2815 【待完善功能】datagrid 设为bootstrap 风格时， superQuery="true" 时，高级查询按钮不显示 -->
 </script>

@@ -7,7 +7,9 @@
 		<table id="${fieldMeta[po.fieldName]?lower_case}_fileTable"></table>
 	</#if>
 	<#if !(po.operationCodesReadOnly ??)>
+	    <#-- update--begin--author:zhoujf date:20180711 for:TASK #2960 【代码生成器--周俊峰】table风格一对多代码生成器主表图片类型不能保存-->
  		<#assign fileName = fileName + "${po.fieldName}," />
+ 		<#-- update--end--author:zhoujf date:20180711 for:TASK #2960 【代码生成器--周俊峰】table风格一对多代码生成器主表图片类型不能保存-->
 		<#-- update--end--author:zhangjiaqiang date:20170531 for:增加图片和文件的支持 -->
 		<div class="form jeecgDetail">
 			<t:upload name="${po.fieldName}" id="${po.fieldName}" queueID="filediv_${po.fieldName}" outhtml="false" uploader="cgUploadController.do?saveFiles" <#rt/>
@@ -62,7 +64,7 @@
 <#if formStyle == 'aces'>
  extendJson="{class:'form-control',style:'width:150px'}"<#rt/>
 <#elseif formStyle == 'ace'>
- extendJson="{class:'form-control',style:'width:164px'}"<#rt/>
+ extendJson="{class:'form-control',style:'width:158px'}"<#rt/>
 </#if><#rt/>
 </#if><#rt/>
 <@datatype inputCheck="2" validType="${po.fieldValidType!''}" isNull="${po.isNull}" type="${po.type}" mustInput="${po.fieldMustInput!''}" isNull="${po.isNull}"/><#rt/>

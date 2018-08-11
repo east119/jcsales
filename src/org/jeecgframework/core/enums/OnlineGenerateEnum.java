@@ -21,27 +21,39 @@ public enum OnlineGenerateEnum {
 //	ONLINE_COMMON_TABLE_ONETOMANY("table.onetomany","可自定义TABLE风格模板","onetomany","ext-common"),
 
 	//***********{新一代代码生成器模板}**********************************************
-	ONLINE_COMMON_ELEMENT_SINGLE("element.single","VUE+ElementUI风格","single","ext-common"),
-	ONLINE_COMMON_ELEMENT_ONETOMANY("element.onetomany","VUE+ElementUI风格","onetomany","ext-common"),
+	ONLINE_COMMON_BOOTSTRAP_SINGLE("bootstrap.single","Bootstrap表单+EasyUI标签列表","single","ext-common",false),
+	ONLINE_COMMON_BOOTSTRAP_ONETOMANY("bootstrap.onetomany","Bootstrap表单+EasyUI标签列表","onetomany","ext-common",false),
+
+	ONLINE_COMMON_NATUREBT_SINGLE("naturebt.single","Bootstrap表单+EasyUI原生列表","single","ext-common",false),
+	ONLINE_COMMON_NATUREBT_ONETOMANY("naturebt.onetomany","ElementUI表单+EasyUI原生列表","onetomany","ext-common",false),
+
+	ONLINE_COMMON_BOOTSTRAPTABLEUI_SINGLE("bootstraptableUI.single","Boostrap表单+BootstapTable标签列表","single","ext-common",false),
+	ONLINE_COMMON_BOOTSTRAPTABLEUI_ONETOMANY("bootstraptableUI.onetomany","Boostrap表单+BootstapTable标签列表","onetomany","ext-common",false),
+
+	ONLINE_COMMON_BOOTSTRAPTABLE_SINGLE("bootstraptable.single","Bootstrap表单+BootstrapTable原生列表","single","ext-common",false),
+	ONLINE_COMMON_BOOTSTRAPTABLE_ONETOMANY("bootstraptable.onetomany","Bootstrap表单+BootstrapTable原生列表","onetomany","ext-common",false),
+
 	
-	ONLINE_COMMON_NATUREBT_SINGLE("naturebt.single","Bootstrap表单+EasyUI原生列表","single","ext-common"),
-	ONLINE_COMMON_NATUREBT_ONETOMANY("naturebt.onetomany","ElementUI表单+EasyUI原生列表","onetomany","ext-common"),
 	
 	//船舶订制版本
-	ONLINE_MULTI_TABLE_ONETOMANY("multitable.onetomany","EasyUI标签列表上下布局(列表数据编辑)+Table风格表单","onetomany","ext-common"),
-		
+	ONLINE_MULTI_TABLE_ONETOMANY("multitable.onetomany","Table风格表单+EasyUI标签列表(ERP上下布局风格)","onetomany","ext-common",false),
+	
+	//ElementUI风格(VUE)
+	ONLINE_COMMON_ELEMENT_SINGLE("element.single","VUE+ElementUI风格","single","ext-common",false),
+	ONLINE_COMMON_ELEMENT_ONETOMANY("element.onetomany","VUE+ElementUI风格","onetomany","ext-common",false),
+	
 	
 	//***********{老版本代码生成器模板}**********************************************
-	ONLINE_TABLE_SINGLE("table.single","TABLE风格表单","single","ext"),
-	ONLINE_TABLE_ONETOMANY("table.onetomany","TABLE风格表单","onetomany","ext"),
-	ONLINE_ACE_SINGLE("ace.single","ACE风格表单","single","ext"),
-	ONLINE_ACE_ONETOMANY("ace.onetomany","ACE风格表单","onetomany","ext"),
+	ONLINE_TABLE_SINGLE("table.single","TABLE风格表单","single","ext",true),
+	ONLINE_TABLE_ONETOMANY("table.onetomany","TABLE风格表单","onetomany","ext",false),
+	ONLINE_ACE_SINGLE("ace.single","ACE风格表单","single","ext",true),
+	ONLINE_ACE_ONETOMANY("ace.onetomany","ACE风格表单","onetomany","ext",false),
 	
 	
-	ONLINE_DIV_SINGLE("div.single","DIV风格表单","single","ext"),
-	ONLINE_NOPOP_SINGLE("nopop.single","NOPOP风格表单","single","ext"),
-	ONLINE_ROW_SINGLE("rowedit.single","行编辑风格表单","single","ext"),
-	ONLINE_TAB_ONETOMANY("tab.onetomany","TAB风格表单","onetomany","ext");
+	ONLINE_DIV_SINGLE("div.single","DIV风格表单","single","ext",true),
+	ONLINE_NOPOP_SINGLE("nopop.single","NOPOP风格表单","single","ext",false),
+	ONLINE_ROW_SINGLE("rowedit.single","行编辑风格表单","single","ext",false),
+	ONLINE_TAB_ONETOMANY("tab.onetomany","TAB风格表单","onetomany","ext",false);
 	
 	//TODO 暂时不推荐这个版本代码生成器
 //	ONLINE_VUEBT_SINGLE("vuebt.single","Bootstrap表单+VUE-Bootstrap-Table列表风格","single","ext");
@@ -80,12 +92,17 @@ public enum OnlineGenerateEnum {
      */
     private String version;
     
+    /**
+     * 表单是否支持树形列表
+     */
+    private boolean supportTreegrid;
 
-    private OnlineGenerateEnum(String code, String desc, String formType, String version) {
+    private OnlineGenerateEnum(String code, String desc, String formType, String version,boolean supportTreegrid) {
         this.code = code;
         this.desc = desc;
         this.formType = formType;
         this.version = version;
+        this.supportTreegrid = supportTreegrid;
     }
 
 	public String getDesc() {
@@ -118,6 +135,13 @@ public enum OnlineGenerateEnum {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	
+	public boolean isSupportTreegrid() {
+		return supportTreegrid;
+	}
+	public void setSupportTreegrid(boolean supportTreegrid) {
+		this.supportTreegrid = supportTreegrid;
 	}
 
 	public static OnlineGenerateEnum toEnum(String code) {

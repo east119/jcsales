@@ -1,8 +1,6 @@
 package org.jeecgframework.web.system.service;
 import java.io.Serializable;
-import java.util.List;
 
-import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.service.CommonService;
 import org.jeecgframework.web.system.pojo.base.TSNoticeAuthorityUser;
 
@@ -34,4 +32,8 @@ public interface NoticeAuthorityUserServiceI extends CommonService{
  	public boolean doDelSql(TSNoticeAuthorityUser t);
  	
  	public boolean checkAuthorityUser(String noticeId, String userid);
+ 	
+ 	public void saveNoticeAuthorityUser(TSNoticeAuthorityUser noticeAuthorityUser);
+ 	
+ 	public void doDelNoticeAuthorityUser(TSNoticeAuthorityUser noticeAuthorityUser);
 }

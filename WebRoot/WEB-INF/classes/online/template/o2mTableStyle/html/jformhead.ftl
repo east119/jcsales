@@ -2,7 +2,7 @@
 <#-- update--begin--author:taoyan date:20180514 for:【Online表单】上传空间、树控件 宏封装 -->
 <#include "/online/template/ui/tag.ftl"/>
 <#-- update--end--author:taoyan date:20180514 for:【Online表单】上传空间、树控件 宏封装 -->
-<div class="con-wrapper" id="con-wrapper0" style="display: none;">
+<div class="con-wrapper" id="con-wrapper0">
 	<input type="hidden" name="tableName" value="${tableName?if_exists?html}" >
     <input type="hidden" name="id" value="${data['${tableName}']['id']?if_exists?html}" >
 	<#list columnhidden as po>
@@ -13,13 +13,19 @@
 		<div class="row form-wrapper">
 			<#list columns as po>
 				<#if po_index%2==0>
-					<div class="row show-grid">
+					<#-- update-begin-author:taoyan date:20180705 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了-->
+					<#if po_index==0>
+						<div class="row show-grid" style="border-left:1px solid #e4e4e4">
+					<#else>
+						<div class="row show-grid">
+					</#if>
+					<#-- update-end-author:taoyan date:20180705 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了-->
 				</#if>
 				<div class="col-xs-3 text-center">
 					<b>${po.content}：</b>
 				</div>
 				<#if po.show_type=='file' || po.show_type=='image'>
-		          <div class="col-xs-6">
+		          <div class="col-xs-3">
 		          <#else>
 		          <div class="col-xs-3">
 		          </#if>
@@ -32,7 +38,7 @@
 									<#if po.file_must_input??><#if po.file_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != 'Y'> ignore="checked"<#else>ignore="ignore"</#if>
 									<#-- update--end--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
 						       <#if po.field_valid_type?if_exists?html != ''>
-					               datatype="${po.field_valid_type?if_exists?html}"
+					                datatype="${po.field_valid_type?if_exists?html}"
 					               <#else>
 					               <#if po.type == 'int'>
 					               datatype="n"  
@@ -78,7 +84,12 @@
 								   <#if po.file_must_input??><#if po.file_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != 'Y'> ignore="checked"<#else>ignore="ignore"</#if>
 									<#-- update--end--author:zhangjiaqiang Date:20170417 for:增加校验必填项 -->
 						       <#if po.field_valid_type?if_exists?html != ''>
-					               datatype="${po.field_valid_type?if_exists?html}"
+					               <#if po.field_valid_type=='only'>
+						       		   validType="${tableName},${po.field_name},id"
+						       		   datatype="*"
+						       		<#else>
+					                   datatype="${po.field_valid_type?if_exists?html}"
+					               </#if>
 					               <#else>
 					               <#if po.type == 'int'>
 					               datatype="n" 

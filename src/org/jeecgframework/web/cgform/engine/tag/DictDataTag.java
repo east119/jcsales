@@ -57,16 +57,14 @@ public class DictDataTag implements TemplateDirectiveModel {
 
 		if (tablename == null || tablename.trim().length() <= 0) {
 			// 根据dict_field查询字典表list
-			List<TSType> dataList = ResourceUtil.allTypes.get(name.toLowerCase());
+			List<TSType> dataList = ResourceUtil.getCacheTypes(name.toLowerCase());
 			if (dataList == null) {
 				dataList = new ArrayList<TSType>();
 			}
-
 			for(TSType s:dataList){
 				String names = s.getTypename();
 				s.setTypename(MutiLangUtil.getLang(names));
 			}
-
 			env.setGlobalVariable(var, new SimpleCollection(dataList));
 		} else {
 			// table表查询

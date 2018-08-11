@@ -182,5 +182,36 @@
 					/>
 				</div>
 			</li>
+			<#--update-begin--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->
+			<#elseif po.show_type=='file' || po.show_type=='image'>
+						<li class="clearfix " typ="name" reqd="1">
+							<label class="desc">${po.content}:<#if po.is_null != 'Y'><span class="req">*</span></#if></label>
+						</li>
+			<@uploadtag po = po />
+			<#--update-end--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->
+		<#-- update--begin--author:taoyan Date:20170707 for:TASK #2918 【bug】online样式，通用移动模板2一对多 -->
+		<#else>
+			<li id="${po.field_name}" class="clearfix " typ="name" reqd="1">
+				<label class="desc">${po.content}:<#if po.is_null != 'Y'><span class="req">*</span></#if></label>
+				<div class="content">
+					<input type="text" maxlength="256" class="ui-input-text xl input fld" 
+						name="${po.field_name}" id="${po.field_name}" ${po.extend_json?if_exists}
+						value="${data['${tableName}']['${po.field_name}']?if_exists?html}" 
+						<#if po.operationCodesReadOnly?exists> readonly = "readonly"</#if>
+						<#if po.field_must_input??><#if po.field_must_input == 'Y' || po.is_null != 'Y'>ignore="checked"<#else>ignore="ignore"</#if><#elseif po.is_null != "Y">ignore="checked"<#else>ignore="ignore"</#if>
+						<#if po.field_valid_type?if_exists?html != ''>
+							datatype="${po.field_valid_type?if_exists?html}" 
+							<#else>
+								<#if po.type == 'int'>
+									datatype="n"  <#if po.is_null == 'Y'>ignore="ignore" </#if>
+									<#elseif po.type=='double'>
+									datatype="/^(-?\d+)(\.\d+)?$/" <#if po.is_null == 'Y'>ignore="ignore" </#if>
+									<#else>
+									<#if po.is_null != 'Y'>datatype="*"</#if>
+								</#if>
+						</#if>/>
+				</div>
+			</li>
+		<#-- update--end--author:taoyan Date:20170707 for:TASK #2918 【bug】online样式，通用移动模板2一对多 -->
 	</#if>
 </#list>

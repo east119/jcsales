@@ -69,16 +69,6 @@
 			</td>
 			<td class="value">
 					 <t:dictSelect field="queryType" type="list"   typeGroupCode="sel_type"  defaultVal="${superQueryMainPage.queryType}" hasLabel="false"  title="查询类型" datatype="*"></t:dictSelect>       
-					<%-- <select name="queryType" >
-						<c:if test="${ superQueryMainPage.queryType=='Z'}">
-						<option value="${superQueryMainPage.queryType}" selected="selected">主子表</option>
-						<option value="D">单表</option>
-						</c:if>
-						<c:if test="${superQueryMainPage.queryType=='D'}">
-						<option value="${superQueryMainPage.queryType}" selected="selected">单表</option>
-						<option value="Z" >主子表</option>
-						</c:if>
-					</select> --%>
 				<span class="Validform_checktip"></span>
 				<label class="Validform_label" style="display: none;">查询类型</label>
 			</td>
@@ -121,7 +111,6 @@
 					<label class="Validform_label" style="display: none;">说明</label></td>
 				
 				  <td align="left">
-							<%-- <t:dictSelect field="superQueryTableList[#index#].isMain" type="radio"   typeGroupCode="is_main"  defaultVal="" hasLabel="false"  title="是否是主表"></t:dictSelect> --%>     
 						是 <input class="ismain" name="superQueryTableList[#index#].isMain" type="radio" value="Y" disabled="disabled" />&nbsp;
 						否<input class="ismain" name="superQueryTableList[#index#].isMain" type="radio" value="N" checked="checked" readonly="readonly" />
 					  <label class="Validform_label" style="display: none;">是否是主表</label>
@@ -141,9 +130,8 @@
 					  <label class="Validform_label" style="display: none;">序号</label>
 				  </td>
 				  <td align="left">
-							<%-- <t:dictSelect field="superQueryFieldList[#index#].tableName" type="list"   typeGroupCode=""  defaultVal="" hasLabel="false"  title="表名"></t:dictSelect> --%>     
 						<select   id="fieldTableList4" name="superQueryFieldList[#index#].tableName" class="fieldTableList  fieldTableList4" style="width:180px" datatype="*">
-						<option >--</option>
+						<option value=""></option>
 						</select>	
 					  <label class="Validform_label" style="display: none;">表名</label>
 				  </td>

@@ -1,8 +1,9 @@
 package org.jeecgframework.web.cgform.service.impl.generate;
 
 import org.jeecgframework.codegenerate.database.JeecgReadTable;
+import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.StringUtil;
-
+import org.jeecgframework.core.util.oConvertUtils;
 import org.jeecgframework.web.cgform.entity.config.CgFormFieldEntity;
 /**   
  * @author 张代浩
@@ -10,15 +11,23 @@ import org.jeecgframework.web.cgform.entity.config.CgFormFieldEntity;
  * @version V1.0   
  */
 public class FormHtmlUtilWord {
-	
-	
+
 	/**
      *根据CgFormFieldEntity表属性配置，返回表单HTML代码
+	 * @throws Exception 
      */
-    public static String getFormHTML(CgFormFieldEntity cgFormFieldEntity){
+    public static String getFormHTML(CgFormFieldEntity cgFormFieldEntity_orig,String tableName) throws Exception{
     	String html="";
+    	CgFormFieldEntity cgFormFieldEntity = new CgFormFieldEntity();
+		MyBeanUtils.copyBean2Bean(cgFormFieldEntity, cgFormFieldEntity_orig);
+		String fieldName = oConvertUtils.camelName(cgFormFieldEntity.getFieldName());
+		cgFormFieldEntity.setFieldName(fieldName);
         if(cgFormFieldEntity.getShowType().equals("text")){
-        	html=getTextFormHtml(cgFormFieldEntity);
+        	 if("only".equalsIgnoreCase(cgFormFieldEntity.getFieldValidType())){
+        		 html=getTextOnlyFormHtml(cgFormFieldEntity_orig,tableName);
+        	 }else{
+        		 html=getTextFormHtml(cgFormFieldEntity);
+        	 }
         }else if(cgFormFieldEntity.getShowType().equals("password")){
         	html=getPwdFormHtml(cgFormFieldEntity);
         }else if(cgFormFieldEntity.getShowType().equals("radio")){
@@ -43,6 +52,7 @@ public class FormHtmlUtilWord {
         }
         return html;
     }
+
     /**
      * 返回textarea的表单html
      * @param cgFormFieldEntity
@@ -79,8 +89,8 @@ public class FormHtmlUtilWord {
       if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
-     html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
-     if("Y".equals(cgFormFieldEntity.getIsNull())){
+      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
+      if("Y".equals(cgFormFieldEntity.getIsNull())){
     	  html.append("ignore=\"ignore\" ");
       }
       if(cgFormFieldEntity.getFieldValidType()!=null&&cgFormFieldEntity.getFieldValidType().length()>0){
@@ -97,6 +107,32 @@ public class FormHtmlUtilWord {
       html.append("\\/>");
       return html.toString();
     }
+
+    /**
+     *返回text类型的表单html(唯一值校验)
+     */
+    private static String getTextOnlyFormHtml(CgFormFieldEntity cgFormFieldEntity,String tableName)
+    {
+      String fieldName = oConvertUtils.camelName(cgFormFieldEntity.getFieldName());
+      StringBuilder html = new StringBuilder("");
+      html.append("<input type=\"text\" ");
+      html.append("id=\"").append(fieldName).append("\" ");
+      html.append("name=\"").append(fieldName).append("\" ");
+      if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
+    	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
+      }
+      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(fieldName).append("}\" ");
+      if("Y".equals(cgFormFieldEntity.getIsNull())){
+    	  html.append("ignore=\"ignore\" ");
+      }else{
+    	  html.append("ignore=\"checked\" ");
+      }
+      html.append("validtype=\"").append(tableName).append(",").append(cgFormFieldEntity.getFieldName()).append(",id\" ");
+	  html.append("datatype=\"*\" ");
+      html.append("\\/>");
+      return html.toString();
+    }
+
     
     /**
      *返回password类型的表单html
@@ -208,11 +244,11 @@ public class FormHtmlUtilWord {
   	    	html.append(" tablename=\""+cgFormFieldEntity.getDictTable()+"\"");
   	      }
   	      html.append(" var=\"dictDataList\">");
-	      html.append("<select name=\""+JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())+"\" id=\""+JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())+"\"> ");
+	      html.append("<select name=\""+cgFormFieldEntity.getFieldName()+"\" id=\""+cgFormFieldEntity.getFieldName()+"\"> ");
 	      html.append("<#list dictDataList as dictdata>");
 	      html.append(" <option value=\"\\${dictdata.typecode?if_exists?html}\" ");
 	      
-	      html.append("<c:if test=\"@@@{onlineCodeGenereateEntityKey."+JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())+"=='\\${dictdata.typecode?if_exists?html}'}\" >");
+	      html.append("<c:if test=\"@@@{onlineCodeGenereateEntityKey."+cgFormFieldEntity.getFieldName()+"=='\\${dictdata.typecode?if_exists?html}'}\" >");
   	      html.append(" selected=\"selected\" ");
   	      html.append("</c:if>");
   	      
@@ -234,14 +270,14 @@ public class FormHtmlUtilWord {
     {
       StringBuilder html = new StringBuilder("");
       html.append("<input type=\"text\" ");
-      html.append("id=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
-      html.append("name=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
+      html.append("id=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
+      html.append("name=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
       html.append("class=\"Wdate\" ");
       html.append("onClick=\"WdatePicker()\" ");
       if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
-      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("}\" ");
+      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
       if("Y".equals(cgFormFieldEntity.getIsNull())){
     	  html.append("ignore=\"ignore\" ");
       }
@@ -261,14 +297,14 @@ public class FormHtmlUtilWord {
     {
       StringBuilder html = new StringBuilder("");
       html.append("<input type=\"text\" ");
-      html.append("id=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
-      html.append("name=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
+      html.append("id=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
+      html.append("name=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
       html.append("class=\"Wdate\" ");
       html.append("onClick=\"WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})\" ");
       if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
-      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("}\" ");
+      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
       if("Y".equals(cgFormFieldEntity.getIsNull())){
     	  html.append("ignore=\"ignore\" ");
       }
@@ -288,12 +324,12 @@ public class FormHtmlUtilWord {
     {
       StringBuilder html = new StringBuilder("");
       html.append("<input type=\"text\" ");
-      html.append("id=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
-      html.append("name=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
+      html.append("id=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
+      html.append("name=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
       if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
-      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("}\" ");
+      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
       html.append("\\/>");
       return html.toString();
     }
@@ -306,12 +342,12 @@ public class FormHtmlUtilWord {
     {
       StringBuilder html = new StringBuilder("");
       html.append("<input type=\"text\" readonly=\"readonly\" class=\"searchbox-inputtext\" ");
-      html.append("id=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
-      html.append("name=\"").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("\" ");
+      html.append("id=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
+      html.append("name=\"").append(cgFormFieldEntity.getFieldName()).append("\" ");
       if(cgFormFieldEntity.getFieldLength()!=null&&cgFormFieldEntity.getFieldLength()>0){
     	  html.append("style=\"width:").append(cgFormFieldEntity.getFieldLength()).append("px\" ");
       }
-      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(JeecgReadTable.formatField(cgFormFieldEntity.getFieldName())).append("}\" ");
+      html.append("value=\"\\@{onlineCodeGenereateEntityKey@.").append(cgFormFieldEntity.getFieldName()).append("}\" ");
 
       html.append("onclick=\"popupClick(this,'"+cgFormFieldEntity.getDictText()+"','"+cgFormFieldEntity.getDictField()+"','"+cgFormFieldEntity.getDictTable()+"');\" ");
 

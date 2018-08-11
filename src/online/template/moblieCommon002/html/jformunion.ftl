@@ -1,4 +1,5 @@
 <#setting number_format="0.#####################">
+<#include "online/template/ui/tag.ftl"/>
 ﻿<html>
 	<head>
 		<base href="${basePath}/"/>
@@ -19,6 +20,13 @@
 		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 		<script type="text/javascript" src="${basePath}/plug-in/My97DatePicker/WdatePicker.js"></script>
 		<script type="text/javascript" src="${basePath}/plug-in/tools/dataformat.js"></script>
+		<#--update-begin--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->
+		<link rel="stylesheet" href="${basePath}/plug-in/uploadify/css/uploadify.css" type="text/css"></link>
+  		<script type="text/javascript" src="${basePath}/plug-in/uploadify/jquery.uploadify-3.1.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/lhgDialog/lhgdialog.min.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js"></script>
+		<script type="text/javascript" src="${basePath}/plug-in/tools/curdtools.js"></script>
+		<#--update-end--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->
 		<style id="__wechat_default_css">
 			::-webkit-scrollbar{
 				width: 10px;
@@ -61,15 +69,44 @@
 				   $("#form1").serialize(),
 				   function(data){
 				   	  var d = $.parseJSON(data);
-				   	  if(data.success){
-	            		alert(d.msg);
-	            	  }else{
-	            		alert(d.msg);
+				   	  alert(d.msg);
+				   	  if(d.success){
+				   	  	  uploadFile(d);
+	            		//var win = frameElement.api.opener;
+						//win.reloadTable();
+						//frameElement.api.close();
 	            	  }
 				   }
 				);
 			}
 		});
+		   <#--update-begin--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->
+		 function uploadFile(data){
+			        if(!$("input[name='id']").val()){
+			            if(data.obj!=null && data.obj!='undefined'){
+			                $("input[name='id']").val(data.obj.id);
+			            }
+			        }
+			        if($(".uploadify-queue-item").length>0){
+			            upload();
+			        }else{
+		                var win = frameElement.api.opener;
+					    win.reloadTable();
+					    frameElement.api.close();
+			        }
+			    }
+			    
+			    function upload() {
+				    <#list columns as po>
+				        <#if po.show_type=='file'>
+				            $('#${po.field_name}').uploadify('upload', '*');
+				        </#if>
+				        <#if po.show_type=='image'>
+				  			$('#${po.field_name}').uploadify('upload', '*');		
+				  		</#if>
+				    </#list>
+			    }
+			<#--update-end--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->    
 		 <#--//update-begin--Author:Yandong  Date:20171227 for：TASK #2375 【online模板】通用移动模板002，有很多问题-->
         //查看模式情况下,删除和上传附件功能禁止使用
     	if(location.href.indexOf("goDetail.do")!=-1){
@@ -96,7 +133,29 @@
 	 	});
 	 	return flag;
 	 }
-	
+	 <#--update-begin--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->
+	   function del(url,obj){
+					$.dialog.setting.zIndex = getzIndex();
+					$.dialog.confirm("确认删除该条记录?", function(){
+					  	$.ajax({
+							async : false,
+							cache : false,
+							type : 'POST',
+							url : url,// 请求的action路径
+							error : function() {// 请求失败处理函数
+							},
+							success : function(data) {
+								var d = $.parseJSON(data);
+								if (d.success) {
+									var msg = d.msg;
+									tip(msg);
+									$(obj).closest("tr").hide("slow");
+								}
+							}
+						});  
+					}, function(){});
+				}
+	<#--update-end--Author:liushaoqian  Date:20180710 for：TASK #2930 【online样式】通用移动模板一对多，支持上传图片和附件-->
  </script>
  <body class="wallpaper wallpaperm">
  <div id="container" class="container" mobile="1">

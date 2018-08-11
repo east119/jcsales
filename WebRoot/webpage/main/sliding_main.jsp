@@ -204,7 +204,7 @@
 				</li>
 				<li cmd="favorite">
 					<div style="background: url(plug-in/login/images/exit.png) no-repeat left center;padding-left:30px;"
-                         onclick="openwindow('系统信息','tSSmsController.do?getSysInfos')">系统信息</div>
+                         onclick="createdetailwindow('系统消息','tSSmsController.do?goMySmsList',800,400)">系统信息</div>
 				</li>
 				<li cmd="favorite">
 					<div style="background: url(plug-in/login/images/exit.png) no-repeat left center;padding-left:30px;"

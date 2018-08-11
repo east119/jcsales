@@ -90,7 +90,7 @@ public class DataGridTag extends TagSupport {
 	private boolean fitColumns = true;// 当为true时，自动展开/合同列的大小，以适应的宽度，防止横向滚动.
 	private boolean collapsible = false;// 当为true时，开启收起/展开，默认不启动.
 	private String sortName;//定义的列进行排序
-	private String sortOrder = "asc";//定义列的排序顺序，只能是"递增"或"降序".
+	private String sortOrder = "desc";//定义列的排序顺序，只能是"递增"或"降序".
 	private boolean showRefresh = true;// 定义是否显示刷新按钮
 	private boolean showText = true;// 定义是否显示刷新按钮
 	private String style = "easyui";// 列表样式easyui,datatables,jqgrid
@@ -164,7 +164,6 @@ public class DataGridTag extends TagSupport {
 		}
 
 	}
-
 	public String getCssTheme() {
 		return cssTheme;
 	}
@@ -301,13 +300,17 @@ public class DataGridTag extends TagSupport {
 	 * @param urlfont 
 	 * @param urlclass 
 	 */
-	public void setConfUrl(String url, String title, String message, String exp,String operationCode, String urlStyle, String urlclass, String urlfont) {
+
+	public void setConfUrl(String url, String title, String message, String exp,String operationCode, String urlStyle, String urlclass, String urlfont ,boolean inGroup) {
+
 		DataGridUrl dataGridUrl = new DataGridUrl();
 		dataGridUrl.setTitle(title);
 		dataGridUrl.setUrl(url);
 		dataGridUrl.setType(OptTypeDirection.Confirm);
 		dataGridUrl.setMessage(message);
 		dataGridUrl.setExp(exp);
+
+		dataGridUrl.setInGroup(inGroup);
 
 		if(checkBrowerIsNotIE()){
 			dataGridUrl.setUrlStyle(urlStyle);
@@ -325,7 +328,9 @@ public class DataGridTag extends TagSupport {
 	/**
 	 * 设置删除操作URL
 	 */
-	public void setDelUrl(String url, String title, String message, String exp, String funname,String operationCode, String urlStyle,String urlclass,String urlfont) {
+
+	public void setDelUrl(String url, String title, String message, String exp, String funname,String operationCode, String urlStyle,String urlclass,String urlfont,boolean inGroup) {
+
 		DataGridUrl dataGridUrl = new DataGridUrl();
 		dataGridUrl.setTitle(title);
 		dataGridUrl.setUrl(url);
@@ -333,6 +338,8 @@ public class DataGridTag extends TagSupport {
 		dataGridUrl.setMessage(message);
 		dataGridUrl.setExp(exp);
 		dataGridUrl.setFunname(funname);
+
+		dataGridUrl.setInGroup(inGroup);
 
 		if(checkBrowerIsNotIE()){
 			dataGridUrl.setUrlStyle(urlStyle);
@@ -349,12 +356,16 @@ public class DataGridTag extends TagSupport {
 	/**
 	 * 设置默认操作URL
 	 */
-	public void setDefUrl(String url, String title, String exp,String operationCode, String urlStyle,String urlclass,String urlfont) {
+
+	public void setDefUrl(String url, String title, String exp,String operationCode, String urlStyle,String urlclass,String urlfont,boolean inGroup) {
+
 		DataGridUrl dataGridUrl = new DataGridUrl();
 		dataGridUrl.setTitle(title);
 		dataGridUrl.setUrl(url);
 		dataGridUrl.setType(OptTypeDirection.Deff);
 		dataGridUrl.setExp(exp);
+
+		dataGridUrl.setInGroup(inGroup);
 
 		if(checkBrowerIsNotIE()){
 			dataGridUrl.setUrlStyle(urlStyle);
@@ -375,11 +386,13 @@ public class DataGridTag extends TagSupport {
 	 * @param width2 
 	 * @param id 
 	 */
-	public void setToolbar(String url, String title, String icon, String exp,String onclick, String funname,String operationCode, String width2, String height2, String id) {
+	public void setToolbar(String url, String title, String icon, String exp,String onclick, String funname,String operationCode, String width2, String height2, String id,boolean inGroup) {
 		DataGridUrl dataGridUrl = new DataGridUrl();
 		dataGridUrl.setTitle(title);
 		dataGridUrl.setUrl(url);
 		dataGridUrl.setType(OptTypeDirection.ToolBar);
+
+		dataGridUrl.setInGroup(inGroup);
 
 		if(!checkBrowerIsNotIE()){
 			//IE浏览器
@@ -478,7 +491,9 @@ public class DataGridTag extends TagSupport {
 			String arg,String queryMode, String dictionary,boolean popup,
 			boolean frozenColumn,String extend,
 
-			String style,String downloadName,boolean isAuto,String extendParams,String editor,String defaultVal,String showMode, boolean newColumn,String dictCondition,String filterType,boolean optsMenu) {
+			String style,String downloadName,boolean isAuto,String extendParams,String editor,String defaultVal,String showMode, boolean newColumn,String dictCondition,String filterType,boolean optsMenu
+
+			,boolean isAjaxDict) {
 
 		DataGridColumn dataGridColumn = new DataGridColumn();
 		dataGridColumn.setAlign(align);
@@ -524,8 +539,8 @@ public class DataGridTag extends TagSupport {
 		dataGridColumn.setFilterType(filterType);
 		dataGridColumn.setOptsMenu(optsMenu);
 
+		dataGridColumn.setAjaxDict(isAjaxDict);
 		columnList.add(dataGridColumn);
-
 		Set<String> operationCodes = (Set<String>) super.pageContext.getRequest().getAttribute(Globals.OPERATIONCODES);
 		if (null!=operationCodes) {
 			for (String MyoperationCode : operationCodes) {
@@ -539,7 +554,6 @@ public class DataGridTag extends TagSupport {
 				}
 			}
 		}
-
 		if (field != "opt") {
 			fields += field + ",";
 			if ("group".equals(queryMode)) {
@@ -564,7 +578,6 @@ public class DataGridTag extends TagSupport {
 		}
 		if (!StringUtils.isBlank(dictionary)&&(!popup)) {
 			if(dictionary.contains(",")){
-				;
 				String[] dic = dictionary.split(",");
 				String text = "";
 				String value = "";
@@ -587,7 +600,7 @@ public class DataGridTag extends TagSupport {
 			}else{
 				String text = "";
 				String value = "";
-				List<TSType> typeList = ResourceUtil.allTypes.get(dictionary.toLowerCase());
+				List<TSType> typeList = ResourceUtil.getCacheTypes(dictionary.toLowerCase());
 				if (typeList != null && !typeList.isEmpty()) {
 					for (TSType type : typeList) {
 						text += MutiLangUtil.doMutiLang(type.getTypename(), "") + ",";
@@ -662,7 +675,14 @@ public class DataGridTag extends TagSupport {
 				ComponentFactory componentFactory = new BootstrapTableComponent();
 				String content = componentFactory.invoke("/org/jeecgframework/tag/core/factory/ftl/component/bootstrapTable.ftl", getDataGridTag());
 				//log.debug("  content ===>" + content);
-				out.print(content);
+
+				StringBuffer bst = new StringBuffer();
+				bst.append(content);
+				if(superQuery) {
+					addSuperQueryBootstrap(bst,btnCls,columnList);
+				}
+				out.print(bst.toString());
+
 			}else{
 				out.print(end().toString());
 				//log.debug("  end() ===>" + end().toString());
@@ -875,7 +895,6 @@ public class DataGridTag extends TagSupport {
 		}
 		sb.append("<div class=\"tool_bar_div bg-info\"></div>");
 		sb.append("');");
-
 		//表格顶部查询
 		if(hasQueryColum(columnList) && !columnList.isEmpty()){
 			for (DataGridColumn column : columnList) {
@@ -915,7 +934,7 @@ public class DataGridTag extends TagSupport {
 								}
 							}else{
 								//字典表数据
-								List<TSType> typeList = ResourceUtil.allTypes.get(dictionary.toLowerCase());
+								List<TSType> typeList = ResourceUtil.getCacheTypes(dictionary.toLowerCase());
 								if(typeList != null && !typeList.isEmpty()){
 									String field = column.getField().replaceAll("_","\\.");
 									sb.append("<input type=\"hidden\" name=\""+field+"\" id=\""+field+"_radio\"/>");
@@ -952,7 +971,7 @@ public class DataGridTag extends TagSupport {
 								}
 							}else{
 								//字典表数据
-								List<TSType> typeList = ResourceUtil.allTypes.get(dictionary.toLowerCase());
+								List<TSType> typeList = ResourceUtil.getCacheTypes(dictionary.toLowerCase());
 								if(typeList != null && !typeList.isEmpty()){
 									String field = column.getField().replaceAll("_","\\.");
 									sb.append("<input type=\"hidden\" name=\""+field+"\" id=\""+field+"_checkbox\" value=\"\" />");									
@@ -992,7 +1011,7 @@ public class DataGridTag extends TagSupport {
 								}
 							}else{
 								//字典表数据
-								List<TSType> typeList = ResourceUtil.allTypes.get(dictionary.toLowerCase());
+								List<TSType> typeList = ResourceUtil.getCacheTypes(dictionary.toLowerCase());
 								if(typeList != null && !typeList.isEmpty()){
 									for (TSType type : typeList) {
 										sb.append("<option value=\"");
@@ -1084,7 +1103,6 @@ public class DataGridTag extends TagSupport {
 				}
 			}
 		}		
-
 		
 		//工具栏的处理方式
 		if(toolBarList.size() > 0){
@@ -1353,6 +1371,11 @@ public class DataGridTag extends TagSupport {
 			sb.append("<link rel=\"stylesheet\" href=\"plug-in/bootstrap/css/bootstrap-btn.css\" type=\"text/css\"></link>");    
 		}
 
+		boolean hasGroup = hasGroup();
+		if(hasGroup){
+			sb.append("<link rel=\"stylesheet\" href=\"plug-in/tools/css/optgroup.css\" type=\"text/css\"></link>"); 
+		}
+
 		width = (width == null) ? "auto" : width;
 		height = (height == null) ? "auto" : height;
 
@@ -1447,21 +1470,17 @@ public class DataGridTag extends TagSupport {
 			}else{
 				sb.append("treeField:'text',");
 			}
-
 			sb.append(" onBeforeLoad: function(row,param){\n" +
 					"                    if (!row) {    \n" +
 					"                     delete param.id;  \n" +
 					"                    }\n" +
 					"                },");
-
 		} else {
 			grid = "datagrid";
 			sb.append("$(\'#" + name + "\').datagrid({");
-
 			if (this.isFilter()) {
 				sb.append("onHeaderContextMenu: function(e, field){headerMenu(e, field);},");
 			}
-
 			sb.append("idField: '" + idField + "',");
 		}
 		if (title != null) {
@@ -1561,6 +1580,12 @@ public class DataGridTag extends TagSupport {
 		sb.append("var grid = $(\'#"+name+"\');");
 		sb.append("var curr = grid.datagrid(\'getPager\').data(\"pagination\").options.pageNumber;");
 		sb.append("grid.datagrid({pageNumber:(curr-1)});}}");
+
+		sb.append(" try{loadAjaxDict(data);}catch(e){}");
+
+		if(hasGroup){
+			sb.append("optsMenuToggle('"+name+"');");
+		}
 
 		if (StringUtil.isNotEmpty(onLoadSuccess)) {
 			sb.append(onLoadSuccess + "(data);");
@@ -1744,6 +1769,9 @@ public class DataGridTag extends TagSupport {
 
 			sb.append("<span style=\"max-width: 79%;display: inline-block;\">");
 
+			sb.append("<span><img style=\"margin-top:-3px;vertical-align:middle;\" src=\"plug-in/easyui/themes/icons/ti.png\"  title=\"提示：模糊查询通配符: *，多个关键字用半角逗号 ',' 隔开！\" alt=\"提示：模糊查询通配符: *，多个关键字用半角逗号 ',' 隔开！\" /></span>");
+
+			
 			getSearchFormInfo(sb);
 			sb.append("</span>");
 
@@ -1783,93 +1811,31 @@ public class DataGridTag extends TagSupport {
 		sb.append("<span style=\"float:left;\" >");
 		if(toolBarList.size()>0)
 		{
+
+			Boolean hasMore = false;
 			for (DataGridUrl toolBar : toolBarList) {
-
-				if (btnCls != null && !btnCls.equals("easyui")) {//自定以样式 bootstrap按钮样式
-					if(btnCls.indexOf("bootstrap")==0){
-						if (btnCls.replace("bootstrap", "").trim().length() > 0) {
-							sb.append("<button class=\""+btnCls.replace("bootstrap", "").trim()+"\" ");
-						}else{
-							sb.append("<button class=\"btn btn-default btn-xs\" ");
-						}
-
-						if(StringUtil.isNotEmpty(toolBar.getId())){
-							sb.append(" id=\"");
-							sb.append(toolBar.getId());
-							sb.append("\" ");
-						}
-
-						
-						if(StringUtil.isNotEmpty(toolBar.getOnclick()))
-						{
-							sb.append("onclick="+toolBar.getOnclick()+"");
-						}
-						else {
-							sb.append("onclick=\""+toolBar.getFunname()+"(");
-							if(!toolBar.getFunname().equals("doSubmit"))
-							{
-							sb.append("\'"+toolBar.getTitle()+"\',");
-							}
-							String width = toolBar.getWidth().contains("%")?"'"+toolBar.getWidth()+"'":toolBar.getWidth();
-							String height = toolBar.getHeight().contains("%")?"'"+toolBar.getHeight()+"'":toolBar.getHeight();
-							sb.append("\'"+toolBar.getUrl()+"\',\'"+name+"\',"+width+","+height+")\"");
-						}
-						sb.append("><i class=\"" + toolBar.getIcon() + "\"></i><span class=\"bigger-110 no-text-shadow\">"+toolBar.getTitle()+"</span></button>");
-						
-					}else{
-						sb.append("<a href=\"#\" class=\""+btnCls+" " + toolBar.getIcon()+"\" ");	
-
-						if(StringUtil.isNotEmpty(toolBar.getId())){
-							sb.append(" id=\"");
-							sb.append(toolBar.getId());
-							sb.append("\" ");
-						}
-
-						if(StringUtil.isNotEmpty(toolBar.getOnclick()))
-						{
-							sb.append("onclick="+toolBar.getOnclick()+"");
-						}
-						else {
-							sb.append("onclick=\""+toolBar.getFunname()+"(");
-							if(!toolBar.getFunname().equals("doSubmit"))
-							{
-							sb.append("\'"+toolBar.getTitle()+"\',");
-							}
-							String width = toolBar.getWidth().contains("%")?"'"+toolBar.getWidth()+"'":toolBar.getWidth();
-							String height = toolBar.getHeight().contains("%")?"'"+toolBar.getHeight()+"'":toolBar.getHeight();
-							sb.append("\'"+toolBar.getUrl()+"\',\'"+name+"\',"+width+","+height+")\"");
-						}
-						sb.append(">"+toolBar.getTitle()+"</a>");
+				if(toolBar.isInGroup()){
+					if(!hasMore){
+						hasMore = true;
 					}
-					
-				}else if(btnCls == null || btnCls.equals("easyui")){//easyUI按钮样式
-					
-					sb.append("<a href=\"#\" class=\"easyui-linkbutton\" plain=\"true\" icon=\""+toolBar.getIcon()+"\" ");
-
-					if(StringUtil.isNotEmpty(toolBar.getId())){
-						sb.append(" id=\"");
-						sb.append(toolBar.getId());
-						sb.append("\" ");
-					}
-
-					if(StringUtil.isNotEmpty(toolBar.getOnclick()))
-					{
-						sb.append("onclick="+toolBar.getOnclick()+"");
-					}
-					else {
-						sb.append("onclick=\""+toolBar.getFunname()+"(");
-						if(!toolBar.getFunname().equals("doSubmit"))
-						{
-						sb.append("\'"+toolBar.getTitle()+"\',");
-						}
-						String width = toolBar.getWidth().contains("%")?"'"+toolBar.getWidth()+"'":toolBar.getWidth();
-						String height = toolBar.getHeight().contains("%")?"'"+toolBar.getHeight()+"'":toolBar.getHeight();
-						sb.append("\'"+toolBar.getUrl()+"\',\'"+name+"\',"+width+","+height+")\"");
-					}
-					sb.append(">"+toolBar.getTitle()+"</a>");
+				}else{
+					loadToolbar(toolBar, sb);
 				}
+			}
+			if(hasMore){
+				loadToolbarMoreBtn(sb,true,null);
+				sb.append("<div class='toolbar-more-container'><ul class='toolbar-more-list'>");
+				for (DataGridUrl toolBar : toolBarList) {
+					if(toolBar.isInGroup()){
+						sb.append("<li>");
+						loadToolbarMoreBtn(sb,false,toolBar);
+						sb.append("</li>");
+					}
+				}
+				sb.append("</ul></div>");
+				//sb.append("<div class='btn-group'><button data-toggle='dropdown' class='btn btn-default dropdown-toggle'>操作<span class='caret'></span> </button><ul class='dropdown-menu'><li><a href='buttons.html#'>置顶</a></li><li><a href='buttons.html#' class='font-bold'>修改</a></li><li><a href='buttons.html#'>禁用</a></li><li class='divider'></li> <li><a href='buttons.html#'>删除</a></li> </ul> </div>");
+			}
 
-			}				
 		}
 		sb.append("</span>");
 
@@ -1946,7 +1912,6 @@ public class DataGridTag extends TagSupport {
 
 				addQueryBuilder(sb,"easyui-linkbutton");
 			}
-
 		}
 
 		if(superQuery) {
@@ -1968,6 +1933,145 @@ public class DataGridTag extends TagSupport {
 		this.getFilter(sb);
 
 		return sb;
+	}
+
+	/**
+	 * 仅用于 加载【更多操作】 按钮的方法
+	 * @param sb 
+	 * @param 是否是【更多操作】按钮，false则为点击【更多操作】后展示的按钮
+	 * @param toolBar
+	 */
+	private void loadToolbarMoreBtn(StringBuffer sb,boolean isShow,DataGridUrl toolBar){
+		if(isShow){
+			if (btnCls != null && !btnCls.equals("easyui")) {
+				if(btnCls.indexOf("bootstrap")==0){
+					if (btnCls.replace("bootstrap", "").trim().length() > 0) {
+						sb.append("<button class=\""+btnCls.replace("bootstrap", "").trim()+"\" ");
+					}else{
+						sb.append("<button class=\"btn btn-default btn-xs\" ");
+					}
+					sb.append("onclick='toggleMoreToolbars(this)'");
+					sb.append("><i class=\"fa fa-caret-down\"></i><span class=\"bigger-110 no-text-shadow\">更多操作</span></button>");
+				}else{
+					sb.append("<a href=\"javascript:void(0)\" onclick='toggleMoreToolbars(this)' class=\""+btnCls+" " + toolBar.getIcon()+"\" >更多操作</a>");
+				}
+			}else if(btnCls == null || btnCls.equals("easyui")){
+				sb.append("<a href=\"javascript:void(0)\"  onclick='toggleMoreToolbars(this)' class=\"easyui-linkbutton\" plain=\"true\" icon=\"icon-caret-down\">更多操作</a> ");
+				
+			}
+		}else{
+			sb.append("<a href='javascript:void(0)' ");
+			if(StringUtil.isNotEmpty(toolBar.getId())){
+				sb.append(" id=\"");
+				sb.append(toolBar.getId());
+				sb.append("\" ");
+			}
+			if(StringUtil.isNotEmpty(toolBar.getOnclick())){
+				sb.append("onclick="+toolBar.getOnclick()+"");
+			}else{
+				sb.append("onclick=\""+toolBar.getFunname()+"(");
+				if(!toolBar.getFunname().equals("doSubmit")){
+					sb.append("\'"+toolBar.getTitle()+"\',");
+				}
+				String width = toolBar.getWidth().contains("%")?"'"+toolBar.getWidth()+"'":toolBar.getWidth();
+				String height = toolBar.getHeight().contains("%")?"'"+toolBar.getHeight()+"'":toolBar.getHeight();
+				sb.append("\'"+toolBar.getUrl()+"\',\'"+name+"\',"+width+","+height+")\"");
+			}
+			if(btnCls == null || btnCls.equals("easyui")){
+				sb.append("><span class=\"easyui-mycon "+toolBar.getIcon()+"\"></span> "+toolBar.getTitle());
+			}else{
+				sb.append("><i class=\""+toolBar.getIcon()+"\"></i> "+toolBar.getTitle());
+			}
+			sb.append("</a>");
+		}
+		
+	}
+	private void loadToolbar(DataGridUrl toolBar,StringBuffer sb){
+
+		if (btnCls != null && !btnCls.equals("easyui")) {//自定以样式 bootstrap按钮样式
+			if(btnCls.indexOf("bootstrap")==0){
+				if (btnCls.replace("bootstrap", "").trim().length() > 0) {
+					sb.append("<button class=\""+btnCls.replace("bootstrap", "").trim()+"\" ");
+				}else{
+					sb.append("<button class=\"btn btn-default btn-xs\" ");
+				}
+
+				if(StringUtil.isNotEmpty(toolBar.getId())){
+					sb.append(" id=\"");
+					sb.append(toolBar.getId());
+					sb.append("\" ");
+				}
+
+				
+				if(StringUtil.isNotEmpty(toolBar.getOnclick()))
+				{
+					sb.append("onclick="+toolBar.getOnclick()+"");
+				}
+				else {
+					sb.append("onclick=\""+toolBar.getFunname()+"(");
+					if(!toolBar.getFunname().equals("doSubmit"))
+					{
+					sb.append("\'"+toolBar.getTitle()+"\',");
+					}
+					String width = toolBar.getWidth().contains("%")?"'"+toolBar.getWidth()+"'":toolBar.getWidth();
+					String height = toolBar.getHeight().contains("%")?"'"+toolBar.getHeight()+"'":toolBar.getHeight();
+					sb.append("\'"+toolBar.getUrl()+"\',\'"+name+"\',"+width+","+height+")\"");
+				}
+				sb.append("><i class=\"" + toolBar.getIcon() + "\"></i><span class=\"bigger-110 no-text-shadow\">"+toolBar.getTitle()+"</span></button>");
+				
+			}else{
+				sb.append("<a href=\"#\" class=\""+btnCls+" " + toolBar.getIcon()+"\" ");	
+
+				if(StringUtil.isNotEmpty(toolBar.getId())){
+					sb.append(" id=\"");
+					sb.append(toolBar.getId());
+					sb.append("\" ");
+				}
+
+				if(StringUtil.isNotEmpty(toolBar.getOnclick()))
+				{
+					sb.append("onclick="+toolBar.getOnclick()+"");
+				}
+				else {
+					sb.append("onclick=\""+toolBar.getFunname()+"(");
+					if(!toolBar.getFunname().equals("doSubmit"))
+					{
+					sb.append("\'"+toolBar.getTitle()+"\',");
+					}
+					String width = toolBar.getWidth().contains("%")?"'"+toolBar.getWidth()+"'":toolBar.getWidth();
+					String height = toolBar.getHeight().contains("%")?"'"+toolBar.getHeight()+"'":toolBar.getHeight();
+					sb.append("\'"+toolBar.getUrl()+"\',\'"+name+"\',"+width+","+height+")\"");
+				}
+				sb.append(">"+toolBar.getTitle()+"</a>");
+			}
+			
+		}else if(btnCls == null || btnCls.equals("easyui")){//easyUI按钮样式
+			
+			sb.append("<a href=\"#\" class=\"easyui-linkbutton\" plain=\"true\" icon=\""+toolBar.getIcon()+"\" ");
+
+			if(StringUtil.isNotEmpty(toolBar.getId())){
+				sb.append(" id=\"");
+				sb.append(toolBar.getId());
+				sb.append("\" ");
+			}
+
+			if(StringUtil.isNotEmpty(toolBar.getOnclick()))
+			{
+				sb.append("onclick="+toolBar.getOnclick()+"");
+			}
+			else {
+				sb.append("onclick=\""+toolBar.getFunname()+"(");
+				if(!toolBar.getFunname().equals("doSubmit"))
+				{
+				sb.append("\'"+toolBar.getTitle()+"\',");
+				}
+				String width = toolBar.getWidth().contains("%")?"'"+toolBar.getWidth()+"'":toolBar.getWidth();
+				String height = toolBar.getHeight().contains("%")?"'"+toolBar.getHeight()+"'":toolBar.getHeight();
+				sb.append("\'"+toolBar.getUrl()+"\',\'"+name+"\',"+width+","+height+")\"");
+			}
+			sb.append(">"+toolBar.getTitle()+"</a>");
+		}
+
 	}
 
 	private void loadSubData(String id){
@@ -2078,15 +2182,21 @@ public class DataGridTag extends TagSupport {
 	 * @param sb
 	 */
 	private void getSearchFormInfo(StringBuffer sb) {
-
 		//如果表单是组合查询		
 		if("group".equals(getQueryMode())){
+			int i = 0;
 			for (DataGridColumn col : columnList) {
 				if (col.isQuery()) {
 
 					sb.append("<span style=\"display:-moz-inline-box;display:inline-block;margin-bottom:2px;text-align:justify;\">");
 
-					sb.append("<span style=\"vertical-align:middle;display:-moz-inline-box;display:inline-block;width: 90px;text-align:right;text-overflow:ellipsis;-o-text-overflow:ellipsis; overflow: hidden;white-space:nowrap; \" title=\""+col.getTitle()+"\">"+col.getTitle()+"：</span>");
+					if(i==0){
+						sb.append("<span style=\"vertical-align:middle;display:-moz-inline-box;display:inline-block;width:74px;text-align:right;text-overflow:ellipsis;-o-text-overflow:ellipsis; overflow: hidden;white-space:nowrap; \" title=\""+col.getTitle()+"\">"+"&nbsp;&nbsp;&nbsp;"+col.getTitle()+"："+ (col.getTitle().length()<4?"&nbsp;&nbsp;&nbsp;":"") + "</span>");
+					}else{
+						sb.append("<span style=\"vertical-align:middle;display:-moz-inline-box;display:inline-block;width: 90px;text-align:right;text-overflow:ellipsis;-o-text-overflow:ellipsis; overflow: hidden;white-space:nowrap; \" title=\""+col.getTitle()+"\">"+col.getTitle()+"：</span>");
+					}
+
+					
 					if("single".equals(col.getQueryMode())){
 						if(!StringUtil.isEmpty(col.getReplace())){
 							sb.append("<select name=\""+col.getField().replaceAll("_","\\.")+"\" WIDTH=\"120\" style=\"width: 120px\"> ");
@@ -2197,8 +2307,7 @@ public class DataGridTag extends TagSupport {
 								}
 								
 							}else{
-								Map<String, List<TSType>> typedatas = ResourceUtil.allTypes;
-								List<TSType> types = typedatas.get(col.getDictionary().toLowerCase());
+								List<TSType> types = ResourceUtil.getCacheTypes(col.getDictionary().toLowerCase());
 								
 								String showMode = col.getShowMode();
 								if (null != showMode && "radio".equals(showMode)) {
@@ -2300,10 +2409,10 @@ public class DataGridTag extends TagSupport {
 
 					}
 					sb.append("</span>");
+					i++;
 				}
 			}
 		}
-
 	}
 
 
@@ -2410,6 +2519,7 @@ public class DataGridTag extends TagSupport {
 		}
 		return hasQuery;
 	}
+
 	/**
 	 * 拼装操作地址
 	 * 
@@ -2418,148 +2528,311 @@ public class DataGridTag extends TagSupport {
 	protected void getOptUrl(StringBuffer sb) {
 		//注：操作列表会带入合计列中去，故加此判断
 		sb.append("if(!rec.id){return '';}");
-		List<DataGridUrl> list = urlList;
 		sb.append("var href='';");
+		List<DataGridUrl> list = urlList;
 		for (DataGridUrl dataGridUrl : list) {
-			String url = dataGridUrl.getUrl();
-			MessageFormat formatter = new MessageFormat("");
-			if (dataGridUrl.getValue() != null) {
-				String[] testvalue = dataGridUrl.getValue().split(",");
-				List value = new ArrayList<Object>();
-				for (String string : testvalue) {
-					value.add("\"+rec." + string + " +\"");
+			if(!dataGridUrl.isInGroup()){
+				String url = dataGridUrl.getUrl();
+				MessageFormat formatter = new MessageFormat("");
+				if (dataGridUrl.getValue() != null) {
+					String[] testvalue = dataGridUrl.getValue().split(",");
+					List value = new ArrayList<Object>();
+					for (String string : testvalue) {
+						value.add("\"+rec." + string + " +\"");
+					}
+					url = formatter.format(url, value.toArray());
 				}
-				url = formatter.format(url, value.toArray());
-			}
-			if (url != null && dataGridUrl.getValue() == null) {
+				if (url != null && dataGridUrl.getValue() == null) {
 
-				//url = formatUrl(url);
-				url = formatUrlPlus(url);
+					//url = formatUrl(url);
+					url = formatUrlPlus(url);
 
-			}
-			String exp = dataGridUrl.getExp();// 判断显示表达式
-			if (StringUtil.isNotEmpty(exp)) {
-				String[] ShowbyFields = exp.split("&&");
-				for (String ShowbyField : ShowbyFields) {
-					int beginIndex = ShowbyField.indexOf("#");
-					int endIndex = ShowbyField.lastIndexOf("#");
-					String exptype = ShowbyField.substring(beginIndex + 1, endIndex);// 表达式类型
-					String field = ShowbyField.substring(0, beginIndex);// 判断显示依据字段
-					String[] values = ShowbyField.substring(endIndex + 1, ShowbyField.length()).split(",");// 传入字段值
-					String value = "";
-					for (int i = 0; i < values.length; i++) {
-						value += "'" + "" + values[i] + "" + "'";
-						if (i < values.length - 1) {
-							value += ",";
+				}
+				String exp = dataGridUrl.getExp();// 判断显示表达式
+				if (StringUtil.isNotEmpty(exp)) {
+					String[] ShowbyFields = exp.split("&&");
+					for (String ShowbyField : ShowbyFields) {
+						int beginIndex = ShowbyField.indexOf("#");
+						int endIndex = ShowbyField.lastIndexOf("#");
+						String exptype = ShowbyField.substring(beginIndex + 1, endIndex);// 表达式类型
+						String field = ShowbyField.substring(0, beginIndex);// 判断显示依据字段
+						String[] values = ShowbyField.substring(endIndex + 1, ShowbyField.length()).split(",");// 传入字段值
+						String value = "";
+						for (int i = 0; i < values.length; i++) {
+							value += "'" + "" + values[i] + "" + "'";
+							if (i < values.length - 1) {
+								value += ",";
+							}
+						}
+						if ("eq".equals(exptype)) {
+							sb.append("if($.inArray(rec." + field + ",[" + value + "])>=0){");
+						}
+						if ("ne".equals(exptype)) {
+							sb.append("if($.inArray(rec." + field + ",[" + value + "])<0){");
+						}
+						if ("empty".equals(exptype) && value.equals("'true'")) {
+							sb.append("if(rec." + field + "==''){");
+						}
+						if ("empty".equals(exptype) && value.equals("'false'")) {
+							sb.append("if(rec." + field + "!=''){");
 						}
 					}
-					if ("eq".equals(exptype)) {
-						sb.append("if($.inArray(rec." + field + ",[" + value + "])>=0){");
-					}
-					if ("ne".equals(exptype)) {
-						sb.append("if($.inArray(rec." + field + ",[" + value + "])<0){");
-					}
-					if ("empty".equals(exptype) && value.equals("'true'")) {
-						sb.append("if(rec." + field + "==''){");
-					}
-					if ("empty".equals(exptype) && value.equals("'false'")) {
-						sb.append("if(rec." + field + "!=''){");
-					}
 				}
-			}
 
-			StringBuffer style = new StringBuffer();
-			if (!StringUtil.isEmpty(dataGridUrl.getUrlStyle())) {
-				style.append(" style=\'");
-				style.append(dataGridUrl.getUrlStyle());
-				style.append("\' ");
-			}
+				StringBuffer style = new StringBuffer();
+				if (!StringUtil.isEmpty(dataGridUrl.getUrlStyle())) {
+					style.append(" style=\'");
+					style.append(dataGridUrl.getUrlStyle());
+					style.append("\' ");
+				}
 
-			StringBuffer urlclass = new StringBuffer();
-			if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){
-				urlclass.append(" class=\'");
-				urlclass.append(dataGridUrl.getUrlclass());
-				urlclass.append("\'");
-			}
-			StringBuffer urlfont = new StringBuffer();
-			if(!StringUtil.isEmpty(dataGridUrl.getUrlfont())){
-				urlfont.append(" <i class=\' fa ");
-				urlfont.append(dataGridUrl.getUrlfont());
-				urlfont.append("\'></i>");			
-			}
-
-			if (OptTypeDirection.Confirm.equals(dataGridUrl.getType())) {
-
+				StringBuffer urlclass = new StringBuffer();
 				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){
-					sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=confirm(\'" + url + "\',\'" + dataGridUrl.getMessage() + "\',\'"+name+"\')" + style.toString() + "> "+urlfont.toString()+" \";");
-				}else{
-					sb.append("href+=\"[<a href=\'#\' onclick=confirm(\'" + url + "\',\'" + dataGridUrl.getMessage() + "\',\'"+name+"\')" + style.toString() + "> \";");
+					urlclass.append(" class=\'");
+					urlclass.append(dataGridUrl.getUrlclass());
+					urlclass.append("\'");
+				}
+				StringBuffer urlfont = new StringBuffer();
+				if(!StringUtil.isEmpty(dataGridUrl.getUrlfont())){
+					urlfont.append(" <i class=\' fa ");
+					urlfont.append(dataGridUrl.getUrlfont());
+					urlfont.append("\'></i>");			
 				}
 
-			}
-			if (OptTypeDirection.Del.equals(dataGridUrl.getType())) {
-				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
-					sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=delObj(\'" + url + "\',\'"+name+"\')" + style.toString() + "> "+urlfont.toString()+" \";");
+				if (OptTypeDirection.Confirm.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){
+						sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=confirm(\'" + url + "\',\'" + dataGridUrl.getMessage() + "\',\'"+name+"\')" + style.toString() + "> "+urlfont.toString()+" \";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\' onclick=confirm(\'" + url + "\',\'" + dataGridUrl.getMessage() + "\',\'"+name+"\')" + style.toString() + "> \";");
+					}
+
+				}
+				if (OptTypeDirection.Del.equals(dataGridUrl.getType())) {
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=delObj(\'" + url + "\',\'"+name+"\')" + style.toString() + "> "+urlfont.toString()+" \";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\'  onclick=delObj(\'" + url + "\',\'"+name+"\')" + style.toString() + ">\";");
+					}
+					
+				}
+				if (OptTypeDirection.Fun.equals(dataGridUrl.getType())) {
+					String name = TagUtil.getFunction(dataGridUrl.getFunname());
+					String parmars = TagUtil.getFunParams(dataGridUrl.getFunname());
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=" + name + "(" + parmars + ")" + style.toString() + "> "+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\'   onclick=" + name + "(" + parmars + ")" + style.toString() + ">\";");
+					}
+					
+				}
+				if (OptTypeDirection.OpenWin.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\' "+urlclass.toString()+" onclick=openwindow('" + dataGridUrl.getTitle() + "','" + url + "','"+name+"'," + dataGridUrl.getWidth() + "," + dataGridUrl.getHeight() + ")" + style.toString() + ">"+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\' onclick=openwindow('" + dataGridUrl.getTitle() + "','" + url + "','"+name+"'," + dataGridUrl.getWidth() + "," + dataGridUrl.getHeight() + ")" + style.toString() + ">\";");
+					}
+
+				}															//update-end--Author:liuht  Date:20130228 for：弹出窗口设置参数不生效
+				if (OptTypeDirection.Deff.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){
+						sb.append("href+=\"<a href=\'" + url + "' "+urlclass.toString()+" title=\'"+dataGridUrl.getTitle()+"\'" + style.toString() + ">"+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'" + url + "' title=\'"+dataGridUrl.getTitle()+"\'" + style.toString() + ">\";");
+					}
+
+				}
+
+				if (OptTypeDirection.OpenTab.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\' "+urlclass.toString()+" onclick=addOneTab('" + dataGridUrl.getTitle() + "','" + url  + "') "+ style.toString() +">"+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\' onclick=addOneTab('" + dataGridUrl.getTitle() + "','" + url  + "') "+ style.toString() +">\";");
+					}
+
+				}
+				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接后面的"]";
+					sb.append("href+=\"" + dataGridUrl.getTitle() + "</a>&nbsp;\";");
 				}else{
-					sb.append("href+=\"[<a href=\'#\'  onclick=delObj(\'" + url + "\',\'"+name+"\')" + style.toString() + ">\";");
+					sb.append("href+=\"" + dataGridUrl.getTitle() + "</a>]\";");
 				}
 				
-			}
-			if (OptTypeDirection.Fun.equals(dataGridUrl.getType())) {
-				String name = TagUtil.getFunction(dataGridUrl.getFunname());
-				String parmars = TagUtil.getFunParams(dataGridUrl.getFunname());
-				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
-					sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=" + name + "(" + parmars + ")" + style.toString() + "> "+urlfont.toString()+"\";");
-				}else{
-					sb.append("href+=\"[<a href=\'#\'   onclick=" + name + "(" + parmars + ")" + style.toString() + ">\";");
+
+				if (StringUtil.isNotEmpty(exp)) {
+					for (int i = 0; i < exp.split("&&").length; i++) {
+						sb.append("}");
+					}
+
 				}
-				
-			}
-			if (OptTypeDirection.OpenWin.equals(dataGridUrl.getType())) {
-
-				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
-					sb.append("href+=\"<a href=\'#\' "+urlclass.toString()+" onclick=openwindow('" + dataGridUrl.getTitle() + "','" + url + "','"+name+"'," + dataGridUrl.getWidth() + "," + dataGridUrl.getHeight() + ")" + style.toString() + ">"+urlfont.toString()+"\";");
-				}else{
-					sb.append("href+=\"[<a href=\'#\' onclick=openwindow('" + dataGridUrl.getTitle() + "','" + url + "','"+name+"'," + dataGridUrl.getWidth() + "," + dataGridUrl.getHeight() + ")" + style.toString() + ">\";");
-				}
-
-			}															//update-end--Author:liuht  Date:20130228 for：弹出窗口设置参数不生效
-			if (OptTypeDirection.Deff.equals(dataGridUrl.getType())) {
-
-				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){
-					sb.append("href+=\"<a href=\'" + url + "' "+urlclass.toString()+" title=\'"+dataGridUrl.getTitle()+"\'" + style.toString() + ">"+urlfont.toString()+"\";");
-				}else{
-					sb.append("href+=\"[<a href=\'" + url + "' title=\'"+dataGridUrl.getTitle()+"\'" + style.toString() + ">\";");
-				}
-
-			}
-
-			if (OptTypeDirection.OpenTab.equals(dataGridUrl.getType())) {
-
-				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
-					sb.append("href+=\"<a href=\'#\' "+urlclass.toString()+" onclick=addOneTab('" + dataGridUrl.getTitle() + "','" + url  + "') "+ style.toString() +">"+urlfont.toString()+"\";");
-				}else{
-					sb.append("href+=\"[<a href=\'#\' onclick=addOneTab('" + dataGridUrl.getTitle() + "','" + url  + "') "+ style.toString() +">\";");
-				}
-
-			}
-			if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接后面的"]";
-				sb.append("href+=\"" + dataGridUrl.getTitle() + "</a>&nbsp;\";");
-			}else{
-				sb.append("href+=\"" + dataGridUrl.getTitle() + "</a>]\";");
-			}
-			
-
-			if (StringUtil.isNotEmpty(exp)) {
-				for (int i = 0; i < exp.split("&&").length; i++) {
-					sb.append("}");
-				}
-
 			}
 		}
+
+		if(hasGroup()){
+			getGroupUrl(sb);
+		}
+
 		sb.append("return href;");
 	}
 
+	/**
+	 * 分组按钮拼装
+	 * 
+	 * @param sb
+	 */
+	protected void getGroupUrl(StringBuffer sb) {
+		//注：操作列表会带入合计列中去，故加此判断
+		List<DataGridUrl> list = urlList;
+		//<i class='fa fa-angle-double-right'></i>更多
+		sb.append("href+=\"<a href='javascript:void(0)' class='opts-menu-triangle btnmy'> <span class='opts-menu-temp icon-triangle'></span>更多</a>\";");
+	/*	sb.append("href+=\"<div class='opts-menu-triangle icon-triangle' title='更多操作'></div>\";");*/
+		sb.append("href+=\"<div class='opts-menu-container location-left'>\";");
+		sb.append("href+=\"<div class='opts-menu-parent'>\";");
+		sb.append("href+=\"<div class='opts-menu-box'>\";");
+		for (DataGridUrl dataGridUrl : list) {
+			if(dataGridUrl.isInGroup()){
+				String url = dataGridUrl.getUrl();
+				MessageFormat formatter = new MessageFormat("");
+				if (dataGridUrl.getValue() != null) {
+					String[] testvalue = dataGridUrl.getValue().split(",");
+					List value = new ArrayList<Object>();
+					for (String string : testvalue) {
+						value.add("\"+rec." + string + " +\"");
+					}
+					url = formatter.format(url, value.toArray());
+				}
+				if (url != null && dataGridUrl.getValue() == null) {
+
+					//url = formatUrl(url);
+					url = formatUrlPlus(url);
+
+				}
+				String exp = dataGridUrl.getExp();// 判断显示表达式
+				if (StringUtil.isNotEmpty(exp)) {
+					String[] ShowbyFields = exp.split("&&");
+					for (String ShowbyField : ShowbyFields) {
+						int beginIndex = ShowbyField.indexOf("#");
+						int endIndex = ShowbyField.lastIndexOf("#");
+						String exptype = ShowbyField.substring(beginIndex + 1, endIndex);// 表达式类型
+						String field = ShowbyField.substring(0, beginIndex);// 判断显示依据字段
+						String[] values = ShowbyField.substring(endIndex + 1, ShowbyField.length()).split(",");// 传入字段值
+						String value = "";
+						for (int i = 0; i < values.length; i++) {
+							value += "'" + "" + values[i] + "" + "'";
+							if (i < values.length - 1) {
+								value += ",";
+							}
+						}
+						if ("eq".equals(exptype)) {
+							sb.append("if($.inArray(rec." + field + ",[" + value + "])>=0){");
+						}
+						if ("ne".equals(exptype)) {
+							sb.append("if($.inArray(rec." + field + ",[" + value + "])<0){");
+						}
+						if ("empty".equals(exptype) && value.equals("'true'")) {
+							sb.append("if(rec." + field + "==''){");
+						}
+						if ("empty".equals(exptype) && value.equals("'false'")) {
+							sb.append("if(rec." + field + "!=''){");
+						}
+					}
+				}
+
+				StringBuffer style = new StringBuffer();
+				if (!StringUtil.isEmpty(dataGridUrl.getUrlStyle())) {
+					style.append(" style=\'");
+					style.append(dataGridUrl.getUrlStyle());
+					style.append("\' ");
+				}
+
+				StringBuffer urlclass = new StringBuffer();
+
+				if(StringUtil.isEmpty(dataGridUrl.getUrlclass())){
+					dataGridUrl.setUrlclass("btn btn-default ops-more");
+				}
+				urlclass.append(" class=\'"+dataGridUrl.getUrlclass()+"\'");
+
+				StringBuffer urlfont = new StringBuffer();
+				if(!StringUtil.isEmpty(dataGridUrl.getUrlfont())){
+					urlfont.append(" <i class=\' fa ");
+					urlfont.append(dataGridUrl.getUrlfont());
+					urlfont.append("\'></i>");			
+				}
+
+				if (OptTypeDirection.Confirm.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){
+						sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=confirm(\'" + url + "\',\'" + dataGridUrl.getMessage() + "\',\'"+name+"\')" + style.toString() + "> "+urlfont.toString()+" \";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\' onclick=confirm(\'" + url + "\',\'" + dataGridUrl.getMessage() + "\',\'"+name+"\')" + style.toString() + "> \";");
+					}
+
+				}
+				if (OptTypeDirection.Del.equals(dataGridUrl.getType())) {
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=delObj(\'" + url + "\',\'"+name+"\')" + style.toString() + "> "+urlfont.toString()+" \";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\'  onclick=delObj(\'" + url + "\',\'"+name+"\')" + style.toString() + ">\";");
+					}
+					
+				}
+				if (OptTypeDirection.Fun.equals(dataGridUrl.getType())) {
+					String name = TagUtil.getFunction(dataGridUrl.getFunname());
+					String parmars = TagUtil.getFunParams(dataGridUrl.getFunname());
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\'  "+urlclass.toString()+"  onclick=" + name + "(" + parmars + ")" + style.toString() + "> "+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\'   onclick=" + name + "(" + parmars + ")" + style.toString() + ">\";");
+					}
+					
+				}
+				if (OptTypeDirection.OpenWin.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\' "+urlclass.toString()+" onclick=openwindow('" + dataGridUrl.getTitle() + "','" + url + "','"+name+"'," + dataGridUrl.getWidth() + "," + dataGridUrl.getHeight() + ")" + style.toString() + ">"+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\' onclick=openwindow('" + dataGridUrl.getTitle() + "','" + url + "','"+name+"'," + dataGridUrl.getWidth() + "," + dataGridUrl.getHeight() + ")" + style.toString() + ">\";");
+					}
+
+				}															//update-end--Author:liuht  Date:20130228 for：弹出窗口设置参数不生效
+				if (OptTypeDirection.Deff.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){
+						sb.append("href+=\"<a href=\'" + url + "' "+urlclass.toString()+" title=\'"+dataGridUrl.getTitle()+"\'" + style.toString() + ">"+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'" + url + "' title=\'"+dataGridUrl.getTitle()+"\'" + style.toString() + ">\";");
+					}
+
+				}
+
+				if (OptTypeDirection.OpenTab.equals(dataGridUrl.getType())) {
+
+					if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接前面的"[";
+						sb.append("href+=\"<a href=\'#\' "+urlclass.toString()+" onclick=addOneTab('" + dataGridUrl.getTitle() + "','" + url  + "') "+ style.toString() +">"+urlfont.toString()+"\";");
+					}else{
+						sb.append("href+=\"[<a href=\'#\' onclick=addOneTab('" + dataGridUrl.getTitle() + "','" + url  + "') "+ style.toString() +">\";");
+					}
+
+				}
+				if(!StringUtil.isEmpty(dataGridUrl.getUrlclass())){//倘若urlclass不为空，则去掉链接后面的"]";
+					sb.append("href+=\"" + dataGridUrl.getTitle() + "</a>&nbsp;\";");
+				}else{
+					sb.append("href+=\"" + dataGridUrl.getTitle() + "</a>]\";");
+				}
+				if (StringUtil.isNotEmpty(exp)) {
+					for (int i = 0; i < exp.split("&&").length; i++) {
+						sb.append("}");
+					}
+
+				}
+			}
+		}
+		sb.append("href+=\"</div></div><em class='ops_shadeEm' style='display: inline;'></em></div></div>\";");
+	}
+
+	
 	/**
 	 * 列自定义函数
 	 * 
@@ -2700,36 +2973,46 @@ public class DataGridTag extends TagSupport {
 				if(column.getExtendParams().indexOf("editor:'combobox'")>-1){//倘若扩展参数中包含editor:'combobox'
 					if(!StringUtil.isEmpty(column.getDictionary())){//根据数据字典生成editor:'combobox'
 						if(column.getDictionary().contains(",")){
-							String[] dic = column.getDictionary().split(",");
-							String sql = "select " + dic[1] + " as field," + dic[2]+ " as text from " + dic[0];
 
-							if(!StringUtil.isEmpty(column.getDictCondition())){
-								sql += " "+column.getDictCondition();
+							if(column.isPopup()){
+								//TODO popup值转换处理，此处暂不处理
+							}else{
+								if(column.getIsAjaxDict()){
+									//TODO ajax值转换处理，此处暂不处理
+
+								}else{
+									String[] dic = column.getDictionary().split(",");
+									String sql = "select " + dic[1] + " as field," + dic[2]+ " as text from " + dic[0];
+
+									if(!StringUtil.isEmpty(column.getDictCondition())){
+										sql += " "+column.getDictCondition();
+									}
+
+									systemService = ApplicationContextUtil.getContext().getBean(SystemService.class);
+									List<Map<String, Object>> list = systemService.findForJdbc(sql);
+									
+									comboboxStr.append("editor:{type:'combobox',options:{valueField:'typecode',textField:'typename',data:[");
+
+									for (Map<String, Object> map : list){
+										comboboxStr.append("{'typecode':'"+map.get("field")+"','typename':'"+map.get("text")+"'},");
+									}
+									comboboxStr.append("],required:true}}");
+									//再增加formatter参数
+									
+									comboboxStr.append(",formatter:function(value,row){");
+									for (Map<String, Object> map : list){
+										comboboxStr.append("if(value =='"+map.get("field")+"'){");
+										comboboxStr.append("return '"+map.get("text")+"';");
+										comboboxStr.append("}");
+									}
+									comboboxStr.append("return value;");
+
+									comboboxStr.append("}");
+								}
 							}
 
-							systemService = ApplicationContextUtil.getContext().getBean(SystemService.class);
-							List<Map<String, Object>> list = systemService.findForJdbc(sql);
-							
-							comboboxStr.append("editor:{type:'combobox',options:{valueField:'typecode',textField:'typename',data:[");
-
-							for (Map<String, Object> map : list){
-								comboboxStr.append("{'typecode':'"+map.get("field")+"','typename':'"+map.get("text")+"'},");
-							}
-							comboboxStr.append("],required:true}}");
-							//再增加formatter参数
-							
-							comboboxStr.append(",formatter:function(value,row){");
-							for (Map<String, Object> map : list){
-								comboboxStr.append("if(value =='"+map.get("field")+"'){");
-								comboboxStr.append("return '"+map.get("text")+"';");
-								comboboxStr.append("}");
-							}
-							comboboxStr.append("return value;");
-
-							comboboxStr.append("}");
 						}else{
-							Map<String, List<TSType>> typedatas = ResourceUtil.allTypes;
-							List<TSType> types = typedatas.get(column.getDictionary().toLowerCase());
+							List<TSType> types = ResourceUtil.getCacheTypes(column.getDictionary().toLowerCase());
 							if (types != null) {
 								comboboxStr.append("editor:{type:'combobox',options:{valueField:'typecode',textField:'typename',data:[");
 								for (TSType type : types) {
@@ -2822,7 +3105,9 @@ public class DataGridTag extends TagSupport {
 	            	sb.append("if(value.indexOf('.jpg')>-1 || value.indexOf('.png')>-1 || value.indexOf('.jpeg')>-1 || value.indexOf('.gif') > -1){");
 	            	sb.append(" html = '<img onMouseOver=\"tipImg(this)\" onMouseOut=\"moveTipImg()\" src=\"'+value+'\" width=50 height=50/>';");
 	            	sb.append("}else{");
-	                sb.append(" html = '<a class=\"ace_button fa fa-download\" style=\"padding:3px 5px;\" target=\"_blank\" href=\"'+value+'\">"
+
+	                sb.append(" html = '<a class=\"ace_button fa fa-download\" style=\"padding:3px 5px;\" target=\"_blank\" href=\"systemController/downloadFile.do?filePath='+value+'\">"
+
 	                		+ column.getDownloadName() + "</a>';}");
 	                sb.append("return html;}");
 
@@ -2857,32 +3142,43 @@ public class DataGridTag extends TagSupport {
 
 				else if (columnValueList.size() > 0 && StringUtil.isNotEmpty(column.getField()) && !column.getField().equals("opt")) {// 值替換
 
-					String testString = "";
-					for (ColumnValue columnValue : columnValueList) {
-						if (columnValue.getName().equals(column.getField())) {
-							String[] value = columnValue.getValue().split(",");
-							String[] text = columnValue.getText().split(",");
-							sb.append(",formatter:function(value,rec,index){");
-							sb.append("if(value==undefined) return '';");
-							sb.append("var valArray = value.split(',');");
-							sb.append("if(valArray.length > 1){");
-							sb.append("var checkboxValue = '';");
-							sb.append("for(var k=0; k<valArray.length; k++){");
-							for(int j = 0; j < value.length; j++){
-								sb.append("if(valArray[k] == '" + value[j] + "'){ checkboxValue = checkboxValue + \'" + text[j] + "\' + ',';}");
+					if(column.getDictionary()!=null&&column.getDictionary().contains(",")&&column.getIsAjaxDict()){
+						sb.append(",formatter:function(value,rec,index){");
+						sb.append("var rtn = \"<span name=\\\"ajaxDict\\\" dictionary=\\\""+column.getDictionary()
+								+"\\\" dictCondition=\\\""+(column.getDictCondition()==null?"":column.getDictCondition())
+								+"\\\" popup=\\\""+column.isPopup()
+								+"\\\" value=\\\"\"+value+\"\\\"><img src='plug-in/easyui/themes/icons/loading.gif'/></span>\";");
+						sb.append("return rtn;");
+						sb.append("}");
+					}else{
+						String testString = "";
+						for (ColumnValue columnValue : columnValueList) {
+							if (columnValue.getName().equals(column.getField())) {
+								String[] value = columnValue.getValue().split(",");
+								String[] text = columnValue.getText().split(",");
+								sb.append(",formatter:function(value,rec,index){");
+								sb.append("if(value==undefined) return '';");
+								sb.append("var valArray = value.split(',');");
+								sb.append("if(valArray.length > 1){");
+								sb.append("var checkboxValue = '';");
+								sb.append("for(var k=0; k<valArray.length; k++){");
+								for(int j = 0; j < value.length; j++){
+									sb.append("if(valArray[k] == '" + value[j] + "'){ checkboxValue = checkboxValue + \'" + text[j] + "\' + ',';}");
+								}
+								sb.append("}");
+								sb.append("return checkboxValue.substring(0,checkboxValue.length-1);");
+								sb.append("}");
+								sb.append("else{");
+								for (int j = 0; j < value.length; j++) {
+									testString += "if(value=='" + value[j] + "'){return \'" + text[j] + "\';}";
+								}
+								sb.append(testString);
+								sb.append("else{return value;}");
+								sb.append("}");
+								sb.append("}");
 							}
-							sb.append("}");
-							sb.append("return checkboxValue.substring(0,checkboxValue.length-1);");
-							sb.append("}");
-							sb.append("else{");
-							for (int j = 0; j < value.length; j++) {
-								testString += "if(value=='" + value[j] + "'){return \'" + text[j] + "\';}";
-							}
-							sb.append(testString);
-							sb.append("else{return value;}");
-							sb.append("}");
-							sb.append("}");
 						}
+
 					}
 				}
 			}
@@ -2971,7 +3267,6 @@ public class DataGridTag extends TagSupport {
 	}
   
 	public String getNoAuthOperButton(){
-
 		StringBuffer sb = new StringBuffer();
 		if(ResourceUtil.getSessionUser().getUserName().equals("admin")|| !Globals.BUTTON_AUTHORITY_CHECK){
 		}else{
@@ -2997,7 +3292,6 @@ public class DataGridTag extends TagSupport {
 			}
 			
 		}
-
 		//org.jeecgframework.core.util.LogUtil.info("----getNoAuthOperButton-------"+sb.toString());
 		return sb.toString(); 
 	}
@@ -3146,7 +3440,6 @@ public class DataGridTag extends TagSupport {
 			sb.append("<link rel=\"stylesheet\" href=\"plug-in/bootstrap/css/bootstrap-btn.css\" type=\"text/css\"></link>");    
 		}
 
-
 		width = (width == null) ? "auto" : width;
 		height = (height == null) ? "auto" : height;
 //		sb.append("<link rel=\"stylesheet\" href=\"plug-in/easyui/themes/metro/main.css\" />");
@@ -3161,11 +3454,9 @@ public class DataGridTag extends TagSupport {
 		} else {
 			grid = "datagrid";
 			sb.append("$(\'#" + name + "\').datagrid({");
-
 			if (this.isFilter()) {
 				sb.append("onHeaderContextMenu: function(e, field){headerMenu(e, field);},");
 			}
-
 			sb.append("idField: '" + idField + "',");
 		}
 		if (title != null) {
@@ -3376,8 +3667,7 @@ public class DataGridTag extends TagSupport {
 									}
 									sb.append("</select>");
 								}else{
-									Map<String, List<TSType>> typedatas = ResourceUtil.allTypes;
-									List<TSType> types = typedatas.get(col.getDictionary().toLowerCase());
+									List<TSType> types = ResourceUtil.getCacheTypes(col.getDictionary().toLowerCase());
 									sb.append("<select name=\""+col.getField().replaceAll("_","\\.")+"\" WIDTH=\"100\" style=\"width: 104px\"> ");
 									sb.append(StringUtil.replaceAll("<option value =\"\" >{0}</option>", "{0}", MutiLangUtil.getLang("common.please.select")));
 									for (TSType type : types) {
@@ -3735,8 +4025,7 @@ appendLine(sb,"					}}\">关系</th>");
 		appendLine(sb,"<th data-options=\"field:'condition',width:20,align:'right',formatter:function(value,row){");
 		appendLine(sb,"							var data=  ");
 		appendLine(sb,"					[  ");
-		Map<String, List<TSType>> typedatas = ResourceUtil.allTypes;
-		List<TSType> types = typedatas.get("rulecon");
+		List<TSType> types = ResourceUtil.getCacheTypes("rulecon");
 		if (types != null) {
 			for (int i=0;i<types.size();i++){
 				TSType type = types.get(i);
@@ -3783,7 +4072,6 @@ appendLine(sb,"					}}\">关系</th>");
 		appendLine(sb,"	</table>");
 		appendLine(sb,"</div>");
 		appendLine(sb,"<div data-options=\"region:'south',border:false\" style=\"text-align:right;padding:5px 0 3px;\">");
-
 		if (btnCls != null && !btnCls.equals("easyui")) {
 			String defalutCls = "btn btn-default btn-xs";
 			if (btnCls.replace("bootstrap", "").trim().length() > 0) {
@@ -3796,7 +4084,6 @@ appendLine(sb,"					}}\">关系</th>");
 			appendLine(sb,"<a class=\""+buttonSytle+"\" data-options=\"iconCls:'icon-ok'\" href=\"javascript:void(0)\" onclick=\"javascript:queryBuilderSearch()\">确定</a>");
 			appendLine(sb,"<a class=\""+buttonSytle+"\" data-options=\"iconCls:'icon-cancel'\" href=\"javascript:void(0)\" onclick=\"javascript:$('#"+name+"_qbwin').window('close')\">取消</a>");
 		}
-
 		
 		appendLine(sb,"		</div>");
 		appendLine(sb,"	</div>	");
@@ -3825,14 +4112,12 @@ appendLine(sb,"					}}\">关系</th>");
 			if (btnCls.replace("bootstrap", "").trim().length() > 0) {
 				defalutCls = btnCls.replace("bootstrap", "").trim();
 			}
-
 			sb.append("var toolbar = '<div>");
 			sb.append("<button class=\""+defalutCls+"\" onclick=\"append()\">&nbsp;<i class=\"fa fa-plus\"></i>&nbsp;</button>");
 			sb.append("<button class=\""+defalutCls+"\" onclick=\"edit()\">&nbsp;<i class=\"fa fa-pencil-square-o\"></i></button>");
 			sb.append("<button class=\""+defalutCls+"\" onclick=\"removeIt()\">&nbsp;<i class=\"fa fa-trash\"></i></button>");
 			sb.append("<button class=\""+defalutCls+"\" onclick=\"save()\">&nbsp;<i class=\"fa fa-save\"></i></button>");
 			sb.append("</div>';");
-
 			
 		}else{		
 			appendLine(sb,"var toolbar = [{");
@@ -4022,6 +4307,18 @@ appendLine(sb,"					}}\">关系</th>");
 		mainConfig.put("valueList", columnValueList);
 
 		String superQuery = free.parseTemplate("/org/jeecgframework/tag/ftl/superquery.ftl", mainConfig);
+		appendLine(sb,superQuery);
+	}
+	/**
+	 * 高级查询bootstrap版
+	 */
+	private void addSuperQueryBootstrap(StringBuffer sb,String buttonSytle,List<DataGridColumn> columnList) {
+		FreemarkerHelper free = new FreemarkerHelper();
+		Map<String, Object> mainConfig = new HashMap<String, Object>();
+		mainConfig.put("fields", columnList);
+		mainConfig.put("tableName", name);
+		mainConfig.put("valueList", columnValueList);
+		String superQuery = free.parseTemplate("/org/jeecgframework/tag/ftl/superqueryBootstrap.ftl", mainConfig);
 		appendLine(sb,superQuery);
 	}
 
@@ -4289,6 +4586,29 @@ appendLine(sb,"					}}\">关系</th>");
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * 列表中是否有分组的按钮
+	 * @param urlList
+	 * @return
+	 */
+	public boolean hasGroup(){
+		boolean flag = false;
+		for (DataGridColumn column : columnList) {
+			if (StringUtil.isNotEmpty(column.getField()) && column.getField().equals("opt")){
+				if(column.isOptsMenu()){
+					return false;	
+				}
+			}
+		}
+		for (DataGridUrl dataGridUrl : urlList) {
+			if(dataGridUrl.isInGroup()){
+				flag = true;
+				break;
+			}
+		}
+		return flag;
 	}
 
 	public String getFields() {

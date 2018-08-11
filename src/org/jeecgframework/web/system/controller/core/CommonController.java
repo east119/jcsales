@@ -26,6 +26,7 @@ import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.tag.vo.easyui.Autocomplete;
 import org.jeecgframework.web.system.pojo.base.TSAttachment;
 import org.jeecgframework.web.system.service.SystemService;
+import org.jeecgframework.web.system.service.TSDictTableConfigServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -51,6 +52,8 @@ public class CommonController extends BaseController {
 	 */
 	private static final Logger logger = Logger.getLogger(CommonController.class);
 	private SystemService systemService;
+	@Autowired
+	private TSDictTableConfigServiceI tSDictTableConfigService;
 
 	@Autowired
 	public void setSystemService(SystemService systemService) {
@@ -346,6 +349,36 @@ public class CommonController extends BaseController {
 		}else{
 			return "no";
 		}
+	}
+
+	/**
+	 * @param dictionary 自定义字典(格式：表名,编码,显示文本)
+	 * @param dictCondition 自定义字典表的显示文本-字典查询条件
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(params = "getDictInfo")
+	@ResponseBody
+	public AjaxJson getDictInfo(String dictionary,String dictCondition,Boolean popup,String value, HttpServletRequest request) {
+		String message = null;
+		AjaxJson j = new AjaxJson();
+
+		Object text = "--";
+		if(popup){
+			//TODO popup处理  (暂不做处理)
+			text="-- popup暂不支持ajax --";
+		}else{
+			boolean flag = tSDictTableConfigService.checkDictAuth(dictionary, dictCondition);
+			if(flag){
+				text = tSDictTableConfigService.getDictText(dictionary, dictCondition, value);
+			}else{
+				text="-- 字典配置需要授权 --";
+			}
+		}
+
+		j.setObj(text);
+		j.setMsg(message);
+		return j;
 	}
 
 

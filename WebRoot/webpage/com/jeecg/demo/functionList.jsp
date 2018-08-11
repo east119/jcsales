@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <t:base type="jquery,easyui,tools,DatePicker"></t:base>
-<div id="system_function_functionList" class="easyui-layout" fit="true"><%--   update-end--Author:duanql  Date:20130619 for：操作按钮窗口显示控制--%>
+<div id="system_function_functionList" class="easyui-layout" fit="true">
 <div region="center" style="padding:0px;border:0px">
 	<t:datagrid name="functionDemoList" title="menu.manage" actionUrl="jeecgFormDemoController.do?functionGrid" idField="id" treegrid="true" pagination="true" pageSize="5">
         <t:dgCol title="common.id" field="id" treefield="id" hidden="true"></t:dgCol>

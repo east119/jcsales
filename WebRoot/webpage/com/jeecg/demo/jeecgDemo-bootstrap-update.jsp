@@ -6,35 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width" />
 <title>表单管理</title>
-
-<!-- Jquery组件引用 -->
-<script src="plug-in/jquery/jquery-1.9.1.js"></script>
-<!-- <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script> -->
-
-<!-- bootstrap组件引用 -->
-<link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
-<script src="plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-<!-- <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
-
-<!-- icheck组件引用 -->
-<link href="plug-in/icheck-1.x/skins/square/_all.css" rel="stylesheet">
-<script type="text/javascript" src="plug-in/icheck-1.x/icheck.js"></script>
-
-<!-- Validform组件引用 -->
-<link href="plug-in/themes/bootstrap-ext/css/validform-ext.css" rel="stylesheet" />
-<script type="text/javascript" src="plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/Validform/js/datatype_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
-<!-- Layer组件引用 -->
-<script src="plug-in/layer/layer.js"></script>
-<script src="plug-in/laydate/laydate.js"></script>
-<!-- <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script> -->
-
-<!-- 通用组件引用 -->
-<link href="plug-in/bootstrap3.3.5/css/default.css" rel="stylesheet" />
-<script src="plug-in/themes/bootstrap-ext/js/common.js"></script>
+<t:base type="validform,bootstrap,layer,bootstrap-form,jquery"></t:base>
 </head>
 <body style="margin: 20px">
 	<form id="formobj" action="jeecgListDemoController.do?doUpdate" class="form-horizontal validform" role="form"  method="post">
@@ -74,8 +46,8 @@
 			<label class="col-sm-3 control-label">性别：</label>
 			<div class="col-sm-7">
 				<div class="input-group" style="width:100%">
-					<input type="radio" class="i-checks" name="sex" value="0" <c:if test="${jeecgDemoPage.sex==0}"> checked="checked"</c:if> />男&nbsp;&nbsp;
-					<input type="radio" class="i-checks" name="sex" value="1" <c:if test="${jeecgDemoPage.sex==1}"> checked="checked"</c:if> />女
+					<input type="radio" class="i-checks" name="sex" value="0" <c:if test="${jeecgDemoPage.sex=='0'}"> checked="checked"</c:if> />男&nbsp;&nbsp;
+					<input type="radio" class="i-checks" name="sex" value="1" <c:if test="${jeecgDemoPage.sex=='1'}"> checked="checked"</c:if> />女
 				</div>
 			</div>
 		</div>
@@ -153,8 +125,8 @@
 		$('.i-checks').iCheck({
 			labelHover : false,
 			cursor : true,
-			checkboxClass : 'icheckbox_square-blue',
-			radioClass : 'iradio_square-blue',
+			checkboxClass : 'icheckbox_square-green',
+			radioClass : 'iradio_square-green',
 			increaseArea : '20%'
 		});
 		
@@ -201,7 +173,10 @@
 				} else {
 					win.tip(data.msg,'2');
 				}
-				win.reloadTable();
+				//layui 全局弹窗刷新列表
+				try {
+					win.reloadTable();
+				}catch(e) {}
 			}
 		});
 	});

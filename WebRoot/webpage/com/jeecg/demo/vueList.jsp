@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
@@ -10,61 +11,59 @@
 	<link rel="stylesheet" href="https://unpkg.com/element-ui@1.4/lib/theme-default/index.css">
 	<!-- 引入组件库 -->
 	<script src="https://unpkg.com/element-ui@1.4/lib/index.js"></script>
+	<link rel="stylesheet" href="${webRoot}/plug-in/element-ui/css/elementui-ext.css">
 <style>
 .toolbar {
-    background: #f2f2f2;
     padding: 10px;
     margin: 10px 0;
 }
 .toolbar .el-form-item {
     margin-bottom: 10px;
 }
+.el-table__body-wrapper{overflow:hidden;}
+.el-checkbox__inner{width:16px;height:16px;}
+.el-table th,.el-table__header-wrapper thead div{background-color:#fff;}
 </style>
 </head>
 <body bgcolor="white">
 	<div id="test">
 		<!--工具条-->
-		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;">
+		<!--update-begin-Author:zhangweijian  Date: 20180710 for：TASK #2935 【样式】vue 列表样式尝试优化改进,常用示例-->
+		<el-col :span="24" class="toolbar" style="padding-bottom: 0px;background: #f2f2f2;">
 			<el-form :inline="true" :model="filters">
-				<el-form-item style="margin-bottom: 8px;">
-					<el-input v-model="filters.name" placeholder="姓名"></el-input>
+				<el-form-item style="margin-bottom: 8px;margin-top: 8px;">
+					<el-input v-model="filters.name" placeholder="姓名" size="small"></el-input>
 				</el-form-item>
-				<el-form-item>
-			    	<el-button type="primary" v-on:click="getUsers" >查询</el-button>
+				<el-form-item style="margin-top: 8px;">
+			    	<el-button type="primary" v-on:click="getUsers" size="small">查询</el-button>
 			    </el-form-item>
-			    <el-form-item>
-			    	<el-button type="primary" @click="handleAdd">新增</el-button>
+			    <el-form-item style="margin-top: 8px;">
+		<!--update-end-Author:zhangweijian  Date: 20180710 for：TASK #2935 【样式】vue 列表样式尝试优化改进，常用示例-->
+			    	<el-button type="primary" @click="handleAdd" size="small">新增</el-button>
 			    </el-form-item>
 			</el-form>
 		</el-col>
 
 		<!--列表-->
-		<el-table :data="users" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
-			<el-table-column type="selection" width="55">
-			</el-table-column>
-			<el-table-column type="index" width="60">
-			</el-table-column>
-			<el-table-column prop="name" label="姓名" width="120" sortable>
-			</el-table-column>
-			<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable>
-			</el-table-column>
-			<el-table-column prop="age" label="年龄" width="100" sortable>
-			</el-table-column>
-			<el-table-column prop="birthday" label="生日" width="120" :formatter="formatBirthday"  sortable>
-			</el-table-column>
-			<el-table-column prop="phone" label="电话" min-width="120" sortable>
-			</el-table-column>
+		<el-table :data="users" border stripe size="mini" highlight-current-row v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
+			<el-table-column type="selection" width="55"></el-table-column>
+			<el-table-column type="index" width="60"></el-table-column>
+			<el-table-column prop="name" label="姓名" width="120" sortable show-overflow-tooltip></el-table-column>
+			<el-table-column prop="sex" label="性别" width="100" :formatter="formatSex" sortable show-overflow-tooltip></el-table-column>
+			<el-table-column prop="age" label="年龄" width="100" sortable show-overflow-tooltip></el-table-column>
+			<el-table-column prop="birthday" label="生日" width="120" :formatter="formatBirthday" sortable show-overflow-tooltip></el-table-column>
+			<el-table-column prop="phone" label="电话" min-width="120" sortable show-overflow-tooltip></el-table-column>
 			<el-table-column label="操作" width="150">
 				<template scope="scope">
 					<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-					<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
+					<el-button size="small" type="danger" @click="handleDel(scope.$index, scope.row)">删除</el-button>
 				</template>
 			</el-table-column>
 		</el-table>
 
 		<!--工具条-->
 		<el-col :span="24" class="toolbar">
-			<el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+			<el-button size="small" type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
 			 <el-pagination @current-change="handleCurrentChange" :page-sizes="[10, 20, 50, 100]"
       			:page-size="10" :total="total" layout="sizes, prev, pager, next"  style="float:right;"></el-pagination>
 		</el-col>
@@ -85,7 +84,9 @@
 				<el-form-item label="生日">
 					<el-date-picker type="date" placeholder="选择日期" v-model="editForm.birthday"></el-date-picker>
 				</el-form-item>
-				<el-form-item label="电话">
+				<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题,手机号校验-->
+				<el-form-item label="电话" prop="phone">
+				<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
 					<el-input v-model="editForm.phone"  placeholder="请输入手机号"></el-input>
 				</el-form-item>
 			</el-form>
@@ -106,12 +107,16 @@
 					<el-radio v-model="addForm.sex" :label="0">女</el-radio>
 				</el-form-item>
 				<el-form-item label="年龄">
-					<el-input v-model="addForm.age" :min="0" :max="200"></el-input>
+				<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
+					<el-input v-model="addForm.age" :min="0" :max="200" auto-complete="off"></el-input>
+				<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
 				</el-form-item>
 				<el-form-item label="生日">
 					<el-date-picker type="date" placeholder="选择日期" v-model="addForm.birthday"></el-date-picker>
 				</el-form-item>
-				<el-form-item label="电话">
+				<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
+				<el-form-item label="电话" prop="phone">
+				<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
 					<el-input v-model="addForm.phone" placeholder="请输入手机号"></el-input>
 				</el-form-item>
 			</el-form>
@@ -124,6 +129,21 @@
 	</div>
 </body>
 <script>
+<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
+var validPhone=(rule, value,callback)=>{
+    if (!value){
+        callback(new Error('请输入电话号码'))
+    }else  if (!isvalidPhone(value)){
+      callback(new Error('请输入正确的11位手机号码'))
+    }else {
+        callback()
+    }
+}
+function isvalidPhone(str) {
+	const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+	return reg.test(str)
+}
+<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
 	var vue = new Vue({			
 		el:"#test",
 		data() {
@@ -149,6 +169,11 @@
 				editFormRules: {
 					name: [
 						{ required: true, message: '请输入姓名', trigger: 'blur' }
+					<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题-->
+					],
+					phone: [
+						{ required: true, validator: validPhone, trigger: 'blur' }
+					<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题-->
 					]
 				},
 				//编辑界面数据
@@ -166,6 +191,11 @@
 				addFormRules: {
 					name: [
 						{ required: true, message: '请输入姓名', trigger: 'blur' }
+					<!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题-->
+					],
+					phone: [
+							{ required: true, validator: validPhone, trigger: 'blur' }
+					<!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题-->
 					]
 				},
 				//新增界面数据

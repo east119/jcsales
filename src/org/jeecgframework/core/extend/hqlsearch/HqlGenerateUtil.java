@@ -69,7 +69,6 @@ public class HqlGenerateUtil {
 	 * @throws Exception
 	 */
 	public static void installHql(CriteriaQuery cq, Object searchObj) {
-//		--author：龙金波 ------start---date：20150519--------for：统一函数处理sqlbuilder---------------------------------- 
 		installHql(cq,searchObj,null);
 
 	}
@@ -84,7 +83,6 @@ public class HqlGenerateUtil {
 	 */
 	public static void installHql(CriteriaQuery cq, Object searchObj,Map<String, String[]> parameterMap) {
 		installHqlJoinAlias(cq, searchObj, getRuleMap(), parameterMap, "");
-//		--author：龙金波 ------start---date：20150422--------for：增加一个特殊sql参数处理---------------------------------- 
 		try{
 			String json= null;
 			if(StringUtil.isNotEmpty(cq.getDataGrid().getSqlbuilder())){
@@ -102,7 +100,6 @@ public class HqlGenerateUtil {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-//		--author：龙金波 ------start---date：201504022--------for：增加一个特殊sql参数处理---------------------------------- 
 
 		cq.add();
 	}
@@ -449,6 +446,11 @@ public class HqlGenerateUtil {
 	 * @return
 	 */
 	public static String getSql(List<QueryCondition> list,String tab,Class claszz){
+
+		if(list==null || list.size()==0){
+			return "";
+		}
+
 		StringBuffer sb=new StringBuffer();
 
 		if(list.get(0).getRelation().equals("or")) {

@@ -13,7 +13,7 @@
 			 	 return false;
 		    });  
 			$('#delBtn_JformOrderCustomer2').bind('click', function(){   
-		       $("#add_jformOrderCustomer2_table").find("input:checked").parent().parent().remove();   
+		       $("#add_jformOrderCustomer2_table").find("input[name$='ck']:checked").parent().parent().remove();   
 		        resetTrNum('add_jformOrderCustomer2_table');
 		        return false;
 		    });

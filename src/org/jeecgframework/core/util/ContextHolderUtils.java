@@ -9,12 +9,14 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
 * @ClassName: ContextHolderUtils 
-* @Description: TODO(上下文工具类) 
+* @Description: 上下文工具类
 * @author  张代浩 
 * @date 2012-12-15 下午11:27:39 
 *
  */
 public class ContextHolderUtils {
+	private static final Map<String, HttpSession> sessionMap = new HashMap<String, HttpSession>();
+	
 	/**
 	 * SpringMvc下获取request
 	 * 
@@ -25,7 +27,7 @@ public class ContextHolderUtils {
 		return request;
 
 	}
-
+	
 	/**
 	 * SpringMvc下获取session
 	 * 
@@ -48,9 +50,6 @@ public class ContextHolderUtils {
 		return session;
 	}
 
-	
-	private static final Map<String, HttpSession> sessionMap = new HashMap<String, HttpSession>();
-	
 	public static HttpSession getSession(String sessionId){
 		HttpSession session = sessionMap.get(sessionId);
 		return session == null ? getSession() : session;
@@ -61,5 +60,5 @@ public class ContextHolderUtils {
 			sessionMap.remove(sessionId);
 		}
 	}
-
+	
 }

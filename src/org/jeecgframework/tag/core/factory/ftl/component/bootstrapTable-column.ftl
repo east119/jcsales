@@ -1,6 +1,9 @@
 <#if po.field??>
-	,{field:'${po.field}'
+	 ,{field:'${po.field}'
 	 ,title:'${po.title}'
+<#else>
+	,{title:'${po.title}'
+</#if>
 	 <#if po.hidden>
 	 ,visible:false,cardVisible:false
 	 </#if>
@@ -12,7 +15,10 @@
 	 ,align:'${po.align}'
 	 </#if>
 	 <#if po.rowspan??>
-	 ,rowspan:'${po.rowspan}'
+	 //,rowspan:'${po.rowspan}'
+	 </#if>
+	 <#if po.colspan??>
+	 //,colspan:'${po.colspan}'
 	 </#if>
 	 <#if po.sortable>
 	 ,sortable:${po.sortable}
@@ -34,14 +40,26 @@
 	 		}
 	 	<#elseif po.dictionary??>
 	 		<#if po.dictionary?index_of(",")!=-1>
-	 			,formatter:function(value,row,index){
-	 				<#list ComponentTools.getTableDictData(po) as dict>  
-	 					if(value =='${dict.field}'){
-	 						return '${MutiLangUtil.getLang(dict.text)}';
-	 					}
-					</#list> 
-					return value;
-	 			}
+	 		<#-- update-begin-author:zhoujf date:20180712 for:TASK #2809 【bug】网友反馈问题，字典性能问题 -->
+	 		    <#if po.isAjaxDict>
+	 		    	${ComponentTools.getAjaxDict(po)}
+	 		    <#else>
+		 			,formatter:function(value,row,index){
+		 				<#list ComponentTools.getTableDictData(po) as dict>  
+		 					if(value =='${dict.field}'){
+		 						return '${MutiLangUtil.getLang(dict.text)}';
+		 					}
+						</#list> 
+						return value;
+		 			}
+	 			</#if>
+	 		<#-- update-end-author:zhoujf date:20180712 for:TASK #2809 【bug】网友反馈问题，字典性能问题 -->
+	 		<#elseif dataGrid.columnValueList?size gt 0>
+	 			<#list dataGrid.columnValueList as columnValue>  
+			 	    <#if columnValue.name == po.field>
+			 			${ComponentTools.getColumnValue(columnValue)}
+					</#if>
+				</#list>
 	 		<#else>
 	 			,formatter:function(value,row,index){
 	 				<#list ComponentTools.getDictData(po) as dict>  
@@ -86,14 +104,17 @@
 	 		}
 	 	<#elseif dataGrid.columnValueList?size gt 0>
 	 		<#list dataGrid.columnValueList as columnValue>  
-	 	    <#if columnValue.name == po.field>
-	 			${ComponentTools.getCellStyle(columnValue)}
-			</#if>
+		 	    <#if columnValue.name == po.field>
+		 			${ComponentTools.getColumnValue(columnValue)}
+				</#if>
+			</#list>
+	 	<#elseif dataGrid.columnStyleList?size gt 0>
+	 		<#list dataGrid.columnStyleList as columnValue>  
+		 	    <#if columnValue.name == po.field>
+		 			${ComponentTools.getCellStyle(columnValue)}
+				</#if>
 			</#list>
 	 	</#if>
 	 </#if>
  	
-	 }
-</#if>
-
-								
+	 }								

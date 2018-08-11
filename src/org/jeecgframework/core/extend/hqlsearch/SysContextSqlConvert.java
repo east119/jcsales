@@ -49,7 +49,6 @@ public class SysContextSqlConvert {
 			return sqlValue;
 		}
 
-		//-----------------------------------------------------------------------
 		//#{sys_user_code}%
 		String ValueTemp = dataRule.getRuleValue();
 		String moshi = "";
@@ -63,7 +62,6 @@ public class SysContextSqlConvert {
 		} else {
 			ValueTemp = ValueTemp;
 		}
-		//-----------------------------------------------------------------------
 		String tempValue = null;
 
 		tempValue = ResourceUtil.converRuleValue(ValueTemp);

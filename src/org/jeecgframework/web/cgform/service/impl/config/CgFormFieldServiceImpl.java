@@ -428,7 +428,6 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 						.valueOf(mainE.getSubTableStr() == null ? "" : mainE
 								.getSubTableStr());
 				// step.5 判断是否已经存在于附表串
-
 				if(StringUtils.isNotBlank(subTableStr)){
 					String[] str=subTableStr.split(",");
 					if(!oConvertUtils.isIn(thisSubTable, str)){
@@ -448,7 +447,6 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 			}
 		}
  		return true;
-
 	}
 
 	
@@ -474,7 +472,6 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 								.getSubTableStr());
 				// step.5 判断是否已经存在于附表串
 				if (subTableStr.contains(thisSubTable)) {
-
 					String[] str=subTableStr.split(",");
 					for(int i=0;i<str.length;i++){
 						if(str[i].equals(thisSubTable)){
@@ -805,8 +802,6 @@ public class CgFormFieldServiceImpl extends CommonServiceImpl implements
 		if (StringUtils.isBlank(ids.toString())) {
 			return new ArrayList<Map<String,Object>>();
 		}
-
 		return cgFormFieldDao.getPeizhiCountByIds(ids.toString().replaceFirst(",", ""));
 	}
-
 }

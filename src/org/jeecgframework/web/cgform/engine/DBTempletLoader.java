@@ -1,7 +1,6 @@
 package org.jeecgframework.web.cgform.engine;
 
 import freemarker.cache.TemplateLoader;
-import org.jeecgframework.core.util.ContextHolderUtils;
 import org.jeecgframework.core.util.LogUtil;
 import org.jeecgframework.web.cgform.common.CgAutoListConstant;
 import org.jeecgframework.web.cgform.common.FormHtmlUtil;
@@ -200,7 +199,9 @@ public class DBTempletLoader implements TemplateLoader {
 					if(fieldMap.get(thStr)!=null){
 						CgFormFieldEntity cgFormFieldEntity = fieldMap.get(thStr);
 						if("Y".equals(cgFormFieldEntity.getIsShow())){
-							inputStr = FormHtmlUtil.getFormHTML(cgFormFieldEntity);
+
+							inputStr = FormHtmlUtil.getFormHTML(cgFormFieldEntity,tableName);
+
 							inputStr +="<span class=\"Validform_checktip\">&nbsp;</span>";
 						}
 					}

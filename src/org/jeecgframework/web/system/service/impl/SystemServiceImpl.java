@@ -1,6 +1,8 @@
 package org.jeecgframework.web.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -8,8 +10,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
 import org.jeecgframework.core.annotation.Ehcache;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
@@ -37,8 +37,11 @@ import org.jeecgframework.web.system.pojo.base.TSRoleUser;
 import org.jeecgframework.web.system.pojo.base.TSType;
 import org.jeecgframework.web.system.pojo.base.TSTypegroup;
 import org.jeecgframework.web.system.pojo.base.TSUser;
+import org.jeecgframework.web.system.service.CacheServiceI;
 import org.jeecgframework.web.system.service.SystemService;
 import org.jeecgframework.web.system.util.OrgConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,10 +49,12 @@ import org.springframework.util.StringUtils;
 
 @Service("systemService")
 public class SystemServiceImpl extends CommonServiceImpl implements SystemService {
-	private static final Logger logger = Logger.getLogger(SystemServiceImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(SystemServiceImpl.class);
 	
 	@Autowired
 	private JeecgDictDao jeecgDictDao;
+	@Autowired
+	private CacheServiceI cacheService;
 
 	@Transactional(readOnly = true)
 	public TSUser checkUserExits(TSUser user) throws Exception {
@@ -75,7 +80,7 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	/**
 	 * 添加日志
 	 */
-	public void addLog(String logcontent, Short loglevel, Short operatetype) {
+	public void addLog(String logcontent, Short operatetype, Short loglevel) {
 		HttpServletRequest request = ContextHolderUtils.getRequest();
 		String broswer = BrowserUtils.checkBrowse(request);
 		TSLog log = new TSLog();
@@ -155,44 +160,78 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 	@Transactional(readOnly = true)
 	public void initAllTypeGroups() {
 		List<TSTypegroup> typeGroups = this.commonDao.loadAll(TSTypegroup.class);
+		Map<String, TSTypegroup> typeGroupsList = new HashMap<String, TSTypegroup>();
+		Map<String, List<TSType>> typesList = new HashMap<String, List<TSType>>();
 		for (TSTypegroup tsTypegroup : typeGroups) {
-			ResourceUtil.allTypeGroups.put(tsTypegroup.getTypegroupcode().toLowerCase(), tsTypegroup);
-			List<TSType> types = this.commonDao.findByProperty(TSType.class, "TSTypegroup.id", tsTypegroup.getId());
-			ResourceUtil.allTypes.put(tsTypegroup.getTypegroupcode().toLowerCase(), types);
+			tsTypegroup.setTSTypes(null);
+			typeGroupsList.put(tsTypegroup.getTypegroupcode().toLowerCase(), tsTypegroup);
+			List<TSType> types = this.commonDao.findHql("from TSType where TSTypegroup.id = ? order by orderNum" , tsTypegroup.getId());
+			for(TSType t:types){
+				t.setTSType(null);
+				t.setTSTypegroup(null);
+				t.setTSTypes(null);
+			}
+			typesList.put(tsTypegroup.getTypegroupcode().toLowerCase(), types);
 		}
+		
+		cacheService.put(CacheServiceI.FOREVER_CACHE,ResourceUtil.DICT_TYPE_GROUPS_KEY,typeGroupsList);
+		cacheService.put(CacheServiceI.FOREVER_CACHE,ResourceUtil.DICT_TYPES_KEY,typesList);
+		
+		logger.info("  ------ 初始化字典组 【系统缓存】-----------typeGroupsList-----size: [{}]",typeGroupsList.size());
+		logger.info("  ------ 初始化字典 【系统缓存】-----------typesList-----size: [{}]",typesList.size());
 	}
 
 	@Transactional(readOnly = true)
 	public void refleshTypesCach(TSType type) {
+		Map<String, List<TSType>> typesList = null;
+		TSTypegroup result = null;
+		Object obj = cacheService.get(CacheServiceI.FOREVER_CACHE,ResourceUtil.DICT_TYPES_KEY);
+		if(obj!=null){
+			typesList = (Map<String, List<TSType>>) obj;
+		}else{
+			typesList = new HashMap<String, List<TSType>>();
+		}
 		TSTypegroup tsTypegroup = type.getTSTypegroup();
 		TSTypegroup typeGroupEntity = this.commonDao.get(TSTypegroup.class, tsTypegroup.getId());
-		List<TSType> types = this.commonDao.findByProperty(TSType.class, "TSTypegroup.id", tsTypegroup.getId());
-		ResourceUtil.allTypes.put(typeGroupEntity.getTypegroupcode().toLowerCase(), types);
+
+		List<TSType> tempList = this.commonDao.findHql("from TSType where TSTypegroup.id = ? order by orderNum" , tsTypegroup.getId());
+		List<TSType> types = new ArrayList<TSType>();
+		for(TSType t:tempList){
+			TSType tt = new TSType();
+			tt.setTSType(null);
+			tt.setTSTypegroup(null);
+			tt.setTSTypes(null);
+			tt.setId(t.getId());
+			tt.setOrderNum(t.getOrderNum());
+			tt.setTypecode(t.getTypecode());
+			tt.setTypename(t.getTypename());
+			types.add(tt);
+		}
+
+		typesList.put(typeGroupEntity.getTypegroupcode().toLowerCase(), types);
+		cacheService.put(CacheServiceI.FOREVER_CACHE,ResourceUtil.DICT_TYPES_KEY,typesList);
+		logger.info("  ------ 重置字典缓存【系统缓存】  ----------- typegroupcode: [{}] ",typeGroupEntity.getTypegroupcode().toLowerCase());
 	}
 
 	@Transactional(readOnly = true)
 	public void refleshTypeGroupCach() {
-		ResourceUtil.allTypeGroups.clear();
+		Map<String, TSTypegroup> typeGroupsList = new HashMap<String, TSTypegroup>();
 		List<TSTypegroup> typeGroups = this.commonDao.loadAll(TSTypegroup.class);
 		for (TSTypegroup tsTypegroup : typeGroups) {
-			ResourceUtil.allTypeGroups.put(tsTypegroup.getTypegroupcode().toLowerCase(), tsTypegroup);
+			typeGroupsList.put(tsTypegroup.getTypegroupcode().toLowerCase(), tsTypegroup);
 		}
+		cacheService.put(CacheServiceI.FOREVER_CACHE,ResourceUtil.DICT_TYPE_GROUPS_KEY,typeGroupsList);
+		logger.info("  ------ 重置字典分组缓存&字典缓存【系统缓存】  ------ refleshTypeGroupCach --------  ");
 	}
-
+	
 	/**
 	 * 刷新字典分组缓存&字典缓存
 	 */
 	@Transactional(readOnly = true)
 	public void refreshTypeGroupAndTypes() {
-		ResourceUtil.allTypeGroups.clear();
-		List<TSTypegroup> typeGroups = this.commonDao.loadAll(TSTypegroup.class);
-		for (TSTypegroup tsTypegroup : typeGroups) {
-			ResourceUtil.allTypeGroups.put(tsTypegroup.getTypegroupcode().toLowerCase(), tsTypegroup);
-			List<TSType> types = this.commonDao.findByProperty(TSType.class, "TSTypegroup.id", tsTypegroup.getId());
-			ResourceUtil.allTypes.put(tsTypegroup.getTypegroupcode().toLowerCase(), types);
-		}
+		logger.info("  ------ 重置字典分组缓存&字典缓存【系统缓存】  ------ refreshTypeGroupAndTypes --------  ");
+		this.initAllTypeGroups();
 	}
-
 
 
 	/**
@@ -233,7 +272,6 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 		StringBuilder out = new StringBuilder();
 		out.append("<script type=\"text/javascript\">");
 		out.append("$(document).ready(function(){");
-
 		if(ResourceUtil.getSessionUser().getUserName().equals("admin")|| !Globals.BUTTON_AUTHORITY_CHECK){
 			return "";
 		}else{
@@ -260,12 +298,10 @@ public class SystemServiceImpl extends CommonServiceImpl implements SystemServic
 			}
 			
 		}
-
 		out.append("});");
 		out.append("</script>");
 		return out.toString();
 	}
-
 	
 	@Transactional(readOnly = true)
 	public void flushRoleFunciton(String id, TSFunction newFunction) {

@@ -487,6 +487,11 @@
   			<description>opt列是否有隐藏菜单</description>
   		</attribute>
   		<!-- update-end-Author:taoYan  Date:20180522 for:船舶风格列属性扩展 -->
+  		<attribute>
+			<name>isAjaxDict</name>
+			<rtexprvalue></rtexprvalue>
+			<description>是否开启ajax方式获取字典信息（默认false,开启为true,不开启为false）</description>
+		</attribute>
 	</tag>
 	<tag>
 		<name>dgDelOpt</name>
@@ -553,6 +558,13 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>自定义按钮图标样式</description>
 		</attribute>
+		<!-- update-begin-author:jiaqiankun date:20180713 for：TASK #2872 【新功能】列表按钮改造成配置，支持折叠模式，增加一个参数 -->
+		<attribute>
+			<name>inGroup</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>操作菜单,一开始是否隐藏true/false</description>
+		</attribute>
+		<!-- update-end-author:jiaqiankun date:20180713 for：TASK #2872 【新功能】列表按钮改造成配置，支持折叠模式，增加一个参数 -->
 	</tag>
 	<tag>
 		<name>dgDefOpt</name>
@@ -597,6 +609,13 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>自定义按钮图标样式</description>
 		</attribute>
+		<!-- update-begin-author:jiaqiankun date:20180713 for：TASK #2872 【新功能】列表按钮改造成配置，支持折叠模式，增加一个参数 -->
+		<attribute>
+			<name>inGroup</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>操作菜单,一开始是否隐藏true/false</description>
+		</attribute>
+		<!-- update-end-author:jiaqiankun date:20180713 for：TASK #2872 【新功能】列表按钮改造成配置，支持折叠模式，增加一个参数 -->
 	</tag>
 	<tag>
 		<name>dgOpenOpt</name>
@@ -660,7 +679,7 @@
 		<attribute>
 			<name>inGroup</name>
 			<rtexprvalue>true</rtexprvalue>
-			<description>操作菜单,一开始是否隐藏</description>
+			<description>操作菜单,一开始是否隐藏true/false</description>
 		</attribute>
 		<!-- update-end-author:taoYan date:20180524 for:操作菜单扩展 -->
 	</tag>
@@ -719,7 +738,7 @@
 		<attribute>
 			<name>inGroup</name>
 			<rtexprvalue>true</rtexprvalue>
-			<description>操作菜单,一开始是否隐藏</description>
+			<description>操作菜单,一开始是否隐藏true/false</description>
 		</attribute>
 		<!-- update-end-author:taoYan date:2018524 for:操作菜单扩展 -->
 	</tag>
@@ -784,6 +803,13 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>按钮操作Code</description>
 		</attribute>
+		<!-- update-begin-author:taoyan date:20180717 for:TASK #2873 【新功能】按钮折叠功能 -->
+		<attribute>
+			<name>inGroup</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>是否在更多操作按钮组中显示,若为true则该按钮一开始为隐藏,点击更多操作按钮才会显示</description>
+		</attribute>
+		<!-- update-end-author:taoyan date:20180717 for:TASK #2873 【新功能】按钮折叠功能 -->
 	</tag>
 	<tag>
 		<name>dgConfOpt</name>
@@ -834,6 +860,13 @@
 			<rtexprvalue>true</rtexprvalue>
 			<description>自定义按钮图标样式</description>
 		</attribute>
+		<!-- update-begin-author:jiaqiankun date:20180713 for：TASK #2872 【新功能】列表按钮改造成配置，支持折叠模式，增加一个参数 -->
+		<attribute>
+			<name>inGroup</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>操作菜单,一开始是否隐藏true/false</description>
+		</attribute>
+		<!-- update-end-author:jiaqiankun date:20180713 for：TASK #2872 【新功能】列表按钮改造成配置，支持折叠模式，增加一个参数 -->
 	</tag>
 	<!-- 
 	<tag>
@@ -1150,6 +1183,16 @@
 			<description>自定义onUploadStart调用函数</description>
 		</attribute>
 		<!-- update-end-author:taoyan date:20180427 for:增加自定义onUploadStart处理方法 -->
+		<attribute>
+			<name>height</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>自定义上传按钮高度(默认值：18)</description>
+		</attribute>
+		<attribute>
+			<name>width</name>
+			<rtexprvalue>true</rtexprvalue>
+			<description>自定义上传按钮宽度(默认值：80)</description>
+		</attribute>
 	</tag>
 	<tag>
 		<name>ckeditor</name>
@@ -1990,6 +2033,14 @@
 			<description>是否在外部引入js-css</description>
 		</attribute>
 		<!-- update-end- Author:taoyan  Date:20180519 for：文件上传增加属性：是否在外部引入js-css  -->
+		<!-- update-begin- Author:taoyan  Date:20180725 for：TASK #3007 【新功能】陶炎的上传，不支持文档 swf转换  -->
+		<attribute>
+			<name>swfTransform</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>是否支持需要将此文件转换成swf文件,true/false</description>
+		</attribute>
+		<!-- update-end- Author:taoyan  Date:20180725 for：TASK #3007 【新功能】陶炎的上传，不支持文档 swf转换  -->
 	</tag>
 	<!-- add-end- Author:taoyan  Date:20170327 for：文件上传标签  -->
 	<!-- add-begin-author:zhangjiaqiang Date:20170913 for:treeSelectTag -->

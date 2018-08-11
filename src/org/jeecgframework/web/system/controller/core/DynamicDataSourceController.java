@@ -170,11 +170,9 @@ public class DynamicDataSourceController extends BaseController {
 			try {
 				//String result = PasswordUtil.decrypt(d.getDbPassword(), d.getDbUser(), PasswordUtil.getStaticSalt());
 				//System.out.println("==result"+result);
-
 				//直接dbSource.setDbPassword hibernate会自动保存修改，数据库值随之改变，因此采用临时变量方式传递到页面
 				String showDbPassword = PasswordUtil.decrypt(dbSource.getDbPassword(), dbSource.getDbUser(), PasswordUtil.getStaticSalt());//解密dbPassword
 				req.setAttribute("showDbPassword", showDbPassword);
-
 				
 			} catch (Exception e) {
 				e.printStackTrace();

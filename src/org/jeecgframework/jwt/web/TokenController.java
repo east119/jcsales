@@ -5,12 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.jeecgframework.jwt.service.TokenManager;
 import org.jeecgframework.jwt.util.ResponseMessage;
 import org.jeecgframework.jwt.util.Result;
 import org.jeecgframework.web.system.pojo.base.TSUser;
 import org.jeecgframework.web.system.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/tokens")
 public class TokenController {
-	private static final Logger logger = Logger.getLogger(TokenController.class);
+	private static final Logger logger = LoggerFactory.getLogger(TokenController.class);
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -43,7 +44,7 @@ public class TokenController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
-		logger.info("获取TOKEN[{}]" + username);
+		logger.info("获取TOKEN[{}]" , username);
 		// 验证
 		if (StringUtils.isEmpty(username)) {
 			return new ResponseEntity("用户账号不能为空!", HttpStatus.NOT_FOUND);
@@ -58,7 +59,7 @@ public class TokenController {
 		TSUser user = userService.checkUserExits(username, password);
 		if (user == null) {
 			// 提示用户名或密码错误
-			logger.info("获取TOKEN,户账号密码错误[{}]" + username);
+			logger.info("获取TOKEN,户账号密码错误[{}]" , username);
 			return new ResponseEntity("用户账号密码错误!", HttpStatus.NOT_FOUND);
 		}
 		// 生成一个token，保存用户登录状态
@@ -70,7 +71,7 @@ public class TokenController {
 	@RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
 	@ResponseBody
 	public ResponseMessage<?> logout(@ApiParam(name = "username", value = "用户账号", required = true) @PathVariable("username") String username) {
-		logger.info("deleteToken[{}]" + username);
+		logger.info("deleteToken[{}]" , username);
 		// 验证
 		if (StringUtils.isEmpty(username)) {
 			return Result.error("用户账号，不能为空!");

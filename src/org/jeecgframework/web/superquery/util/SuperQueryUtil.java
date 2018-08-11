@@ -92,28 +92,41 @@ private static final Logger logger = Logger.getLogger(SuperQueryUtil.class);
 						}
 					}
 				}
-				//step.6 拼接高级查询构造器中的条件
+
+				boolean queryFlag = false;
 				for (int i = 0; i < queryRules.size(); i++) {
 					// 遍历 JSONArray数组，把每一个对象转成JSON对象
 					JSONObject rule = queryRules.getJSONObject(i);
-					String table = rule.getString("table");	//表名
-					String field = rule.getString("field");	//字段
-					String condition = rule.getString("condition");	//条件
-					String value = rule.getString("value");	//值
-					if(i == 0) {
-						if(flag) {
-							superQuerySQL.append(" AND(");
-						} else {
-							superQuerySQL.append(" WHERE");
-						}
-						superQuerySQL.append(" " + table + "." + field + " " + condition + " '" + value + "' ");
-					} else {
-						superQuerySQL.append(" " + relation + " " + table + "." + field + " " + condition + " '" + value + "' ");
+					if(rule.getString("field")!=null && !"".equals(rule.getString("field"))){
+						queryFlag=true;
 					}
 				}
-				if(flag) {
-					superQuerySQL.append(")");
+				
+				if(queryFlag){
+					//step.6 拼接高级查询构造器中的条件
+					for (int i = 0; i < queryRules.size(); i++) {
+						// 遍历 JSONArray数组，把每一个对象转成JSON对象
+						JSONObject rule = queryRules.getJSONObject(i);
+						String table = rule.getString("table");	//表名
+						String field = rule.getString("field");	//字段
+						String condition = rule.getString("condition");	//条件
+						String value = rule.getString("value");	//值
+						if(i == 0) {
+							if(flag) {
+								superQuerySQL.append(" AND(");
+							} else {
+								superQuerySQL.append(" WHERE");
+							}
+							superQuerySQL.append(" " + table + "." + field + " " + condition + " '" + value + "' ");
+						} else {
+							superQuerySQL.append(" " + relation + " " + table + "." + field + " " + condition + " '" + value + "' ");
+						}
+					}
+					if(flag) {
+						superQuerySQL.append(")");
+					}
 				}
+
 			}
 		}
 		return superQuerySQL.toString();

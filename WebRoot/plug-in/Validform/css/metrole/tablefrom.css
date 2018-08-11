@@ -9,7 +9,9 @@ body {
 .formtable .inputxt{
 	border: 1px solid #D7D7D7;
 	border-radius: 3PX;
-	height: 14px;
+	/*update-start--Author: scott  Date:20180615 for：Online table风格一对多，输入框上下太宽 */
+	height: 12px;
+	/*update-end--Author: scott  Date:20180615 for：Online table风格一对多，输入框上下太宽  */
 	/*height: 14PX;*/
 	 padding: 7px 0 7px 5px; 
 	/*padding: 10px 0px 2px 5px;*/
@@ -32,8 +34,11 @@ input:focus {
 }
 /*update-start--Author: scott  Date:20171110 for：输入框选中边框变绿色效果 */
 .formtable select{
-	padding:6px 2px;
+	padding:5px 2px;
 	width:155px;
+	/*update-begin--Author:scott  Date:20180628 for：tableform表单自定义下拉高度--- */
+	height: 28px;
+	/*update-end--Author:scott  Date:20180628 for：tableform表单自定义下拉高度--- */
 }
 .Validform_label {
 	font-size: 12px;

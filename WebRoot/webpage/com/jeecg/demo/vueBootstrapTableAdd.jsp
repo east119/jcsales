@@ -44,7 +44,9 @@
 	            </td>
         		<td class="formTitle">手机号</td>
 	            <td class="formValue">
-					<input type="text" class="form-control" placeholder="请输入手机号" v-model="user.phone">
+	            <!--update-begin-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
+					<input type="text" class="form-control" placeholder="请输入手机号" v-model="user.phone" datatype="m">
+	            <!--update-end-Author:zhangweijian Date: 20180710 for：TASK #2941 【bug】常用示例，小问题，手机号校验-->
 	            </td>
         	</tr>
 		</table>

@@ -10,11 +10,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.jeecgframework.web.cgreport.dao.core.CgReportDao;
-import org.jeecgframework.web.cgreport.entity.core.CgreportConfigHeadEntity;
-import org.jeecgframework.web.cgreport.entity.core.CgreportConfigParamEntity;
-import org.jeecgframework.web.cgreport.service.core.CgReportServiceI;
-import org.jeecgframework.web.system.pojo.base.TSType;
 import org.jeecgframework.core.common.dao.jdbc.JdbcDao;
 import org.jeecgframework.core.common.exception.BusinessException;
 import org.jeecgframework.core.common.service.impl.CommonServiceImpl;
@@ -25,14 +20,22 @@ import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.core.util.SqlUtil;
 import org.jeecgframework.core.util.StringUtil;
 import org.jeecgframework.core.util.oConvertUtils;
+import org.jeecgframework.web.cgreport.dao.core.CgReportDao;
+import org.jeecgframework.web.cgreport.entity.core.CgreportConfigHeadEntity;
+import org.jeecgframework.web.cgreport.entity.core.CgreportConfigParamEntity;
+import org.jeecgframework.web.cgreport.service.core.CgReportServiceI;
+import org.jeecgframework.web.system.pojo.base.TSType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service(value="cgReportService")
 @Transactional
-public class CgReportServiceImpl extends CommonServiceImpl implements
-		CgReportServiceI {
+public class CgReportServiceImpl extends CommonServiceImpl implements CgReportServiceI {
+	private static final Logger log = LoggerFactory.getLogger(CgReportServiceImpl.class);
+	
 	@Autowired
 	private JdbcDao jdbcDao;
 	@Autowired
@@ -86,14 +89,17 @@ public class CgReportServiceImpl extends CommonServiceImpl implements
 	
 	@SuppressWarnings("unchecked")
 	
-	public List<Map<String, Object>> queryByCgReportSql(String sql, Map params,
+	public List<Map<String, Object>> queryByCgReportSql(String sql, Map params,Map paramData,
 			int page, int rows) {
 		String querySql = getFullSql(sql,params);
 		List<Map<String,Object>> result = null;
+		if(paramData!=null&&paramData.size()==0){
+			paramData = null;
+		}
 		if(page==-1 && rows==-1){
-			result = jdbcDao.findForJdbc(querySql);
+			result = jdbcDao.findForListMap(querySql,paramData);
 		}else{
-			result = jdbcDao.findForJdbc(querySql, page, rows);
+			result = jdbcDao.findForListMap(querySql,paramData, page, rows);
 		}
 		return result;
 	}
@@ -125,10 +131,13 @@ public class CgReportServiceImpl extends CommonServiceImpl implements
 	}
 	@SuppressWarnings("unchecked")
 	
-	public long countQueryByCgReportSql(String sql, Map params) {
+	public long countQueryByCgReportSql(String sql, Map params,Map paramData) {
 		String querySql = getFullSql(sql,params);
 		querySql = "SELECT COUNT(*) FROM ("+querySql+") t2";
-		long result = jdbcDao.findForLong(querySql,new HashMap(0));
+		if(paramData!=null&&paramData.size()==0){
+			paramData = null;
+		}
+		long result = jdbcDao.findForLong(querySql,paramData);
 		return result;
 	}
 	@SuppressWarnings( "unchecked" )
@@ -145,8 +154,6 @@ public class CgReportServiceImpl extends CommonServiceImpl implements
 		List<String> fileds = new ArrayList<String>(fieldsSet);
 		return fileds;
 	}
-	
-	//------------------------------------------------------------------------------------------------------------
 	/**
 	 * 动态数据源： 获取SQL解析的字段
 	 */
@@ -167,7 +174,7 @@ public class CgReportServiceImpl extends CommonServiceImpl implements
 	}
 	
 	/**
-	 * 过滤非法sql规则，降低sql注入风险
+	 * 【转换${}规则为万能SQL，方便SQL执行解析】
 	 * @param sql
 	 * @return
 	 */
@@ -258,7 +265,7 @@ public class CgReportServiceImpl extends CommonServiceImpl implements
 	private List<Map<String, Object>> queryDic(String diccode) {
 
 		List<Map<String, Object>> dicDatas = new ArrayList<Map<String, Object>>();
-		List<TSType> tstypes = ResourceUtil.allTypes.get(diccode.toLowerCase());
+		List<TSType> tstypes = ResourceUtil.getCacheTypes(diccode.toLowerCase());
 		for(TSType t:tstypes){
 			Map<String,Object> mp = new HashMap<String,Object>();
 			mp.put("typecode",t.getTypecode());
@@ -339,5 +346,4 @@ public class CgReportServiceImpl extends CommonServiceImpl implements
 			}
 		}
 	}
-	//------------------------------------------------------------------------------------------------------------
 }

@@ -47,12 +47,17 @@ public class TSSmsTemplateEntity implements java.io.Serializable {
 	/**模板类型*/
 	@Excel(name="模板类型")
 	private java.lang.String templateType;
+	/**模板CODE*/
+	@Excel(name="模板CODE")
+	private java.lang.String templateCode;
 	/**模板名称*/
 	@Excel(name="模板名称")
 	private java.lang.String templateName;
 	/**模板内容*/
 	@Excel(name="模板内容")
 	private java.lang.String templateContent;
+	
+	private java.lang.String templateTestJson;
 	
 	/**
 	 *方法: 取得java.lang.String
@@ -217,4 +222,24 @@ public class TSSmsTemplateEntity implements java.io.Serializable {
 	public void setTemplateContent(java.lang.String templateContent){
 		this.templateContent = templateContent;
 	}
+
+	@Column(name ="TEMPLATE_CODE",nullable=true)
+	public java.lang.String getTemplateCode() {
+		return templateCode;
+	}
+
+	public void setTemplateCode(java.lang.String templateCode) {
+		this.templateCode = templateCode;
+	}
+
+	@Column(name ="TEMPLATE_TEST_JSON",nullable=true)
+	public java.lang.String getTemplateTestJson() {
+		return templateTestJson;
+	}
+
+	public void setTemplateTestJson(java.lang.String templateTestJson) {
+		this.templateTestJson = templateTestJson;
+	}
+	
+	
 }

@@ -1,5 +1,8 @@
 package org.jeecgframework.core.enums;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.jeecgframework.core.util.ContextHolderUtils;
 import org.jeecgframework.core.util.StringUtil;
 
 /**
@@ -77,9 +80,15 @@ public enum SysThemesEnum {
 	}
 
 	public static SysThemesEnum toEnum(String style) {
+		//如果移动端访问，自动切换H+首页
+		if(isMobileDevice()){
+			return HPLUS;
+		}
+		
+		
 		if (StringUtil.isEmpty(style)) {
 			//默认风格
-			return HPLUS;
+			return FINEUI_STYLE;
         }
 		for(SysThemesEnum item : SysThemesEnum.values()) {
 			if(item.getStyle().equals(style)) {
@@ -87,10 +96,31 @@ public enum SysThemesEnum {
 			}
 		}
 		//默认风格
-		return HPLUS;
+		return FINEUI_STYLE;
 	}
 
     public String toString() {
         return "{style: " + style + ", indexPath: " + indexPath + ", themes: " + themes + ", desc: " + desc +"}";
     }
+    
+    /**
+	 * 判断是否是移动端
+     * android : 所有android设备
+     * mac os : iphone ipad
+     * windows phone:Nokia等windows系统的手机
+     */
+	private static boolean isMobileDevice(){
+		HttpServletRequest request = ContextHolderUtils.getRequest();
+		String requestHeader = request.getHeader("user-agent");
+        String[] deviceArray = new String[]{"android","mac os","windows phone"};
+        if(requestHeader == null)
+            return false;
+        requestHeader = requestHeader.toLowerCase();
+        for(int i=0;i<deviceArray.length;i++){
+            if(requestHeader.indexOf(deviceArray[i])>0){
+                return true;
+            }
+        }
+        return false;
+	}
 }

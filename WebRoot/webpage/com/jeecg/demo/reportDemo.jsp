@@ -76,9 +76,7 @@
 				url : "jeecgListDemoController.do?broswerCount&reportType=column",
 				success : function(jsondata) {
 					data = eval(jsondata);
-
 					//console.log(data);//Highcharts报表插件bug,IE8下不能出现该语句,否则报表不显示					
-
 					chart = new Highcharts.Chart({
 						chart : {
 							renderTo : 'containerCol',
@@ -90,9 +88,7 @@
 							text : '<t:mutiLang langKey="broswer.count.analysis"/>-<b><t:mutiLang langKey="common.histogram"/></b>'
 						},
 						xAxis : {
-
 							categories : [ 'Chrome', 'Firefox', 'IE', 'MSIE 7.0', 'MSIE 8.0','MSIE 9.0','rv:11.0','Safari']
-
 						},
 						tooltip : {
 							 percentageDecimals : 1,
@@ -115,16 +111,12 @@
 									color : '#000000',
 									connectorColor : '#000000',
 									formatter : function() {
-
 										return  Highcharts.numberFormat(this.percentage, 1)+"%";
-
 									}
 								}
 							}
 						},
-
 						series:data//,IE8不喜欢多余的逗号
-
 					});
 				}
 			});

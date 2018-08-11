@@ -2,6 +2,9 @@
 			<#include "/online/template/ui/tag.ftl"/>
 			<#-- update--end--author:taoyan date:20180428 for:TASK #2671 【Online表单】Online表单ACE 风格上传空间、树控件 宏封装 -->
 			<#--update-start--Author:luobaoli  Date:20150614 for：表单（主表/单表）属性中增加了扩展参数 ${po.extend_json?if_exists}-->
+			<#-- update-begin-author:taoyan date:20180705 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了-->
+			<style>.con-wrapper .show-grid > div,.con-wrapper .row.show-grid{border-left:none}</style>
+			<#-- update-end-author:taoyan date:20180705 for:TASK #2765 【online表单】多tab风格 存在文件字段时样式乱了 -->
 			<input type="hidden" name="tableName" value="${tableName?if_exists?html}" >
 			<input type="hidden" name="id" value="${id?if_exists?html}" >
 			<#list columnhidden as po>
@@ -23,7 +26,7 @@
 			          	<b><@mutiLang langKey="${po.content?if_exists?html}"/>：</b>
 			          </div>
 			          <#if po.show_type=='file' || po.show_type=='image'>
-			          <div class="col-xs-6">
+			          <div class="col-xs-3">
 			          <#else>
 			          <div class="col-xs-3">
 			          </#if>

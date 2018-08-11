@@ -78,7 +78,9 @@
 			<td class="value" colspan="5"><textarea rows="5" cols="150" id="cgrSql" name="cgrSql" datatype="*"></textarea> <span class="Validform_checktip"></span>
 						<p>&nbsp;&nbsp;&nbsp;&nbsp;您可以键入“${abc}”作为一个参数，这里abc是参数的名称。例如：<br/>
 							&nbsp;&nbsp;&nbsp;&nbsp;select broswer name,count(1) value, '#286FBB' color from t_s_log  where id = <%="${abc}"%> group by broswer。<br/>
-							&nbsp;&nbsp;&nbsp;&nbsp;select broswer name,count(1) value, '#286FBB' color from t_s_log  where id = <%="'${abc}'"%>  group by broswer。（如果id字段为字符串类型）<br/>
+							&nbsp;&nbsp;&nbsp;&nbsp;select broswer name,count(1) value, '#286FBB' color from t_s_log  where id =  like concat('%',<%="${abc}"%>,'%')  group by broswer。(mysql模糊查询)<br/>
+							&nbsp;&nbsp;&nbsp;&nbsp;select broswer name,count(1) value, '#286FBB' color from t_s_log  where id =  like '%'||<%="${abc}"%>||'%'  group by broswer。(oracle模糊查询)<br/>
+							&nbsp;&nbsp;&nbsp;&nbsp;select broswer name,count(1) value, '#286FBB' color from t_s_log  where id =  like '%'+<%="${abc}"%>+'%'  group by broswer。(sqlserver模糊查询)<br/>
 							&nbsp;&nbsp;&nbsp;&nbsp;<font color="red">注：必要用 name,value,color 列。 name 为X轴数据,value 为Y轴数据,color为图表的颜色</font><p/>
 			</td>
 		</tr>

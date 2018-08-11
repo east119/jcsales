@@ -32,6 +32,18 @@
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
+							模板CODE:
+						</label>
+					</td>
+					<td class="value">
+					     	 <input id="templateCode" name="templateCode" type="text" style="width: 150px" class="inputxt"  datatype="*" >
+							<span class="Validform_checktip"></span>
+							<label class="Validform_label" style="display: none;">模板Code</label>
+						</td>
+				</tr>
+				<tr>
+					<td align="right">
+						<label class="Validform_label">
 							模板名称:
 						</label>
 					</td>
@@ -51,6 +63,18 @@
 						  	 <textarea style="width:600px;height:100px" class="inputxt" rows="6" id="templateContent" name="templateContent"></textarea>
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">模板内容</label>
+						</td>
+				</tr>
+				<tr>
+					<td align="right">
+						<label class="Validform_label">
+							模板测试JSON:
+						</label>
+					</td>
+					<td class="value">
+						  	 <textarea style="width:600px;height:100px" class="inputxt" rows="6" id="templateTestJson" name="templateTestJson"></textarea>
+							<span class="Validform_checktip"></span>
+							<label class="Validform_label" style="display: none;">模板测试JSON</label>
 						</td>
 				</tr>
 			</table>

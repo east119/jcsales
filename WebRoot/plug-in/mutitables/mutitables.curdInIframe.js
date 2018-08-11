@@ -43,6 +43,9 @@
 		var dgthis = "#"+dgname;
 
 		var methods = {
+			getGridname :function(){
+				return dgname;
+			},
 			//激活tab加载子表数据
 			initListByMain:function (id,isDel){
 				gridname = dgname;

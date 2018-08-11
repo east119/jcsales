@@ -89,11 +89,13 @@ public class BaseTag extends JeecgTag {
 		sb.append(langjs);
 		if (oConvertUtils.isIn("jquery-webos", types)) {
             sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/sliding/js/jquery-1.7.1.min.js\"></script>");
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
             
 		} else if (oConvertUtils.isIn("jquery", types)) {
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery/jquery-1.8.3.js\"></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery/jquery.cookie.js\" ></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery-plugs/storage/jquery.storageapi.min.js\" ></script>");
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
 		}
 		if (oConvertUtils.isIn("ckeditor", types)) {
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/ckeditor/ckeditor.js\"></script>");
@@ -133,7 +135,7 @@ public class BaseTag extends JeecgTag {
 			sb.append(SysThemesUtil.getLhgdialogTheme(sysThemesEnum));
 			sb.append(SysThemesUtil.getBootstrapTabTheme(sysThemesEnum));
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/layer/layer.js\"></script>");
-			sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/curdtools_{0}.js\"></script>", "{0}", lang));
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/curdtools.js\"></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/easyuiextend.js\"></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery-plugs/hftable/jquery-hftable.js\"></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/json2.js\" ></script>");
@@ -159,7 +161,7 @@ public class BaseTag extends JeecgTag {
 			sb.append("<script src=\""+basePath+"/plug-in/jquery-extensions/jeasyui-extensions/jeasyui.extensions.datagrid.js\" type=\"text/javascript\"></script>");
 		}
 		if (oConvertUtils.isIn("ztree", types)) {
-			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/ztree/css/zTreeStyle.css\" type=\"text/css\"></link>");
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/ztree/css/metroStyle.css\" type=\"text/css\"></link>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/ztree/js/jquery.ztree.core-3.5.min.js\"></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/ztree/js/jquery.ztree.excheck-3.5.min.js\"></script>");
 		}
@@ -177,9 +179,10 @@ public class BaseTag extends JeecgTag {
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/themes/bootstrap-ext/js/common.js\"></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/dataformat.js\"></script>");
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/lhgDialog/lhgdialog.min.js?skin=metrole\"></script>");
-			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/themes/bootstrap-ext/js/bootstrap-lhgdialog-curdtools_zh-cn.js\"></script>");
 
-			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/tools/css/metrole/common.css\" type=\"text/css\"></link>");
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/themes/bootstrap-ext/js/bootstrap-lhgdialog-curdtools.js\"></script>");
+
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/ace/css/common.css\" type=\"text/css\"></link>");
 			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/ace/css/font-awesome.css\" type=\"text/css\"></link>");
 
 		}
@@ -188,17 +191,72 @@ public class BaseTag extends JeecgTag {
 			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/laydate/laydate.js\"></script>");
 		}
 
+		if (oConvertUtils.isIn("aceform", types)) {
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/online/template/ledefault/css/vendor.css\" type=\"text/css\"></link>");
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/online/template/ledefault/css/bootstrap-theme.css\" type=\"text/css\"></link>");
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/online/template/ledefault/css/bootstrap.css\" type=\"text/css\"></link>");
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/online/template/ledefault/css/app.css\" type=\"text/css\"></link>");
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/Validform/css/metrole/style.css\" type=\"text/css\"></link>");
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/Validform/css/metrole/tablefrom.css\" type=\"text/css\"></link>");
+			//easyui的使用经快速测试唯一用到就只有单表为树形列表时，需要用到combotree插件
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/easyui/jquery.easyui.min.1.3.2.js\"></script>");
+			sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/easyui/locale/{0}.js\"></script>", "{0}", lang));
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/syUtil.js\"></script>");
+			//一对多子表的选择文件弹框
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/lhgDialog/lhgdialog.min.js\"></script>");
+			//大量js工具函数
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/tools/curdtools.js\"></script>");
+		}
+		if (oConvertUtils.isIn("validform", types)) {
+			sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/Validform/js/Validform_v5.3.1_min_{0}.js\"></script>", "{0}", lang));
+			sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/Validform/js/Validform_Datatype_{0}.js\"></script>", "{0}", lang));
+			sb.append(StringUtil.replace("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/Validform/js/datatype_{0}.js\"></script>", "{0}", lang));
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js\"></script>");
+		}
+		if (oConvertUtils.isIn("webuploader", types)) {
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/webuploader/custom.css\" type=\"text/css\"></link>");
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/webuploader/webuploader.min.js\"></script>");
+		}
+		if (oConvertUtils.isIn("bootstrap-form", types)) {
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/themes/bootstrap-ext/css/validform-ext.css\" type=\"text/css\"></link>");
+			//icheck组件引用
+
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/hplus/css/plugins/iCheck/custom.css\" type=\"text/css\"></link>");
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/hplus/js/plugins/iCheck/icheck.min.js\"></script>");
+
+			//通用组件引用 
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/bootstrap3.3.5/css/default.css\" type=\"text/css\"></link>");
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/themes/bootstrap-ext/js/common.js\"></script>");
+			//自定义form样式-一定要放在最后引入
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/bootstrap3.3.5/css/bootstrap-form.css\" type=\"text/css\"></link>");
+		}
+		if (oConvertUtils.isIn("ueditor", types)) {
+			sb.append("<script type=\"text/javascript\" charset=\"utf-8\" src=\""+basePath+"/plug-in/ueditor/ueditor.config.js\"></script>");
+			sb.append("<script type=\"text/javascript\" charset=\"utf-8\" src=\""+basePath+"/plug-in/ueditor/ueditor.all.min.js\"></script>");
+		}
+		if (oConvertUtils.isIn("uploadify", types)) {
+			sb.append("<link rel=\"stylesheet\" href=\""+basePath+"/plug-in/uploadify/css/uploadify.css\" type=\"text/css\"></link>");
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/uploadify/jquery.uploadify-3.1.js\"></script>");
+		}
+
 		types = null;
 		this.putTagCache(sb);
+
+		if(sb.indexOf("plug-in/tools/curdtools.js")!=-1 && sb.indexOf("/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js")==-1){
+			sb.append("<script type=\"text/javascript\" src=\""+basePath+"/plug-in/jquery-plugs/i18n/jquery.i18n.properties.js\"></script>");
+		}
+
 		return sb;
 	}
 
 
 	public String toString() {
+		String basePath = ResourceUtil.getBasePath();
 		return new StringBuffer().append("BaseTag [type=").append(type)
 				.append(",sysTheme=").append(SysThemesUtil.getSysTheme(ContextHolderUtils.getRequest()).getStyle())
 				.append(",brower_type=").append(ContextHolderUtils.getSession().getAttribute("brower_type"))
 				.append(",cssTheme=").append(cssTheme)
+				.append(",basePath=").append(basePath)
 				.append("]").toString();
 	}
 	

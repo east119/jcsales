@@ -1,6 +1,5 @@
 package org.jeecgframework.web.system.service.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -53,6 +53,8 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
 	private Logger log = Logger.getLogger(UserServiceImpl.class);
 	@Autowired
 	private MutiLangServiceI mutiLangService;
+	@Resource
+	private ClientManager clientManager;
 	
 	@Transactional(readOnly = true)
 	public TSUser checkUserExits(TSUser user){
@@ -233,7 +235,7 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public Map<Integer, List<TSFunction>> getFunctionMap(String userid) {
 		HttpSession session = ContextHolderUtils.getSession();
-		Client client = ClientManager.getInstance().getClient(session.getId());
+		Client client = clientManager.getClient(session.getId());
 		if (client.getFunctionMap() == null || client.getFunctionMap().size() == 0) {
 			log.debug("---------【从数据库中】---获取登录用户菜单--------------userid: "+ userid);
 			Map<Integer, List<TSFunction>> functionMap = new HashMap<Integer, List<TSFunction>>();
@@ -303,21 +305,21 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
         
         //【基础权限】切换用户，用户分拥有不同的权限，切换用户权限错误问题
         //当前session为空 或者 当前session的用户信息与刚输入的用户信息一致时，则更新Client信息
-        Client clientOld = ClientManager.getInstance().getClient(session.getId());
+        Client clientOld = clientManager.getClient(session.getId());
 		if(clientOld == null || clientOld.getUser() ==null ||user.getUserName().equals(clientOld.getUser().getUserName())){
 			Client client = new Client();
 	        client.setIp(IpUtil.getIpAddr(req));
 	        client.setLogindatetime(new Date());
 	        client.setUser(user);
-	        ClientManager.getInstance().addClinet(session.getId(), client);
+	        clientManager.addClinet(session.getId(), client);
 		} else {//如果不一致，则注销session并通过session=req.getSession(true)初始化session
 			Client client = new Client();
-			ClientManager.getInstance().removeClinet(session.getId());
+			clientManager.removeClinet(session.getId());
 			session.invalidate();
 			session = req.getSession(true);//session初始化
 			session.setAttribute(ResourceUtil.LOCAL_CLINET_USER, user);
 			session.setAttribute("randCode",req.getParameter("randCode"));//保存验证码
-			ClientManager.getInstance().addClinet(session.getId(), client);
+			clientManager.addClinet(session.getId(), client);
 		}
         
         // 添加登陆日志

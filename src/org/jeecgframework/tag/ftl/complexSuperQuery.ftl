@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="plug-in/ztree/css/zTreeStyle.css" type="text/css"/>
 <script type="text/javascript" src="plug-in/ztree/js/jquery.ztree.core-3.5.min.js"></script>
 <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
+<script type="text/javascript" src="plug-in/tools/curdtools.js"></script>
 <style>
 .menuContent{
 	filter:alpha(Opacity=100);
@@ -140,8 +140,8 @@
 							<option value="!=">不等于</option>
 							<option value=">">大于</option>
 							<option value=">=">大于等于</option>
-							<option value="lt;">小于</option>
-							<option value="lte;">小于等于</option>
+							<option value="lt">小于</option>
+							<option value="lte">小于等于</option>
 							<option value="likeBegin">以...开始</option>
 							<option value="likeEnd">以...结束</option>
 							<option value="like">包含</option>

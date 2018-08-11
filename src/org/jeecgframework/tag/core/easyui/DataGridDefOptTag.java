@@ -22,6 +22,8 @@ public class DataGridDefOptTag extends TagSupport {
 	private String urlclass;//按钮样式
 	private String urlfont;//按钮图标
 
+	private boolean inGroup;
+
 	
 	public int doStartTag() throws JspTagException {
 		return EVAL_PAGE;
@@ -29,7 +31,9 @@ public class DataGridDefOptTag extends TagSupport {
 	public int doEndTag() throws JspTagException {
 		Tag t = findAncestorWithClass(this, DataGridTag.class);
 		DataGridTag parent = (DataGridTag) t;
-		parent.setDefUrl(url, title, exp,operationCode,urlStyle,urlclass,urlfont);
+
+		parent.setDefUrl(url, title, exp,operationCode,urlStyle,urlclass,urlfont,inGroup);
+
 		return EVAL_PAGE;
 	}
 	
@@ -63,6 +67,12 @@ public class DataGridDefOptTag extends TagSupport {
 	public void setUrlfont(String urlfont) {
 		this.urlfont = urlfont;
 	}
-	
-	
+
+	public boolean isInGroup() {
+		return inGroup;
+	}
+	public void setInGroup(boolean inGroup) {
+		this.inGroup = inGroup;
+	}
+
 }

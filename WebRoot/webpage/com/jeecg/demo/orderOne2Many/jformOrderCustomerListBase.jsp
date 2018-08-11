@@ -13,9 +13,9 @@
    <t:dgCol title="电话"  field="telphone" extendParams="editor:{type:'validatebox',options:{validType:'phoneRex'}}"  queryMode="single"  width="120"></t:dgCol>
    <t:dgCol title="身份证扫描件"  field="sfPic"  queryMode="single"  width="120"></t:dgCol>
    
-	<t:dgToolBar operationCode="edit" title="编辑" icon="icon-edit"  funname="editRow"></t:dgToolBar>
-	<t:dgToolBar operationCode="save" title="保存" icon="icon-save" url="jformOrderMainController.do?saveRows" funname="saveData"></t:dgToolBar>
-	<t:dgToolBar operationCode="undo" title="取消编辑" icon="icon-undo" funname="reject"></t:dgToolBar>
+	<t:dgToolBar  title="编辑" icon="icon-edit"  funname="editRow"></t:dgToolBar>
+	<t:dgToolBar  title="保存" icon="icon-save" url="jformOrderMainController.do?saveRows" funname="saveData"></t:dgToolBar>
+	<t:dgToolBar  title="取消编辑" icon="icon-undo" funname="reject"></t:dgToolBar>
   </t:datagrid>
   </div>
  </div>

@@ -356,7 +356,7 @@
 			<#-- update--begin--Author:gj_shaojc  Date:20180605 for：TASK #2767 【专题任务】element-ui 代码生成器遗留问题改造(问题10)  -->
 			<#if po.showType == 'image'>
 			handleMain${po.fieldName?cap_first}UploadFile: function(response, file, fileList){
-				file.url="systemController/showOrDownByurl.do?dbPath="+response.obj;
+				file.url="img/server/"+response.obj;
 				this.form.${po.fieldName}=response.obj;
 				if(fileList.length>1){
 					this.handleMain${po.fieldName?cap_first}RemoveFile(fileList.splice(0,1)[0],fileList);
@@ -466,7 +466,7 @@
 					if(!!this.form.${po.fieldName}){
 						${po.fieldName}=[{
 							name:this.form.${po.fieldName}.substring(this.form.${po.fieldName}.lastIndexOf('\\')+1),
-							url:"systemController/showOrDownByurl.do?dbPath="+this.form.${po.fieldName}
+							url:"img/server/"+this.form.${po.fieldName}
 						}]
 					}
 					</#if>

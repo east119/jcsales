@@ -698,7 +698,16 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		CriteriaImpl impl = (CriteriaImpl) criteria;
 		// 先把Projection和OrderBy条件取出来,清空两者来执行Count操作
 		Projection projection = impl.getProjection();
-		final int allCounts = ((Long) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+
+//		final int allCounts = ((Long) criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+		Object allCountsObj = criteria.setProjection(Projections.rowCount()).uniqueResult();
+		final int allCounts;
+		if(allCountsObj==null){
+			allCounts = 0;
+		}else{
+			allCounts = ((Long) allCountsObj).intValue();
+		}
+
 		criteria.setProjection(projection);
 		if (projection == null) {
 			criteria.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
@@ -940,7 +949,6 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 		Object keyValue = null;
 		KeyHolder keyHolder = null;
 		SqlParameterSource sqlp  = new MapSqlParameterSource(param);
-
 		if (StringUtil.isNotEmpty(param.get("id"))) {//表示已经生成过id(UUID),则表示是非序列或数据库自增的形式
 			this.namedParameterJdbcTemplate.update(sql,sqlp);
 		//--author：zhoujf---start------date:20170216--------for:自定义表单保存数据格sqlserver报错问题
@@ -954,7 +962,6 @@ public abstract class GenericBaseCommonDao<T, PK extends Serializable>
 				keyValue = keyHolder.getKey().longValue();
 			}
 		}
-
 		return keyValue;
 	}
 

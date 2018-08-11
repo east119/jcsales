@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,6 +49,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 	private static final Logger logger = Logger.getLogger(AuthInterceptor.class);
 	@Autowired
 	private SystemService systemService;
+	@Resource
+	private ClientManager clientManager;
 	//精确匹配排除URLS
 	private List<String> excludeUrls;
 	//模糊匹配排除URLS
@@ -59,7 +62,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 	 * 在controller前拦截
 	 */
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object object) throws Exception {
-		//-----------------------注解排除权限拦截机制---------------------------------------
 		HandlerMethod handlerMethod=(HandlerMethod)object;
 		JAuth jauthType =handlerMethod.getBean().getClass().getAnnotation(JAuth.class);
 		if(jauthType!=null && jauthType.auth()==Permission.SKIP_AUTH){
@@ -70,7 +72,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 				return true;
 			}
 		}
-		//-----------------------注解排除权限拦截机制---------------------------------------
 		
 		
 		//通过转换，获取用户的请求URL地址
@@ -86,7 +87,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 		} else if(moHuContain(excludeContainUrls, requestPath)){
 			return true;
 		} else {
-			Client client = ClientManager.getInstance().getClient(ContextHolderUtils.getSession().getId());
+			Client client = clientManager.getClient(ContextHolderUtils.getSession().getId());
 			TSUser currLoginUser = client!=null?client.getUser():null;
 			if (currLoginUser!=null ) {
 				String loginUserName = currLoginUser.getUserName();
@@ -94,8 +95,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 				String orgId = currLoginUser.getDepartid();
 				//点击菜单ID
 				String functionId = request.getParameter("clickFunctionId");
-				
-				//-----------------OnlineCoding--------------------------------------------------------------
 				//步骤二： Online功能请求URL特殊规则，根据规则重组URL，支持多个参数
 				if(requestPath.equals("cgAutoListController.do?datagrid")) {
 					requestPath += "&configId=" +  request.getParameter("configId");
@@ -105,7 +104,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 				if(requestPath.endsWith("?olstylecode=")) {
 					requestPath = requestPath.replace("?olstylecode=", "");
 				}
-				//------------------------OnlineCoding-------------------------------------------------------
 				logger.debug("-----authInterceptor----requestPath------"+requestPath);
 				
 				
@@ -123,7 +121,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 				
 				//Admin拥有特权，数据权限、页面表单权限、按钮权限不做控制
 				if(!"admin".equals(loginUserName)){
-					//-----------------------------------------------------------------------------------------------------------------
 					if(oConvertUtils.isEmpty(functionId)){
 						//查询请求URL对应的菜单ID（因为数据权限、页面控件权限是基于菜单ID配置的数据）
 						String url = request.getRequestURI().substring(request.getContextPath().length() + 1);
@@ -133,7 +130,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 							return true;
 						}
 					}
-					//-----------------------------------------------------------------------------------------------------------------
 					
 					//Step.1 【页面控件权限】第一部分处理页面表单和列表的页面控件权限（页面表单字段+页面按钮等控件）
 					//获取菜单对应的页面控制权限（包括表单字段和操作按钮）

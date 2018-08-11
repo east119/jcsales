@@ -19,12 +19,16 @@
 
 	<!-- ApplicationContext-->
 	<bean class="org.jeecgframework.core.util.ApplicationContextUtil"></bean>
+	<!-- 配置缓存工具类（支持redis\ehcache切换）  
+	<bean class="org.jeecgframework.web.system.service.impl.RedisCacheService"/>
+	-->
+	<bean class="org.jeecgframework.web.system.service.impl.EhcacheService"/>
 	
 	
-	<!-- Swagger支持（暂时注释掉提高平台性能，需要此功能，可以放开注释）
+	<!-- Swagger支持（暂时注释掉提高平台性能，需要此功能，可以放开注释）  -->
 	<context:component-scan base-package="springfox"/>
 	<bean class="org.jeecgframework.core.swagger.SwaggerConfig" /> 
-	<mvc:resources mapping="/swagger/**" location="/swagger/" cache-period="31556926" />  -->
+	<mvc:resources mapping="/swagger/**" location="/swagger/" cache-period="31556926" />
 	 	
 	 
 	<!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->
@@ -126,8 +130,6 @@
 		<!-- [接口方案二] JWT Token校验方式拦截器，针对Restful请求接口 -->
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
-			<mvc:exclude-mapping path="/**/**.do" />
-			<mvc:exclude-mapping path="/**/**.do?**" />
 			<bean class="org.jeecgframework.jwt.aop.RestAuthTokenInterceptor">
 			    <property name="excludeUrls">
 					<list>
@@ -223,5 +225,4 @@
 	<!-- Jeecg 插件开发 -->
 	<bean class="org.jeecgframework.p3.core.utils.common.ApplicationContextUtil"></bean>
 	<import resource="classpath:config/spring-config-p3.xml" />
-	
 </beans>

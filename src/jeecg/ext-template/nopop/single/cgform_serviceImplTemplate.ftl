@@ -38,21 +38,27 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	
  	public void delete(${entityName}Entity entity) throws Exception{
  		super.delete(entity);
+ 		<#if (buttonSqlMap?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap?size>0)>
  		//执行删除操作增强业务
 		this.doDelBus(entity);
+		</#if>
  	}
  	
  	public Serializable save(${entityName}Entity entity) throws Exception{
  		Serializable t = super.save(entity);
+ 		<#if (buttonSqlMap?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap?size>0)>
  		//执行新增操作增强业务
  		this.doAddBus(entity);
+ 		</#if>
  		return t;
  	}
  	
  	public void saveOrUpdate(${entityName}Entity entity) throws Exception{
  		super.saveOrUpdate(entity);
+ 		<#if (buttonSqlMap?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap?size>0)>
  		//执行更新操作增强业务
  		this.doUpdateBus(entity);
+ 		</#if>
  	}
 	<#list buttons as btn>
 	<#if btn.optType=='action'>
@@ -63,7 +69,7 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	 */
 	 public void do${btn.buttonCode?cap_first}Bus(${entityName}Entity t) throws Exception{
 	 	//-----------------sql增强 start----------------------------
-	 	<#list buttonSqlMap[btn.buttonCode] as sql>
+	 	<#list buttonSqlMap[btn.buttonCode]! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
@@ -82,6 +88,7 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
  	</#if>
  	</#list> 
  	
+ 	<#if (buttonSqlMap?? && buttonSqlMap?size>0) || (buttonJavaMap?? && buttonJavaMap?size>0)>
  	/**
 	 * 新增操作增强业务
 	 * @param t
@@ -89,7 +96,7 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	 */
 	private void doAddBus(${entityName}Entity t) throws Exception{
 		//-----------------sql增强 start----------------------------
- 		<#list buttonSqlMap['add'] as sql>
+ 		<#list buttonSqlMap['add']! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
@@ -105,6 +112,7 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	 	</#if>
 	 	//-----------------java增强 end-----------------------------
  	}
+ 	
  	/**
 	 * 更新操作增强业务
 	 * @param t
@@ -112,7 +120,7 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	 */
 	private void doUpdateBus(${entityName}Entity t) throws Exception{
 		//-----------------sql增强 start----------------------------
- 		<#list buttonSqlMap['update'] as sql>
+ 		<#list buttonSqlMap['update']! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
@@ -135,7 +143,7 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 	 */
 	private void doDelBus(${entityName}Entity t) throws Exception{
 	    //-----------------sql增强 start----------------------------
- 		<#list buttonSqlMap['delete'] as sql>
+ 		<#list buttonSqlMap['delete']! as sql>
 	 	//sql增强第${sql_index+1}条
 	 	String sqlEnhance_${sql_index+1} ="${sql}";
 	 	<#-- update--begin--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
@@ -225,4 +233,5 @@ public class ${entityName}ServiceImpl extends CommonServiceImpl implements ${ent
 		}
  	}
  	<#-- update--end--author:zhoujf date:20180413 for:TASK #2623 【bug】生成代码sql 不支持表达式-->
+ 	</#if>
 }

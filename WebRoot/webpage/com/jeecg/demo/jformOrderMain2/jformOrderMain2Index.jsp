@@ -13,6 +13,7 @@
 <script type="text/javascript" src="plug-in/themes/fineui/jquery/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="plug-in/layer/layer.js"></script>
 <script type="text/javascript" src="plug-in/mutitables/mutitables.mainpage.js" ></script>
+<script type="text/javascript" src="plug-in/mutitables/jquery.resize.y.js"></script>
 </head>
 <body>
 <div class="easyui-layout" fit="true">
@@ -21,7 +22,7 @@
 		<div class="opts-menu-box">
 			<div class="menus active table-menu-1" style="top:30px">
 				<!-- 主表菜单 -->
-				<t:menuButtons codes="addgroup,editgroup,batchDel" name="jformOrderMain2" mm="true"></t:menuButtons>
+				<t:menuButtons codes="addSingle,editSingle,batchDel,save,reject" name="jformOrderMain2" mm="true"></t:menuButtons>
 			</div>
 			<div class="menus table-menu-0" style="top:-1px">
 				<a title="重置" onclick="mainPageQueryReset()" href="####" class="btn-menu fa fa-refresh menu-more" ></a>
@@ -50,7 +51,7 @@
 		
 		<!-- 主表 --> 
 		<div title="订单信息" data-options="iconCls:'icon-ok',selected:true"  >
-			<div id="easyui_mainList" class="easyui-resizable"  style="height:275px;padding-bottom:6px;margin-bottom:6px;border-bottom:2px solid rgb(0, 116, 101)">
+			<div id="easyui_mainList" class="resize-y-iframe" style="height:286px;padding-bottom:6px;">
 				<iframe id="mainList" height="99%" width="100%" frameborder="0" 
 					src="${webRoot}/jformOrderMain2Controller.do?list"></iframe>
 			</div>
@@ -62,11 +63,11 @@
 	<div class="tab-opts-menu" id="tab-menus-attached" style="font-size:14px">
 		<div class="opts-menu-box">
 			<div class="menus testContractItem-ul active">
-				<t:menuButtons codes="ALL" name="jformOrderCustomer2"></t:menuButtons>
+				<t:menuButtons codes="addSingle,editSingle,batchDel,save,reject,template,importe,export,filter" name="jformOrderCustomer2"></t:menuButtons>
 			</div>
 			
 			<div class="menus testContractPart-ul">
-				<t:menuButtons codes="ALL" name="jformOrderTicket2"></t:menuButtons>
+				<t:menuButtons codes="addSingle,editSingle,batchDel,save,reject,template,importe,export,filter" name="jformOrderTicket2"></t:menuButtons>
 			</div>
 		</div>
 	 </div>
@@ -101,13 +102,6 @@
 <script type="text/javascript">
 $(function(){
  	initdivwidth();
-	var menu_top1 = "78px",menu_top2 = '30px';
-	$('#accDiv').children(".panel:first-child").children('.panel-header').click(function(){
-		toggleMainMenusTop(menu_top1,menu_top2);
-	});
-	$('#accDiv').children(".panel:first-child").find('.panel-tool a').click(function(){
-		toggleMainMenusTop(menu_top1,menu_top2);
-	});
 	$(window).resize(function(){
 		initdivwidth();
 	}); 
@@ -135,8 +129,15 @@ $(function(){
 		}
 	});
 	
+	var lenOffset = getQueryareaRow();
+	var menu_top1 = (78+lenOffset*30)+"px",menu_top2 = '30px';
  	$('#accDiv').accordion({
-		onSelect:function(title,index){
+ 		firstbuybuy:true,
+ 		secondbuybuy:function(go){
+ 			var state = go=="collapse"?true:false;
+ 			toggleMainMenusTop(menu_top1,menu_top2,state);
+ 		},
+ 		onSelect:function(title,index){
 			$('#tab-menus-main').find('.table-menu-'+index).addClass("active");
 	 	},
 		onUnselect:function(title,index){

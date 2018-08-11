@@ -68,22 +68,45 @@ public class CgExportExcelController extends BaseController {
 			codedFileName = configM.get("name")+codedFileName;
 			String querySql = (String) configM.get(CgReportConstant.CONFIG_SQL);
 			List<Map<String,Object>> items = (List<Map<String, Object>>) cgReportMap.get(CgReportConstant.ITEMS);
-			Map queryparams =  new LinkedHashMap<String,Object>();
+			List<String> paramList = (List<String>) cgReportMap.get(CgReportConstant.PARAMS);
+			//页面参数查询字段（占位符的条件语句）
+			Map pageSearchFields =  new LinkedHashMap<String,Object>();
+
+			//获取查询条件数据
+			Map<String,Object> paramData = new HashMap<String, Object>();
+			if(paramList!=null&&paramList.size()>0){
+				for(String param :paramList){
+					String value = request.getParameter(param);
+					value = value==null?"":value;
+					querySql = querySql.replace("'${"+param+"}'", ":"+param);
+					querySql = querySql.replace("${"+param+"}", ":"+param);
+					paramData.put(param, value);
+				}
+			}
 			for(Map<String,Object> item:items){
 				String isQuery = (String) item.get(CgReportConstant.ITEM_ISQUERY);
 				if(CgReportConstant.BOOL_TRUE.equalsIgnoreCase(isQuery)){
 					//step.2 装载查询条件
-					CgReportQueryParamUtil.loadQueryParams(request, item, queryparams);
+					CgReportQueryParamUtil.loadQueryParams(request, item, pageSearchFields,paramData);
 				}
 			}
+
 			//step.3 进行查询返回结果
 
             String dbKey=(String)configM.get("db_source");
             List<Map<String, Object>> result=null;
             if(StringUtils.isNotBlank(dbKey)){
-                result= DynamicDBUtil.findList(dbKey, SqlUtil.getFullSql(querySql,queryparams));
+
+            	if(paramData!=null&&paramData.size()>0){
+            		result= DynamicDBUtil.findListByHash(dbKey,SqlUtil.getFullSql(querySql,pageSearchFields),(HashMap<String, Object>)paramData);
+            	}else{
+            		result= DynamicDBUtil.findList(dbKey, SqlUtil.getFullSql(querySql,pageSearchFields));
+            	}
+
             }else{
-                result= cgReportService.queryByCgReportSql(querySql, queryparams, -1, -1);
+
+                result= cgReportService.queryByCgReportSql(querySql, pageSearchFields,paramData, -1, -1);
+
             }
 			//--author：JueYue---------date:20150620--------for: 导出替换成EasyPoi
 			List<ExcelExportEntity> entityList = new ArrayList<ExcelExportEntity>();
@@ -97,7 +120,7 @@ public class CgExportExcelController extends BaseController {
 				Object dictCode=fieldList.get(i).get("dict_code");
 				if(oConvertUtils.isNotEmpty(dictCode)) {
 					dictFieldList.add(fieldList.get(i));
-					List<TSType> types = ResourceUtil.allTypes.get(dictCode.toString().toLowerCase());
+					List<TSType> types = ResourceUtil.getCacheTypes(dictCode.toString().toLowerCase());
 					for (TSType tsType : types) {
 						dictMap.put(dictCode.toString()+"_"+tsType.getTypecode(), tsType.getTypename());
 					}

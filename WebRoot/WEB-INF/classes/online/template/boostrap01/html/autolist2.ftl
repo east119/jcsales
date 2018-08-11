@@ -16,11 +16,12 @@
         <script src="plug-in/Formdesign/js/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript" src="online/template/${this_olstylecode}/js/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="plug-in/jquery-plugs/i18n/jquery.i18n.properties.js"></script>
     <script type="text/javascript" src="online/template/${this_olstylecode}/js/respond.min.js"></script>
    <script type="text/javascript" src="online/template/${this_olstylecode}/js/bootstrap.js"></script>
     <script type="text/javascript" src="online/template/${this_olstylecode}/js/sco.message.js"></script>
     <script type="text/javascript" src="online/template/${this_olstylecode}/js/sco.confirm.js"></script>
-    <script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
+    <script type="text/javascript" src="plug-in/tools/curdtools.js"></script>
     <script type="text/javascript" src="plug-in/tools/dataformat.js"></script>
     <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>
 	<script type="text/javascript">

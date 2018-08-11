@@ -31,7 +31,6 @@ public class TableSQLServerHandleImpl implements DbTableHandleI {
 
 	
 	public String getMatchClassTypeByDataType(String dataType,int digits) {
-
 		String result ="";
 		if (dataType.equalsIgnoreCase("varchar")) {
 			result="string";
@@ -48,7 +47,6 @@ public class TableSQLServerHandleImpl implements DbTableHandleI {
 		}else if (dataType.equalsIgnoreCase("varbinary")) {
 			result="blob";
 		}
-
 		return result;
 	}
 
@@ -64,7 +62,6 @@ public class TableSQLServerHandleImpl implements DbTableHandleI {
 	
 	private String getUpdateFieldDesc(ColumnMeta cgfromcolumnMeta,ColumnMeta datacolumnMeta) {
 		String result ="";
-
 		if(cgfromcolumnMeta.getColunmType().equalsIgnoreCase("string")){
 			result = cgfromcolumnMeta.getColumnName()+" varchar("+cgfromcolumnMeta.getColumnSize()+")"+" "+(cgfromcolumnMeta.getIsNullable().equals("Y")?"NULL":"NOT NULL");
 		}else if(cgfromcolumnMeta.getColunmType().equalsIgnoreCase("date")){
@@ -81,13 +78,11 @@ public class TableSQLServerHandleImpl implements DbTableHandleI {
 			result = cgfromcolumnMeta.getColumnName()+" varbinary("+cgfromcolumnMeta.getColumnSize()+")"+" "+(cgfromcolumnMeta.getIsNullable().equals("Y")?"NULL":"NOT NULL");
 		}
 		//result += (StringUtils.isNotEmpty(cgfromcolumnMeta.getFieldDefault())?" DEFAULT "+cgfromcolumnMeta.getFieldDefault():" ");
-
 		return result;
 	}
 
 	private String getAddFieldDesc(ColumnMeta cgfromcolumnMeta) {
 		String result ="";
-
 		if(cgfromcolumnMeta.getColunmType().equalsIgnoreCase("string")){
 			result = cgfromcolumnMeta.getColumnName()+" varchar("+cgfromcolumnMeta.getColumnSize()+")"+" "+(cgfromcolumnMeta.getIsNullable().equals("Y")?"NULL":"NOT NULL");
 		}else if(cgfromcolumnMeta.getColunmType().equalsIgnoreCase("date")){
@@ -104,7 +99,6 @@ public class TableSQLServerHandleImpl implements DbTableHandleI {
 			result = cgfromcolumnMeta.getColumnName()+" varbinary("+cgfromcolumnMeta.getColumnSize()+")"+" "+(cgfromcolumnMeta.getIsNullable().equals("Y")?"NULL":"NOT NULL");
 		}//update-end--Author:liuht  Date:20131223 
 		//result += (StringUtils.isNotEmpty(cgfromcolumnMeta.getFieldDefault())?" DEFAULT "+cgfromcolumnMeta.getFieldDefault():" ");
-
 		return result;
 	}
 	
@@ -120,7 +114,6 @@ public class TableSQLServerHandleImpl implements DbTableHandleI {
 		}else if(cgfromcolumnMeta.getColunmType().equalsIgnoreCase("double")){
 			result = cgfromcolumnMeta.getColumnName()+" float "+(cgfromcolumnMeta.getIsNullable().equals("Y")?"NULL":"NOT NULL");
 		}
-
 		return result;
 	}
 

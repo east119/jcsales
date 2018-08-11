@@ -18,7 +18,9 @@
 	 	 return false;
     });  
 	$('#del${entityName}Btn').bind('click', function(){   
-      	$("#add_${entityName?uncap_first}_table").find("input:checked").parent().parent().remove();   
+		<#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2933 【严重bug 代码生成器】一对多table风格，默认编辑数据，点击任意一条明细数据，删除，会把所有的明细删掉 -->
+		$("#add_${entityName?uncap_first}_table").find("input[name$='ck']:checked").parent().parent().remove();  
+      	<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2933 【严重bug 代码生成器】一对多table风格，默认编辑数据，点击任意一条明细数据，删除，会把所有的明细删掉 --> 
         resetTrNum('add_${entityName?uncap_first}_table'); 
         return false;
     }); 
@@ -107,7 +109,9 @@
 					       <#elseif po.showType=='file' || po.showType == 'image'>
 							<input type="hidden" id="${entityName?uncap_first}List[0].${po.fieldName}" name="${entityName?uncap_first}List[0].${po.fieldName}" />
 									  <#-- update--begin--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
-									    <input class="ui-button" type="button" value="上传附件" onclick="commonUpload(commonUploadDefaultCallBack,'${entityName?uncap_first}List\\[0\\]\\.${po.fieldName}')"/> 
+									  	<#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+									    <input class="ui-button" type="button" value="上传附件"  name="${entityName?uncap_first}List[0].imgBtn" onclick="commonUpload(commonUploadDefaultCallBack,'${entityName?uncap_first}List\\[0\\]\\.${po.fieldName}')"/> 
+										<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
 										<a  target="_blank" id="${entityName?uncap_first}List[0].${po.fieldName}_href">未上传</a>
 										<#-- update--end--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
 						   <#elseif po.showType=='popup'>
@@ -179,8 +183,10 @@
 					     <#-- update--end--author:zhangjiaqiang date:20170531 for:增加图片和文件的支持 -->
 					        <input type="hidden" id="${entityName?uncap_first}List[${'$'}{stuts.index }].${po.fieldName}" name="${entityName?uncap_first}List[${'$'}{stuts.index }].${po.fieldName}"  value="${'$'}{poVal.${po.fieldName} }"/>
 										 <#-- update--begin--author:zhangjiaqiang date:20171120 for:TASK #2419 【代码生成器模板】一对多情况下，附件样式改造 -->
-									   <input class="ui-button" type="button" value="上传附件"
-													onclick="commonUpload(commonUploadDefaultCallBack,'${entityName?uncap_first}List\\[${'$'}{stuts.index }\\]\\.${po.fieldName}')"/> 
+									   <#-- update--begin--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 -->
+									   <input class="ui-button" type="button" value="上传附件" name="${entityName?uncap_first}List[${'$'}{stuts.index }].imgBtn"
+													onclick="commonUpload(commonUploadDefaultCallBack,'${entityName?uncap_first}List\\[${'$'}{stuts.index }\\]\\.${po.fieldName}')"/>
+										<#-- update--end--author:jiaqiankun date:20180710 for：TASK #2934 【bug - 少谦】老版代码生成器都存在的问题，明细页面上传附件的问题 --> 
 					  	 		<c:if test="${'$'}{empty poVal.${po.fieldName}}">
 											<a  target="_blank" id="${entityName?uncap_first}List[${'$'}{stuts.index }].${po.fieldName}_href"></a>
 										</c:if>

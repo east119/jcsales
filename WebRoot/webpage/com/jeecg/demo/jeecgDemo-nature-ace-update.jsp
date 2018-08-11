@@ -8,39 +8,7 @@
   <title>ace风格修改页面</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="online/template/ledefault/css/vendor.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/bootstrap-theme.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/bootstrap.css">
-  <link rel="stylesheet" href="online/template/ledefault/css/app.css">
-  
-  <link rel="stylesheet" href="plug-in/Validform/css/metrole/style.css" type="text/css"/>
-  <link rel="stylesheet" href="plug-in/Validform/css/metrole/tablefrom.css" type="text/css"/>
-  
-  <script type="text/javascript" src="plug-in/jquery/jquery-1.8.3.js"></script>
-  <script type="text/javascript" src="plug-in/tools/dataformat.js"></script>
-  <script type="text/javascript" src="plug-in/easyui/jquery.easyui.min.1.3.2.js"></script>
-  <script type="text/javascript" src="plug-in/easyui/locale/zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/tools/syUtil.js"></script>
-  <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>
-  <script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js"></script>
-  <script type="text/javascript" src="plug-in/tools/curdtools_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/tools/easyuiextend.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/js/datatype_zh-cn.js"></script>
-  <script type="text/javascript" src="plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.config.js"></script>
-  <script type="text/javascript"  charset="utf-8" src="plug-in/ueditor/ueditor.all.min.js"></script>
-		<link rel="stylesheet" href="plug-in/uploadify/css/uploadify.css" type="text/css" />
-		<script type="text/javascript" src="plug-in/uploadify/jquery.uploadify-3.1.js"></script>
-		
-<link rel="stylesheet" href="plug-in/Validform/css/metrole/style.css" type="text/css"/>
-<link rel="stylesheet" href="plug-in/Validform/css/metrole/tablefrom.css" type="text/css"/>
-<script type="text/javascript" src="plug-in/Validform/js/Validform_v5.3.1_min_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/Validform/js/Validform_Datatype_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/Validform/js/datatype_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/Validform/plugin/passwordStrength/passwordStrength-min.js"></script>
-<script src="plug-in/layer/layer.js"></script>
+  <t:base type="jquery,aceform,DatePicker,validform,ueditor,uploadify,layer"></t:base>
 </head>
  <body>
  <form id="formobj"  action="jeecgListDemoController.do?doUpdate" name="formobj" method="post">
@@ -60,7 +28,7 @@
 				        <b>名称：</b>
 				    </div>
 				    <div class="col-xs-6">
-						<input id="name" name="name" type="text" class="form-control"  ignore="ignore"  value = "${jeecgDemoPage.name}"/>
+						<input id="name" name="name" type="text" class="form-control"   datatype="s2-50" value = "${jeecgDemoPage.name}" />
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
 						<label class="Validform_label" style="display: none">名称</label>
 			        </div>
@@ -71,7 +39,7 @@
 				        <b>年龄：</b>
 				    </div>
 				    <div class="col-xs-6">
-						<input id="age" name="age" type="text" class="form-control"  ignore="ignore"  value = "${jeecgDemoPage.age}"/>
+						<input id="age" name="age" type="text" class="form-control"  ignore="ignore"  datatype="n"  value = "${jeecgDemoPage.age}"/>
 						<span class="Validform_checktip" style="float:left;height:0px;"></span>
 						<label class="Validform_label" style="display: none">年龄</label>
 			        </div>
@@ -82,7 +50,7 @@
 				        <b>性别：</b>
 				    </div>
 				    <div class="col-xs-6">
-						<select name="sex" class="form-control"  style="width:164px" >
+						<select name="sex" class="form-control"  style="width:164px" datatype="*" >
 							<option value="">  </option> 
 							<option value="0" <c:if test="${jeecgDemoPage.sex==0}">selected</c:if>>男 </option>
 							<option value="1" <c:if test="${jeecgDemoPage.sex==1}">selected</c:if>>女 </option> 

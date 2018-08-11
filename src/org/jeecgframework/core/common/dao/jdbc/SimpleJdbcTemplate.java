@@ -19,9 +19,7 @@ import org.springframework.util.Assert;
  *
  */
 @SuppressWarnings("unchecked")
-
 public class SimpleJdbcTemplate extends JdbcTemplate{
-
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -48,7 +46,10 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 			Assert.hasText(sql,"sql语句不正确!");
 			Assert.notNull(clazz,"集合中对象类型不能为空!");
 			if(parameters!=null){
-				return jdbcTemplate.query(sql, resultBeanMapper(clazz),parameters);
+
+//				return jdbcTemplate.query(sql, resultBeanMapper(clazz),parameters);
+				return namedJdbcTemplate.query(sql, parameters, resultBeanMapper(clazz));
+
 			}else{
 				return jdbcTemplate.query(sql, resultBeanMapper(clazz));
 			}
@@ -69,7 +70,10 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 			Assert.hasText(sql,"sql语句不正确!");
 			Assert.notNull(clazz,"集合中对象类型不能为空!");
 			if(parameters!=null){
-				return jdbcTemplate.queryForObject(sql, resultBeanMapper(clazz), parameters);
+
+//				return jdbcTemplate.queryForObject(sql, resultBeanMapper(clazz), parameters);
+				return namedJdbcTemplate.queryForObject(sql, parameters, resultBeanMapper(clazz));
+
 			}else{
 
 				return jdbcTemplate.queryForObject(sql, resultBeanMapper(clazz),Long.class);
@@ -112,7 +116,10 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 		try{
 			Assert.hasText(sql,"sql语句不正确!");
 			if(parameters!=null){
-				return jdbcTemplate.queryForMap(sql, parameters);
+
+//				return jdbcTemplate.queryForMap(sql, parameters);
+				return namedJdbcTemplate.queryForMap(sql, parameters);
+
 			}else{
 				return jdbcTemplate.queryForMap(sql);
 			}
@@ -132,7 +139,10 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 		try{
 			Assert.hasText(sql,"sql语句不正确!");
 			if(parameters!=null){
-				return jdbcTemplate.queryForList(sql, parameters);
+
+//				return jdbcTemplate.queryForList(sql, parameters);
+				return namedJdbcTemplate.queryForList(sql, parameters);
+
 			}else{
 				return jdbcTemplate.queryForList(sql);
 			}
@@ -151,7 +161,10 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 	public int executeForObject(final String sql,Object bean){
 		Assert.hasText(sql,"sql语句不正确!");
 		if(bean!=null){
-			return jdbcTemplate.update(sql, paramBeanMapper(bean));
+
+//			return jdbcTemplate.update(sql, paramBeanMapper(bean));
+			return namedJdbcTemplate.update(sql, paramBeanMapper(bean));
+
 		}else{
 			return jdbcTemplate.update(sql);
 		}
@@ -167,7 +180,10 @@ public class SimpleJdbcTemplate extends JdbcTemplate{
 	public int executeForMap(final String sql,Map parameters){
 		Assert.hasText(sql,"sql语句不正确!");
 		if(parameters!=null){
-			return jdbcTemplate.update(sql, parameters);
+
+//			return jdbcTemplate.update(sql, parameters);
+			return namedJdbcTemplate.update(sql, parameters);
+
 		}else{
 			return jdbcTemplate.update(sql);
 		}

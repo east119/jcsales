@@ -38,19 +38,20 @@
 			//var a=oo.offset();
 			var oowidth=oo.css("width");
 			//console.info(oowidth);
-			oo.after("<select class='form-control "+options.proid+"' name='"+options.proname+"' style='display:inline-block;width:"+oowidth+"'><option value='' idq=''>--全国--</option></select>");
+
+			oo.after("<select class='form-control "+options.proid+"' name='"+options.proname+"' style='display:inline-block;font-size:12px;line-height:1em;height:26px;width:"+oowidth+"'><option value='' idq=''>--全国--</option></select>");
 			oo.css("display","none");
 			
 			var cityobj=$("#"+options.cityid);
 			var citywidth=cityobj.css("width");
-			cityobj.after("<select class='form-control "+options.cityid+"' name='"+options.cityname+"' style='display:inline-block;width:"+citywidth+"'></select>");
+			cityobj.after("<select class='form-control "+options.cityid+"' name='"+options.cityname+"' style='display:inline-block;font-size:12px;line-height:1em;height:26px;width:"+citywidth+"'></select>");
 			cityobj.css("display","none");
 			
 			var areaobj=$("#"+options.areaid);
 			var areawidth=areaobj.css("width");
-			areaobj.after("<select class='form-control "+options.areaid+"' name='"+options.areaname+"' style='display:inline-block;width:"+areawidth+"'></select>");
+			areaobj.after("<select class='form-control "+options.areaid+"' name='"+options.areaname+"' style='display:inline-block;font-size:12px;line-height:1em;height:26px;width:"+areawidth+"'></select>");
 			areaobj.css("display","none");
-			
+
 			ajaxmethod(options['url'],options['pid'],options['proid']);
 			
 			$("."+options.proid).bind("change",function(){

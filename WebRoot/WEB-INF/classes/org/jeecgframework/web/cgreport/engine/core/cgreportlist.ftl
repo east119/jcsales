@@ -57,13 +57,13 @@ $(function(){$('#${config_id}List').datagrid(
 	function get${config_id}ListSelected(field){return getSelected(field);}
 	function getSelected(field){var row = $('#'+gridname).datagrid('getSelected');if(row!=null){value= row[field];}else{value='';}return value;}
 	function get${config_id}ListSelections(field){var ids = [];var rows = $('#${config_id}List').datagrid('getSelections');for(var i=0;i<rows.length;i++){ids.push(rows[i][field]);}ids.join(',');return ids};
-	function ${config_id}Listsearch(){var queryParams=$('#${config_id}List').datagrid('options').queryParams;$('#${config_id}Listtb').find('*').each(function(){queryParams[$(this).attr('name')]=$(this).val();});$('#${config_id}List').datagrid({url:'cgReportController.do?datagrid&configId=${config_id}',pageNumber:1});}
-	function dosearch(params){var jsonparams=$.parseJSON(params);$('#${config_id}List').datagrid({url:'cgReportController.do?datagrid&configId=${config_id},',queryParams:jsonparams});}
+	function ${config_id}Listsearch(){var queryParams=$('#${config_id}List').datagrid('options').queryParams;$('#${config_id}Listtb').find('*').each(function(){queryParams[$(this).attr('name')]=$(this).val();});$('#${config_id}List').datagrid({url:'cgReportController.do?datagrid&configId=${config_id}${config_params}',pageNumber:1});}
+	function dosearch(params){var jsonparams=$.parseJSON(params);$('#${config_id}List').datagrid({url:'cgReportController.do?datagrid&configId=${config_id}${config_params}',queryParams:jsonparams});}
 	function ${config_id}Listsearchbox(value,name){var queryParams=$('#${config_id}List').datagrid('options').queryParams;queryParams[name]=value;queryParams.searchfield=name;$('#${config_id}List').datagrid('reload');}$('#${config_id}Listsearchbox').searchbox({searcher:function(value,name){${config_id}Listsearchbox(value,name);},menu:'#${config_id}Listmm',prompt:'请输入查询关键字'});
 	function searchReset_${config_id}(name){ $("#"+name+"tb").find(":input").val("");${config_id}Listsearch();}
 	//导出
 	function exportXls() {
-		var submitUrl = "cgExportExcelController.do?exportXls&configId=${config_id}";
+		var submitUrl = "cgExportExcelController.do?exportXls&configId=${config_id}${config_params}";
 		var queryParams = "";
 		$('#${config_id}Listtb').find('*').each(function(){
 				queryParams+= "&"+$(this).attr('name')+"="+$(this).val();
