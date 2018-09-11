@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="jcsales">
+    <wb-module deploy-name="jcfc">
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/" source-path="/WebRoot"/>
-        <property name="context-root" value="jcsales"/>
-        <property name="java-output-path" value="/jcsales/WebRoot/WEB-INF/classes"/>
+        <property name="java-output-path" value="/jcfc/WebRoot/WEB-INF/classes"/>
+        <property name="context-root" value="jcfc"/>
     </wb-module>
 </project-modules>
