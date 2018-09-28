@@ -66,7 +66,7 @@
 					<a href="#" class="navbar-brand">
 						<small>
 							<i class="icon-leaf"></i>
-							JEECG 微云快速开发平台
+							ERP项目维护系统
 						</small>
 					</a><!-- /.brand -->
 				</div><!-- /.navbar-header -->
@@ -147,7 +147,7 @@
 							</ul>
 						</li>-->
 
-						<li class="purple">
+						<li class="purple hidden">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="icon-bell-alt icon-animated-bell"></i>
 								<span class="badge badge-important" id="noticeCount">0</span>
@@ -177,12 +177,11 @@
 							</ul>
 						</li>
 
-						<li class="green">
+						<li class="green hidden">
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<i class="icon-envelope icon-animated-vertical"></i>
 								<span class="badge badge-success" id="messageCount">0</span>
 							</a>
-
 							<ul class="pull-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
 								<li class="dropdown-header" id="messageTip">
 									<i class="icon-envelope-alt"></i>
@@ -194,9 +193,6 @@
 										
 									</a>
 								</li>
-
-								
-
 								<li>
 									<a href="javascript:goAllMessage();" id="messageFooter">
 										查看所有消息
@@ -231,26 +227,6 @@
 										 <t:mutiLang langKey="common.profile"/>
 									</a>
 								</li>
-								<li>
-									<a href="javascript:openwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?getSysInfos')">
-										<i class="icon-cog"></i>
-										 <t:mutiLang langKey="common.ssms.getSysInfos"/>
-									</a>
-								</li>
-								<li>
-									<a href="javascript:add('<t:mutiLang langKey="common.change.style"/>','userController.do?changestyle','',550,250)">
-										<i class="icon-cog"></i>
-										 <t:mutiLang langKey="common.my.style"/>
-									</a>
-								</li>
-								
-								<li>
-									<a href="http://yun.jeecg.org" target="_blank">
-										<i class="icon-cloud"></i>
-										 云应用中心
-									</a>
-								</li>
-								
 								<li>
 									<a href="javascript:clearLocalstorage()">
 										<i class="icon-cog"></i>

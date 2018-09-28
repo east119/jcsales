@@ -41,7 +41,7 @@
 
 </head>
 <body class="login-layout light-login">
-<div class="main-container">
+<div class="main-container" style="margin-top: 100px;">
   <div class="main-content">
     <div class="row">
       <div class="col-sm-10 col-sm-offset-1">
@@ -49,9 +49,9 @@
           <div class="center">
             <h1 id="id-text2" class="grey">
               <i class="ace-icon fa fa-leaf green"></i>
-               JEECG 演示系统
+               ERP项目维护系统
             </h1>
-            <h4 class="blue" id="id-company-text">www.jeecg.org</h4>
+            <h4 class="blue" id="id-company-text">嘉诚财务部</h4>
           </div>
           <div class="space-6"></div>
           <div class="position-relative">
@@ -94,30 +94,28 @@
                           <input type="checkbox" class="ace" id="on_off"  name="remember" value="yes"/>
                           <span class="lbl">记住用户名</span>
                         </label>
-                        <span> | <a href="http://demo.jeecg.org/mLoginController.do?login&from=singlemessage&isappinstalled=0"><i class="ace-icon fa fa-location-arrow"></i><font color='#428bca'>移动OA</font></a></span>
-                         <span> | <a href="http://yun.jeecg.org" target="_blank"><i class="ace-icon fa fa-cube"></i><font color='#428bca'>插件中心</font></a></span>
-                        <button type="button" id="but_login"  onclick="checkUser()" class="width-35 pull-right btn btn-sm btn-primary">
+                       	<button type="button" id="but_login"  onclick="checkUser()" class="width-35 pull-right btn btn-sm btn-primary">
                           <i class="ace-icon fa fa-key"></i>
                           <span class="bigger-110" >登录</span>
                         </button>
-                        <a href="loginController.do?goResetPwdMail" class="btn btn-link">忘记密码 ?</a>
+                       	<!--  <a href="loginController.do?goResetPwdMail" class="btn btn-link">忘记密码 ?</a> -->
                       </div>
                       <div class="space-4"></div>
-
                 </div>
                 <div class="toolbar clearfix">
                   <div style="float: right">
                     <a href="#"  class="forgot-password-link">
-                    	  语言
+                      <%--   语言
                       <i class="ace-icon fa fa-arrow-right"></i>
-                      <t:dictSelect id="langCode" field="langCode" typeGroupCode="lang" hasLabel="false" extendJson="{style:'padding:2px; width:80px;'}" defaultVal="zh-cn"></t:dictSelect>
+                      <t:dictSe lect id="langCode" field="langCode" typeGroupCode="lang" hasLabel="false" extendJson="{style:'padding:2px; width:80px;'}" defaultVal="zh-cn"></t:dictSelect>
+                      --%>
                     </a>
                   </div>
                 </div>
                 </form>
               </div>
             </div>
-            <div class="center"><h4 class="blue" id="id-company-text">&copy; JEECG版权所有 v_3.7.8</h4></div>
+            
             <div class="navbar-fixed-top align-right">
               <br />
               &nbsp;
