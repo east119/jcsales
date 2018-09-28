@@ -5,20 +5,18 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.jeecgframework.poi.excel.annotation.Excel;
 
 /**   
  * @Title: Entity
  * @Description: 合同号
  * @author onlineGenerator
- * @date 2018-09-13 11:21:17
+ * @date 2018-09-28 20:38:27
  * @version V1.0   
  *
  */
@@ -27,19 +25,22 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @SuppressWarnings("serial")
 public class JcfcContractEntity implements java.io.Serializable {
 	/**id*/
-	private java.lang.String id;
-	/**申请日期*/
-	@Excel(name="申请日期",width=15,format = "yyyy-MM-dd")
-	private java.util.Date sqrq;
+	private java.lang.Integer id;
 	/**项目名称*/
 	@Excel(name="项目名称",width=15)
 	private java.lang.String xxmc;
+	/**业务经理*/
+	@Excel(name="业务经理",width=15,dictTable ="jcfc_person",dicCode ="ywbm",dicText ="ywmc")
+	private java.lang.String ywjl;
+	/**合同年份*/
+	@Excel(name="合同年份",width=15)
+	private java.lang.String htnf;
 	/**合同编码*/
 	@Excel(name="合同编码",width=15)
 	private java.lang.String htbm;
-	/**业务经理*/
-	@Excel(name="业务经理",width=15)
-	private java.lang.String ywjl;
+	/**申请日期*/
+	@Excel(name="申请日期",width=15,format = "yyyy-MM-dd")
+	private java.util.Date sqrq;
 	/**集成金额*/
 	@Excel(name="集成金额",width=15)
 	private java.lang.String jcje;
@@ -76,6 +77,8 @@ public class JcfcContractEntity implements java.io.Serializable {
 	private java.lang.String yx;
 	/**合同号*/
 	private java.lang.String hth;
+	/**业务序号*/
+	private java.lang.Integer ywxh;
 	/**创建人名称*/
 	private java.lang.String createName;
 	/**创建人登录名称*/
@@ -98,41 +101,23 @@ public class JcfcContractEntity implements java.io.Serializable {
 	private java.lang.Integer deleteFlag;
 	
 	/**
-	 *方法: 取得java.lang.String
-	 *@return: java.lang.String  id
+	 *方法: 取得java.lang.Integer
+	 *@return: java.lang.Integer  id
 	 */
 	@Id
-	@GeneratedValue(generator = "paymentableGenerator")
-	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 
-	@Column(name ="ID",nullable=false,length=36)
-	public java.lang.String getId(){
+	@Column(name ="ID",nullable=false,length=20)
+	public java.lang.Integer getId(){
 		return this.id;
 	}
 
 	/**
-	 *方法: 设置java.lang.String
-	 *@param: java.lang.String  id
+	 *方法: 设置java.lang.Integer
+	 *@param: java.lang.Integer  id
 	 */
-	public void setId(java.lang.String id){
+	public void setId(java.lang.Integer id){
 		this.id = id;
-	}
-	/**
-	 *方法: 取得java.util.Date
-	 *@return: java.util.Date  申请日期
-	 */
-	@Temporal(TemporalType.DATE)
-	@Column(name ="SQRQ",nullable=false)
-	public java.util.Date getSqrq(){
-		return this.sqrq;
-	}
-
-	/**
-	 *方法: 设置java.util.Date
-	 *@param: java.util.Date  申请日期
-	 */
-	public void setSqrq(java.util.Date sqrq){
-		this.sqrq = sqrq;
 	}
 	/**
 	 *方法: 取得java.lang.String
@@ -153,6 +138,40 @@ public class JcfcContractEntity implements java.io.Serializable {
 	}
 	/**
 	 *方法: 取得java.lang.String
+	 *@return: java.lang.String  业务经理
+	 */
+
+	@Column(name ="YWJL",nullable=false,length=10)
+	public java.lang.String getYwjl(){
+		return this.ywjl;
+	}
+
+	/**
+	 *方法: 设置java.lang.String
+	 *@param: java.lang.String  业务经理
+	 */
+	public void setYwjl(java.lang.String ywjl){
+		this.ywjl = ywjl;
+	}
+	/**
+	 *方法: 取得java.lang.String
+	 *@return: java.lang.String  合同年份
+	 */
+
+	@Column(name ="HTNF",nullable=false,length=4)
+	public java.lang.String getHtnf(){
+		return this.htnf;
+	}
+
+	/**
+	 *方法: 设置java.lang.String
+	 *@param: java.lang.String  合同年份
+	 */
+	public void setHtnf(java.lang.String htnf){
+		this.htnf = htnf;
+	}
+	/**
+	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  合同编码
 	 */
 
@@ -169,21 +188,21 @@ public class JcfcContractEntity implements java.io.Serializable {
 		this.htbm = htbm;
 	}
 	/**
-	 *方法: 取得java.lang.String
-	 *@return: java.lang.String  业务经理
+	 *方法: 取得java.util.Date
+	 *@return: java.util.Date  申请日期
 	 */
 
-	@Column(name ="YWJL",nullable=false,length=10)
-	public java.lang.String getYwjl(){
-		return this.ywjl;
+	@Column(name ="SQRQ",nullable=true)
+	public java.util.Date getSqrq(){
+		return this.sqrq;
 	}
 
 	/**
-	 *方法: 设置java.lang.String
-	 *@param: java.lang.String  业务经理
+	 *方法: 设置java.util.Date
+	 *@param: java.util.Date  申请日期
 	 */
-	public void setYwjl(java.lang.String ywjl){
-		this.ywjl = ywjl;
+	public void setSqrq(java.util.Date sqrq){
+		this.sqrq = sqrq;
 	}
 	/**
 	 *方法: 取得java.lang.String
@@ -439,6 +458,23 @@ public class JcfcContractEntity implements java.io.Serializable {
 	 */
 	public void setHth(java.lang.String hth){
 		this.hth = hth;
+	}
+	/**
+	 *方法: 取得java.lang.Integer
+	 *@return: java.lang.Integer  业务序号
+	 */
+
+	@Column(name ="YWXH",nullable=true,length=5)
+	public java.lang.Integer getYwxh(){
+		return this.ywxh;
+	}
+
+	/**
+	 *方法: 设置java.lang.Integer
+	 *@param: java.lang.Integer  业务序号
+	 */
+	public void setYwxh(java.lang.Integer ywxh){
+		this.ywxh = ywxh;
 	}
 	/**
 	 *方法: 取得java.lang.String

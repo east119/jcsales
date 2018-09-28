@@ -2,7 +2,6 @@ package com.jeecg.jcfc.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -45,7 +44,7 @@ import com.jeecg.jcfc.service.JcfcContractServiceI;
  * @Title: Controller  
  * @Description: 合同号
  * @author onlineGenerator
- * @date 2018-09-13 11:21:17
+ * @date 2018-09-28 20:38:27
  * @version V1.0   
  *
  */
@@ -66,11 +65,11 @@ public class JcfcContractController extends BaseController {
 	 * 编码成都：10位
 	 * @return
 	 */
-	private String doBuildCode(JcfcContractEntity contract){
+	private String getCode(JcfcContractEntity contract){
 		String code = null;
 		double max = 0;
 		double money = 0;
-		String ywh = "0001";
+		
 		if(StringUtil.isNotEmpty(contract.getJcje())){
 			code = PREFIX[0];
 			max = Double.parseDouble(contract.getJcje());
@@ -110,18 +109,23 @@ public class JcfcContractController extends BaseController {
 				max = money;
 			}
 		}
-		if(StringUtil.isNotEmpty(code)){
-			contract.setYx(code + ywh + contract.getSqrq().getYear() + "001");
-		}
-		System.out.println(contract.getSqrq().getYear());
-		return code + ywh + contract.getSqrq().getYear() + "001";
+		
+		return code;
 	}
 	
 	private String getOrder(JcfcContractEntity contract){
-		String hql = "select max(c.tableVersion) from CgFormHeadEntity c where c.physiceId = ?";
-		List<Integer> versions = systemService.findHql(hql, contract.getId());
-		String yearLast = new SimpleDateFormat("yy",Locale.CHINESE).format(Calendar.getInstance().getTime());
-		return null;
+		String year = new SimpleDateFormat("yyyy",Locale.CHINESE).format(contract.getSqrq());
+		String sql = "select count(1) from jcfc_contract t where t.hth is not null and t.ywjl = '" + contract.getYwjl() + "' and year(t.sqrq) = '" + year +"'";
+		long counts = this.systemService.getCountForJdbcParam(sql) + 1;
+		String orderStr = "";
+		if(counts < 10){
+			orderStr = "00" + counts;
+		}else if(counts < 100){
+			orderStr = "0" + counts;
+		}else{
+			orderStr = "" + counts;
+		}
+		return orderStr;
 	}
 
 	/**
@@ -171,7 +175,8 @@ public class JcfcContractController extends BaseController {
 		jcfcContract = systemService.getEntity(JcfcContractEntity.class, jcfcContract.getId());
 		message = "合同号删除成功";
 		try{
-			jcfcContractService.delete(jcfcContract);
+			jcfcContract.setDeleteFlag(1);
+			jcfcContractService.saveOrUpdate(jcfcContract);
 			systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -195,10 +200,9 @@ public class JcfcContractController extends BaseController {
 		message = "合同号删除成功";
 		try{
 			for(String id:ids.split(",")){
-				JcfcContractEntity jcfcContract = systemService.getEntity(JcfcContractEntity.class, 
-				id
-				);
-				jcfcContractService.delete(jcfcContract);
+				JcfcContractEntity jcfcContract = systemService.getEntity(JcfcContractEntity.class, id);
+				jcfcContract.setDeleteFlag(1);
+				jcfcContractService.saveOrUpdate(jcfcContract);
 				systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
 			}
 		}catch(Exception e){
@@ -248,11 +252,26 @@ public class JcfcContractController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		if(CollectionUtils.isNotEmpty(jcfcContractList)){
 			for(JcfcContractEntity jcfcContract:jcfcContractList){
+				String code = getCode(jcfcContract);
 				if (StringUtil.isNotEmpty(jcfcContract.getId())) {
 					JcfcContractEntity t =jcfcContractService.get(JcfcContractEntity.class, jcfcContract.getId());
 					try {
 						message = "JcfcContract例子更新成功";
-						doBuildCode(jcfcContract);
+						if(StringUtil.isNotEmpty(code)){
+							String ywjlOld = t.getYwjl();
+							String yearOld = new SimpleDateFormat("yy",Locale.CHINESE).format(t.getSqrq());
+							String hthOld = t.getHth();
+							
+							String ywjl = jcfcContract.getYwjl();
+							String year = new SimpleDateFormat("yy",Locale.CHINESE).format(jcfcContract.getSqrq());							
+							String orderStr = "";
+							if(StringUtil.isNotEmpty(hthOld)&&ywjl.equals(ywjlOld)&&year.equals(yearOld)){//原合同号不为空  and 业务经理和年份没有 变化
+								orderStr = hthOld.substring(7);
+							}else{
+								orderStr = getOrder(jcfcContract);
+							}
+							jcfcContract.setHth(code + ywjl + year + orderStr);
+						}
 						MyBeanUtils.copyBeanNotNull2Bean(jcfcContract, t);
 						jcfcContractService.saveOrUpdate(t);
 						systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
@@ -262,8 +281,13 @@ public class JcfcContractController extends BaseController {
 				} else {
 					try {
 						message = "JcfcContract例子添加成功";
-						//jeecgDemo.setStatus("0");
-						doBuildCode(jcfcContract);
+						if(StringUtil.isNotEmpty(code)){
+							String ywjl = jcfcContract.getYwjl();
+							String year = new SimpleDateFormat("yy",Locale.CHINESE).format(jcfcContract.getSqrq());
+							String orderStr = getOrder(jcfcContract);
+							jcfcContract.setHth(code + ywjl + year + orderStr);
+						}
+						jcfcContract.setDeleteFlag(0);
 						jcfcContractService.save(jcfcContract);
 						systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 					} catch (Exception e) {

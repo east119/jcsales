@@ -5,26 +5,25 @@
   <div region="center" style="padding:0px;border:0px">
   <t:datagrid name="jcfcContractrowList" checkbox="true"  pagination="true" fitColumns="true" sortName="createDate"  title="合同号" actionUrl="jcfcContractController.do?datagrid" idField="id"  queryMode="group">
     <t:dgCol title="id"  field="id"  hidden="true" ></t:dgCol>
-    <t:dgCol title="申请日期"  field="sqrq" queryMode="group" query="true"  formatter="yyyy-MM-dd" width="100" 
-    	extendParams="editor:{type:'datebox'}"></t:dgCol>
-    <t:dgCol title="项目名称"  field="xxmc" queryMode="single" query="true" extendParams="editor:'text'" width="100"></t:dgCol>
-    <t:dgCol title="合同编码"  field="htbm" queryMode="single" query="true" extendParams="editor:'text'" width="100"></t:dgCol>
-    <t:dgCol title="业务经理"  field="ywjl" queryMode="single" query="true" extendParams="editor:'text'" width="100"></t:dgCol>
-    <t:dgCol title="集成金额"  field="jcje" queryMode="group"  extendParams="editor:{type:'validatebox',value:'11'}" width="100"></t:dgCol>
-    <t:dgCol title="软件金额"  field="rjje" queryMode="group"  extendParams="editor:'text'" width="100"></t:dgCol>
-    <t:dgCol title="工程金额"  field="gcje" queryMode="group"  extendParams="editor:'text'" width="100"></t:dgCol>
-    <t:dgCol title="服务金额"  field="fwje" queryMode="group"  extendParams="editor:'text'" width="100"></t:dgCol>
-    <t:dgCol title="技术金额"  field="jsje" queryMode="group"  extendParams="editor:'text'" width="100"></t:dgCol>
-    <t:dgCol title="其它金额"  field="qtje" queryMode="group"  extendParams="editor:'text'" width="100"></t:dgCol>
+    <t:dgCol title="申请日期"  field="sqrq"  queryMode="group" query="true"  formatter="yyyy-MM-dd" width="110" extendParams="editor:{type:'datebox',options:{required:'true'}}"></t:dgCol>
+    <t:dgCol title="项目名称"  field="xxmc"  queryMode="single" query="true" extendParams="editor:{type:'validatebox',options:{required:'true'}}" width="200"></t:dgCol>
+    <t:dgCol title="合同编码"  field="htbm"  extendParams="editor:'text'" width="100"></t:dgCol>
+    <t:dgCol title="业务经理"  field="ywjl"  queryMode="single" query="true" filterType="combobox" extendParams="editor:'combobox'" width="100" dictionary="jcfc_person,ywbm,ywmc"></t:dgCol>
+    <t:dgCol title="集成金额"  field="jcje"  filterType="numberbox"  extendParams="editor:{type:'validatebox',options:{validType:'decimalTwo'}}" width="100"></t:dgCol>
+    <t:dgCol title="软件金额"  field="rjje"  extendParams="editor:{type:'validatebox',options:{validType:'decimalTwo'}}" width="100"></t:dgCol>
+    <t:dgCol title="工程金额"  field="gcje"  extendParams="editor:{type:'validatebox',options:{validType:'decimalTwo'}}" width="100"></t:dgCol>
+    <t:dgCol title="服务金额"  field="fwje"  extendParams="editor:{type:'validatebox',options:{validType:'decimalTwo'}}" width="100"></t:dgCol>
+    <t:dgCol title="技术金额"  field="jsje"  extendParams="editor:{type:'validatebox',options:{validType:'decimalTwo'}}" width="100"></t:dgCol>
+    <t:dgCol title="其它金额"  field="qtje"  extendParams="editor:{type:'validatebox',options:{validType:'decimalTwo'}}" width="100"></t:dgCol>
     <t:dgCol title="合计金额"  field="hjje"  hidden="true" ></t:dgCol>
-    <t:dgCol title="集成编码"  field="jcbm"  hidden="true" ></t:dgCol>
-    <t:dgCol title="软件编码"  field="rjbm"  hidden="true" ></t:dgCol>
-    <t:dgCol title="工程编码"  field="gcbm"  hidden="true" ></t:dgCol>
-    <t:dgCol title="服务编码"  field="fwbm"  hidden="true" ></t:dgCol>
-    <t:dgCol title="技术编码"  field="jsbm"  hidden="true" ></t:dgCol>
-    <t:dgCol title="其它编码"  field="qtbm"  hidden="true" ></t:dgCol>
-    <t:dgCol title="合同号"  field="yx"  hidden="false" ></t:dgCol>
-    <t:dgCol title="合同号"  field="hth"  hidden="true" ></t:dgCol>
+    <t:dgCol title="集成编码"  field="jcbm"  hidden="false" ></t:dgCol>
+    <t:dgCol title="软件编码"  field="rjbm"  hidden="false" ></t:dgCol>
+    <t:dgCol title="工程编码"  field="gcbm"  hidden="false" ></t:dgCol>
+    <t:dgCol title="服务编码"  field="fwbm"  hidden="false" ></t:dgCol>
+    <t:dgCol title="技术编码"  field="jsbm"  hidden="false" ></t:dgCol>
+    <t:dgCol title="其它编码"  field="qtbm"  hidden="false" ></t:dgCol>
+    <t:dgCol title="合同号"  field="yx"  hidden="true" ></t:dgCol>
+    <t:dgCol title="合同号"  field="hth" width="100" extendParams="styler:fmtype"></t:dgCol>
     <t:dgCol title="创建人名称"  field="createName"  hidden="true" ></t:dgCol>
     <t:dgCol title="创建人登录名称"  field="createBy"  hidden="true" ></t:dgCol>
     <t:dgCol title="创建日期"  field="createDate"  hidden="true" ></t:dgCol>
@@ -34,15 +33,19 @@
     <t:dgCol title="所属部门"  field="sysOrgCode"  hidden="true" ></t:dgCol>
     <t:dgCol title="所属公司"  field="sysCompanyCode"  hidden="true" ></t:dgCol>
     <t:dgCol title="流程状态"  field="bpmStatus"  hidden="true" ></t:dgCol>
-    <t:dgCol title="删除标记"  field="deleteFlag"  hidden="true" ></t:dgCol>
+    <t:dgCol title="是否删除"  field="deleteFlag"  hidden="true" queryMode="single" query="true" dictionary="dev_flag" defaultVal="0"></t:dgCol>
+    <t:dgCol title="操作" field="opt" width="150"></t:dgCol>
+   	<t:dgDelOpt title="删除" url="jcfcContractController.do?doDel&id={id}" urlclass="ace_button"  urlfont="fa-trash-o"/>
     <t:dgToolBar operationCode="add" title="录入" icon="icon-add"  funname="addRow"></t:dgToolBar>
     <t:dgToolBar operationCode="edit" title="编辑" icon="icon-edit"  funname="editRow"></t:dgToolBar>
     <t:dgToolBar operationCode="save" title="保存" icon="icon-save" url="jcfcContractController.do?saveRows" funname="saveData"></t:dgToolBar>
     <t:dgToolBar operationCode="undo" title="取消编辑" icon="icon-undo" funname="reject"></t:dgToolBar>
     <t:dgToolBar title="批量删除"  icon="icon-remove" url="jcfcContractController.do?doBatchDel" funname="deleteALLSelect"></t:dgToolBar>
+    <t:dgToolBar title="导出" icon="icon-putout" funname="ExportXls"></t:dgToolBar>
   </t:datagrid>
   </div>
  </div>
+ <script type="text/javascript" src="plug-in/mutitables/mutitables.urd.js"></script>
  <script type="text/javascript">
     //添加行
 	function addRow(title,addurl,gname){
@@ -85,10 +88,12 @@
 	function endEdit(gname){
 		var  editIndex = $('#'+gname).datagrid('getRows').length-1;
 		for(var i=0;i<=editIndex;i++){
-			if($('#'+gname).datagrid('validateRow', i))
+			if($('#'+gname).datagrid('validateRow', i)){
 				$('#'+gname).datagrid('endEdit', i);
-			else
+			}else{
+			    tip("请填写必填项(带有红色三角形状的字段)!");
 				return false;
+			}
 		}
 		return true;
 	}
@@ -108,5 +113,18 @@
 	function reject(title,addurl,gname){
 		$('#'+gname).datagrid('clearChecked');
 		$('#'+gname).datagrid('rejectChanges');
+	}
+	//导出
+	function ExportXls() {
+		JeecgExcelExport("jcfcContractController.do?exportXls","jcfcContractrowList");
+	}
+	//列表字段颜色 ,逻辑判断函数 //可添加更多CSS样式
+	function fmtype(val,row,index){
+	    var s1 = 'background-color:red;color:#FFF;';
+	    var s2 = 'background-color:#3a87ad;color:#FFF;';
+	    if (val =='') {
+	        return s1
+	    }
+	    return s2
 	}
  </script>
