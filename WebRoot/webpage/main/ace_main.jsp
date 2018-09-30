@@ -541,14 +541,22 @@
 			    $("#mainTitle").text(title);
       			$("#center").attr("src",url);
       	}
-		
-
-	  	function logout(){
+	  	function logoutold(){
 	  		bootbox.confirm("<t:mutiLang langKey="common.exit.confirm"/>", function(result) {
 	  			if(result)
 		  			location.href="loginController.do?logout";
 	  		});
   		}
+	  	function logout(){
+	        layer.confirm('您确定要注销吗？', {
+	            btn: ['确定','取消'], //按钮
+	            shade: false //不显示遮罩
+	        }, function(){
+	            location.href="loginController.do?logout";
+	        }, function(){
+	            return;
+	        });
+	    }
 		function opendialog(title,url,target){
 			//$("#dialog").attr("src",url);
 			bootbox.dialog({
