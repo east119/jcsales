@@ -65,67 +65,96 @@ public class JcfcContractController extends BaseController {
 	 * 编码成都：10位
 	 * @return
 	 */
-	private String getCode(JcfcContractEntity contract){
-		String code = null;
+	private void setCode(JcfcContractEntity contract){
+		String code = "";
 		double max = 0;
 		double money = 0;
+		double total = 0;
+		String hth = contract.getHth();
 		
 		if(StringUtil.isNotEmpty(contract.getJcje())){
+			contract.setJcbm(PREFIX[0] + hth);
 			code = PREFIX[0];
 			max = Double.parseDouble(contract.getJcje());
+			total += max;
+		}else{
+			contract.setJcbm("");
 		}
 		if(StringUtil.isNotEmpty(contract.getRjje())){
+			contract.setRjbm(PREFIX[1] + hth);
 			money = Double.parseDouble(contract.getRjje());
+			total += money;
 			if(max == 0 || money > max){
 				code = PREFIX[1];
 				max = money;
 			}
+		}else{
+			contract.setRjbm("");
 		}
 		if(StringUtil.isNotEmpty(contract.getGcje())){
+			contract.setGcbm(PREFIX[2] + hth);
 			money = Double.parseDouble(contract.getGcje());
+			total += money;
 			if(max == 0 || money > max){
 				code = PREFIX[2];
 				max = money;
 			}
+		}else{
+			contract.setGcbm("");
 		}
 		if(StringUtil.isNotEmpty(contract.getFwje())){
+			contract.setFwbm(PREFIX[3] + hth);
 			money = Double.parseDouble(contract.getFwje());
+			total += money;
 			if(max == 0 || money > max){
 				code = PREFIX[3];
 				max = money;
 			}
+		}else{
+			contract.setFwbm("");
 		}
 		if(StringUtil.isNotEmpty(contract.getJsje())){
+			contract.setJsbm(PREFIX[4] + hth);
 			money = Double.parseDouble(contract.getJsje());
+			total += money;
 			if(max == 0 || money > max){
 				code = PREFIX[4];
 				max = money;
 			}
+		}else{
+			contract.setJsbm("");
 		}
 		if(StringUtil.isNotEmpty(contract.getQtje())){
+			contract.setQtbm(PREFIX[5] + hth);
 			money = Double.parseDouble(contract.getQtje());
+			total += money;
 			if(max == 0 || money > max){
 				code = PREFIX[5];
 				max = money;
 			}
+		}else{
+			contract.setQtbm("");
 		}
-		
-		return code;
+		contract.setYx(code + hth);
+		contract.setHjje(total + "");
 	}
 	
 	private String getOrder(JcfcContractEntity contract){
-		String year = new SimpleDateFormat("yyyy",Locale.CHINESE).format(contract.getSqrq());
-		String sql = "select count(1) from jcfc_contract t where t.hth is not null and t.ywjl = '" + contract.getYwjl() + "' and year(t.sqrq) = '" + year +"'";
-		long counts = this.systemService.getCountForJdbcParam(sql) + 1;
-		String orderStr = "";
-		if(counts < 10){
-			orderStr = "00" + counts;
-		}else if(counts < 100){
-			orderStr = "0" + counts;
-		}else{
-			orderStr = "" + counts;
+		String ywxh = "";
+		String hql = "select IFNULL(max(ywxh),0) as ywxh from jcfc_contract t where t.ywjl = '" + contract.getYwjl() + "' and t.htnf = '" + contract.getHtnf() +"'";
+		List<String> list = systemService.findListbySql(hql);
+		int max = 1;
+		if(StringUtil.isNotEmpty(list.get(0))){
+			max = Integer.parseInt(list.get(0)) + 1;
 		}
-		return orderStr;
+		if(max < 10){
+			ywxh = "00" + max;
+		}else if(max < 100){
+			ywxh = "0" + max;
+		}else{
+			ywxh = "" + max;
+		}	
+		return ywxh;
 	}
 
 	/**
@@ -252,45 +281,54 @@ public class JcfcContractController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		if(CollectionUtils.isNotEmpty(jcfcContractList)){
 			for(JcfcContractEntity jcfcContract:jcfcContractList){
-				String code = getCode(jcfcContract);
 				if (StringUtil.isNotEmpty(jcfcContract.getId())) {
 					JcfcContractEntity t =jcfcContractService.get(JcfcContractEntity.class, jcfcContract.getId());
 					try {
-						message = "JcfcContract例子更新成功";
-						if(StringUtil.isNotEmpty(code)){
+						message = "合同号更新成功";
+						if(StringUtil.isNotEmpty(jcfcContract.getJcje()) || StringUtil.isNotEmpty(jcfcContract.getRjje()) 
+								|| StringUtil.isNotEmpty(jcfcContract.getGcje()) || StringUtil.isNotEmpty(jcfcContract.getFwje())
+								|| StringUtil.isNotEmpty(jcfcContract.getJsje()) || StringUtil.isNotEmpty(jcfcContract.getQtje())){
 							String ywjlOld = t.getYwjl();
-							String yearOld = new SimpleDateFormat("yy",Locale.CHINESE).format(t.getSqrq());
-							String hthOld = t.getHth();
+							String yearOld = t.getHtnf().substring(2);
+							String ywxhOld = t.getYwxh();
 							
 							String ywjl = jcfcContract.getYwjl();
-							String year = new SimpleDateFormat("yy",Locale.CHINESE).format(jcfcContract.getSqrq());							
-							String orderStr = "";
-							if(StringUtil.isNotEmpty(hthOld)&&ywjl.equals(ywjlOld)&&year.equals(yearOld)){//原合同号不为空  and 业务经理和年份没有 变化
-								orderStr = hthOld.substring(7);
+							String year = jcfcContract.getHtnf().substring(2);
+							String ywxh = "";
+							if(StringUtil.isNotEmpty(ywxhOld)&&ywjl.equals(ywjlOld)&&year.equals(yearOld)){//原合同号不为空  and 业务经理和年份没有 变化
+								ywxh = ywxhOld;
 							}else{
-								orderStr = getOrder(jcfcContract);
+								ywxh = getOrder(jcfcContract);
 							}
-							jcfcContract.setHth(code + ywjl + year + orderStr);
+							jcfcContract.setYwxh(ywxh);
+							jcfcContract.setHth(ywjl + year + ywxh);
+							setCode(jcfcContract);
 						}
 						MyBeanUtils.copyBeanNotNull2Bean(jcfcContract, t);
 						jcfcContractService.saveOrUpdate(t);
 						systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 					} catch (Exception e) {
+						message = "合同号更新失败";
 						e.printStackTrace();
 					}
 				} else {
 					try {
-						message = "JcfcContract例子添加成功";
-						if(StringUtil.isNotEmpty(code)){
+						message = "合同号添加成功";
+						if(StringUtil.isNotEmpty(jcfcContract.getJcje()) || StringUtil.isNotEmpty(jcfcContract.getRjje()) 
+								|| StringUtil.isNotEmpty(jcfcContract.getGcje()) || StringUtil.isNotEmpty(jcfcContract.getFwje())
+								|| StringUtil.isNotEmpty(jcfcContract.getJsje()) || StringUtil.isNotEmpty(jcfcContract.getQtje())){
 							String ywjl = jcfcContract.getYwjl();
-							String year = new SimpleDateFormat("yy",Locale.CHINESE).format(jcfcContract.getSqrq());
-							String orderStr = getOrder(jcfcContract);
-							jcfcContract.setHth(code + ywjl + year + orderStr);
+							String year = jcfcContract.getHtnf().substring(2);
+							String ywxh = getOrder(jcfcContract);
+							jcfcContract.setYwxh(ywxh);
+							jcfcContract.setHth(ywjl + year + ywxh);
+							setCode(jcfcContract);
 						}
 						jcfcContract.setDeleteFlag(0);
 						jcfcContractService.save(jcfcContract);
 						systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 					} catch (Exception e) {
+						message = "合同号添加失败";
 						e.printStackTrace();
 					}
 					

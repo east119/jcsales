@@ -16,18 +16,6 @@
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
-							申请日期:
-						</label>
-					</td>
-					<td class="value">
-							   <input id="sqrq" name="sqrq" type="text" style="width: 150px" class="Wdate" onClick="WdatePicker()"  datatype="*" ignore="checked" />    
-							<span class="Validform_checktip"></span>
-							<label class="Validform_label" style="display: none;">申请日期</label>
-						</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
 							项目名称:
 						</label>
 					</td>
@@ -36,20 +24,6 @@
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">项目名称</label>
 						</td>
-				</tr>
-				<tr>
-					<td align="right">
-						<label class="Validform_label">
-							合同编码:
-						</label>
-					</td>
-					<td class="value">
-					     	 <input id="htbm" name="htbm" type="text" maxlength="32" style="width: 150px" class="inputxt"  validType=",,id" datatype="*" ignore="checked" />
-							<span class="Validform_checktip"></span>
-							<label class="Validform_label" style="display: none;">合同编码</label>
-						</td>
-				</tr>
-				<tr>
 					<td align="right">
 						<label class="Validform_label">
 							业务经理:
@@ -60,19 +34,51 @@
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">业务经理</label>
 						</td>
-				</tr>
+					</tr>
 				<tr>
+					<td align="right">
+						<label class="Validform_label">
+							合同年份:
+						</label>
+					</td>
+					<td class="value">
+					     	 <input id="htnf" name="htnf" type="text" maxlength="4" style="width: 150px" class="inputxt"  datatype="*" ignore="checked" />
+							<span class="Validform_checktip"></span>
+							<label class="Validform_label" style="display: none;">合同年份</label>
+						</td>
+					<td align="right">
+						<label class="Validform_label">
+							合同编码:
+						</label>
+					</td>
+					<td class="value">
+					     	 <input id="htbm" name="htbm" type="text" maxlength="32" style="width: 150px" class="inputxt"  validType=",,id" datatype="*" ignore="ignore" />
+							<span class="Validform_checktip"></span>
+							<label class="Validform_label" style="display: none;">合同编码</label>
+						</td>
+					</tr>
+				<tr>
+					<td align="right">
+						<label class="Validform_label">
+							申请日期:
+						</label>
+					</td>
+					<td class="value">
+							   <input id="sqrq" name="sqrq" type="text" style="width: 150px" class="Wdate" onClick="WdatePicker()"  datatype="*" ignore="ignore" />    
+							<span class="Validform_checktip"></span>
+							<label class="Validform_label" style="display: none;">申请日期</label>
+						</td>
 					<td align="right">
 						<label class="Validform_label">
 							集成金额:
 						</label>
 					</td>
 					<td class="value">
-					     	 <input id="jcje" name="jcje" type="text" maxlength="32" style="width: 150px" class="inputxt"  ignore="ignore" />
+					     	 <input id="jcje" name="jcje" type="text" maxlength="32" style="width: 150px" class="inputxt"  datatype="d" ignore="ignore" />
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">集成金额</label>
 						</td>
-				</tr>
+					</tr>
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
@@ -80,23 +86,21 @@
 						</label>
 					</td>
 					<td class="value">
-					     	 <input id="rjje" name="rjje" type="text" maxlength="32" style="width: 150px" class="inputxt"  ignore="ignore" />
+					     	 <input id="rjje" name="rjje" type="text" maxlength="32" style="width: 150px" class="inputxt"  datatype="d" ignore="ignore" />
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">软件金额</label>
 						</td>
-				</tr>
-				<tr>
 					<td align="right">
 						<label class="Validform_label">
 							工程金额:
 						</label>
 					</td>
 					<td class="value">
-					     	 <input id="gcje" name="gcje" type="text" maxlength="32" style="width: 150px" class="inputxt"  ignore="ignore" />
+					     	 <input id="gcje" name="gcje" type="text" maxlength="32" style="width: 150px" class="inputxt"  datatype="d" ignore="ignore" />
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">工程金额</label>
 						</td>
-				</tr>
+					</tr>
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
@@ -104,23 +108,21 @@
 						</label>
 					</td>
 					<td class="value">
-					     	 <input id="fwje" name="fwje" type="text" maxlength="32" style="width: 150px" class="inputxt"  ignore="ignore" />
+					     	 <input id="fwje" name="fwje" type="text" maxlength="32" style="width: 150px" class="inputxt"  datatype="d" ignore="ignore" />
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">服务金额</label>
 						</td>
-				</tr>
-				<tr>
 					<td align="right">
 						<label class="Validform_label">
 							技术金额:
 						</label>
 					</td>
 					<td class="value">
-					     	 <input id="jsje" name="jsje" type="text" maxlength="32" style="width: 150px" class="inputxt"  ignore="ignore" />
+					     	 <input id="jsje" name="jsje" type="text" maxlength="32" style="width: 150px" class="inputxt"  datatype="d" ignore="ignore" />
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">技术金额</label>
 						</td>
-				</tr>
+					</tr>
 				<tr>
 					<td align="right">
 						<label class="Validform_label">
@@ -128,11 +130,17 @@
 						</label>
 					</td>
 					<td class="value">
-					     	 <input id="qtje" name="qtje" type="text" maxlength="32" style="width: 150px" class="inputxt"  ignore="ignore" />
+					     	 <input id="qtje" name="qtje" type="text" maxlength="32" style="width: 150px" class="inputxt"  datatype="d" ignore="ignore" />
 							<span class="Validform_checktip"></span>
 							<label class="Validform_label" style="display: none;">其它金额</label>
 						</td>
-				</tr>
+				<td align="right">
+					<label class="Validform_label">
+					</label>
+				</td>
+				<td class="value">
+				</td>
+					</tr>
 				
 				
 			</table>

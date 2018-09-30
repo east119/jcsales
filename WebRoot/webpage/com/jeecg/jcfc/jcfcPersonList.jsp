@@ -17,13 +17,11 @@
     <t:dgCol title="所属公司"  field="sysCompanyCode"  hidden="true" ></t:dgCol>
     <t:dgCol title="流程状态"  field="bpmStatus"  hidden="true" ></t:dgCol>
     <t:dgCol title="是否删除"  field="deleteFlag"  hidden="true" queryMode="single" query="true" dictionary="dev_flag" defaultVal="0"></t:dgCol>
-    <t:dgCol title="操作" field="opt" width="150"></t:dgCol>
-   	<t:dgDelOpt title="删除" url="jcfcPersonController.do?doDel&id={id}" urlclass="ace_button"  urlfont="fa-trash-o"/>
     <t:dgToolBar operationCode="add" title="录入" icon="icon-add"  funname="addRow"></t:dgToolBar>
     <t:dgToolBar operationCode="edit" title="编辑" icon="icon-edit"  funname="editRow"></t:dgToolBar>
     <t:dgToolBar operationCode="save" title="保存" icon="icon-save" url="jcfcPersonController.do?saveRows" funname="saveData"></t:dgToolBar>
     <t:dgToolBar operationCode="undo" title="取消编辑" icon="icon-undo" funname="reject"></t:dgToolBar>
-    <t:dgToolBar title="批量删除"  icon="icon-remove" url="jcfcPersonController.do?doBatchDel" funname="deleteALLSelect"></t:dgToolBar>
+    <t:dgToolBar operationCode="del" title="批量删除"  icon="icon-remove" url="jcfcPersonController.do?doBatchDel" funname="deleteALLSelect"></t:dgToolBar>
     <t:dgToolBar title="导出" icon="icon-putout" funname="ExportXls"></t:dgToolBar>
   </t:datagrid>
   </div>

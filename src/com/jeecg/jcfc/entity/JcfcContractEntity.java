@@ -5,11 +5,13 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.jeecgframework.poi.excel.annotation.Excel;
 
 /**   
@@ -25,7 +27,7 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @SuppressWarnings("serial")
 public class JcfcContractEntity implements java.io.Serializable {
 	/**id*/
-	private java.lang.Integer id;
+	private java.lang.String id;
 	/**项目名称*/
 	@Excel(name="项目名称",width=15)
 	private java.lang.String xxmc;
@@ -42,43 +44,50 @@ public class JcfcContractEntity implements java.io.Serializable {
 	@Excel(name="申请日期",width=15,format = "yyyy-MM-dd")
 	private java.util.Date sqrq;
 	/**集成金额*/
-	@Excel(name="集成金额",width=15)
+//	@Excel(name="集成金额",width=15)
 	private java.lang.String jcje;
 	/**软件金额*/
-	@Excel(name="软件金额",width=15)
+//	@Excel(name="软件金额",width=15)
 	private java.lang.String rjje;
 	/**工程金额*/
-	@Excel(name="工程金额",width=15)
+//	@Excel(name="工程金额",width=15)
 	private java.lang.String gcje;
 	/**服务金额*/
-	@Excel(name="服务金额",width=15)
+//	@Excel(name="服务金额",width=15)
 	private java.lang.String fwje;
 	/**技术金额*/
-	@Excel(name="技术金额",width=15)
+//	@Excel(name="技术金额",width=15)
 	private java.lang.String jsje;
 	/**其它金额*/
-	@Excel(name="其它金额",width=15)
+//	@Excel(name="其它金额",width=15)
 	private java.lang.String qtje;
 	/**合计金额*/
 	private java.lang.String hjje;
 	/**集成编码*/
+	@Excel(name="集成编码",width=15)
 	private java.lang.String jcbm;
 	/**软件编码*/
+	@Excel(name="软件编码",width=15)
 	private java.lang.String rjbm;
 	/**工程编码*/
+	@Excel(name="工程编码",width=15)
 	private java.lang.String gcbm;
 	/**服务编码*/
+	@Excel(name="服务编码",width=15)
 	private java.lang.String fwbm;
 	/**技术编码*/
+	@Excel(name="技术编码",width=15)
 	private java.lang.String jsbm;
 	/**其它编码*/
+	@Excel(name="其它编码",width=15)
 	private java.lang.String qtbm;
 	/**优选*/
+	@Excel(name="合同号",width=15)
 	private java.lang.String yx;
 	/**合同号*/
 	private java.lang.String hth;
 	/**业务序号*/
-	private java.lang.Integer ywxh;
+	private java.lang.String ywxh;
 	/**创建人名称*/
 	private java.lang.String createName;
 	/**创建人登录名称*/
@@ -101,22 +110,23 @@ public class JcfcContractEntity implements java.io.Serializable {
 	private java.lang.Integer deleteFlag;
 	
 	/**
-	 *方法: 取得java.lang.Integer
-	 *@return: java.lang.Integer  id
+	 *方法: 取得java.lang.String
+	 *@return: java.lang.String  id
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "paymentableGenerator")
+	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 
-	@Column(name ="ID",nullable=false,length=20)
-	public java.lang.Integer getId(){
+	@Column(name ="ID",nullable=false,length=36)
+	public java.lang.String getId(){
 		return this.id;
 	}
 
 	/**
-	 *方法: 设置java.lang.Integer
-	 *@param: java.lang.Integer  id
+	 *方法: 设置java.lang.String
+	 *@param: java.lang.String  id
 	 */
-	public void setId(java.lang.Integer id){
+	public void setId(java.lang.String id){
 		this.id = id;
 	}
 	/**
@@ -191,7 +201,7 @@ public class JcfcContractEntity implements java.io.Serializable {
 	 *方法: 取得java.util.Date
 	 *@return: java.util.Date  申请日期
 	 */
-
+	@Temporal(TemporalType.DATE)
 	@Column(name ="SQRQ",nullable=true)
 	public java.util.Date getSqrq(){
 		return this.sqrq;
@@ -460,20 +470,20 @@ public class JcfcContractEntity implements java.io.Serializable {
 		this.hth = hth;
 	}
 	/**
-	 *方法: 取得java.lang.Integer
-	 *@return: java.lang.Integer  业务序号
+	 *方法: 取得java.lang.String
+	 *@return: java.lang.String  业务序号
 	 */
 
 	@Column(name ="YWXH",nullable=true,length=5)
-	public java.lang.Integer getYwxh(){
+	public java.lang.String getYwxh(){
 		return this.ywxh;
 	}
 
 	/**
-	 *方法: 设置java.lang.Integer
-	 *@param: java.lang.Integer  业务序号
+	 *方法: 设置java.lang.String
+	 *@param: java.lang.String  业务序号
 	 */
-	public void setYwxh(java.lang.Integer ywxh){
+	public void setYwxh(java.lang.String ywxh){
 		this.ywxh = ywxh;
 	}
 	/**
