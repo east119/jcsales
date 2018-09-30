@@ -61,7 +61,7 @@
                 <!-- 单点登录参数 -->
                 <input type="hidden" id="ReturnURL"  name="ReturnURL" value="${ReturnURL }"/>
                 <div class="widget-main">
-                 <div class="alert alert-warning alert-dismissible" role="alert" id="errMsgContiner">
+                 <div class="alert alert-warning alert-dismissible" role="alert" id="errMsgContiner" style="display: none">
 				  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				  <div id="showErrMsg"></div>
 				</div>
@@ -174,16 +174,5 @@
   });
 	
 </script>
-
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?098e6e84ab585bf0c2e6853604192b8b";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
 </body>
 </html>
